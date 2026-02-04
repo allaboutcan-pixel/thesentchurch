@@ -131,7 +131,7 @@ const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBann
                                 </div>
                                 <p className="text-[9px] text-slate-400 font-bold leading-tight flex items-start gap-1">
                                     <span className="text-primary">💡</span>
-                                    <span>비디오 파일은 반드시 아래 <b>[비디오로 변환]</b> 버튼을 눌러주세요. 용량이 너무 크면(100MB↑) 재생이 안 될 수 있으니 가급적 직접 업로드를 권장합니다.</span>
+                                    <span>비디오 로딩을 가장 빠르게 하려면 <b>10MB 이하의 MP4 파일</b>을 직접 업로드하세요. 유튜브 배경은 불러오는 시간이 길어질 수 있습니다. 드라이브 링크는 반드시 아래 <b>[비디오로 변환]</b> 버튼을 눌러주세요.</span>
                                 </p>
                             </div>
                             <input

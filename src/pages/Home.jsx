@@ -126,24 +126,25 @@ const Home = () => {
             )}>
                 <div className="absolute inset-0 z-0">
                     {/* 1. Poster Layer (Visible until video loads) */}
-                    {/* 1. Poster Layer (Visible until video loads) */}
-                    {posterUrl && (
+                    {(posterUrl || DEFAULT_HERO_IMAGE) && (
                         <img
-                            src={posterUrl}
+                            src={posterUrl || DEFAULT_HERO_IMAGE}
                             alt="Background"
-                            className="absolute inset-0 w-full h-full object-cover z-0"
+                            className={clsx(
+                                "absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-700",
+                                isVideoLoaded ? "opacity-0" : "opacity-100"
+                            )}
                             referrerPolicy="no-referrer"
+                            loading="eager" // Load hero image as fast as possible
                         />
                     )}
 
                     {/* 2. Video Layer (Fades in) */}
                     <div className={clsx(
-                        "absolute inset-0 z-10 transition-opacity duration-1000",
-                        // Only hide video initially IF we have a poster to show instead.
-                        // If no poster (posterUrl is empty), show video immediately (opacity-100) to avoid blank screen.
-                        (posterUrl && !isVideoLoaded) ? "opacity-0" : "opacity-100"
+                        "absolute inset-0 z-10 transition-opacity duration-500", // Faster transition
+                        isVideoLoaded ? "opacity-100" : "opacity-0"
                     )}>
-                        {(isVideo(heroImage) || (typeof heroImage === 'string' && heroImage.includes('drive.google.com') && !heroImage.includes('thumbnail'))) ? (
+                        {(heroImage && (isVideo(heroImage) || (typeof heroImage === 'string' && heroImage.includes('drive.google.com') && !heroImage.includes('thumbnail')))) ? (
                             getYoutubeId(heroImage) ? (
                                 <div className="absolute inset-0 w-full h-full">
                                     <iframe
@@ -168,8 +169,8 @@ const Home = () => {
                                     onLoadedData={() => setIsVideoLoaded(true)}
                                     onError={(e) => {
                                         console.error("Video load error", e);
-                                        // If Drive video fails (quota/cors), maybe fallback to iframe or just let poster show?
-                                        // Currently just logging error.
+                                        // If video fails, ensure we keep showing the poster
+                                        setIsVideoLoaded(false);
                                     }}
                                 />
                             )
