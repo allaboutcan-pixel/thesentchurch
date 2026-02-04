@@ -309,7 +309,12 @@ i18n
     .use(initReactI18next)
     .init({
         resources,
-        fallbackLng: 'ko',
+        lng: 'ko', // Force start with Korean
+        fallbackLng: 'ko', // Fallback to Korean
+        detection: {
+            order: ['localStorage', 'htmlTag'],
+            caches: ['localStorage'],
+        },
         interpolation: {
             escapeValue: false
         }
