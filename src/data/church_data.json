@@ -1,0 +1,209 @@
+{
+    "general": {
+        "name": "보내심을 받은 생명의소리 교회",
+        "englishName": "The Church of the Sent",
+        "logo": "/images/church_logo.jpg",
+        "motto": "보내심을 받은 생명의 소리",
+        "phone": [
+            "(604) 315-7988",
+            "(604) 825-8864"
+        ],
+        "address": "9025 Glover Road, Fort Langley (St. Andrew's Chapel)",
+        "email": "thesentnamgyu@gmail.com",
+        "social": {
+            "facebook": "https://www.facebook.com/groups/thesentchurch",
+            "youtube": "https://www.youtube.com/@churchofthesent7763",
+            "instagram": "https://www.instagram.com/thechurchofsent/"
+        }
+    },
+    "ministries": [
+        {
+            "id": "tsc",
+            "name": "The Sent Children (TSC)",
+            "target": "Children",
+            "description": "2:30 PM Gathering Room (2시 세대통합예배 후 모임)",
+            "image": "https://images.unsplash.com/photo-1544427920-24e832256f72?auto=format&fit=crop&q=80&w=800",
+            "theme": "bg-primary text-white"
+        },
+        {
+            "id": "tsy",
+            "name": "The Sent Youth (TSY)",
+            "target": "Youth",
+            "description": "2:30 PM Gathering Room (2시 세대통합예배 후 모임)",
+            "image": "https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&q=80&w=800",
+            "theme": "bg-accent text-white"
+        }
+    ],
+    "services": [
+        {
+            "name": "1부 예배 (봉사자 예배)",
+            "time": "1:00 PM",
+            "description": "지하 1층"
+        },
+        {
+            "name": "2부 예배 (대예배)",
+            "time": "2:00 PM",
+            "description": "본당"
+        }
+    ],
+    "intro": {
+        "pastor": {
+            "name": "이남규 목사",
+            "englishName": "LEE NAMGYU",
+            "role": "담임목사",
+            "image": "",
+            "message": "하나님의 말씀을 맡은 자로서, 생명의 소리를 전하는 교회입니다.",
+            "history": [
+                "서울신학대학교 신학과 졸업",
+                "서울신학대학교 신학대학원(M.Div) 졸업",
+                "전) 기둥교회 부목사",
+                "전) 한빛교회 부목사",
+                "현) 보내심을 받은 생명의소리 교회 담임목사"
+            ]
+        },
+        "staff": [
+            {
+                "name": "이남규 목사",
+                "englishName": "LEE NAMGYU",
+                "role": "Senior Pastor",
+                "email": "thesentnamgyu@gmail.com"
+            },
+            {
+                "name": "권희정 사모",
+                "englishName": "GWEON HEEJOUNG",
+                "role": "Sunday School & Women's Ministry",
+                "email": "thesentheejoung@gmail.com"
+            },
+            {
+                "name": "강명화 목사",
+                "englishName": "KANG MYUNG HWA",
+                "role": "Service & New Comer",
+                "email": "leahkang22@gmail.com"
+            },
+            {
+                "name": "김찬중 전도사",
+                "englishName": "KIM CHANJUNG",
+                "role": "Worship Pastor",
+                "email": "Chanjung03@naver.com"
+            }
+        ],
+        "vision": "성서적 기독교로, 문화적 기독교를 벗고 성결한 삶을 살게 되며 하나님의 능력으로 육체의 질병이 고쳐지는 신유를 믿고 예수님의 재림을 믿습니다."
+    },
+    "menu": [
+        {
+            "id": "home",
+            "label": "홈",
+            "path": "/"
+        },
+        {
+            "id": "guide",
+            "label": "교회안내",
+            "path": "/about",
+            "subItems": [
+                {
+                    "id": "pastor",
+                    "label": "담임목사 인사말",
+                    "path": "/about#pastor"
+                },
+                {
+                    "id": "intro",
+                    "label": "교회 소개",
+                    "path": "/about#intro"
+                },
+                {
+                    "id": "staff",
+                    "label": "섬기는 사람들",
+                    "path": "/about#staff"
+                },
+                {
+                    "id": "worship_guide",
+                    "label": "예배 안내",
+                    "path": "/about#worship"
+                },
+                {
+                    "id": "location",
+                    "label": "오시는 길",
+                    "path": "/about#location"
+                }
+            ]
+        },
+        {
+            "id": "sermons_word",
+            "label": "설교와 말씀",
+            "path": "/sermons",
+            "subItems": [
+                {
+                    "id": "sunday_sermon",
+                    "label": "주일예배 말씀",
+                    "path": "/sermons"
+                },
+                {
+                    "id": "column",
+                    "label": "목회 칼럼",
+                    "path": "/sermons/column"
+                }
+            ]
+        },
+        {
+            "id": "nextgen",
+            "label": "다음 세대",
+            "path": "/ministry",
+            "subItems": [
+                {
+                    "id": "tsc",
+                    "label": "The Sent Children (TSC)",
+                    "path": "/ministry/tsc"
+                },
+                {
+                    "id": "tsy",
+                    "label": "The Sent Youth (TSY)",
+                    "path": "/ministry/tsy"
+                }
+            ]
+        },
+        {
+            "id": "news",
+            "label": "교회 소식",
+            "path": "/news",
+            "subItems": [
+                {
+                    "label": "주보",
+                    "path": "/news/bulletin"
+                },
+                {
+                    "id": "calendar",
+                    "label": "교회 일정",
+                    "path": "/news/calendar"
+                },
+                {
+                    "label": "갤러리",
+                    "path": "/news/gallery"
+                }
+            ]
+        }
+    ],
+    "special_services": {
+        "dawn": {
+            "schedule": "매달 첫째 둘째주 6:00 AM",
+            "method": "Zoom Meeting",
+            "link": "777 011 0112"
+        }
+    },
+    "other_meetings": [
+        {
+            "name": "교역자 기도모임",
+            "time": "11:30 AM",
+            "location": "교회 지하 1층"
+        },
+        {
+            "name": "봉사자 예배",
+            "time": "12:00 PM",
+            "location": "교회 지하 1층"
+        },
+        {
+            "name": "중보기도 모임",
+            "time": "12:30 PM",
+            "location": "자모실"
+        }
+    ]
+}

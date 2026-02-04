@@ -1,0 +1,44 @@
+@import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.css');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Nanum+Pen+Script&family=Nanum+Brush+Script&family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans text-text-main bg-secondary-light;
+  }
+
+  .font-nanum-pen {
+    font-family: 'Nanum Pen Script', cursive;
+  }
+
+  .font-nanum-brush {
+    font-family: 'Nanum Brush Script', cursive;
+  }
+
+  .font-nanum-serif {
+    font-family: 'Nanum Myeongjo', serif;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: 'NanumSquareRound', 'Pretendard', 'Noto Sans KR', sans-serif;
+    @apply text-gray-800 antialiased tracking-[-0.01em] leading-relaxed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold text-primary;
+  }
+}
