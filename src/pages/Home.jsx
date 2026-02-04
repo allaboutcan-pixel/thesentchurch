@@ -11,7 +11,7 @@ import { isVideo, getYoutubeId, getDriveId } from '../utils/mediaUtils';
 import QuickLinks from '../components/QuickLinks';
 import CalendarWidget from '../components/CalendarWidget';
 import clsx from 'clsx';
-const DEFAULT_HERO_IMAGE = "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2073&auto=format&fit=crop";
+const DEFAULT_HERO_IMAGE = ""; // Set to empty to avoid accidental flashes
 
 const Home = () => {
     const [latestSermon, setLatestSermon] = useState(sermonsInitialData[0] || {});
@@ -34,7 +34,6 @@ const Home = () => {
     const [heroOverlayOpacity, setHeroOverlayOpacity] = useState(50);
     const [heroHeight, setHeroHeight] = useState("full");
     const { config, loading: configLoading } = useSiteConfig();
-    const [isConfigLoaded, setIsConfigLoaded] = useState(false);
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -70,7 +69,6 @@ const Home = () => {
 
                     if (config.heroHeight) setHeroHeight(config.heroHeight);
                     if (config.youtubeUrl) setYoutubeUrl(config.youtubeUrl);
-                    setIsConfigLoaded(true);
                 }
             } catch (e) {
                 if (isMounted) console.warn("Could not fetch live content, using defaults.");
@@ -118,7 +116,7 @@ const Home = () => {
         <div className="min-h-screen">
             {/* Hero Section (Main Banner) */}
             <section className={clsx(
-                "relative flex items-center justify-center overflow-hidden",
+                "relative flex items-center justify-center overflow-hidden bg-slate-900", // Added background color
                 heroHeight === 'full' ? "h-[65vh] md:h-[85vh]" :
                     heroHeight === 'large' ? "h-[60vh] md:h-[70vh]" :
                         heroHeight === 'medium' ? "h-[45vh]" :
@@ -126,22 +124,22 @@ const Home = () => {
             )}>
                 <div className="absolute inset-0 z-0">
                     {/* 1. Poster Layer (Visible until video loads) */}
-                    {(posterUrl || DEFAULT_HERO_IMAGE) && (
+                    {posterUrl && ( // Removed DEFAULT_HERO_IMAGE fallback here
                         <img
-                            src={posterUrl || DEFAULT_HERO_IMAGE}
+                            src={posterUrl}
                             alt="Background"
                             className={clsx(
                                 "absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-700",
                                 isVideoLoaded ? "opacity-0" : "opacity-100"
                             )}
                             referrerPolicy="no-referrer"
-                            loading="eager" // Load hero image as fast as possible
+                            loading="eager"
                         />
                     )}
 
                     {/* 2. Video Layer (Fades in) */}
                     <div className={clsx(
-                        "absolute inset-0 z-10 transition-opacity duration-500", // Faster transition
+                        "absolute inset-0 z-10 transition-opacity duration-500",
                         isVideoLoaded ? "opacity-100" : "opacity-0"
                     )}>
                         {(heroImage && (isVideo(heroImage) || (typeof heroImage === 'string' && heroImage.includes('drive.google.com') && !heroImage.includes('thumbnail')))) ? (
@@ -169,7 +167,6 @@ const Home = () => {
                                     onLoadedData={() => setIsVideoLoaded(true)}
                                     onError={(e) => {
                                         console.error("Video load error", e);
-                                        // If video fails, ensure we keep showing the poster
                                         setIsVideoLoaded(false);
                                     }}
                                 />
@@ -185,8 +182,8 @@ const Home = () => {
                 </div>
 
                 {/* Hero Content */}
-                <div className="relative z-10 container mx-auto px-4 text-center">
-                    {isConfigLoaded && (
+                <div className="relative z-30 container mx-auto px-4 text-center">
+                    {!configLoading && (
                         <>
                             <h2
                                 className={clsx(
@@ -219,8 +216,6 @@ const Home = () => {
                         </>
                     )}
                 </div>
-
-                {/* Scroll Indicator removed as per user request */}
             </section>
 
             {/* Sermon Section */}
