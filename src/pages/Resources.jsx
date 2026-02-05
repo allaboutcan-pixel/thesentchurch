@@ -110,6 +110,9 @@ const Resources = () => {
     };
 
     useEffect(() => {
+        // Scroll to top whenever tab changes via URL (fixes mobile jump issue)
+        window.scrollTo(0, 0);
+
         if (location.pathname.includes('gallery')) {
             setActiveTab('gallery');
         } else if (location.pathname.includes('column')) {
