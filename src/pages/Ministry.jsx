@@ -201,8 +201,16 @@ const Ministry = () => {
             {/* Sunday School Introduction Section */}
             <div className="bg-white py-32">
                 <div className="max-w-4xl mx-auto text-center px-4">
-                    <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line break-keep">
+                    {/* Desktop Version: Keep as is */}
+                    <h2 className="hidden md:block text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line break-keep">
                         {t('ministry.sunday_school_title')}
+                    </h2>
+                    {/* Mobile Version: Explicit 4 lines as requested */}
+                    <h2 className="block md:hidden text-xl font-bold text-gray-800 mb-6 leading-relaxed">
+                        우리 Sunday School은<br />
+                        아이들이 말씀 안에서 성장하며,<br />
+                        믿음과 충성으로 하나님을 섬기는<br />
+                        제자로 자라도록 돕습니다.
                     </h2>
                     <p className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep">
                         "{t('ministry.sunday_school_subtitle')}"
