@@ -41,4 +41,9 @@
   h6 {
     @apply font-bold text-primary;
   }
+
+  .break-keep {
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
 }
