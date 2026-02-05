@@ -7,11 +7,18 @@ export default function ScrollToTop() {
     useEffect(() => {
         // If there's a hash, don't scroll to top, let the browser handle anchor navigation
         if (window.location.hash) return;
-        try {
-            window.scrollTo(0, 0);
-        } catch (e) {
-            console.warn("Scroll to top failed", e);
-        }
+
+        const performScroll = () => {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+            // Safari specific fallbacks
+            document.documentElement.scrollTop = 0;
+            document.body.scrollTop = 0;
+        };
+
+        performScroll();
+        // Delay for cases where mobile keyboard or layout shifts occur
+        const timer = setTimeout(performScroll, 50);
+        return () => clearTimeout(timer);
     }, [pathname]);
 
     return null;

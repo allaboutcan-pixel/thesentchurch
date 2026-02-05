@@ -8,6 +8,9 @@
 @layer base {
   body {
     @apply font-sans text-text-main bg-secondary-light;
+    word-break: keep-all;
+    /* Global fix for Korean word wrapping */
+    overflow-wrap: break-word;
   }
 
   .font-nanum-pen {
@@ -31,6 +34,7 @@
   body {
     font-family: 'NanumSquareRound', 'Pretendard', 'Noto Sans KR', sans-serif;
     @apply text-gray-800 antialiased tracking-[-0.01em] leading-relaxed;
+    word-break: keep-all;
   }
 
   h1,

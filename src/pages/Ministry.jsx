@@ -155,7 +155,7 @@ const Ministry = () => {
                 </div>
                 <div className="container mx-auto px-4 text-center relative z-10">
                     <h1 className={clsx(
-                        "mb-8 animate-fade-in-up",
+                        "mb-8 animate-fade-in-up break-keep [text-wrap:balance]",
                         titleWeight,
                         titleFont,
                         titleItalic && "italic"
@@ -197,10 +197,10 @@ const Ministry = () => {
             {/* Sunday School Introduction Section */}
             <div className="bg-white py-32">
                 <div className="max-w-4xl mx-auto text-center px-4">
-                    <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line break-keep">
+                    <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line break-keep text-center [text-wrap:balance]">
                         {t('ministry.sunday_school_title')}
                     </h2>
-                    <p className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep">
+                    <p className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep text-center">
                         "{t('ministry.sunday_school_subtitle')}"
                     </p>
                 </div>

@@ -298,7 +298,7 @@ const Resources = () => {
                 {/* Banner Content */}
                 <div className="relative z-10 container mx-auto px-4 text-center">
                     <h1 className={clsx(
-                        "mb-8 animate-fade-in-up",
+                        "mb-8 animate-fade-in-up break-keep [text-wrap:balance]",
                         titleWeight,
                         titleFont,
                         titleItalic && "italic"
