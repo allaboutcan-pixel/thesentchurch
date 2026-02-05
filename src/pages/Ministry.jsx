@@ -278,7 +278,7 @@ const Ministry = () => {
                                         <div className="inline-block px-6 py-2 bg-green-600 rounded-full text-lg font-bold text-white mb-4 shadow-md">
                                             {displayTarget}
                                         </div>
-                                        <h2 className="text-xl md:text-2xl font-bold text-primary">{displayName}</h2>
+                                        <h2 className="text-2xl md:text-4xl font-bold text-primary tracking-tight">{displayName}</h2>
                                         <div className="w-20 h-1.5 bg-accent rounded-full" />
                                         <p className="text-base md:text-xl text-gray-600 leading-relaxed">
                                             {displayDesc}
