@@ -242,11 +242,10 @@ const Resources = () => {
             {/* Header with Banner */}
             <section className={clsx(
                 "relative flex items-center justify-center overflow-hidden",
-                activeTab === 'column' ? "h-[70vh] min-h-[600px]" : // Specific override for Column tab
-                    height === 'full' ? "h-[65vh] md:h-[85vh]" :
-                        height === 'large' ? "h-[65vh]" :
-                            height === 'medium' ? "h-[50vh] min-h-[400px]" :
-                                "h-[25vh]"
+                height === 'full' ? "h-[65vh] md:h-[85vh]" :
+                    height === 'large' ? "h-[65vh]" :
+                        height === 'medium' ? "h-[50vh] min-h-[400px]" :
+                            "h-[25vh]"
             )}>
                 {/* Background Image Container - Easy to replace later */}
                 <div className="absolute inset-0 z-0">
