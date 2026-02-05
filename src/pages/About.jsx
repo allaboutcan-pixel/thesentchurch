@@ -214,6 +214,7 @@ const About = () => {
                                         alt={pastorInfo.name}
                                         className="w-full h-full object-cover"
                                         referrerPolicy="no-referrer"
+                                        loading="lazy"
                                     />
                                 </div>
 

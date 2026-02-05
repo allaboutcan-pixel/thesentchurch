@@ -148,6 +148,7 @@ const Ministry = () => {
                             alt="Ministry Banner"
                             className="w-full h-full object-cover"
                             referrerPolicy="no-referrer"
+                            loading="lazy"
                         />
                     )}
                     <div className="absolute inset-0 bg-primary/40 mix-blend-multiply" />

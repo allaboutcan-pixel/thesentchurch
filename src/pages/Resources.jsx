@@ -946,8 +946,8 @@ const Resources = () => {
 
                                         const driveId = driveMatch ? driveMatch[1] : null;
                                         if (driveId) {
-                                            // Using authuser=0 and sz=w1280 for HD reliability
-                                            thumbnailUrl = `https://drive.google.com/thumbnail?authuser=0&sz=w1000&id=${driveId}`;
+                                            // Using authuser=0 and sz=w800 for better balancing of quality/speed
+                                            thumbnailUrl = `https://drive.google.com/thumbnail?authuser=0&sz=w800&id=${driveId}`;
                                         }
                                     }
                                 }

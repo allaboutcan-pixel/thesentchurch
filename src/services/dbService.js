@@ -71,7 +71,7 @@ export const dbService = {
     },
 
     // Format Google Drive link to direct image (for img src)
-    formatDriveImage: (url, size = 'w2560') => {
+    formatDriveImage: (url, size = 'w1280') => {
         if (!url) return "";
         if (typeof url !== 'string') return url;
 

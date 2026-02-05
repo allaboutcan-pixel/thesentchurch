@@ -79,6 +79,8 @@ const Home = () => {
     }, [config]);
 
     useEffect(() => {
+        // Immediately reset video loaded state when image/video source changes
+        // to prevent "flicker" of the previous video
         setIsVideoLoaded(false);
     }, [heroImage]);
 
@@ -116,7 +118,7 @@ const Home = () => {
         <div className="min-h-screen">
             {/* Hero Section (Main Banner) */}
             <section className={clsx(
-                "relative flex items-center justify-center overflow-hidden bg-slate-900", // Added background color
+                "relative flex items-center justify-center overflow-hidden bg-black", // Changed to bg-black for cleaner transitions
                 heroHeight === 'full' ? "h-[65vh] md:h-[85vh]" :
                     heroHeight === 'large' ? "h-[60vh] md:h-[70vh]" :
                         heroHeight === 'medium' ? "h-[45vh]" :
@@ -132,7 +134,7 @@ const Home = () => {
                             src={posterUrl}
                             alt="Background"
                             className={clsx(
-                                "absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-700",
+                                "absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-1000", // Slower fade for smoother switch
                                 isVideoLoaded ? "opacity-0" : "opacity-100"
                             )}
                             referrerPolicy="no-referrer"
@@ -142,7 +144,7 @@ const Home = () => {
 
                     {/* 2. Video Layer (Fades in) */}
                     <div className={clsx(
-                        "absolute inset-0 z-10 transition-opacity duration-500 pointer-events-none",
+                        "absolute inset-0 z-10 transition-opacity duration-1000 pointer-events-none", // Slower fade-in
                         isVideoLoaded ? "opacity-100" : "opacity-0",
                         // Aggressively mask the top part of Drive videos if they show info bars initially
                         heroImage?.includes('drive.google.com') && "hero-video-mask"
