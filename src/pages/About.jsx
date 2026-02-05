@@ -220,7 +220,7 @@ const About = () => {
                             </div>
                             <div className="w-full md:w-7/12">
                                 <div className="prose prose-lg text-gray-600 max-w-none">
-                                    <p className="mb-2 mt-12 leading-[2.2] whitespace-pre-line text-gray-700">
+                                    <p className="mb-2 mt-12 leading-[2.2] whitespace-pre-line text-gray-700 break-keep">
                                         {i18n.language === 'en' ? t('pastor_message_full') : (pastorInfo.message || pastorInfo.greeting)}
                                     </p>
                                     <div className="mt-8 pt-4 border-t border-gray-100 flex flex-col items-end">

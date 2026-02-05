@@ -197,10 +197,10 @@ const Ministry = () => {
             {/* Sunday School Introduction Section */}
             <div className="bg-white py-32">
                 <div className="max-w-4xl mx-auto text-center px-4">
-                    <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line">
+                    <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line break-keep">
                         {t('ministry.sunday_school_title')}
                     </h2>
-                    <p className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed">
+                    <p className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep">
                         "{t('ministry.sunday_school_subtitle')}"
                     </p>
                 </div>
