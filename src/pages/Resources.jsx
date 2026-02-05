@@ -257,7 +257,10 @@ const Resources = () => {
                             "h-[25vh]"
             )}>
                 {/* Background Image Container - Easy to replace later */}
-                <div className="absolute inset-0 z-0">
+                <div className={clsx(
+                    "absolute inset-0 z-0 pointer-events-none",
+                    headerBanner?.includes('drive.google.com') && "hero-video-mask"
+                )}>
                     {isVideo(headerBanner) ? (
                         getYoutubeId(headerBanner) ? (
                             <div className="absolute inset-0 w-full h-full">
@@ -298,7 +301,7 @@ const Resources = () => {
                 {/* Banner Content */}
                 <div className="relative z-10 container mx-auto px-4 text-center">
                     <h1 className={clsx(
-                        "mb-8 animate-fade-in-up break-keep [text-wrap:balance]",
+                        "mb-8 animate-fade-in-up break-keep",
                         titleWeight,
                         titleFont,
                         titleItalic && "italic"

@@ -122,7 +122,10 @@ const Home = () => {
                         heroHeight === 'medium' ? "h-[45vh]" :
                             "h-[35vh]"
             )}>
-                <div className="absolute inset-0 z-0">
+                <div className={clsx(
+                    "absolute inset-0 z-0",
+                    heroImage?.includes('drive.google.com') && "hero-video-mask"
+                )}>
                     {/* 1. Poster Layer (Visible until video loads) */}
                     {posterUrl && ( // Removed DEFAULT_HERO_IMAGE fallback here
                         <img
@@ -139,8 +142,10 @@ const Home = () => {
 
                     {/* 2. Video Layer (Fades in) */}
                     <div className={clsx(
-                        "absolute inset-0 z-10 transition-opacity duration-500",
-                        isVideoLoaded ? "opacity-100" : "opacity-0"
+                        "absolute inset-0 z-10 transition-opacity duration-500 pointer-events-none",
+                        isVideoLoaded ? "opacity-100" : "opacity-0",
+                        // Aggressively mask the top part of Drive videos if they show info bars initially
+                        heroImage?.includes('drive.google.com') && "hero-video-mask"
                     )}>
                         {(heroImage && (isVideo(heroImage) || (typeof heroImage === 'string' && heroImage.includes('drive.google.com') && !heroImage.includes('thumbnail')))) ? (
                             getYoutubeId(heroImage) ? (

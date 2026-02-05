@@ -50,4 +50,35 @@
     word-break: keep-all;
     overflow-wrap: break-word;
   }
+
+  /* Mask Google Drive owner info on top of hero videos */
+  .hero-video-mask {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-video-mask video,
+  .hero-video-mask iframe {
+    position: absolute;
+    top: -60px;
+    /* Hide top part where owner info appears */
+    height: calc(100% + 60px);
+    width: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    /* Block interaction with video overlays */
+  }
+
+  /* Extra layer of protection: Dark gradient at the top */
+  .hero-video-mask::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+    z-index: 5;
+    pointer-events: none;
+  }
 }

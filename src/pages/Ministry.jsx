@@ -116,7 +116,10 @@ const Ministry = () => {
                         height === 'medium' ? "h-[50vh] min-h-[400px]" :
                             "h-[25vh]"
             )}>
-                <div className="absolute inset-0 z-0">
+                <div className={clsx(
+                    "absolute inset-0 z-0 pointer-events-none",
+                    headerBanner?.includes('drive.google.com') && "hero-video-mask"
+                )}>
                     {isVideo(headerBanner) ? (
                         getYoutubeId(headerBanner) ? (
                             <div className="absolute inset-0 w-full h-full">
@@ -155,7 +158,7 @@ const Ministry = () => {
                 </div>
                 <div className="container mx-auto px-4 text-center relative z-10">
                     <h1 className={clsx(
-                        "mb-8 animate-fade-in-up break-keep [text-wrap:balance]",
+                        "mb-8 animate-fade-in-up break-keep",
                         titleWeight,
                         titleFont,
                         titleItalic && "italic"
@@ -197,10 +200,10 @@ const Ministry = () => {
             {/* Sunday School Introduction Section */}
             <div className="bg-white py-32">
                 <div className="max-w-4xl mx-auto text-center px-4">
-                    <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line break-keep text-center [text-wrap:balance]">
+                    <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line break-keep">
                         {t('ministry.sunday_school_title')}
                     </h2>
-                    <p className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep text-center">
+                    <p className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep">
                         "{t('ministry.sunday_school_subtitle')}"
                     </p>
                 </div>
