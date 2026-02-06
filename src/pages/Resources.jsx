@@ -808,7 +808,7 @@ const Resources = () => {
                                                 <img
                                                     src={latestColumn.fileUrl}
                                                     alt={latestColumn.title}
-                                                    className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
+                                                    className="w-full h-full object-contain opacity-80 hover:opacity-100 transition-opacity"
                                                     loading="lazy"
                                                 />
                                             ) : (
