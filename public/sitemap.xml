@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://thesentchurch-fws9.vercel.app/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://thesentchurch-fws9.vercel.app/about</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thesentchurch-fws9.vercel.app/ministry</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thesentchurch-fws9.vercel.app/news</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://thesentchurch-fws9.vercel.app/sermons</loc>
+    <priority>0.8</priority>
+  </url>
+</urlset>
