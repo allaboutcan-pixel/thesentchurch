@@ -519,7 +519,7 @@ const Resources = () => {
                                             key={month}
                                             onClick={() => setSelectedSermonMonth(month)}
                                             className={clsx(
-                                                "w-full px-5 py-3 rounded-xl flex items-center justify-between transition-all group shrink-0",
+                                                "w-auto lg:w-full px-5 py-3 rounded-xl flex items-center justify-between transition-all group shrink-0",
                                                 selectedSermonMonth === month
                                                     ? "bg-slate-900 text-white shadow-xl"
                                                     : "bg-white text-slate-500 hover:bg-slate-50 border border-slate-100"
@@ -688,7 +688,7 @@ const Resources = () => {
                                             key={month}
                                             onClick={() => setSelectedMonth(month)}
                                             className={clsx(
-                                                "w-full px-4 py-2 rounded-lg flex items-center justify-between transition-all group shrink-0",
+                                                "w-auto lg:w-full px-4 py-2 rounded-lg flex items-center justify-between transition-all group shrink-0",
                                                 selectedMonth === month
                                                     ? "bg-slate-900 text-white shadow-lg"
                                                     : "bg-white text-slate-500 hover:bg-slate-50 border border-slate-100"
@@ -868,7 +868,7 @@ const Resources = () => {
                                             key={month}
                                             onClick={() => setSelectedColumnMonth(month)}
                                             className={clsx(
-                                                "w-full px-5 py-3 rounded-xl flex items-center justify-between transition-all group shrink-0",
+                                                "w-auto lg:w-full px-5 py-3 rounded-xl flex items-center justify-between transition-all group shrink-0",
                                                 selectedColumnMonth === month
                                                     ? "bg-slate-900 text-white shadow-xl"
                                                     : "bg-white text-slate-500 hover:bg-slate-50 border border-slate-100"
