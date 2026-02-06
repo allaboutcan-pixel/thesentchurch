@@ -151,18 +151,19 @@ const Resources = () => {
 
                     const grouped = {};
                     sorted.forEach(item => {
-                        const date = new Date(item.date);
-                        const year = date.getFullYear().toString();
-                        const month = (date.getMonth() + 1).toString();
+                        if (!item.date) return;
+                        const [y, m] = item.date.split('-');
+                        const year = y;
+                        const month = parseInt(m, 10).toString();
                         if (!grouped[year]) grouped[year] = {};
                         if (!grouped[year][month]) grouped[year][month] = [];
                         grouped[year][month].push(item);
                     });
                     setArchiveData(grouped);
 
-                    const latestDate = new Date(sorted[0].date);
-                    setSelectedYear(latestDate.getFullYear().toString());
-                    setSelectedMonth((latestDate.getMonth() + 1).toString());
+                    const [ly, lm] = sorted[0].date.split('-');
+                    setSelectedYear(ly);
+                    setSelectedMonth(parseInt(lm, 10).toString());
                 }
 
                 // Fetch notices too
@@ -194,18 +195,19 @@ const Resources = () => {
 
                     const grouped = {};
                     sorted.forEach(item => {
-                        const date = new Date(item.date);
-                        const year = date.getFullYear().toString();
-                        const month = (date.getMonth() + 1).toString();
+                        if (!item.date) return;
+                        const [y, m] = item.date.split('-');
+                        const year = y;
+                        const month = parseInt(m, 10).toString();
                         if (!grouped[year]) grouped[year] = {};
                         if (!grouped[year][month]) grouped[year][month] = [];
                         grouped[year][month].push(item);
                     });
                     setSermonArchiveData(grouped);
 
-                    const latestDate = new Date(sorted[0].date);
-                    setSelectedSermonYear(latestDate.getFullYear().toString());
-                    setSelectedSermonMonth((latestDate.getMonth() + 1).toString());
+                    const [ly, lm] = sorted[0].date.split('-');
+                    setSelectedSermonYear(ly);
+                    setSelectedSermonMonth(parseInt(lm, 10).toString());
                 }
             } catch (e) {
                 if (isMounted) console.warn("Failed to fetch sermons.");
@@ -223,17 +225,18 @@ const Resources = () => {
 
                     const grouped = {};
                     sorted.forEach(item => {
-                        const date = new Date(item.date);
-                        const year = date.getFullYear().toString();
-                        const month = (date.getMonth() + 1).toString();
+                        if (!item.date) return;
+                        const [y, m] = item.date.split('-');
+                        const year = y;
+                        const month = parseInt(m, 10).toString();
                         if (!grouped[year]) grouped[year] = {};
                         if (!grouped[year][month]) grouped[year][month] = [];
                         grouped[year][month].push(item);
                     });
                     setColumnArchiveData(grouped);
-                    const latestDate = new Date(sorted[0].date);
-                    setSelectedColumnYear(latestDate.getFullYear().toString());
-                    setSelectedColumnMonth((latestDate.getMonth() + 1).toString());
+                    const [ly, lm] = sorted[0].date.split('-');
+                    setSelectedColumnYear(ly);
+                    setSelectedColumnMonth(parseInt(lm, 10).toString());
                 }
             } catch (e) {
                 if (isMounted) console.warn("Failed to fetch columns.");
