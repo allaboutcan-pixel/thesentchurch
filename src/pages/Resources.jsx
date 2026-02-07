@@ -485,30 +485,29 @@ const Resources = () => {
 
                         {/* Sermon Archive Section */}
                         <div id="sermon-archive" className="space-y-8">
-                            <div className="flex flex-col md:flex-row justify-between items-end gap-4 border-b-4 border-slate-100 pb-6">
-                                <div>
-                                    <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
-                                        <Calendar size={28} className="text-primary" />
-                                        {t('home.sermon_archive')}
-                                    </h3>
-                                    <p className="text-slate-400 font-medium text-sm mt-1">{t('home.sermon_archive_desc')}</p>
-                                </div>
-                                <div className="flex flex-wrap gap-2">
-                                    {Object.keys(sermonArchiveData).sort((a, b) => b - a).map(year => (
-                                        <button
-                                            key={year}
-                                            onClick={() => setSelectedSermonYear(year)}
-                                            className={clsx(
-                                                "px-4 py-1.5 rounded-full font-black text-xs transition-all",
-                                                selectedSermonYear === year
-                                                    ? "bg-primary text-white shadow-lg shadow-primary/30"
-                                                    : "bg-slate-100 text-slate-400 hover:bg-slate-200"
-                                            )}
-                                        >
-                                            {year}년
-                                        </button>
-                                    ))}
-                                </div>
+                            <div className="border-b-4 border-slate-100 pb-6 space-y-4">
+                                <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+                                    <Calendar size={28} className="text-primary" />
+                                    {t('home.sermon_archive')}
+                                </h3>
+                                <p className="text-slate-400 font-medium text-sm mt-1 italic">{t('home.sermon_archive_desc')}</p>
+                            </div>
+
+                            <div className="flex flex-wrap gap-2">
+                                {Object.keys(sermonArchiveData).sort((a, b) => b - a).map(year => (
+                                    <button
+                                        key={year}
+                                        onClick={() => setSelectedSermonYear(year)}
+                                        className={clsx(
+                                            "px-4 py-1.5 rounded-full font-black text-xs transition-all",
+                                            selectedSermonYear === year
+                                                ? "bg-primary text-white shadow-lg shadow-primary/30"
+                                                : "bg-slate-100 text-slate-400 hover:bg-slate-200"
+                                        )}
+                                    >
+                                        {year}년
+                                    </button>
+                                ))}
                             </div>
 
                             <div className="flex flex-col lg:flex-row gap-8">
@@ -654,30 +653,29 @@ const Resources = () => {
 
                         {/* 2. Past Archive Section */}
                         <div className="space-y-8">
-                            <div className="flex flex-col md:flex-row justify-between items-end gap-4 border-b-4 border-slate-100 pb-6">
-                                <div>
-                                    <h3 className="text-xl font-black text-slate-900 flex items-center gap-2">
-                                        <Calendar size={14} className="text-primary" />
-                                        {t('home.past_bulletins')}
-                                    </h3>
-                                    <p className="text-slate-400 font-medium text-[11px] mt-0.5">{t('home.past_bulletins_desc')}</p>
-                                </div>
-                                <div className="flex flex-wrap gap-2">
-                                    {Object.keys(archiveData).sort((a, b) => b - a).map(year => (
-                                        <button
-                                            key={year}
-                                            onClick={() => setSelectedYear(year)}
-                                            className={clsx(
-                                                "px-3 py-1 rounded-full font-black text-[10px] transition-all",
-                                                selectedYear === year
-                                                    ? "bg-primary text-white shadow-md shadow-primary/20"
-                                                    : "bg-slate-100 text-slate-400 hover:bg-slate-200"
-                                            )}
-                                        >
-                                            {year}년
-                                        </button>
-                                    ))}
-                                </div>
+                            <div className="border-b-4 border-slate-100 pb-6 space-y-4">
+                                <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+                                    <Calendar size={28} className="text-primary" />
+                                    {t('home.past_bulletins')}
+                                </h3>
+                                <p className="text-slate-400 font-medium text-sm mt-1 italic">{t('home.past_bulletins_desc')}</p>
+                            </div>
+
+                            <div className="flex flex-wrap gap-2">
+                                {Object.keys(archiveData).sort((a, b) => b - a).map(year => (
+                                    <button
+                                        key={year}
+                                        onClick={() => setSelectedYear(year)}
+                                        className={clsx(
+                                            "px-4 py-1.5 rounded-full font-black text-[10px] transition-all",
+                                            selectedYear === year
+                                                ? "bg-primary text-white shadow-md shadow-primary/20"
+                                                : "bg-slate-100 text-slate-400 hover:bg-slate-200"
+                                        )}
+                                    >
+                                        {year}년
+                                    </button>
+                                ))}
                             </div>
 
                             <div className="flex flex-col lg:flex-row gap-8 min-h-[400px]">
@@ -834,30 +832,29 @@ const Resources = () => {
 
                         {/* 2. Column Archive */}
                         <div className="space-y-8">
-                            <div className="flex flex-col md:flex-row justify-between items-end gap-4 border-b-4 border-slate-100 pb-6">
-                                <div>
-                                    <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
-                                        <FileText size={28} className="text-primary" />
-                                        지난 목회 칼럼 보기
-                                    </h3>
-                                    <p className="text-slate-400 font-medium text-sm mt-1">이남규 목사님의 목회 칼럼 보관함입니다.</p>
-                                </div>
-                                <div className="flex flex-wrap gap-2">
-                                    {Object.keys(columnArchiveData).sort((a, b) => b - a).map(year => (
-                                        <button
-                                            key={year}
-                                            onClick={() => setSelectedColumnYear(year)}
-                                            className={clsx(
-                                                "px-4 py-1.5 rounded-full font-black text-xs transition-all",
-                                                selectedColumnYear === year
-                                                    ? "bg-primary text-white shadow-lg shadow-primary/30"
-                                                    : "bg-slate-100 text-slate-400 hover:bg-slate-200"
-                                            )}
-                                        >
-                                            {year}년
-                                        </button>
-                                    ))}
-                                </div>
+                            <div className="border-b-4 border-slate-100 pb-6 space-y-4">
+                                <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+                                    <FileText size={28} className="text-primary" />
+                                    지난 목회 칼럼 보기
+                                </h3>
+                                <p className="text-slate-400 font-medium text-sm mt-1 italic">이남규 목사님의 목회 칼럼 보관함입니다.</p>
+                            </div>
+
+                            <div className="flex flex-wrap gap-2">
+                                {Object.keys(columnArchiveData).sort((a, b) => b - a).map(year => (
+                                    <button
+                                        key={year}
+                                        onClick={() => setSelectedColumnYear(year)}
+                                        className={clsx(
+                                            "px-4 py-1.5 rounded-full font-black text-xs transition-all",
+                                            selectedColumnYear === year
+                                                ? "bg-primary text-white shadow-lg shadow-primary/30"
+                                                : "bg-slate-100 text-slate-400 hover:bg-slate-200"
+                                        )}
+                                    >
+                                        {year}년
+                                    </button>
+                                ))}
                             </div>
 
                             <div className="flex flex-col lg:flex-row gap-8 min-h-[400px]">
