@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, Globe } from 'lucide-react';
+import { Menu, X, ChevronDown, Globe, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import churchData from '../../data/church_data.json';
 import { useSiteConfig } from '../../hooks/useSiteConfig';
@@ -155,6 +155,14 @@ const Header = () => {
 
                     <button
                         className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
+                        onClick={() => setIsContactOpen(true)}
+                        aria-label="문의하기"
+                    >
+                        <Mail className={isScrolled ? "text-primary transition-colors" : "text-white transition-colors"} size={24} />
+                    </button>
+
+                    <button
+                        className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
                         onClick={() => setIsOpen(!isOpen)}
                         aria-label="Toggle menu"
                     >
@@ -221,6 +229,20 @@ const Header = () => {
                                 )}
                             </div>
                         ))}
+                    </div>
+
+                    {/* Mobile Contact Button */}
+                    <div className="px-6 py-8 border-t border-gray-100 bg-gray-50/50">
+                        <button
+                            onClick={() => {
+                                setIsContactOpen(true);
+                                setIsOpen(false);
+                            }}
+                            className="w-full flex items-center justify-center gap-3 py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/20 transition-all active:scale-[0.98]"
+                        >
+                            <Mail size={18} />
+                            <span>문의하기</span>
+                        </button>
                     </div>
                 </div>
             )}
