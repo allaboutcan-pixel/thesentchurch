@@ -142,7 +142,7 @@ const resources = {
                 "title": "주보 및 소식",
                 "subtitle": "교회의 소식과 은혜를 나눕니다.",
                 "gallery_subtitle": "말씀 안에서 함께 걷는 우리의 일상과 예배의 순간들",
-                "gallery_view_title": "은혜의 순간 순간들"
+                "gallery_view_title": "보내심을 받은 생명의소리 교회\n은혜의 순간들"
             },
             "location": {
                 "title": "오시는 길",
@@ -297,7 +297,7 @@ const resources = {
                 "title": "Bulletin & News",
                 "subtitle": "Sharing news and grace of our church.",
                 "gallery_subtitle": "Our daily lives and moments of worship, walking together in the Word.",
-                "gallery_view_title": "Moments of Grace"
+                "gallery_view_title": "The Church of the Sent\nMoments of Grace"
             },
             "location": {
                 "title": "Find Us",

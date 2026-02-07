@@ -921,8 +921,8 @@ const Resources = () => {
                 {activeTab === 'gallery' && (
                     <div className="space-y-24 pb-48 pt-32 animate-fade-in">
                         <div className="border-b-4 border-slate-100 pb-6 space-y-4">
-                            <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
-                                <FileText size={28} className="text-primary" />
+                            <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3 whitespace-pre-line">
+                                <FileText size={28} className="text-primary shrink-0" />
                                 {t('resources.gallery_view_title')}
                             </h3>
                             <p className="text-slate-400 font-medium text-sm mt-1 italic">{t('resources.gallery_subtitle')}</p>
