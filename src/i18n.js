@@ -142,7 +142,7 @@ const resources = {
                 "title": "주보 및 소식",
                 "subtitle": "교회의 소식과 은혜를 나눕니다.",
                 "gallery_subtitle": "말씀 안에서 함께 걷는 우리의 일상과 예배의 순간들",
-                "gallery_view_title": "갤러리 목록보기"
+                "gallery_view_title": "은혜의 순간 순간들"
             },
             "location": {
                 "title": "오시는 길",
@@ -297,7 +297,7 @@ const resources = {
                 "title": "Bulletin & News",
                 "subtitle": "Sharing news and grace of our church.",
                 "gallery_subtitle": "Our daily lives and moments of worship, walking together in the Word.",
-                "gallery_view_title": "Gallery List"
+                "gallery_view_title": "Moments of Grace"
             },
             "location": {
                 "title": "Find Us",
