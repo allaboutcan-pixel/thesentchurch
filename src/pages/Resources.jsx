@@ -920,19 +920,12 @@ const Resources = () => {
 
                 {activeTab === 'gallery' && (
                     <div className="space-y-24 pb-48 pt-32 animate-fade-in">
-                        <div className="border-b-4 border-slate-100 pb-8 space-y-4">
-                            <div className="flex items-start gap-4">
-                                <FileText size={32} className="text-primary mt-1 shrink-0" />
-                                <div className="space-y-1">
-                                    <p className="text-xs font-bold text-accent uppercase tracking-[0.2em]">
-                                        {t('resources.gallery_title_small')}
-                                    </p>
-                                    <h3 className="text-3xl font-black text-slate-900 tracking-tight">
-                                        {t('resources.gallery_title_main')}
-                                    </h3>
-                                </div>
-                            </div>
-                            <p className="text-slate-400 font-medium text-sm mt-1 italic pl-12">{t('resources.gallery_subtitle')}</p>
+                        <div className="border-b-4 border-slate-100 pb-6 space-y-4">
+                            <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+                                <FileText size={28} className="text-primary shrink-0" />
+                                {t('resources.gallery_view_title')}
+                            </h3>
+                            <p className="text-slate-400 font-medium text-sm mt-1 italic">{t('resources.gallery_subtitle')}</p>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
                             {galleryItems.map((img, idx) => {
