@@ -60,7 +60,7 @@ const Header = () => {
                         <img src={config.logo || "/images/church_logo.jpg"} alt="Church Logo" className="w-full h-full object-contain scale-[2.0]" />
                     </div>
                     <div className="flex flex-col">
-                        <span className={clsx("font-bold text-lg md:text-xl leading-none transition-colors", isScrolled ? "text-primary" : "text-primary")}>
+                        <span className={clsx("font-bold text-[15px] md:text-xl leading-none transition-colors", isScrolled ? "text-primary" : "text-primary")}>
                             {config.name}
                         </span>
                         <span className={clsx("text-[11px] md:text-[13px] font-black uppercase tracking-[0.1em] mt-1 transition-colors", isScrolled ? "text-gray-400" : "text-white")}>
