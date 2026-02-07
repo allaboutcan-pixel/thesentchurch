@@ -111,7 +111,7 @@ const Header = () => {
                 </nav>
 
                 {/* Language Switcher & Mobile Menu Button */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-1 md:gap-4">
                     {/* Contact Button (Desktop) */}
                     <button
                         onClick={() => setIsContactOpen(true)}
