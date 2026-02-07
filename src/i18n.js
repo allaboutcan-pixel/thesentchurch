@@ -93,7 +93,24 @@ const resources = {
                 "values_title": "사역 (핵심가치)",
                 "staff_label": "STAFF",
                 "staff_title": "섬기는 사람들",
-                "pastor_photo": "담임목사 사진"
+                "pastor_photo": "담임목사 사진",
+                "pastor_history_title": "이남규 목사님은 (About Pastor)",
+                "pastor_history": [
+                    "서경대학교 법학과 졸업",
+                    "성결신학대학원 졸업 (M.Div., 목회학 석사)",
+                    "Ambrose University 졸업 (M.A.R., 종교학 석사)",
+                    "Trinity Western University 졸업 (Th.M., 신학 석사)",
+                    "Manchester University 졸업 (Ph.D., 철학 박사)",
+                    "밴쿠버 한인 기독교회 협의회 신학위원장 (현)",
+                    "예수교 미주 성결교회 캐나다 서부 지방회 회장",
+                    "예수교 미주 성결교회 총회장 역임",
+                    "밴쿠버 크리스천 신문 신학 전문 칼럼니스트 (현)",
+                    "보내심을 받은 생명의 소리 교회 담임목사 (현)",
+                    "Faith College & Theological Seminary 학장 (현)",
+                    "Evangelical Free Church of Canada 한인 교회 개척 담당자",
+                    "Fort Langley Community Church 부목사",
+                    "Port of Hope Ministry in Canada 이사 역임"
+                ]
             },
             "worship": {
                 "title": "예배 안내",
@@ -228,7 +245,24 @@ const resources = {
                 "values_title": "Ministry (Core Values)",
                 "staff_label": "STAFF",
                 "staff_title": "Our Team",
-                "pastor_photo": "Pastor's Photo"
+                "pastor_photo": "Pastor's Photo",
+                "pastor_history_title": "About Pastor",
+                "pastor_history": [
+                    "B.A. in Law, Seokyeong University",
+                    "M.Div., Sungkyul Theological Seminary",
+                    "M.A.R., Ambrose University",
+                    "Th.M., Trinity Western University",
+                    "Ph.D., Manchester University",
+                    "Chair of Theological Committee, Vancouver Korean Christian Pastors Association (Current)",
+                    "President, Western Canada District of Korea Evangelical Holiness Church of the Americas",
+                    "Former President, General Assembly of Korea Evangelical Holiness Church of the Americas",
+                    "Theological Columnist, Vancouver Christian Newspaper (Current)",
+                    "Senior Pastor, The Church of the Sent (Current)",
+                    "President, Faith College & Theological Seminary (Current)",
+                    "Korean Church Planting Coordinator, Evangelical Free Church of Canada (EFCC)",
+                    "Associate Pastor, Fort Langley Community Church",
+                    "Former Director, Port of Hope Ministry in Canada"
+                ]
             },
             "worship": {
                 "title": "Worship",

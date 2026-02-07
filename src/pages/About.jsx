@@ -237,19 +237,17 @@ const About = () => {
 
 
                                     {/* Pastor History Section (Left Aligned) */}
-                                    {(pastorInfo.history || churchData.intro.pastor.history) && (
-                                        <div className="mt-40 pt-6 border-t border-gray-100">
-                                            <h4 className="text-sm font-bold text-blue-600 mb-3">이남규 목사님은 (About Pastor)</h4>
-                                            <ul className="space-y-1.5 pl-2">
-                                                {(pastorInfo.history || churchData.intro.pastor.history).map((item, idx) => (
-                                                    <li key={idx} className="text-sm text-gray-500 flex items-start gap-2">
-                                                        <span className="w-1.5 h-1.5 bg-accent/40 rounded-full mt-1.5 shrink-0" />
-                                                        <span>{item}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
+                                    <div className="mt-40 pt-6 border-t border-gray-100">
+                                        <h4 className="text-sm font-bold text-blue-600 mb-3">{t('about.pastor_history_title')}</h4>
+                                        <ul className="space-y-1.5 pl-2">
+                                            {(t('about.pastor_history', { returnObjects: true }) || pastorInfo.history || churchData.intro.pastor.history).map((item, idx) => (
+                                                <li key={idx} className="text-sm text-gray-500 flex items-start gap-2">
+                                                    <span className="w-1.5 h-1.5 bg-accent/40 rounded-full mt-1.5 shrink-0" />
+                                                    <span>{item}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
