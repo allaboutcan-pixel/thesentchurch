@@ -4,6 +4,8 @@ import Layout from './components/layout/Layout';
 import ScrollToTop from './components/ScrollToTop';
 import ErrorBoundary from './components/ErrorBoundary';
 
+import { SiteConfigProvider } from './context/SiteConfigContext';
+
 // Lazy load pages for performance
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -21,30 +23,32 @@ const PageLoader = () => (
 function App() {
   return (
     <>
-      <ScrollToTop />
-      <ErrorBoundary>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
+      <SiteConfigProvider>
+        <ScrollToTop />
+        <ErrorBoundary>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Home />} />
 
-              {/* About Routes */}
-              <Route path="about" element={<About />} />
-              <Route path="about/*" element={<About />} />
+                {/* About Routes */}
+                <Route path="about" element={<About />} />
+                <Route path="about/*" element={<About />} />
 
-              <Route path="ministry" element={<Ministry />} />
-              <Route path="ministry/*" element={<Ministry />} />
+                <Route path="ministry" element={<Ministry />} />
+                <Route path="ministry/*" element={<Ministry />} />
 
-              <Route path="news" element={<Resources />} />
-              <Route path="news/*" element={<Resources />} />
+                <Route path="news" element={<Resources />} />
+                <Route path="news/*" element={<Resources />} />
 
-              <Route path="sermons" element={<Resources />} />
-              <Route path="sermons/*" element={<Resources />} />
-            </Route>
-            <Route path="/admin" element={<Admin />} />
-          </Routes>
-        </Suspense>
-      </ErrorBoundary>
+                <Route path="sermons" element={<Resources />} />
+                <Route path="sermons/*" element={<Resources />} />
+              </Route>
+              <Route path="/admin" element={<Admin />} />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
+      </SiteConfigProvider>
     </>
   );
 }

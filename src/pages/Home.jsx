@@ -40,8 +40,11 @@ const Home = () => {
         let isMounted = true;
         const fetchLiveContent = async () => {
             try {
-                const liveSermons = await dbService.getSermons();
-                const liveNotices = await dbService.getNotices(3);
+                // Fetch in parallel for better performance
+                const [liveSermons, liveNotices] = await Promise.all([
+                    dbService.getSermons(),
+                    dbService.getNotices(3)
+                ]);
 
                 if (!isMounted) return;
 
@@ -139,6 +142,8 @@ const Home = () => {
                             )}
                             referrerPolicy="no-referrer"
                             loading="eager"
+                            fetchpriority="high"
+                            decoding="async"
                         />
                     )}
 
@@ -247,10 +252,11 @@ const Home = () => {
                             ) : (
                                 <>
                                     <img
-                                        src={`https://img.youtube.com/vi/${latestSermon.youtubeId}/maxresdefault.jpg`}
+                                        src={`https://img.youtube.com/vi/${latestSermon.youtubeId}/hqdefault.jpg`}
                                         alt={latestSermon.title}
                                         className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity"
                                         loading="lazy"
+                                        decoding="async"
                                     />
                                     <div className="absolute inset-0 flex items-center justify-center">
                                         <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/90 text-white rounded-full flex items-center justify-center pl-1 shadow-2xl group-hover:scale-110 transition-transform">
@@ -333,7 +339,7 @@ const Home = () => {
 const QuickMenuCard = ({ title, subtitle, desc, link, image }) => (
     <Link to={link} className="group relative overflow-hidden rounded-2xl h-64 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 block">
         <div className="absolute inset-0">
-            <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" referrerPolicy="no-referrer" loading="lazy" />
+            <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" referrerPolicy="no-referrer" loading="lazy" decoding="async" />
             <div className="absolute inset-0 bg-black/50 group-hover:bg-black/40 transition-colors duration-300" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-80" />
         </div>
