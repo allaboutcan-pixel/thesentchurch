@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import churchData from '../data/church_data.json';
 import { Mail, Clock, Video, Users, MapPin, Phone, Youtube, Facebook, Instagram, ExternalLink } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { dbService } from '../services/dbService';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import { useLocation } from 'react-router-dom';
@@ -364,7 +364,10 @@ const About = () => {
             <section className="py-24 bg-gray-50/50">
                 <div className="container mx-auto px-4 text-center">
                     <p className="text-gray-700 font-bold italic font-sans text-sm md:text-base leading-[2.2] max-w-3xl mx-auto mb-8 break-keep">
-                        {t('about.denomination_info')}
+                        <Trans
+                            i18nKey="about.denomination_info"
+                            components={{ blue: <span className="text-blue-600" /> }}
+                        />
                     </p>
                     <div className="flex items-center justify-center gap-4 md:gap-8 flex-wrap">
                         <img
