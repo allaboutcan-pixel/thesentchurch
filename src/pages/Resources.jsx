@@ -923,9 +923,9 @@ const Resources = () => {
                         <div className="border-b-4 border-slate-100 pb-6 space-y-4">
                             <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
                                 <FileText size={28} className="text-primary" />
-                                갤러리 목록보기
+                                {t('resources.gallery_view_title')}
                             </h3>
-                            <p className="text-slate-400 font-medium text-sm mt-1 italic">말씀 안에서 함께 걷는 우리의 일상과 예배의 순간들</p>
+                            <p className="text-slate-400 font-medium text-sm mt-1 italic">{t('resources.gallery_subtitle')}</p>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
                             {galleryItems.map((img, idx) => {
