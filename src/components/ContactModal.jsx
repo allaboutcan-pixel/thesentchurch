@@ -91,7 +91,7 @@ ${formData.message}
                             <Mail size={20} />
                         </div>
                         <div>
-                            <h2 className="font-bold text-lg">문의하기</h2>
+                            <h2 className="font-bold text-lg">첫걸음</h2>
                             <p className="text-xs text-white/80 font-light">궁금하신 점을 남겨주세요</p>
                         </div>
                     </div>
