@@ -366,7 +366,11 @@ const About = () => {
                     <p className="text-gray-700 font-bold italic font-sans text-sm md:text-base leading-[2.2] max-w-3xl mx-auto mb-8 break-keep">
                         <Trans
                             i18nKey="about.denomination_info"
-                            components={{ blue: <span className="text-primary" /> }}
+                            components={{
+                                blue: <span className="text-primary" />,
+                                br: <br />,
+                                mbr: <br className="md:hidden" />
+                            }}
                         />
                     </p>
                     <div className="flex items-center justify-center gap-4 md:gap-8 flex-wrap">

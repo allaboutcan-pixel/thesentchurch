@@ -111,7 +111,7 @@ const resources = {
                     "Fort Langley Community Church 부목사",
                     "Port of Hope Ministry in Canada 이사 역임"
                 ],
-                "denomination_info": "보내심을 받은 생명의소리 교회는 <blue>\"예수교대한성결교회\"</blue>의 미주 총회에 소속되어 있으며, 캐나다에서는 <blue>\"EFCC (Evangelical Free Church of Canada)\"</blue>에 속해 있습니다."
+                "denomination_info": "보내심을 받은 생명의소리 교회는<mbr /> <blue>\"예수교대한성결교회\"</blue>의 미주 총회에 소속되어 있으며,<br /> 캐나다에서는 <blue>\"EFCC (Evangelical Free Church<mbr /> of Canada)\"</blue>에 속해 있습니다."
             },
             "worship": {
                 "title": "예배 안내",
