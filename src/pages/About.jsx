@@ -366,8 +366,12 @@ const About = () => {
             <section className="py-24 bg-gray-50/50">
                 <div className="container mx-auto px-4 text-center">
                     <p className="text-gray-700 font-bold italic font-sans text-sm md:text-base leading-[2.2] max-w-3xl mx-auto mb-8 break-keep">
-                        보내심을 받은 생명의소리 교회는 <span className="text-primary">"예수교대한성결교회"</span>의 미주 총회에 소속되어 있으며,<br />
-                        캐나다에서는 <span className="text-primary">"EFCC (Evangelical Free Church of Canada)"</span>에 속해 있습니다.
+                        보내심을 받은 생명의소리 교회는 <br className="md:hidden" />
+                        <span className="text-primary">"예수교대한성결교회"</span>
+                        <br className="md:hidden" />
+                        의 미주 총회에 소속되어 있으며,<br />
+                        캐나다에서는 <br className="md:hidden" />
+                        <span className="text-primary">"EFCC (Evangelical Free Church of Canada)"</span>에 속해 있습니다.
                     </p>
                     <div className="flex items-center justify-center gap-4 md:gap-8 flex-wrap">
                         <img
