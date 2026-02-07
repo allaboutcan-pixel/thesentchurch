@@ -52,15 +52,16 @@ const CalendarWidget = () => {
             d1.getDate() === d2.getDate();
     };
 
+    // Parse "YYYY-MM-DD" manually to avoid UTC offset issues
+    const parseDateLocal = (dateStr) => {
+        if (!dateStr) return null;
+        if (dateStr instanceof Date) return dateStr;
+        const [y, m, d] = dateStr.split('-').map(Number);
+        return new Date(y, m - 1, d);
+    };
+
     const isDateInEventRange = (date, event) => {
         const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-        // Parse "YYYY-MM-DD" manually to avoid UTC offset issues
-        const parseDateLocal = (dateStr) => {
-            if (!dateStr) return null;
-            const [y, m, d] = dateStr.split('-').map(Number);
-            return new Date(y, m - 1, d);
-        };
 
         const start = parseDateLocal(event.startDate);
         const end = parseDateLocal(event.endDate || event.startDate);
@@ -197,8 +198,14 @@ const CalendarWidget = () => {
                             <div>
                                 <h4 className="text-xl font-bold text-primary">{mainEvent.title}</h4>
                                 <p className="text-sm text-gray-500 font-bold">
-                                    {new Date(mainEvent.startDate).toLocaleDateString()}
-                                    {mainEvent.endDate && mainEvent.endDate !== mainEvent.startDate && ` - ${new Date(mainEvent.endDate).toLocaleDateString()}`}
+                                    {(() => {
+                                        const d = parseDateLocal(mainEvent.startDate);
+                                        return `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}.`;
+                                    })()}
+                                    {mainEvent.endDate && mainEvent.endDate !== mainEvent.startDate && (() => {
+                                        const d = parseDateLocal(mainEvent.endDate);
+                                        return ` - ${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}.`;
+                                    })()}
                                 </p>
                             </div>
                         </div>
