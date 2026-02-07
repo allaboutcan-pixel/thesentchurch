@@ -122,7 +122,7 @@ const Header = () => {
                                 : "bg-white/20 text-white hover:bg-white/30 backdrop-blur-sm border border-white/30"
                         )}
                     >
-                        <span>첫걸음</span>
+                        <span>{t('home.first_step')}</span>
                     </button>
 
                     <div className={clsx(
@@ -234,7 +234,7 @@ const Header = () => {
                             className="w-full flex items-center justify-center gap-3 py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/20 transition-all active:scale-[0.98]"
                         >
                             <Mail size={18} />
-                            <span>첫걸음</span>
+                            <span>{t('home.first_step')}</span>
                         </button>
                     </div>
                 </div>

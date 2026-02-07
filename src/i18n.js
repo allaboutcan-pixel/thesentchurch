@@ -73,7 +73,8 @@ const resources = {
                 "past_columns": "지난 목회 칼럼 보기",
                 "past_columns_desc": "이남규 목사님의 목회 칼럼 보관함입니다.",
                 "no_content_date": "선택하신 날짜의 내용이 없습니다.",
-                "no_content_yet": "아직 등록된 내용이 없습니다."
+                "no_content_yet": "아직 등록된 내용이 없습니다.",
+                "first_step": "첫걸음"
             },
             "about": {
                 "title": "교회 소개",
@@ -207,7 +208,8 @@ const resources = {
                 "past_columns": "Past Pastoral Columns",
                 "past_columns_desc": "Archive of pastoral columns by Pastor Nam-Gyu Lee.",
                 "no_content_date": "No content found for the selected date.",
-                "no_content_yet": "No content has been registered yet."
+                "no_content_yet": "No content has been registered yet.",
+                "first_step": "First Step"
             },
             "about": {
                 "title": "About Us",

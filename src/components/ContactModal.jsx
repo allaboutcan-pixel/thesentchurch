@@ -91,7 +91,7 @@ ${formData.message}
                             <Mail size={20} />
                         </div>
                         <div>
-                            <h2 className="font-bold text-lg">첫걸음</h2>
+                            <h2 className="font-bold text-lg">{t('home.first_step')}</h2>
                             <p className="text-xs text-white/80 font-light">궁금하신 점을 남겨주세요</p>
                         </div>
                     </div>
@@ -152,7 +152,7 @@ ${formData.message}
                             className="w-full bg-primary text-white py-4 rounded-xl font-bold hover:bg-primary-dark transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-lg flex items-center justify-center gap-2"
                         >
                             <Send size={18} />
-                            첫걸음
+                            {t('home.first_step')}
                         </button>
                         <p className="text-[10px] text-gray-400 text-center mt-3">
                             * 버튼을 누르면 기기의 메일 앱이 실행됩니다.
