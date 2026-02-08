@@ -159,20 +159,20 @@ const DailyWord = () => {
                     <div className="inline-flex rounded-xl shadow-sm bg-gray-100 p-1" role="group">
                         <Link
                             to="/sermons"
-                            className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all text-slate-400 hover:text-primary hover:bg-white/50"
+                            className="flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm font-black transition-all text-slate-400 hover:text-primary hover:bg-white/50 whitespace-nowrap"
                         >
                             <Play size={18} />
                             <span>{t('nav.sunday_sermon')}</span>
                         </Link>
                         <button
-                            className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all bg-white text-primary shadow-lg scale-105"
+                            className="flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm font-black transition-all bg-white text-primary shadow-lg whitespace-nowrap"
                         >
                             <Quote size={18} />
                             <span>{t('nav.daily_word')}</span>
                         </button>
                         <Link
                             to="/sermons/column"
-                            className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all text-slate-400 hover:text-primary hover:bg-white/50"
+                            className="flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm font-black transition-all text-slate-400 hover:text-primary hover:bg-white/50 whitespace-nowrap"
                         >
                             <BookOpen size={18} />
                             <span>{t('nav.column')}</span>

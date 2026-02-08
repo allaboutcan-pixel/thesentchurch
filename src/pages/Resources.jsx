@@ -334,7 +334,7 @@ const Resources = () => {
                                 />
                                 <Link
                                     to="/sermons/daily"
-                                    className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all text-slate-400 hover:text-primary hover:bg-white/50"
+                                    className="flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm font-black transition-all text-slate-400 hover:text-primary hover:bg-white/50 whitespace-nowrap"
                                 >
                                     <Quote size={18} />
                                     <span>{t('nav.daily_word')}</span>
@@ -1373,14 +1373,14 @@ const TabButton = ({ active, onClick, icon, label }) => (
     <button
         onClick={onClick}
         className={clsx(
-            "flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all",
+            "flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm font-black transition-all whitespace-nowrap",
             active
-                ? "bg-white text-primary shadow-lg scale-105"
+                ? "bg-white text-primary shadow-lg"
                 : "text-slate-400 hover:text-primary hover:bg-white/50"
         )}
     >
         {icon}
-        <span className="whitespace-nowrap">{label}</span>
+        <span>{label}</span>
     </button>
 );
 
