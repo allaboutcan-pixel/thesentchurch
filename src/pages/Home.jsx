@@ -53,7 +53,13 @@ const Home = () => {
 
                 if (liveSermons.length > 0) setLatestSermon(liveSermons[0]);
                 if (liveNotices.length > 0) setRecentNotices(liveNotices);
-                if (liveDailyWords && liveDailyWords.length > 0) setLatestDailyWord(liveDailyWords[0]);
+
+                if (liveDailyWords && liveDailyWords.length > 0) {
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    // Find word exactly for today, otherwise take the latest (fallback)
+                    const todayWord = liveDailyWords.find(w => w.date === todayStr) || liveDailyWords[0];
+                    setLatestDailyWord(todayWord);
+                }
 
                 if (config) {
                     if (config.heroImage) setHeroImage(config.heroImage);

@@ -5,6 +5,13 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { dbService } from '../services/dbService';
 
+const getDayName = (dateStr) => {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+    return dayNames[date.getDay()];
+};
+
 const DailyWord = () => {
     const { t } = useTranslation();
     const [dailyWords, setDailyWords] = useState([]);
@@ -58,11 +65,16 @@ const DailyWord = () => {
 
                 if (words.length > 0) {
                     const sorted = [...words].sort((a, b) => new Date(b.date) - new Date(a.date));
-                    setDailyWords(sorted);
-                    setLatestWord(sorted[0]);
+                    // User requested to only show 5 items in archive
+                    const limitedWords = sorted.slice(0, 5);
+                    setDailyWords(limitedWords);
+
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    const todayWord = sorted.find(w => w.date === todayStr) || sorted[0];
+                    setLatestWord(todayWord);
 
                     const grouped = {};
-                    sorted.forEach(item => {
+                    limitedWords.forEach(item => {
                         if (!item.date) return;
                         const [y, m] = item.date.split('-');
                         const year = y;
@@ -73,9 +85,11 @@ const DailyWord = () => {
                     });
                     setArchiveData(grouped);
 
-                    const [ly, lm] = sorted[0].date.split('-');
-                    setSelectedYear(ly);
-                    setSelectedMonth(parseInt(lm, 10).toString());
+                    if (limitedWords.length > 0) {
+                        const [ly, lm] = limitedWords[0].date.split('-');
+                        setSelectedYear(ly);
+                        setSelectedMonth(parseInt(lm, 10).toString());
+                    }
                 }
             } catch (error) {
                 console.error("Failed to fetch daily words:", error);
@@ -168,29 +182,34 @@ const DailyWord = () => {
 
                 {/* Latest Word Highlight */}
                 {latestWord && (
-                    <div className="max-w-4xl mx-auto mb-24 animate-fade-in">
-                        <div className="bg-slate-50 rounded-[3rem] overflow-hidden shadow-xl border border-slate-100 flex flex-col md:flex-row shadow-primary/5">
-                            <div className="md:w-1/2 aspect-square md:aspect-auto relative overflow-hidden">
+                    <div className="max-w-4xl mx-auto mb-24 animate-fade-in px-2">
+                        <div className="bg-slate-50 rounded-[3.5rem] overflow-hidden shadow-2xl border border-slate-100 flex flex-col md:flex-row shadow-primary/5">
+                            <div className="md:w-3/5 aspect-[4/3] md:aspect-auto relative overflow-hidden group">
                                 <img
                                     src={latestWord.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
                                     alt="Today's Word"
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent md:hidden" />
-                                <div className="absolute bottom-6 left-6 md:hidden">
-                                    <span className="bg-white/90 backdrop-blur-sm text-primary px-4 py-1.5 rounded-full text-xs font-black shadow-lg">
+                                <div className="absolute top-8 left-8">
+                                    <div className="bg-white/95 backdrop-blur-md text-primary w-14 h-14 rounded-2xl flex items-center justify-center font-black text-2xl shadow-2xl">
+                                        {getDayName(latestWord.date)}
+                                    </div>
+                                </div>
+                                <div className="absolute bottom-6 left-8 md:hidden">
+                                    <span className="bg-black/30 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase border border-white/20">
                                         {latestWord.date}
                                     </span>
                                 </div>
                             </div>
-                            <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative">
-                                <div className="hidden md:block mb-6">
-                                    <span className="bg-primary/10 text-primary px-4 py-2 rounded-full text-xs font-black tracking-widest uppercase">
+                            <div className="md:w-2/5 p-10 md:p-14 flex flex-col justify-center relative bg-white">
+                                <div className="hidden md:block mb-8">
+                                    <span className="bg-primary/5 text-primary px-4 py-2 rounded-xl text-[10px] font-black tracking-widest uppercase">
                                         {latestWord.date}
                                     </span>
                                 </div>
-                                <Quote size={40} className="text-primary/10 absolute top-8 right-8" />
-                                <h2 className="text-xl font-black text-primary mb-6 leading-tight break-keep">
+                                <Quote size={48} className="text-primary/5 absolute top-12 right-12" />
+                                <h2 className="text-xl md:text-2xl font-black text-primary mb-8 leading-tight break-keep">
                                     {latestWord.verse || latestWord.title}
                                 </h2>
                                 <p className="text-slate-600 text-lg md:text-xl font-medium leading-relaxed italic break-keep whitespace-pre-wrap">
@@ -209,7 +228,7 @@ const DailyWord = () => {
                                 <Calendar size={28} className="text-primary" />
                                 {t('resources.daily_word_title')}
                             </h3>
-                            <p className="text-slate-400 font-medium text-sm mt-1">{t('resources.daily_word_subtitle')}</p>
+                            <p className="text-slate-400 font-medium text-sm mt-1">이번 주의 귀한 말씀들을 다시 묵상해보세요.</p>
                         </div>
 
                         <div className="flex flex-wrap gap-2">
@@ -253,34 +272,43 @@ const DailyWord = () => {
                         {/* Word Cards Grid */}
                         <div className="flex-grow">
                             {archiveData[selectedYear]?.[selectedMonth] ? (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
                                     {archiveData[selectedYear][selectedMonth].map((word) => (
-                                        <div key={word.id} className="bg-white rounded-3xl overflow-hidden border border-slate-100 group hover:shadow-xl transition-all flex flex-col">
-                                            <div className="aspect-[16/10] relative overflow-hidden">
+                                        <div key={word.id} className="bg-white rounded-[2.5rem] overflow-hidden border border-slate-100 group hover:shadow-2xl transition-all flex flex-col hover:-translate-y-1 duration-300 shadow-lg shadow-slate-200/50">
+                                            <div className="aspect-[4/3] relative overflow-hidden">
                                                 <img
                                                     src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
                                                     alt="Preview"
-                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                                                 />
-                                                <div className="absolute top-4 left-4">
-                                                    <span className="bg-black/40 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+
+                                                {/* Card Badge UI */}
+                                                <div className="absolute top-6 left-6 flex items-center gap-2">
+                                                    <div className="bg-white/95 backdrop-blur-md text-primary w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg shadow-lg">
+                                                        {getDayName(word.date)}
+                                                    </div>
+                                                    <span className="bg-black/40 backdrop-blur-md text-white px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest border border-white/10">
                                                         {word.date}
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div className="p-6 flex-grow flex flex-col">
-                                                <h4 className="font-bold text-primary text-sm mb-3">
+                                            <div className="p-8 flex-grow flex flex-col text-center">
+                                                <h4 className="font-bold text-primary text-base mb-4 line-clamp-1">
                                                     {word.verse || word.title}
                                                 </h4>
-                                                <p className="text-slate-500 text-sm leading-relaxed line-clamp-3 break-keep italic">
+                                                <p className="text-slate-600 font-medium text-sm leading-relaxed line-clamp-2 break-keep italic">
                                                     "{word.content}"
                                                 </p>
-                                                <div className="mt-6 pt-6 border-t border-slate-50">
+                                                <div className="mt-8 pt-6 border-t border-slate-50 flex justify-center">
                                                     <button
-                                                        onClick={() => setLatestWord(word)}
-                                                        className="text-primary font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:gap-3 transition-all"
+                                                        onClick={() => {
+                                                            setLatestWord(word);
+                                                            window.scrollTo({ top: 300, behavior: 'smooth' });
+                                                        }}
+                                                        className="px-6 py-2 bg-slate-50 text-primary font-black text-[11px] uppercase tracking-widest rounded-full hover:bg-primary hover:text-white transition-all transform active:scale-95"
                                                     >
-                                                        자세히 보기 <ChevronRight size={14} />
+                                                        말씀 보기
                                                     </button>
                                                 </div>
                                             </div>
