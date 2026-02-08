@@ -11,7 +11,21 @@ const DailyWord = () => {
     const [archiveData, setArchiveData] = useState({}); // { year: { month: [items] } }
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
     const [selectedMonth, setSelectedMonth] = useState((new Date().getMonth() + 1).toString());
-    const [headerBanner, setHeaderBanner] = useState("/images/about_banner.jpg");
+    const [headerBanner, setHeaderBanner] = useState("/images/sermons_banner.jpg");
+    const [title, setTitle] = useState("");
+    const [subtitle, setSubtitle] = useState("");
+    const [titleFont, setTitleFont] = useState("font-sans");
+    const [subtitleFont, setSubtitleFont] = useState("font-sans");
+    const [titleColor, setTitleColor] = useState("#ffffff");
+    const [subtitleColor, setSubtitleColor] = useState("#ffffff");
+    const [titleItalic, setTitleItalic] = useState(false);
+    const [subtitleItalic, setSubtitleItalic] = useState(true);
+    const [titleWeight, setTitleWeight] = useState("font-black");
+    const [subtitleWeight, setSubtitleWeight] = useState("font-medium");
+    const [titleSize, setTitleSize] = useState(48);
+    const [subtitleSize, setSubtitleSize] = useState(24);
+    const [overlayOpacity, setOverlayOpacity] = useState(40);
+    const [height, setHeight] = useState("medium");
 
     useEffect(() => {
         let isMounted = true;
@@ -22,8 +36,23 @@ const DailyWord = () => {
 
                 if (!isMounted) return;
 
-                if (config && config.aboutBanner) {
-                    setHeaderBanner(config.aboutBanner);
+                if (config) {
+                    const prefix = 'resources'; // Unify with sermons/media page
+                    if (config[`${prefix}Banner`]) setHeaderBanner(config[`${prefix}Banner`]);
+                    if (config[`${prefix}Title`]) setTitle(config[`${prefix}Title`]);
+                    if (config[`${prefix}Subtitle`]) setSubtitle(config[`${prefix}Subtitle`]);
+                    if (config[`${prefix}TitleFont`]) setTitleFont(config[`${prefix}TitleFont`]);
+                    if (config[`${prefix}SubtitleFont`]) setSubtitleFont(config[`${prefix}SubtitleFont`]);
+                    if (config[`${prefix}TitleColor`]) setTitleColor(config[`${prefix}TitleColor`]);
+                    if (config[`${prefix}SubtitleColor`]) setSubtitleColor(config[`${prefix}SubtitleColor`]);
+                    if (config[`${prefix}TitleItalic`] !== undefined) setTitleItalic(config[`${prefix}TitleItalic`]);
+                    if (config[`${prefix}SubtitleItalic`] !== undefined) setSubtitleItalic(config[`${prefix}SubtitleItalic`]);
+                    if (config[`${prefix}TitleWeight`]) setTitleWeight(config[`${prefix}TitleWeight`]);
+                    if (config[`${prefix}SubtitleWeight`]) setSubtitleWeight(config[`${prefix}SubtitleWeight`]);
+                    if (config[`${prefix}TitleSize`]) setTitleSize(config[`${prefix}TitleSize`]);
+                    if (config[`${prefix}SubtitleSize`]) setSubtitleSize(config[`${prefix}SubtitleSize`]);
+                    if (config[`${prefix}OverlayOpacity`] !== undefined) setOverlayOpacity(config[`${prefix}OverlayOpacity`]);
+                    if (config[`${prefix}Height`]) setHeight(config[`${prefix}Height`]);
                 }
 
                 if (words.length > 0) {
@@ -58,7 +87,13 @@ const DailyWord = () => {
     return (
         <div className="min-h-screen bg-white">
             {/* Header Banner */}
-            <section className="relative h-[40vh] min-h-[300px] flex items-center justify-center overflow-hidden">
+            <section className={clsx(
+                "relative flex items-center justify-center overflow-hidden",
+                height === 'full' ? "h-[65vh] md:h-[85vh]" :
+                    height === 'large' ? "h-[65vh]" :
+                        height === 'medium' ? "h-[50vh] min-h-[400px]" :
+                            "h-[25vh]"
+            )}>
                 <div className="absolute inset-0 z-0">
                     <img
                         src={headerBanner}
@@ -67,14 +102,39 @@ const DailyWord = () => {
                         referrerPolicy="no-referrer"
                     />
                     <div className="absolute inset-0 bg-primary/40 mix-blend-multiply" />
-                    <div className="absolute inset-0 bg-black/20" />
+                    <div
+                        className="absolute inset-0 bg-black/30 z-[1] pointer-events-none"
+                        style={{ backgroundColor: `rgba(0,0,0, ${overlayOpacity / 100})` }}
+                    />
                 </div>
                 <div className="relative z-10 container mx-auto px-4 text-center">
-                    <h1 className="text-4xl md:text-5xl font-black text-white mb-4 animate-fade-in-up">
-                        오늘의 말씀
+                    <h1 className={clsx(
+                        "mb-8 animate-fade-in-up break-keep",
+                        titleWeight,
+                        titleFont,
+                        titleItalic && "italic"
+                    )}
+                        style={{
+                            color: titleColor,
+                            fontSize: titleSize ? `${titleSize}px` : undefined
+                        }}
+                    >
+                        {title || "오늘의 말씀"}
                     </h1>
-                    <div className="w-16 h-1 bg-accent mx-auto mb-4 rounded-full" />
-                    <p className="text-white/80 font-medium tracking-widest uppercase text-sm">Daily Bread for Soul</p>
+                    <div className="w-20 h-1.5 bg-accent mx-auto mb-8 rounded-full animate-fade-in-up delay-75" />
+                    <h2 className={clsx(
+                        "tracking-wide opacity-90 animate-fade-in-up delay-100",
+                        subtitleWeight,
+                        subtitleFont,
+                        subtitleItalic && "italic"
+                    )}
+                        style={{
+                            color: subtitleColor,
+                            fontSize: subtitleSize ? `${subtitleSize}px` : undefined
+                        }}
+                    >
+                        {subtitle || "Daily Bread for Soul"}
+                    </h2>
                 </div>
             </section>
 

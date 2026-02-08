@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Bell, Download, Calendar, Image as ImageIcon, FileText, Play, X, Music, ChevronRight, BookOpen, Video, Maximize } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Bell, Download, Calendar, Image as ImageIcon, FileText, Play, X, Music, ChevronRight, BookOpen, Quote, Video, Maximize } from 'lucide-react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import bulletinsInitialData from '../data/bulletins.json';
@@ -346,6 +346,13 @@ const Resources = () => {
                                     icon={<Play size={18} />}
                                     label={t('nav.sunday_sermon')}
                                 />
+                                <Link
+                                    to="/sermons/daily"
+                                    className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all text-slate-400 hover:text-primary hover:bg-white/50"
+                                >
+                                    <Quote size={18} />
+                                    <span>{t('nav.daily_word')}</span>
+                                </Link>
                                 <TabButton
                                     active={activeTab === 'column'}
                                     onClick={() => setActiveTab('column')}
