@@ -10,12 +10,14 @@ import { useSiteConfig } from '../hooks/useSiteConfig';
 import { isVideo, getYoutubeId, getDriveId } from '../utils/mediaUtils';
 import QuickLinks from '../components/QuickLinks';
 import CalendarWidget from '../components/CalendarWidget';
+import DailyWordPopup from '../components/DailyWordPopup';
 import clsx from 'clsx';
 const DEFAULT_HERO_IMAGE = ""; // Set to empty to avoid accidental flashes
 
 const Home = () => {
     const [latestSermon, setLatestSermon] = useState(sermonsInitialData[0] || {});
     const [recentNotices, setRecentNotices] = useState(noticesInitialData.slice(0, 3));
+    const [latestDailyWord, setLatestDailyWord] = useState(null);
     const [heroImage, setHeroImage] = useState("");
     const [isVideoLoaded, setIsVideoLoaded] = useState(false);
     const [heroTitle, setHeroTitle] = useState("");
@@ -41,15 +43,17 @@ const Home = () => {
         const fetchLiveContent = async () => {
             try {
                 // Fetch in parallel for better performance
-                const [liveSermons, liveNotices] = await Promise.all([
+                const [liveSermons, liveNotices, liveDailyWords] = await Promise.all([
                     dbService.getSermons(),
-                    dbService.getNotices(3)
+                    dbService.getNotices(3),
+                    dbService.getDailyWords(1)
                 ]);
 
                 if (!isMounted) return;
 
                 if (liveSermons.length > 0) setLatestSermon(liveSermons[0]);
                 if (liveNotices.length > 0) setRecentNotices(liveNotices);
+                if (liveDailyWords && liveDailyWords.length > 0) setLatestDailyWord(liveDailyWords[0]);
 
                 if (config) {
                     if (config.heroImage) setHeroImage(config.heroImage);
@@ -119,6 +123,7 @@ const Home = () => {
 
     return (
         <div className="min-h-screen">
+            <DailyWordPopup word={latestDailyWord} />
             {/* Hero Section (Main Banner) */}
             <section className={clsx(
                 "relative flex items-center justify-center overflow-hidden bg-black", // Changed to bg-black for cleaner transitions
@@ -229,6 +234,41 @@ const Home = () => {
                     )}
                 </div>
             </section>
+
+            {/* Daily Word Section */}
+            {latestDailyWord && (
+                <section className="bg-gray-50 border-y border-gray-100">
+                    <div className="container mx-auto px-4 py-12 md:py-16">
+                        <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-16">
+                            <div className="flex-1 text-center md:text-left">
+                                <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest rounded-full mb-4">
+                                    {t('home.daily_word_popup_title')}
+                                </span>
+                                <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-6 leading-snug break-keep">
+                                    "{latestDailyWord.content}"
+                                </h3>
+                                <p className="text-primary font-bold text-lg mb-8">
+                                    — {latestDailyWord.verse}
+                                </p>
+                                <Link
+                                    to="/sermons/daily"
+                                    className="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-black text-sm transition-colors group"
+                                >
+                                    <span>{t('home.daily_word_view_more')}</span>
+                                    <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                </Link>
+                            </div>
+                            <div className="w-full md:w-1/3 aspect-square rounded-[3rem] overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500 border-8 border-white">
+                                <img
+                                    src={latestDailyWord.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
+                                    alt="Daily Word"
+                                    className="w-full h-full object-cover scale-110"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* Sermon Section */}
             <section className="py-24">

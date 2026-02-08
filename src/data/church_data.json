@@ -147,6 +147,11 @@
                     "path": "/sermons"
                 },
                 {
+                    "id": "daily_word",
+                    "label": "오늘의 말씀",
+                    "path": "/sermons/daily"
+                },
+                {
                     "id": "column",
                     "label": "목회 칼럼",
                     "path": "/sermons/column"

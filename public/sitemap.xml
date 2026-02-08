@@ -20,4 +20,8 @@
     <loc>https://thesentchurch-fws9.vercel.app/sermons</loc>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://thesentchurch-fws9.vercel.app/sermons/daily</loc>
+    <priority>0.8</priority>
+  </url>
 </urlset>

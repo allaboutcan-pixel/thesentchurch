@@ -22,6 +22,7 @@ const resources = {
                 "gallery": "갤러리",
                 "sermons_word": "설교와 말씀",
                 "sunday_sermon": "주일예배 말씀",
+                "daily_word": "오늘의 말씀",
                 "column": "목회 칼럼",
                 "tsc": "The Sent Children (TSC)",
                 "tsy": "The Sent Youth (TSY)",
@@ -74,7 +75,10 @@ const resources = {
                 "past_columns_desc": "이남규 목사님의 목회 칼럼 보관함입니다.",
                 "no_content_date": "선택하신 날짜의 내용이 없습니다.",
                 "no_content_yet": "아직 등록된 내용이 없습니다.",
-                "first_step": "첫걸음"
+                "first_step": "첫걸음",
+                "daily_word_popup_title": "오늘의 말씀",
+                "daily_word_popup_close": "오늘 하루 보지 않기",
+                "daily_word_view_more": "자세히 보기"
             },
             "about": {
                 "title": "교회 소개",
@@ -176,8 +180,9 @@ const resources = {
                 "bulletin": "Bulletin",
                 "gallery": "Gallery",
                 "sermons_word": "Sermons & Word",
-                "sunday_sermon": "Sunday Service",
-                "column": "Pastoral Column",
+                "sunday_sermon": "Sunday Sermons",
+                "daily_word": "Today's Word",
+                "column": "Pastor's Column",
                 "tsc": "The Sent Children (TSC)",
                 "tsy": "The Sent Youth (TSY)",
                 "senior_pastor": "Senior Pastor",
@@ -228,8 +233,11 @@ const resources = {
                 "past_columns": "Past Pastoral Columns",
                 "past_columns_desc": "Archive of pastoral columns by Pastor Nam-Gyu Lee.",
                 "no_content_date": "No content found for the selected date.",
-                "no_content_yet": "No content has been registered yet.",
-                "first_step": "First Step"
+                "no_content_yet": "No content registered yet.",
+                "first_step": "First Step",
+                "daily_word_popup_title": "Today's Word",
+                "daily_word_popup_close": "Don't show for today",
+                "daily_word_view_more": "View More"
             },
             "about": {
                 "title": "About Us",

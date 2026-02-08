@@ -248,6 +248,7 @@ const Admin = () => {
     const [siteConfig, setSiteConfig] = useState({});
     const [staffList, setStaffList] = useState([]);
     const [columns, setColumns] = useState([]);
+    const [dailyWords, setDailyWords] = useState([]);
     const [calendarEvents, setCalendarEvents] = useState([]);
     const [bannerFiles, setBannerFiles] = useState({});
 
@@ -319,6 +320,7 @@ const Admin = () => {
             const fbNotices = await dbService.getNotices();
             const fbGallery = await dbService.getGallery();
             const fbColumns = await dbService.getColumns();
+            const fbDailyWords = await dbService.getDailyWords();
             const fbCalendar = await dbService.getCalendarEvents();
             // Sort calendar specifically if needed, though dbService does it
             const sortedCalendar = (fbCalendar || []).sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
@@ -332,6 +334,7 @@ const Admin = () => {
             setNotices(fbNotices);
             setGallery(fbGallery);
             setColumns(fbColumns || []);
+            setDailyWords(fbDailyWords || []);
             setCalendarEvents(sortedCalendar);
             if (fbConfig) {
                 setSiteConfig(fbConfig);
@@ -444,6 +447,7 @@ const Admin = () => {
             setNotices(noticesInitialData);
             setGallery([]);
             setColumns([]);
+            setDailyWords([]);
             setCalendarEvents([]);
         }
         setIsLoading(false);
@@ -752,6 +756,28 @@ const Admin = () => {
                     const newId = await Promise.race([dbService.addCalendarEvent(eventData), timeout]);
                     savedItem = { id: newId, ...eventData };
                     setCalendarEvents([...calendarEvents, savedItem].sort((a, b) => new Date(a.startDate) - new Date(b.startDate)));
+                }
+            } else if (activeTab === 'dailyWord') {
+                let finalImageUrl = formData.fileUrl;
+                if (file) {
+                    finalImageUrl = await Promise.race([dbService.uploadFile(file, 'daily_words'), timeout]);
+                } else if (finalImageUrl) {
+                    finalImageUrl = dbService.formatDriveImage(finalImageUrl);
+                }
+
+                const dailyWordData = {
+                    content: formData.content,
+                    verse: formData.verse || formData.title, // Use title field for verse if verse not specified, or vice versa
+                    date: formData.date,
+                    image: finalImageUrl
+                };
+
+                if (editingId) {
+                    savedItem = await Promise.race([dbService.updateDailyWord(editingId, dailyWordData), timeout]);
+                    setDailyWords(dailyWords.map(dw => dw.id === editingId ? savedItem : dw));
+                } else {
+                    savedItem = await Promise.race([dbService.addDailyWord(dailyWordData), timeout]);
+                    setDailyWords([savedItem, ...dailyWords]);
                 }
             } else if (activeTab === 'site') {
                 let currentConfig = { ...siteConfig };
@@ -1297,6 +1323,12 @@ const Admin = () => {
                         onClick={() => { setActiveTab('columns'); setShowAddForm(false); }}
                     />
                     <SidebarItem
+                        icon={<Quote size={20} />}
+                        label="오늘의 말씀 관리"
+                        active={activeTab === 'dailyWord'}
+                        onClick={() => { setActiveTab('dailyWord'); setShowAddForm(false); }}
+                    />
+                    <SidebarItem
                         icon={<FileText size={20} />}
                         label="주보 파일 관리"
                         active={activeTab === 'bulletins'}
@@ -1352,7 +1384,7 @@ const Admin = () => {
                         <h1 className="text-3xl font-black text-primary">
                             {activeTab === 'sermons' && '🎥 설교 영상 관리'}
                             {activeTab === 'bulletins' && '📄 주보 파일 관리'}
-
+                            {activeTab === 'dailyWord' && '📜 오늘의 말씀 관리'}
                             {activeTab === 'gallery' && '🖼️ 갤러리 관리'}
                             {activeTab === 'columns' && '✍️ 목회 칼럼 관리'}
                             {activeTab === 'site' && '⚙️ 사이트 설정'}
@@ -1409,7 +1441,8 @@ const Admin = () => {
                                         activeTab === 'gallery' ? '새 갤러리 항목 등록' :
                                             activeTab === 'columns' ? '새 목회 칼럼 등록' :
                                                 activeTab === 'staff' ? '새 섬기는 분 등록' :
-                                                    activeTab === 'calendar' ? '새 일정 등록' : '정보 수정'}
+                                                    activeTab === 'calendar' ? '새 일정 등록' :
+                                                        activeTab === 'dailyWord' ? '새 오늘의 말씀 등록' : '정보 수정'}
                             </h2>
                             <button onClick={() => setShowAddForm(false)} className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-50 rounded-full">
                                 <X size={20} />
@@ -1426,6 +1459,9 @@ const Admin = () => {
                                     value={formData.title}
                                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                 />
+                                <p className="text-[10px] text-gray-400 ml-1 font-medium italic">
+                                    {activeTab === 'dailyWord' ? '* 성경 구절 출처 (예: 마태복음 5:13)' : ''}
+                                </p>
                             </div>
 
                             {activeTab === 'calendar' && (
@@ -1709,8 +1745,6 @@ const Admin = () => {
                                         </div>
                                     </div>
                                 </div>
-                            )}
-
                             {activeTab === 'columns' && (
                                 <div className="space-y-6 md:col-span-2">
                                     <div className="bg-emerald-50/50 p-6 rounded-2xl border border-emerald-100 flex gap-4">
@@ -1794,1212 +1828,1335 @@ const Admin = () => {
                                 </div>
                             )}
 
-
-
-                            <div className="md:col-span-2 pt-4 flex gap-4">
-                                <button type="submit" className="flex-grow bg-accent text-white py-4 rounded-2xl font-bold shadow-lg shadow-accent/20 hover:bg-accent-hover transition-all">
-                                    확인하고 등록하기
-                                </button>
-                                <button type="button" onClick={() => setShowAddForm(false)} className="px-8 py-4 bg-gray-100 text-gray-500 rounded-2xl font-bold hover:bg-gray-200 transition-all">
-                                    취소
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                )
-                }
-
-                {/* Staff Form */}
-                {
-                    showAddForm && activeTab === 'staff' && (
-                        <div className="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 mb-10 animate-fade-in-up">
-                            <div className="flex justify-between items-center mb-8 pb-4 border-b border-gray-50">
-                                <h2 className="text-xl font-bold flex items-center gap-2 text-gray-700">
-                                    <Plus size={22} className="text-accent" /> {editingId ? '섬기는 분 정보 수정' : '새 섬기는 분 등록'}
-                                </h2>
-                                <button onClick={() => { setShowAddForm(false); setEditingId(null); }} className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-50 rounded-full">
-                                    <X size={20} />
-                                </button>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">이름 (Name)</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                        value={formData.staffName}
-                                        onChange={(e) => setFormData({ ...formData, staffName: e.target.value })}
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">영문 이름 (English Name)</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                        placeholder="예: LEE NAMGYU"
-                                        value={formData.staffEnglishName}
-                                        onChange={(e) => setFormData({ ...formData, staffEnglishName: e.target.value })}
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">직분/역할 (Role)</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                        placeholder="예: 담임목사, 교육전도사"
-                                        value={formData.staffRole}
-                                        onChange={(e) => setFormData({ ...formData, staffRole: e.target.value })}
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">이메일 (Email)</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                        value={formData.staffEmail}
-                                        onChange={(e) => setFormData({ ...formData, staffEmail: e.target.value })}
-                                    />
-                                </div>
-
-                                <div className="space-y-4">
+                            {activeTab === 'dailyWord' && (
+                                <div className="space-y-6 md:col-span-2">
                                     <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-500 ml-1">사진 주소 (URL - 구글링크 등)</label>
-                                        <input
-                                            type="text"
-                                            id="drive-input-staffPhotoUrl"
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
-                                            placeholder="https://drive.google.com/..."
-                                            value={formData.staffPhotoUrl || ''}
-                                            onChange={(e) => setFormData({ ...formData, staffPhotoUrl: e.target.value })}
+                                        <label className="text-sm font-bold text-gray-500 ml-1">오늘의 말씀 내용 (Content)</label>
+                                        <textarea
+                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-32 resize-none"
+                                            placeholder="오늘의 성경 구절이나 묵상 내용을 입력하세요."
+                                            required
+                                            value={formData.content}
+                                            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                                         />
-                                        <p className="text-[10px] text-blue-500 font-bold mt-1 ml-2">* 파일 업로드가 안 될 경우, 여기에 구글 드라이브 링크를 넣으세요.</p>
                                     </div>
-                                    <div className="flex gap-2 px-1">
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                const inputElement = document.getElementById('drive-input-staffPhotoUrl');
-                                                const input = inputElement?.value;
-                                                if (input && input.includes('drive.google.com')) {
-                                                    const formatted = dbService.formatDriveImage(input);
-                                                    setFormData({ ...formData, staffPhotoUrl: formatted });
-                                                    alert('✅ 드라이브 이미지가 변환되었습니다!');
-                                                } else {
-                                                    alert('구글 드라이브 링크를 먼저 입력해주세요.');
-                                                }
-                                            }}
-                                            className="flex-grow py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-1.5"
-                                        >
-                                            🖼️ 이미지로 변환
-                                        </button>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-gray-500 ml-1">배경 이미지 링크 (URL)</label>
+                                            <input
+                                                type="url"
+                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
+                                                placeholder="https://..."
+                                                value={formData.fileUrl}
+                                                onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="space-y-2 opacity-80">
+                                            <label className="text-xs font-bold text-gray-400 uppercase ml-1">이미지 직접 업로드</label>
+                                            <div className="relative group">
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                                    onChange={(e) => setFile(e.target.files[0])}
+                                                />
+                                                <div className={clsx(
+                                                    "w-full border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center transition-all",
+                                                    file ? "border-emerald-200 bg-emerald-50" : "border-gray-200 bg-gray-50 group-hover:border-primary/30"
+                                                )}>
+                                                    {file ? (
+                                                        <div className="flex items-center gap-2">
+                                                            <Check size={16} className="text-emerald-600" />
+                                                            <span className="text-[10px] font-bold text-emerald-700 truncate max-w-[200px]">{file.name}</span>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="flex flex-col items-center gap-1">
+                                                            <Upload size={20} className="text-gray-400" />
+                                                            <span className="text-[10px] font-bold text-gray-400">사진 선택</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                            )}
 
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold text-gray-400 uppercase ml-1">본인 사진 직접 업로드 (프로필)</label>
-                                    <div className="space-y-4">
-                                        <p className="font-bold text-sm text-gray-700">관리자 사진 업로드</p>
+                        </div>
 
-                                        {/* Standard Native Input for maximum reliability */}
-                                        <input
-                                            type="file"
-                                            accept="image/*"
-                                            className="block w-full text-sm text-slate-500
+                        <div className="md:col-span-2 pt-4 flex gap-4">
+                            <button type="submit" className="flex-grow bg-accent text-white py-4 rounded-2xl font-bold shadow-lg shadow-accent/20 hover:bg-accent-hover transition-all">
+                                확인하고 등록하기
+                            </button>
+                            <button type="button" onClick={() => setShowAddForm(false)} className="px-8 py-4 bg-gray-100 text-gray-500 rounded-2xl font-bold hover:bg-gray-200 transition-all">
+                                취소
+                            </button>
+                        </div>
+                    </form>
+        </div>
+    )
+}
+
+{/* Staff Form */ }
+{
+    showAddForm && activeTab === 'staff' && (
+        <div className="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 mb-10 animate-fade-in-up">
+            <div className="flex justify-between items-center mb-8 pb-4 border-b border-gray-50">
+                <h2 className="text-xl font-bold flex items-center gap-2 text-gray-700">
+                    <Plus size={22} className="text-accent" /> {editingId ? '섬기는 분 정보 수정' : '새 섬기는 분 등록'}
+                </h2>
+                <button onClick={() => { setShowAddForm(false); setEditingId(null); }} className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-50 rounded-full">
+                    <X size={20} />
+                </button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                    <label className="text-sm font-bold text-gray-500 ml-1">이름 (Name)</label>
+                    <input
+                        type="text"
+                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                        value={formData.staffName}
+                        onChange={(e) => setFormData({ ...formData, staffName: e.target.value })}
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-bold text-gray-500 ml-1">영문 이름 (English Name)</label>
+                    <input
+                        type="text"
+                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                        placeholder="예: LEE NAMGYU"
+                        value={formData.staffEnglishName}
+                        onChange={(e) => setFormData({ ...formData, staffEnglishName: e.target.value })}
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-bold text-gray-500 ml-1">직분/역할 (Role)</label>
+                    <input
+                        type="text"
+                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                        placeholder="예: 담임목사, 교육전도사"
+                        value={formData.staffRole}
+                        onChange={(e) => setFormData({ ...formData, staffRole: e.target.value })}
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-bold text-gray-500 ml-1">이메일 (Email)</label>
+                    <input
+                        type="text"
+                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                        value={formData.staffEmail}
+                        onChange={(e) => setFormData({ ...formData, staffEmail: e.target.value })}
+                    />
+                </div>
+
+                <div className="space-y-4">
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-500 ml-1">사진 주소 (URL - 구글링크 등)</label>
+                        <input
+                            type="text"
+                            id="drive-input-staffPhotoUrl"
+                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
+                            placeholder="https://drive.google.com/..."
+                            value={formData.staffPhotoUrl || ''}
+                            onChange={(e) => setFormData({ ...formData, staffPhotoUrl: e.target.value })}
+                        />
+                        <p className="text-[10px] text-blue-500 font-bold mt-1 ml-2">* 파일 업로드가 안 될 경우, 여기에 구글 드라이브 링크를 넣으세요.</p>
+                    </div>
+                    <div className="flex gap-2 px-1">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const inputElement = document.getElementById('drive-input-staffPhotoUrl');
+                                const input = inputElement?.value;
+                                if (input && input.includes('drive.google.com')) {
+                                    const formatted = dbService.formatDriveImage(input);
+                                    setFormData({ ...formData, staffPhotoUrl: formatted });
+                                    alert('✅ 드라이브 이미지가 변환되었습니다!');
+                                } else {
+                                    alert('구글 드라이브 링크를 먼저 입력해주세요.');
+                                }
+                            }}
+                            className="flex-grow py-3 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-1.5"
+                        >
+                            🖼️ 이미지로 변환
+                        </button>
+                    </div>
+                </div>
+
+                <div className="space-y-2">
+                    <label className="text-xs font-bold text-gray-400 uppercase ml-1">본인 사진 직접 업로드 (프로필)</label>
+                    <div className="space-y-4">
+                        <p className="font-bold text-sm text-gray-700">관리자 사진 업로드</p>
+
+                        {/* Standard Native Input for maximum reliability */}
+                        <input
+                            type="file"
+                            accept="image/*"
+                            className="block w-full text-sm text-slate-500
                                                 file:mr-4 file:py-2 file:px-4
                                                 file:rounded-full file:border-0
                                                 file:text-sm file:font-semibold
                                                 file:bg-emerald-50 file:text-emerald-700
                                                 hover:file:bg-emerald-100
                                             "
+                            onChange={(e) => {
+                                // File selected
+                                if (e.target.files && e.target.files[0]) {
+                                    setStaffFile(e.target.files[0]);
+                                }
+                            }}
+                        />
+
+                        {staffFile && (
+                            <button
+                                type="button"
+                                onClick={() => setStaffFile(null)}
+                                className="text-xs text-red-500 underline font-bold"
+                            >
+                                [선택 취소] (링크로 올리려면 취소를 눌러주세요)
+                            </button>
+                        )}
+
+                        {/* Preview Area */}
+                        <div className="flex justify-center p-4 bg-gray-50 rounded-xl border border-gray-100">
+                            {staffFile ? (
+                                <div className="text-center">
+                                    <img
+                                        src={URL.createObjectURL(staffFile)}
+                                        alt="New File"
+                                        className="w-32 h-32 rounded-full object-cover mx-auto mb-2 border-4 border-emerald-200"
+                                    />
+                                    <p className="text-xs text-emerald-600 font-bold">새로운 사진 선택됨</p>
+                                </div>
+                            ) : formData.staffPhotoUrl ? (
+                                <div className="text-center">
+                                    <img
+                                        src={formData.staffPhotoUrl}
+                                        alt="Current"
+                                        className="w-32 h-32 rounded-full object-cover mx-auto mb-2 border-4 border-gray-200"
+                                        onError={(e) => e.target.style.display = 'none'}
+                                    />
+                                    <p className="text-xs text-gray-500">현재 등록된 사진</p>
+                                </div>
+                            ) : (
+                                <p className="text-xs text-gray-400">사진이 선택되지 않았습니다.</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="md:col-span-2 pt-4 flex gap-4">
+                    <button
+                        type="button"
+                        onClick={(e) => handleStaffSubmit(e)}
+                        disabled={isLoading}
+                        className="flex-grow bg-accent text-white py-4 rounded-2xl font-bold shadow-lg shadow-accent/20 hover:bg-accent-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        {isLoading ? '저장 중...' : (editingId ? '수정 완료' : '등록하기')}
+                    </button>
+                    <button type="button" onClick={() => { setShowAddForm(false); setEditingId(null); }} className="px-8 py-4 bg-gray-100 text-gray-500 rounded-2xl font-bold hover:bg-gray-200 transition-all">
+                        취소
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}
+{/* Site Settings Section */ }
+
+{/* Worship Management Section */ }
+{
+    activeTab === 'worship' && (
+        <section className="space-y-12 animate-fade-in">
+            <div className="flex items-center justify-between mb-8">
+                <div>
+                    <h2 className="text-3xl font-black text-primary">예배 정보 관리</h2>
+                    <p className="text-gray-500 mt-2 font-medium">홈페이지의 '예배 안내' 페이지에 표시되는 정보를 관리합니다.</p>
+                </div>
+                <button
+                    onClick={handleFormSubmit}
+                    disabled={isLoading}
+                    className="flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-2xl font-bold hover:bg-primary-dark transition-all shadow-lg hover:shadow-primary/20 disabled:opacity-50"
+                >
+                    {isLoading ? <span className="animate-pulse">저장 중...</span> : <><Check size={20} /> 설정 저장하기</>}
+                </button>
+            </div>
+
+            <div className="grid grid-cols-1 gap-8">
+                {/* Sunday Services */}
+                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                        <div className="p-2 bg-primary/10 rounded-xl text-primary"><Clock size={20} /></div>
+                        주일 예배 (Sunday Services)
+                    </h3>
+                    <div className="space-y-6">
+                        {(siteConfig.services || churchData.services).map((service, index) => (
+                            <div key={index} className="p-6 bg-gray-50 rounded-2xl border border-gray-100 relative group">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        if (window.confirm('이 예배 정보를 삭제하시겠습니까?')) {
+                                            const newServices = (siteConfig.services || churchData.services).filter((_, i) => i !== index);
+                                            setSiteConfig({ ...siteConfig, services: newServices });
+                                        }
+                                    }}
+                                    className="absolute top-4 right-4 p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-full transition-all opacity-0 group-hover:opacity-100"
+                                    title="예배 삭제"
+                                >
+                                    <Trash2 size={18} />
+                                </button>
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-600 ml-1">예배 명칭</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-4 bg-white border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium"
+                                            value={service.name}
                                             onChange={(e) => {
-                                                // File selected
-                                                if (e.target.files && e.target.files[0]) {
-                                                    setStaffFile(e.target.files[0]);
-                                                }
+                                                const newServices = [...(siteConfig.services || churchData.services)];
+                                                newServices[index] = { ...service, name: e.target.value };
+                                                setSiteConfig({ ...siteConfig, services: newServices });
+                                            }}
+                                            placeholder="예: 1부 주일예배"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-600 ml-1">예배 시간</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-4 bg-white border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium"
+                                            value={service.time}
+                                            onChange={(e) => {
+                                                const newServices = [...(siteConfig.services || churchData.services)];
+                                                newServices[index] = { ...service, time: e.target.value };
+                                                setSiteConfig({ ...siteConfig, services: newServices });
+                                            }}
+                                            placeholder="예: 11:00 AM"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-gray-600 ml-1">설명 / 비고 (Description)</label>
+                                    <input
+                                        type="text"
+                                        className="w-full p-4 bg-white border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium text-sm"
+                                        value={service.description || ''}
+                                        onChange={(e) => {
+                                            const newServices = [...(siteConfig.services || churchData.services)];
+                                            newServices[index] = { ...service, description: e.target.value };
+                                            setSiteConfig({ ...siteConfig, services: newServices });
+                                        }}
+                                        placeholder="예: 본당 / 한국어 예배"
+                                    />
+                                </div>
+                            </div>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const newServices = [
+                                    ...(siteConfig.services || churchData.services),
+                                    { name: "새 예배", time: "11:00 AM", description: "" }
+                                ];
+                                setSiteConfig({ ...siteConfig, services: newServices });
+                            }}
+                            className="w-full py-4 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 font-bold hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
+                        >
+                            <Plus size={20} />
+                            새로운 주일 예배 추가하기
+                        </button>
+                    </div>
+                </div>
+
+                {/* Dawn Prayer / Special Services */}
+                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                        <div className="p-2 bg-accent/10 rounded-xl text-accent"><Video size={20} /></div>
+                        새벽 기도회 / 온라인 모임 (Dawn & Special)
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                            <label className="text-sm font-bold text-gray-600 ml-1">새벽기도 일정</label>
+                            <input
+                                type="text"
+                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
+                                value={siteConfig.specialServices?.dawn?.schedule || ''}
+                                placeholder="예: 매달 첫째 둘째주 6:00 AM"
+                                onChange={(e) => setSiteConfig({
+                                    ...siteConfig,
+                                    specialServices: {
+                                        ...siteConfig.specialServices,
+                                        dawn: { ...(siteConfig.specialServices?.dawn || {}), schedule: e.target.value }
+                                    }
+                                })}
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-bold text-gray-600 ml-1">Zoom 링크 / ID</label>
+                            <input
+                                type="text"
+                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
+                                value={siteConfig.specialServices?.dawn?.link || ''}
+                                placeholder="예: 777 011 0112"
+                                onChange={(e) => setSiteConfig({
+                                    ...siteConfig,
+                                    specialServices: {
+                                        ...siteConfig.specialServices,
+                                        dawn: { ...(siteConfig.specialServices?.dawn || {}), link: e.target.value }
+                                    }
+                                })}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Other Meetings */}
+                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                        <div className="p-2 bg-green-50 rounded-xl text-green-600"><Users size={20} /></div>
+                        기타 모임 (Other Meetings)
+                    </h3>
+                    <div className="space-y-4">
+                        {(siteConfig.otherMeetings || churchData.other_meetings).map((meeting, index) => (
+                            <div key={index} className="flex gap-2 items-start">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-grow">
+                                    <input
+                                        type="text"
+                                        placeholder="모임 명칭"
+                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none font-medium"
+                                        value={meeting.name}
+                                        onChange={(e) => {
+                                            const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
+                                            newMeetings[index] = { ...meeting, name: e.target.value };
+                                            setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
+                                        }}
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="시간"
+                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none font-medium"
+                                        value={meeting.time}
+                                        onChange={(e) => {
+                                            const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
+                                            newMeetings[index] = { ...meeting, time: e.target.value };
+                                            setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
+                                        }}
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="장소"
+                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none font-medium"
+                                        value={meeting.location}
+                                        onChange={(e) => {
+                                            const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
+                                            newMeetings[index] = { ...meeting, location: e.target.value };
+                                            setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
+                                        }}
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        if (window.confirm('이 모임 정보를 삭제하시겠습니까?')) {
+                                            const newMeetings = (siteConfig.otherMeetings || churchData.other_meetings)
+                                                .filter((_, i) => i !== index);
+                                            setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
+                                        }
+                                    }}
+                                    className="p-4 bg-red-50 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-colors"
+                                    title="모임 삭제"
+                                >
+                                    <Trash2 size={20} />
+                                </button>
+                            </div>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const newMeetings = [
+                                    ...(siteConfig.otherMeetings || churchData.other_meetings),
+                                    { name: "", time: "", location: "" } // New empty meeting
+                                ];
+                                setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
+                            }}
+                            className="w-full py-4 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 font-bold hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
+                        >
+                            <Plus size={20} />
+                            새로운 기타 모임 추가하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    )
+}
+{/* Location Section */ }
+{
+    activeTab === 'location' && (
+        <div className="animate-fade-in-up space-y-6 max-w-4xl">
+            {/* Site Identity Section (Logo/Name) */}
+            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl space-y-8">
+                <h3 className="text-lg font-bold text-gray-700 flex items-center gap-2">
+                    <Settings size={20} className="text-primary" /> 기본 사이트 정보 (교회 이름 & 로고)
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-500 ml-1">교회 이름 (Korean Name)</label>
+                        <input
+                            type="text"
+                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                            value={siteConfig.general?.name || churchData.general.name}
+                            onChange={(e) => setSiteConfig({
+                                ...siteConfig,
+                                general: { ...(siteConfig.general || {}), name: e.target.value }
+                            })}
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-500 ml-1">영문 이름 (English Name)</label>
+                        <input
+                            type="text"
+                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                            value={siteConfig.general?.englishName || churchData.general.englishName}
+                            onChange={(e) => setSiteConfig({
+                                ...siteConfig,
+                                general: { ...(siteConfig.general || {}), englishName: e.target.value }
+                            })}
+                        />
+                    </div>
+                </div>
+                <div className="space-y-4">
+                    <label className="text-sm font-bold text-gray-500 ml-1">교회 로고 (Logo URL)</label>
+                    <div className="flex gap-4 items-center">
+                        <div className="w-16 h-16 bg-gray-50 rounded-xl overflow-hidden border border-gray-100 p-2 shrink-0">
+                            <img src={siteConfig.general?.logo || churchData.general.logo} alt="Logo" className="w-full h-full object-contain" />
+                        </div>
+                        <input
+                            type="text"
+                            className="flex-grow p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans text-xs"
+                            value={siteConfig.general?.logo || ''}
+                            onChange={(e) => setSiteConfig({
+                                ...siteConfig,
+                                general: { ...(siteConfig.general || {}), logo: e.target.value }
+                            })}
+                        />
+                    </div>
+                </div>
+            </div>
+
+            {/* Location & Map Section */}
+            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl space-y-8">
+                <h3 className="text-lg font-bold text-gray-700 flex items-center gap-2">
+                    <MapPin size={20} className="text-primary" /> 오시는 길 및 연락처 설정
+                </h3>
+                <div className="grid grid-cols-1 gap-6">
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-600 ml-1">교회 주소 (Address)</label>
+                        <input
+                            type="text"
+                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
+                            placeholder="예: 9025 Glover Road, Fort Langley"
+                            value={siteConfig.location?.address || ''}
+                            onChange={(e) => setSiteConfig({
+                                ...siteConfig,
+                                location: { ...siteConfig.location, address: e.target.value }
+                            })}
+                        />
+                    </div>
+
+                    <div className="space-y-2">
+                        <div className="flex justify-between items-center">
+                            <label className="text-sm font-bold text-gray-600 ml-1">대표 연락처 (Phone)</label>
+                            <span className="text-[10px] text-orange-500 font-bold bg-orange-50 px-2 py-0.5 rounded-full animate-pulse">
+                                번호 두 개면 / 로 구분해 주세요
+                            </span>
+                        </div>
+                        <input
+                            type="text"
+                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
+                            placeholder="예: (604) 123-4567 / (604) 987-6543"
+                            value={siteConfig.location?.phone || ''}
+                            onChange={(e) => setSiteConfig({
+                                ...siteConfig,
+                                location: { ...siteConfig.location, phone: e.target.value }
+                            })}
+                        />
+                        <p className="text-[10px] text-gray-400 ml-2">여러 개인 경우 쉼표(,)로 구분해 주세요.</p>
+                    </div>
+                </div>
+
+                <div className="flex justify-end pt-4 border-t border-gray-100">
+                    <button
+                        onClick={handleFormSubmit}
+                        id="save-location-btn"
+                        className="px-8 py-3 bg-primary text-white rounded-xl font-bold shadow-lg hover:bg-primary-dark transition-all flex items-center gap-2"
+                    >
+                        <Check size={18} />
+                        {isLoading ? '저장 중...' : '정보 저장하기'}
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}
+{/* Site Settings Section */ }
+{
+    activeTab === 'site' && (
+        <div className="animate-fade-in-up space-y-10 pb-20">
+            <div className="bg-blue-50 p-8 rounded-[2rem] border border-blue-100 flex flex-col md:flex-row gap-6 items-center">
+                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-blue-600 shadow-sm border border-blue-100 shrink-0">
+                    <ExternalLink size={32} />
+                </div>
+                <div className="flex-grow text-center md:text-left">
+                    <h2 className="font-black text-blue-900 text-xl mb-1 flex items-center justify-center md:justify-start gap-2">🔗 무료 고화질 배경 관리 (Direct Link Mode)</h2>
+                    <p className="text-blue-800/70 leading-relaxed text-sm font-medium">
+                        구글 드라이브나 유튜브 링크를 사용하여 추가 비용 없이 홈페이지를 멋지게 꾸밀 수 있습니다. <br />
+                        모든 배경은 링크를 넣고 아래 **'전체 설정 저장하기'**를 눌러야 최종 반영됩니다.
+                    </p>
+                </div>
+                <div className="shrink-0 flex gap-2">
+                    <div className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-black shadow-lg shadow-blue-200 uppercase">Always Free</div>
+                </div>
+            </div>
+
+            <div className="space-y-12">
+                {renderBannerSettings('hero', '🏠 메인 홈 히어로 (Home Hero)', 'heroImage')}
+                {renderBannerSettings('news', '📢 교회 소식 (News)', 'newsBanner')}
+                {renderBannerSettings('resources', '⛪ 설교와 말씀 (Sermons)', 'resourcesBanner')}
+                {renderBannerSettings('ministry', '🌱 다음 세대 (Ministry)', 'ministryBanner')}
+
+                {/* Individual Ministry Management */}
+                <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-8">
+                    <h3 className="text-xl font-black text-primary flex items-center gap-3">
+                        <Users size={24} className="text-accent" />
+                        다음세대 상세 부서 관리 (TSC, TSY)
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {formData.ministryItems.map((item, idx) => (
+                            <div key={item.id} className="p-6 bg-gray-50 rounded-3xl border border-gray-100 space-y-6">
+                                <div className="flex justify-between items-center">
+                                    <h4 className="font-bold text-lg text-gray-700">{item.name}</h4>
+                                    <span className="text-[10px] font-black px-2 py-1 bg-white rounded-full text-gray-400 border border-gray-100 uppercase tracking-widest">{item.id}</span>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">부서 설명 (Description)</label>
+                                        <textarea
+                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[80px]"
+                                            value={item.description}
+                                            onChange={(e) => {
+                                                const newItems = [...formData.ministryItems];
+                                                newItems[idx].description = e.target.value;
+                                                setFormData({ ...formData, ministryItems: newItems });
                                             }}
                                         />
+                                    </div>
 
-                                        {staffFile && (
-                                            <button
-                                                type="button"
-                                                onClick={() => setStaffFile(null)}
-                                                className="text-xs text-red-500 underline font-bold"
-                                            >
-                                                [선택 취소] (링크로 올리려면 취소를 눌러주세요)
-                                            </button>
-                                        )}
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">더알아보기 내용 (Details)</label>
+                                        <textarea
+                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[150px]"
+                                            placeholder="줄바꿈으로 구분해 주세요"
+                                            value={item.detail}
+                                            onChange={(e) => {
+                                                const newItems = [...formData.ministryItems];
+                                                newItems[idx].detail = e.target.value;
+                                                setFormData({ ...formData, ministryItems: newItems });
+                                            }}
+                                        />
+                                        <p className="text-[10px] text-gray-400 font-medium px-2">* 긴 장문의 글을 입력하실 수 있습니다.</p>
+                                    </div>
 
-                                        {/* Preview Area */}
-                                        <div className="flex justify-center p-4 bg-gray-50 rounded-xl border border-gray-100">
-                                            {staffFile ? (
-                                                <div className="text-center">
-                                                    <img
-                                                        src={URL.createObjectURL(staffFile)}
-                                                        alt="New File"
-                                                        className="w-32 h-32 rounded-full object-cover mx-auto mb-2 border-4 border-emerald-200"
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">부서 대표 사진 (Image URL)</label>
+                                        <div className="flex flex-col gap-2">
+                                            <input
+                                                type="text"
+                                                id={`ministry-img-${item.id}`}
+                                                className="flex-grow p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-xs font-sans"
+                                                value={item.image}
+                                                onChange={(e) => {
+                                                    const newItems = formData.ministryItems.map((it, i) =>
+                                                        i === idx ? { ...it, image: e.target.value } : it
+                                                    );
+                                                    setFormData({ ...formData, ministryItems: newItems });
+                                                }}
+                                                placeholder="이미지 주소 또는 구글 드라이브 링크"
+                                            />
+                                            <div className="flex gap-2">
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const input = item.image;
+                                                        if (input && input.includes('drive.google.com')) {
+                                                            const formatted = dbService.formatDriveImage(input);
+                                                            const newItems = formData.ministryItems.map((it, i) =>
+                                                                i === idx ? { ...it, image: formatted } : it
+                                                            );
+                                                            setFormData({ ...formData, ministryItems: newItems });
+                                                            alert('✅ 드라이브 이미지가 변환되었습니다!');
+                                                        } else {
+                                                            alert('구글 드라이브 링크를 입력해주세요.');
+                                                        }
+                                                    }}
+                                                    className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-1.5"
+                                                >
+                                                    🖼️ 변환
+                                                </button>
+                                                <div className="relative overflow-hidden">
+                                                    <button
+                                                        type="button"
+                                                        className="px-4 py-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-xl text-[10px] font-black transition-all flex items-center gap-1.5"
+                                                    >
+                                                        <Upload size={14} /> 업로드
+                                                    </button>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        className="absolute inset-0 opacity-0 cursor-pointer"
+                                                        onChange={async (e) => {
+                                                            const file = e.target.files[0];
+                                                            if (file) {
+                                                                if (window.confirm(`${file.name} 파일을 업로드하시겠습니까?`)) {
+                                                                    try {
+                                                                        // Upload indicator
+                                                                        const downloadUrl = await dbService.uploadImage(file, `ministry/${item.id}_${Date.now()}`);
+                                                                        const newItems = formData.ministryItems.map((it, i) =>
+                                                                            i === idx ? { ...it, image: downloadUrl } : it
+                                                                        );
+                                                                        setFormData(prev => ({ ...prev, ministryItems: newItems }));
+                                                                        alert('✅ 업로드가 완료되었습니다!');
+                                                                    } catch (err) {
+                                                                        console.error("Upload failed", err);
+                                                                        alert('업로드 실패: ' + err.message);
+                                                                    }
+                                                                }
+                                                            }
+                                                        }}
                                                     />
-                                                    <p className="text-xs text-emerald-600 font-bold">새로운 사진 선택됨</p>
                                                 </div>
-                                            ) : formData.staffPhotoUrl ? (
-                                                <div className="text-center">
+                                            </div>
+                                            {item.image && (
+                                                <div className="mt-2 w-full h-64 bg-gray-100 rounded-xl overflow-hidden border border-gray-100 relative group">
                                                     <img
-                                                        src={formData.staffPhotoUrl}
-                                                        alt="Current"
-                                                        className="w-32 h-32 rounded-full object-cover mx-auto mb-2 border-4 border-gray-200"
-                                                        onError={(e) => e.target.style.display = 'none'}
+                                                        src={item.image}
+                                                        alt="Preview"
+                                                        className="w-full h-full object-cover"
+                                                        referrerPolicy="no-referrer"
+                                                        onError={(e) => {
+                                                            e.target.style.display = 'none';
+                                                            e.target.parentElement.classList.add('flex', 'items-center', 'justify-center');
+                                                            e.target.parentElement.innerText = '이미지를 불러올 수 없음';
+                                                        }}
                                                     />
-                                                    <p className="text-xs text-gray-500">현재 등록된 사진</p>
                                                 </div>
-                                            ) : (
-                                                <p className="text-xs text-gray-400">사진이 선택되지 않았습니다.</p>
                                             )}
                                         </div>
                                     </div>
                                 </div>
-
-                                <div className="md:col-span-2 pt-4 flex gap-4">
-                                    <button
-                                        type="button"
-                                        onClick={(e) => handleStaffSubmit(e)}
-                                        disabled={isLoading}
-                                        className="flex-grow bg-accent text-white py-4 rounded-2xl font-bold shadow-lg shadow-accent/20 hover:bg-accent-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                                        {isLoading ? '저장 중...' : (editingId ? '수정 완료' : '등록하기')}
-                                    </button>
-                                    <button type="button" onClick={() => { setShowAddForm(false); setEditingId(null); }} className="px-8 py-4 bg-gray-100 text-gray-500 rounded-2xl font-bold hover:bg-gray-200 transition-all">
-                                        취소
-                                    </button>
-                                </div>
                             </div>
+                        ))}
+                    </div>
+                </div>
+
+            </div>
+
+            {/* Reset to Defaults Section */}
+            <div className="bg-red-50/30 rounded-[2rem] p-8 border border-red-100/50 mt-12 mb-12">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="p-3 bg-red-500 text-white rounded-2xl shadow-lg shadow-red-200">
+                        <AlertTriangle size={24} />
+                    </div>
+                    <div>
+                        <h3 className="text-xl font-black text-red-600">데이터 초기화 (Danger Zone)</h3>
+                        <p className="text-red-400 text-sm font-medium">실행 시 현재 라이브 데이터가 삭제되고 코드 내의 초기 데이터로 대체됩니다.</p>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <ResetButton type="sermons" label="설교 영상" />
+                    <ResetButton type="bulletins" label="주보 파일" />
+
+                </div>
+            </div>
+
+            <div className="flex justify-center md:justify-end sticky bottom-8 z-30">
+                <button
+                    type="button"
+                    onClick={handleFormSubmit}
+                    disabled={isLoading}
+                    className="px-12 py-6 bg-primary text-white rounded-[2rem] font-black text-xl hover:bg-primary-dark transition-all shadow-2xl shadow-primary/40 disabled:opacity-50 flex items-center gap-4 hover:scale-105 active:scale-95"
+                >
+                    {isLoading ? (
+                        <>
+                            <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                            저장 중...
+                        </>
+                    ) : (
+                        <>
+                            전체 설정 저장하기
+                            <Check size={28} />
+                        </>
+                    )}
+                </button>
+            </div>
+        </div>
+    )
+}
+
+
+{
+    activeTab === 'intro' && (
+        <div className="space-y-6 md:col-span-2">
+            <div className="bg-amber-50/50 p-6 rounded-2xl border border-amber-100 flex gap-4">
+                <div className="text-amber-500 shrink-0">
+                    <BookOpen size={24} />
+                </div>
+                <div className="text-sm">
+                    <p className="font-bold text-amber-900 mb-1">💡 교회소개 / 목사님 페이지 관리</p>
+                    <p className="text-amber-800/70 leading-relaxed text-xs">
+                        이곳에서 교회소개 페이지의 상단 배너와 제목, 그리고 담임목사님 소개를 수정할 수 있습니다.
+                    </p>
+                </div>
+            </div>
+
+            <div className="space-y-6 border-b border-gray-100 pb-8 mb-8">
+                <h3 className="text-lg font-bold text-gray-700 flex items-center gap-2">
+                    <LayoutDashboard size={20} className="text-primary" /> 페이지 상단 설정
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2 md:col-span-2">
+                        <label className="text-sm font-bold text-gray-500 ml-1">상단 배너 이미지</label>
+                        <BannerManager
+                            label="교회소개 배너"
+                            value={siteConfig.aboutBanner}
+                            fieldName="aboutBanner"
+                            onChange={(val) => setSiteConfig({ ...siteConfig, aboutBanner: val })}
+                            bannerFiles={bannerFiles}
+                            setBannerFiles={setBannerFiles}
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-500 ml-1">페이지 제목 (비워두면 숨김)</label>
+                        <input
+                            type="text"
+                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                            placeholder="기본값: 교회 소개"
+                            value={siteConfig.aboutTitle ?? ''}
+                            onChange={(e) => setSiteConfig({ ...siteConfig, aboutTitle: e.target.value })}
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-sm font-bold text-gray-500 ml-1">부제목 / 성구 (비워두면 숨김)</label>
+                        <input
+                            type="text"
+                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                            placeholder="기본값: 사도행전 16장 31절..."
+                            value={siteConfig.aboutSubtitle ?? ''}
+                            onChange={(e) => setSiteConfig({ ...siteConfig, aboutSubtitle: e.target.value })}
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                    <label className="text-sm font-bold text-gray-500 ml-1">목사님 성함</label>
+                    <input
+                        type="text"
+                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                        value={siteConfig.pastor?.name || ''}
+                        onChange={(e) => setSiteConfig({
+                            ...siteConfig,
+                            pastor: { ...siteConfig.pastor, name: e.target.value }
+                        })}
+                    />
+                </div>
+                <div className="space-y-2">
+                    <label className="text-sm font-bold text-gray-500 ml-1">직분/역할 (예: 담임목사)</label>
+                    <input
+                        type="text"
+                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                        value={siteConfig.pastor?.role || ''}
+                        onChange={(e) => setSiteConfig({
+                            ...siteConfig,
+                            pastor: { ...siteConfig.pastor, role: e.target.value }
+                        })}
+                    />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                    <label className="text-sm font-bold text-gray-500 ml-1">인사말 내용</label>
+                    <textarea
+                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-48"
+                        value={siteConfig.pastor?.greeting || ''}
+                        onChange={(e) => setSiteConfig({
+                            ...siteConfig,
+                            pastor: { ...siteConfig.pastor, greeting: e.target.value }
+                        })}
+                    />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                    <label className="text-sm font-bold text-gray-500 ml-1">약력 (Biography) - 줄바꿈으로 구분</label>
+                    <textarea
+                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-32"
+                        placeholder="서울신학대학교 졸업&#13;&#10;기둥교회 부목사"
+                        value={Array.isArray(siteConfig.pastor?.history)
+                            ? siteConfig.pastor.history.join('\n')
+                            : (siteConfig.pastor?.history || '')}
+                        onChange={(e) => setSiteConfig({
+                            ...siteConfig,
+                            pastor: {
+                                ...siteConfig.pastor,
+                                history: e.target.value.split('\n').filter(line => line.trim() !== '')
+                            }
+                        })}
+                    />
+                </div>
+                <div className="space-y-2 md:col-span-2">
+                    <label className="text-sm font-bold text-gray-500 ml-1">목사님 사진 링크 (Drive URL)</label>
+                    <div className="flex gap-2">
+                        <input
+                            type="url"
+                            id="drive-input-pastor-image"
+                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
+                            placeholder="https://drive.google.com/..."
+                            defaultValue={siteConfig.pastor?.image || ''}
+                            onChange={(e) => setSiteConfig({
+                                ...siteConfig,
+                                pastor: { ...siteConfig.pastor, image: e.target.value }
+                            })}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => {
+                                const inputElement = document.getElementById('drive-input-pastor-image');
+                                const input = inputElement?.value;
+                                if (input && input.includes('drive.google.com')) {
+                                    const formatted = dbService.formatDriveImage(input);
+                                    setSiteConfig({
+                                        ...siteConfig,
+                                        pastor: { ...siteConfig.pastor, image: formatted }
+                                    });
+                                    inputElement.value = formatted;
+                                    alert('✅ 이미지로 변환되었습니다!');
+                                }
+                            }}
+                            className="px-4 bg-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-300 transition-colors shrink-0 text-sm"
+                        >
+                            이미지 변환
+                        </button>
+                    </div>
+                    {siteConfig.pastor?.image && (
+                        <div className="mt-4 w-48 h-64 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 shadow-lg mx-auto md:mx-0">
+                            <img src={siteConfig.pastor.image} alt="Pastor Preview" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                         </div>
-                    )
-                }
-                {/* Site Settings Section */}
+                    )}
+                </div>
+            </div>
+            <div className="pt-4 flex justify-end">
+                <button
+                    onClick={async () => {
+                        const btn = document.getElementById('save-pastor-btn');
+                        btn.innerText = '저장 중...';
+                        try {
+                            await dbService.updateSiteConfig(siteConfig);
+                            alert('✅ 저장되었습니다.');
+                        } catch (e) {
+                            alert('저장 실패: ' + e.message);
+                        }
+                        btn.innerText = '설정 저장하기';
+                    }}
+                    id="save-pastor-btn"
+                    className="px-8 py-3 bg-primary text-white rounded-xl font-bold shadow-lg hover:bg-primary-dark transition-all"
+                >
+                    설정 저장하기
+                </button>
+            </div>
+        </div>
+    )
+}
 
-                {/* Worship Management Section */}
-                {activeTab === 'worship' && (
-                    <section className="space-y-12 animate-fade-in">
-                        <div className="flex items-center justify-between mb-8">
-                            <div>
-                                <h2 className="text-3xl font-black text-primary">예배 정보 관리</h2>
-                                <p className="text-gray-500 mt-2 font-medium">홈페이지의 '예배 안내' 페이지에 표시되는 정보를 관리합니다.</p>
-                            </div>
-                            <button
-                                onClick={handleFormSubmit}
-                                disabled={isLoading}
-                                className="flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-2xl font-bold hover:bg-primary-dark transition-all shadow-lg hover:shadow-primary/20 disabled:opacity-50"
-                            >
-                                {isLoading ? <span className="animate-pulse">저장 중...</span> : <><Check size={20} /> 설정 저장하기</>}
-                            </button>
+{/* Dashboard Card */ }
+{
+    (activeTab === 'sermons' || activeTab === 'bulletins' || activeTab === 'gallery' || activeTab === 'columns') && (
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+            <div className="p-8 border-b border-gray-50 flex justify-between items-center bg-white">
+                <h2 className="font-black text-primary text-xl flex items-center gap-3">
+                    <LayoutDashboard size={22} className="text-accent" />
+                    {activeTab.toUpperCase()} DATABASE
+                    <span className="text-sm font-bold text-gray-300 ml-2">
+                        {activeTab === 'sermons' ? sermons.length :
+                            activeTab === 'bulletins' ? bulletins.length :
+                                gallery.length} Items
+                    </span>
+                </h2>
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block overflow-x-auto">
+                <table className="w-full">
+                    <thead>
+                        <tr className="text-left bg-gray-50/50 text-[11px] uppercase tracking-[0.2em] text-gray-400 font-black">
+                            <th className="px-8 py-6 border-b border-gray-50 whitespace-nowrap">Date</th>
+                            <th className="px-8 py-6 border-b border-gray-50">Title & Information</th>
+                            <th className="px-8 py-6 border-b border-gray-50 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50">
+                        {activeTab === 'sermons' && sermons.map((item, idx) => (
+                            <AdminTableRow
+                                key={item.id || idx}
+                                date={item.date}
+                                title={item.title}
+                                subText={item.preacher}
+                                onEdit={() => handleEdit(item, 'sermon')}
+                                onDelete={() => handleDelete('sermon', item.id)}
+                                link={item.link || (item.youtubeId ? `https://youtube.com/watch?v=${item.youtubeId}` : null)}
+                                onMoveUp={() => handleMoveItem(idx, -1, sermons, setSermons, 'sermons')}
+                                onMoveDown={() => handleMoveItem(idx, 1, sermons, setSermons, 'sermons')}
+                                isFirst={idx === 0}
+                                isLast={idx === sermons.length - 1}
+                            />
+                        ))}
+                        {activeTab === 'bulletins' && bulletins.map((item, idx) => (
+                            <AdminTableRow
+                                key={item.id || idx}
+                                date={item.date}
+                                title={item.title}
+                                subText="PDF Bulletin"
+                                onEdit={() => handleEdit(item, 'bulletin')}
+                                onDelete={() => handleDelete('bulletin', item.id)}
+                                link={item.fileUrl}
+                                onMoveUp={() => handleMoveItem(idx, -1, bulletins, setBulletins, 'bulletins')}
+                                onMoveDown={() => handleMoveItem(idx, 1, bulletins, setBulletins, 'bulletins')}
+                                isFirst={idx === 0}
+                                isLast={idx === bulletins.length - 1}
+                            />
+                        ))}
+
+                        {activeTab === 'gallery' && gallery.map((item, idx) => (
+                            <AdminTableRow
+                                key={item.id || idx}
+                                date={item.date}
+                                title={item.title}
+                                subText={item.type === 'video' ? 'Video' : item.type === 'audio' ? 'Audio' : 'Image'}
+                                onEdit={() => handleEdit(item, 'gallery')}
+                                onDelete={() => handleDelete('gallery', item.id)}
+                                link={item.url}
+                            />
+                        ))}
+                        {activeTab === 'columns' && columns.map((item, idx) => (
+                            <AdminTableRow
+                                key={item.id || idx}
+                                date={item.date}
+                                title={item.title}
+                                subText={item.author || '이남규 목사'}
+                                onEdit={() => handleEdit(item, 'column')}
+                                onDelete={() => handleDelete('column', item.id)}
+                                link={item.fileUrl}
+                                onMoveUp={() => handleMoveItem(idx, -1, columns, setColumns, 'columns')}
+                                onMoveDown={() => handleMoveItem(idx, 1, columns, setColumns, 'columns')}
+                                isFirst={idx === 0}
+                                isLast={idx === columns.length - 1}
+                            />
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+                {activeTab === 'sermons' && sermons.map((item, idx) => (
+                    <AdminMobileCard
+                        key={item.id || idx}
+                        date={item.date}
+                        title={item.title}
+                        subText={item.preacher}
+                        onEdit={() => handleEdit(item, 'sermon')}
+                        onDelete={() => handleDelete('sermon', item.id)}
+                        link={item.link || (item.youtubeId ? `https://youtube.com/watch?v=${item.youtubeId}` : null)}
+                        onMoveUp={() => handleMoveItem(idx, -1, sermons, setSermons, 'sermons')}
+                        onMoveDown={() => handleMoveItem(idx, 1, sermons, setSermons, 'sermons')}
+                        isFirst={idx === 0}
+                        isLast={idx === sermons.length - 1}
+                    />
+                ))}
+                {activeTab === 'bulletins' && bulletins.map((item, idx) => (
+                    <AdminMobileCard
+                        key={item.id || idx}
+                        date={item.date}
+                        title={item.title}
+                        subText="PDF Bulletin"
+                        onEdit={() => handleEdit(item, 'bulletin')}
+                        onDelete={() => handleDelete('bulletin', item.id)}
+                        link={item.fileUrl}
+                        onMoveUp={() => handleMoveItem(idx, -1, bulletins, setBulletins, 'bulletins')}
+                        onMoveDown={() => handleMoveItem(idx, 1, bulletins, setBulletins, 'bulletins')}
+                        isFirst={idx === 0}
+                        isLast={idx === bulletins.length - 1}
+                    />
+                ))}
+                {activeTab === 'gallery' && gallery.map((item, idx) => (
+                    <AdminMobileCard
+                        key={item.id || idx}
+                        date={item.date}
+                        title={item.title}
+                        subText={item.type === 'video' ? 'Video' : item.type === 'audio' ? 'Audio' : 'Image'}
+                        onEdit={() => handleEdit(item, 'gallery')}
+                        onDelete={() => handleDelete('gallery', item.id)}
+                        link={item.url}
+                    />
+                ))}
+                {activeTab === 'columns' && columns.map((item, idx) => (
+                    <AdminMobileCard
+                        key={item.id || idx}
+                        date={item.date}
+                        title={item.title}
+                        subText={item.author || '이남규 목사'}
+                        onEdit={() => handleEdit(item, 'column')}
+                        onDelete={() => handleDelete('column', item.id)}
+                        link={item.fileUrl}
+                        onMoveUp={() => handleMoveItem(idx, -1, columns, setColumns, 'columns')}
+                        onMoveDown={() => handleMoveItem(idx, 1, columns, setColumns, 'columns')}
+                        isFirst={idx === 0}
+                        isLast={idx === columns.length - 1}
+                    />
+                ))}
+            </div>
+
+            {/* Daily Word List */}
+            {activeTab === 'dailyWord' && !showAddForm && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {dailyWords.length === 0 ? (
+                        <div className="col-span-full py-20 text-center text-gray-400 font-medium">
+                            등록된 오늘의 말씀이 없습니다.
                         </div>
-
-                        <div className="grid grid-cols-1 gap-8">
-                            {/* Sunday Services */}
-                            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
-                                <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                                    <div className="p-2 bg-primary/10 rounded-xl text-primary"><Clock size={20} /></div>
-                                    주일 예배 (Sunday Services)
-                                </h3>
-                                <div className="space-y-6">
-                                    {(siteConfig.services || churchData.services).map((service, index) => (
-                                        <div key={index} className="p-6 bg-gray-50 rounded-2xl border border-gray-100 relative group">
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    if (window.confirm('이 예배 정보를 삭제하시겠습니까?')) {
-                                                        const newServices = (siteConfig.services || churchData.services).filter((_, i) => i !== index);
-                                                        setSiteConfig({ ...siteConfig, services: newServices });
-                                                    }
-                                                }}
-                                                className="absolute top-4 right-4 p-2 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-full transition-all opacity-0 group-hover:opacity-100"
-                                                title="예배 삭제"
-                                            >
-                                                <Trash2 size={18} />
-                                            </button>
-
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                                <div className="space-y-2">
-                                                    <label className="text-sm font-bold text-gray-600 ml-1">예배 명칭</label>
-                                                    <input
-                                                        type="text"
-                                                        className="w-full p-4 bg-white border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium"
-                                                        value={service.name}
-                                                        onChange={(e) => {
-                                                            const newServices = [...(siteConfig.services || churchData.services)];
-                                                            newServices[index] = { ...service, name: e.target.value };
-                                                            setSiteConfig({ ...siteConfig, services: newServices });
-                                                        }}
-                                                        placeholder="예: 1부 주일예배"
-                                                    />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-sm font-bold text-gray-600 ml-1">예배 시간</label>
-                                                    <input
-                                                        type="text"
-                                                        className="w-full p-4 bg-white border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium"
-                                                        value={service.time}
-                                                        onChange={(e) => {
-                                                            const newServices = [...(siteConfig.services || churchData.services)];
-                                                            newServices[index] = { ...service, time: e.target.value };
-                                                            setSiteConfig({ ...siteConfig, services: newServices });
-                                                        }}
-                                                        placeholder="예: 11:00 AM"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className="text-sm font-bold text-gray-600 ml-1">설명 / 비고 (Description)</label>
-                                                <input
-                                                    type="text"
-                                                    className="w-full p-4 bg-white border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium text-sm"
-                                                    value={service.description || ''}
-                                                    onChange={(e) => {
-                                                        const newServices = [...(siteConfig.services || churchData.services)];
-                                                        newServices[index] = { ...service, description: e.target.value };
-                                                        setSiteConfig({ ...siteConfig, services: newServices });
-                                                    }}
-                                                    placeholder="예: 본당 / 한국어 예배"
-                                                />
-                                            </div>
-                                        </div>
-                                    ))}
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            const newServices = [
-                                                ...(siteConfig.services || churchData.services),
-                                                { name: "새 예배", time: "11:00 AM", description: "" }
-                                            ];
-                                            setSiteConfig({ ...siteConfig, services: newServices });
-                                        }}
-                                        className="w-full py-4 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 font-bold hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
-                                    >
-                                        <Plus size={20} />
-                                        새로운 주일 예배 추가하기
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Dawn Prayer / Special Services */}
-                            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
-                                <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                                    <div className="p-2 bg-accent/10 rounded-xl text-accent"><Video size={20} /></div>
-                                    새벽 기도회 / 온라인 모임 (Dawn & Special)
-                                </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-600 ml-1">새벽기도 일정</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
-                                            value={siteConfig.specialServices?.dawn?.schedule || ''}
-                                            placeholder="예: 매달 첫째 둘째주 6:00 AM"
-                                            onChange={(e) => setSiteConfig({
-                                                ...siteConfig,
-                                                specialServices: {
-                                                    ...siteConfig.specialServices,
-                                                    dawn: { ...(siteConfig.specialServices?.dawn || {}), schedule: e.target.value }
-                                                }
-                                            })}
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-600 ml-1">Zoom 링크 / ID</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
-                                            value={siteConfig.specialServices?.dawn?.link || ''}
-                                            placeholder="예: 777 011 0112"
-                                            onChange={(e) => setSiteConfig({
-                                                ...siteConfig,
-                                                specialServices: {
-                                                    ...siteConfig.specialServices,
-                                                    dawn: { ...(siteConfig.specialServices?.dawn || {}), link: e.target.value }
-                                                }
-                                            })}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Other Meetings */}
-                            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
-                                <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                                    <div className="p-2 bg-green-50 rounded-xl text-green-600"><Users size={20} /></div>
-                                    기타 모임 (Other Meetings)
-                                </h3>
-                                <div className="space-y-4">
-                                    {(siteConfig.otherMeetings || churchData.other_meetings).map((meeting, index) => (
-                                        <div key={index} className="flex gap-2 items-start">
-                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-grow">
-                                                <input
-                                                    type="text"
-                                                    placeholder="모임 명칭"
-                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none font-medium"
-                                                    value={meeting.name}
-                                                    onChange={(e) => {
-                                                        const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
-                                                        newMeetings[index] = { ...meeting, name: e.target.value };
-                                                        setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
-                                                    }}
-                                                />
-                                                <input
-                                                    type="text"
-                                                    placeholder="시간"
-                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none font-medium"
-                                                    value={meeting.time}
-                                                    onChange={(e) => {
-                                                        const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
-                                                        newMeetings[index] = { ...meeting, time: e.target.value };
-                                                        setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
-                                                    }}
-                                                />
-                                                <input
-                                                    type="text"
-                                                    placeholder="장소"
-                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none font-medium"
-                                                    value={meeting.location}
-                                                    onChange={(e) => {
-                                                        const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
-                                                        newMeetings[index] = { ...meeting, location: e.target.value };
-                                                        setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
-                                                    }}
-                                                />
-                                            </div>
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    if (window.confirm('이 모임 정보를 삭제하시겠습니까?')) {
-                                                        const newMeetings = (siteConfig.otherMeetings || churchData.other_meetings)
-                                                            .filter((_, i) => i !== index);
-                                                        setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
-                                                    }
-                                                }}
-                                                className="p-4 bg-red-50 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-colors"
-                                                title="모임 삭제"
-                                            >
-                                                <Trash2 size={20} />
-                                            </button>
-                                        </div>
-                                    ))}
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            const newMeetings = [
-                                                ...(siteConfig.otherMeetings || churchData.other_meetings),
-                                                { name: "", time: "", location: "" } // New empty meeting
-                                            ];
-                                            setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
-                                        }}
-                                        className="w-full py-4 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 font-bold hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
-                                    >
-                                        <Plus size={20} />
-                                        새로운 기타 모임 추가하기
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                )
-                }
-                {/* Location Section */}
-                {activeTab === 'location' && (
-                    <div className="animate-fade-in-up space-y-6 max-w-4xl">
-                        {/* Site Identity Section (Logo/Name) */}
-                        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl space-y-8">
-                            <h3 className="text-lg font-bold text-gray-700 flex items-center gap-2">
-                                <Settings size={20} className="text-primary" /> 기본 사이트 정보 (교회 이름 & 로고)
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">교회 이름 (Korean Name)</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                        value={siteConfig.general?.name || churchData.general.name}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            general: { ...(siteConfig.general || {}), name: e.target.value }
-                                        })}
+                    ) : (
+                        dailyWords.map((word) => (
+                            <div key={word.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 group transition-all hover:shadow-2xl flex flex-col">
+                                <div className="aspect-video relative overflow-hidden bg-slate-100">
+                                    <img
+                                        src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
+                                        alt="Preview"
+                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                     />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">영문 이름 (English Name)</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                        value={siteConfig.general?.englishName || churchData.general.englishName}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            general: { ...(siteConfig.general || {}), englishName: e.target.value }
-                                        })}
-                                    />
-                                </div>
-                            </div>
-                            <div className="space-y-4">
-                                <label className="text-sm font-bold text-gray-500 ml-1">교회 로고 (Logo URL)</label>
-                                <div className="flex gap-4 items-center">
-                                    <div className="w-16 h-16 bg-gray-50 rounded-xl overflow-hidden border border-gray-100 p-2 shrink-0">
-                                        <img src={siteConfig.general?.logo || churchData.general.logo} alt="Logo" className="w-full h-full object-contain" />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        className="flex-grow p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans text-xs"
-                                        value={siteConfig.general?.logo || ''}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            general: { ...(siteConfig.general || {}), logo: e.target.value }
-                                        })}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Location & Map Section */}
-                        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-xl space-y-8">
-                            <h3 className="text-lg font-bold text-gray-700 flex items-center gap-2">
-                                <MapPin size={20} className="text-primary" /> 오시는 길 및 연락처 설정
-                            </h3>
-                            <div className="grid grid-cols-1 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-600 ml-1">교회 주소 (Address)</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
-                                        placeholder="예: 9025 Glover Road, Fort Langley"
-                                        value={siteConfig.location?.address || ''}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            location: { ...siteConfig.location, address: e.target.value }
-                                        })}
-                                    />
-                                </div>
-
-                                <div className="space-y-2">
-                                    <div className="flex justify-between items-center">
-                                        <label className="text-sm font-bold text-gray-600 ml-1">대표 연락처 (Phone)</label>
-                                        <span className="text-[10px] text-orange-500 font-bold bg-orange-50 px-2 py-0.5 rounded-full animate-pulse">
-                                            번호 두 개면 / 로 구분해 주세요
+                                    <div className="absolute top-4 left-4">
+                                        <span className="bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/20">
+                                            {word.date}
                                         </span>
                                     </div>
-                                    <input
-                                        type="text"
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
-                                        placeholder="예: (604) 123-4567 / (604) 987-6543"
-                                        value={siteConfig.location?.phone || ''}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            location: { ...siteConfig.location, phone: e.target.value }
-                                        })}
-                                    />
-                                    <p className="text-[10px] text-gray-400 ml-2">여러 개인 경우 쉼표(,)로 구분해 주세요.</p>
                                 </div>
-                            </div>
-
-                            <div className="flex justify-end pt-4 border-t border-gray-100">
-                                <button
-                                    onClick={handleFormSubmit}
-                                    id="save-location-btn"
-                                    className="px-8 py-3 bg-primary text-white rounded-xl font-bold shadow-lg hover:bg-primary-dark transition-all flex items-center gap-2"
-                                >
-                                    <Check size={18} />
-                                    {isLoading ? '저장 중...' : '정보 저장하기'}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )
-                }
-                {/* Site Settings Section */}
-                {activeTab === 'site' && (
-                    <div className="animate-fade-in-up space-y-10 pb-20">
-                        <div className="bg-blue-50 p-8 rounded-[2rem] border border-blue-100 flex flex-col md:flex-row gap-6 items-center">
-                            <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-blue-600 shadow-sm border border-blue-100 shrink-0">
-                                <ExternalLink size={32} />
-                            </div>
-                            <div className="flex-grow text-center md:text-left">
-                                <h2 className="font-black text-blue-900 text-xl mb-1 flex items-center justify-center md:justify-start gap-2">🔗 무료 고화질 배경 관리 (Direct Link Mode)</h2>
-                                <p className="text-blue-800/70 leading-relaxed text-sm font-medium">
-                                    구글 드라이브나 유튜브 링크를 사용하여 추가 비용 없이 홈페이지를 멋지게 꾸밀 수 있습니다. <br />
-                                    모든 배경은 링크를 넣고 아래 **'전체 설정 저장하기'**를 눌러야 최종 반영됩니다.
-                                </p>
-                            </div>
-                            <div className="shrink-0 flex gap-2">
-                                <div className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-black shadow-lg shadow-blue-200 uppercase">Always Free</div>
-                            </div>
-                        </div>
-
-                        <div className="space-y-12">
-                            {renderBannerSettings('hero', '🏠 메인 홈 히어로 (Home Hero)', 'heroImage')}
-                            {renderBannerSettings('news', '📢 교회 소식 (News)', 'newsBanner')}
-                            {renderBannerSettings('resources', '⛪ 설교와 말씀 (Sermons)', 'resourcesBanner')}
-                            {renderBannerSettings('ministry', '🌱 다음 세대 (Ministry)', 'ministryBanner')}
-
-                            {/* Individual Ministry Management */}
-                            <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-8">
-                                <h3 className="text-xl font-black text-primary flex items-center gap-3">
-                                    <Users size={24} className="text-accent" />
-                                    다음세대 상세 부서 관리 (TSC, TSY)
-                                </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    {formData.ministryItems.map((item, idx) => (
-                                        <div key={item.id} className="p-6 bg-gray-50 rounded-3xl border border-gray-100 space-y-6">
-                                            <div className="flex justify-between items-center">
-                                                <h4 className="font-bold text-lg text-gray-700">{item.name}</h4>
-                                                <span className="text-[10px] font-black px-2 py-1 bg-white rounded-full text-gray-400 border border-gray-100 uppercase tracking-widest">{item.id}</span>
-                                            </div>
-
-                                            <div className="space-y-4">
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">부서 설명 (Description)</label>
-                                                    <textarea
-                                                        className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[80px]"
-                                                        value={item.description}
-                                                        onChange={(e) => {
-                                                            const newItems = [...formData.ministryItems];
-                                                            newItems[idx].description = e.target.value;
-                                                            setFormData({ ...formData, ministryItems: newItems });
-                                                        }}
-                                                    />
-                                                </div>
-
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">더알아보기 내용 (Details)</label>
-                                                    <textarea
-                                                        className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[150px]"
-                                                        placeholder="줄바꿈으로 구분해 주세요"
-                                                        value={item.detail}
-                                                        onChange={(e) => {
-                                                            const newItems = [...formData.ministryItems];
-                                                            newItems[idx].detail = e.target.value;
-                                                            setFormData({ ...formData, ministryItems: newItems });
-                                                        }}
-                                                    />
-                                                    <p className="text-[10px] text-gray-400 font-medium px-2">* 긴 장문의 글을 입력하실 수 있습니다.</p>
-                                                </div>
-
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">부서 대표 사진 (Image URL)</label>
-                                                    <div className="flex flex-col gap-2">
-                                                        <input
-                                                            type="text"
-                                                            id={`ministry-img-${item.id}`}
-                                                            className="flex-grow p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-xs font-sans"
-                                                            value={item.image}
-                                                            onChange={(e) => {
-                                                                const newItems = formData.ministryItems.map((it, i) =>
-                                                                    i === idx ? { ...it, image: e.target.value } : it
-                                                                );
-                                                                setFormData({ ...formData, ministryItems: newItems });
-                                                            }}
-                                                            placeholder="이미지 주소 또는 구글 드라이브 링크"
-                                                        />
-                                                        <div className="flex gap-2">
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => {
-                                                                    const input = item.image;
-                                                                    if (input && input.includes('drive.google.com')) {
-                                                                        const formatted = dbService.formatDriveImage(input);
-                                                                        const newItems = formData.ministryItems.map((it, i) =>
-                                                                            i === idx ? { ...it, image: formatted } : it
-                                                                        );
-                                                                        setFormData({ ...formData, ministryItems: newItems });
-                                                                        alert('✅ 드라이브 이미지가 변환되었습니다!');
-                                                                    } else {
-                                                                        alert('구글 드라이브 링크를 입력해주세요.');
-                                                                    }
-                                                                }}
-                                                                className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-1.5"
-                                                            >
-                                                                🖼️ 변환
-                                                            </button>
-                                                            <div className="relative overflow-hidden">
-                                                                <button
-                                                                    type="button"
-                                                                    className="px-4 py-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-xl text-[10px] font-black transition-all flex items-center gap-1.5"
-                                                                >
-                                                                    <Upload size={14} /> 업로드
-                                                                </button>
-                                                                <input
-                                                                    type="file"
-                                                                    accept="image/*"
-                                                                    className="absolute inset-0 opacity-0 cursor-pointer"
-                                                                    onChange={async (e) => {
-                                                                        const file = e.target.files[0];
-                                                                        if (file) {
-                                                                            if (window.confirm(`${file.name} 파일을 업로드하시겠습니까?`)) {
-                                                                                try {
-                                                                                    // Upload indicator
-                                                                                    const downloadUrl = await dbService.uploadImage(file, `ministry/${item.id}_${Date.now()}`);
-                                                                                    const newItems = formData.ministryItems.map((it, i) =>
-                                                                                        i === idx ? { ...it, image: downloadUrl } : it
-                                                                                    );
-                                                                                    setFormData(prev => ({ ...prev, ministryItems: newItems }));
-                                                                                    alert('✅ 업로드가 완료되었습니다!');
-                                                                                } catch (err) {
-                                                                                    console.error("Upload failed", err);
-                                                                                    alert('업로드 실패: ' + err.message);
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        {item.image && (
-                                                            <div className="mt-2 w-full h-64 bg-gray-100 rounded-xl overflow-hidden border border-gray-100 relative group">
-                                                                <img
-                                                                    src={item.image}
-                                                                    alt="Preview"
-                                                                    className="w-full h-full object-cover"
-                                                                    referrerPolicy="no-referrer"
-                                                                    onError={(e) => {
-                                                                        e.target.style.display = 'none';
-                                                                        e.target.parentElement.classList.add('flex', 'items-center', 'justify-center');
-                                                                        e.target.parentElement.innerText = '이미지를 불러올 수 없음';
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                        </div>
-
-                        {/* Reset to Defaults Section */}
-                        <div className="bg-red-50/30 rounded-[2rem] p-8 border border-red-100/50 mt-12 mb-12">
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="p-3 bg-red-500 text-white rounded-2xl shadow-lg shadow-red-200">
-                                    <AlertTriangle size={24} />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-black text-red-600">데이터 초기화 (Danger Zone)</h3>
-                                    <p className="text-red-400 text-sm font-medium">실행 시 현재 라이브 데이터가 삭제되고 코드 내의 초기 데이터로 대체됩니다.</p>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <ResetButton type="sermons" label="설교 영상" />
-                                <ResetButton type="bulletins" label="주보 파일" />
-
-                            </div>
-                        </div>
-
-                        <div className="flex justify-center md:justify-end sticky bottom-8 z-30">
-                            <button
-                                type="button"
-                                onClick={handleFormSubmit}
-                                disabled={isLoading}
-                                className="px-12 py-6 bg-primary text-white rounded-[2rem] font-black text-xl hover:bg-primary-dark transition-all shadow-2xl shadow-primary/40 disabled:opacity-50 flex items-center gap-4 hover:scale-105 active:scale-95"
-                            >
-                                {isLoading ? (
-                                    <>
-                                        <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-                                        저장 중...
-                                    </>
-                                ) : (
-                                    <>
-                                        전체 설정 저장하기
-                                        <Check size={28} />
-                                    </>
-                                )}
-                            </button>
-                        </div>
-                    </div>
-                )
-                }
-
-
-                {
-                    activeTab === 'intro' && (
-                        <div className="space-y-6 md:col-span-2">
-                            <div className="bg-amber-50/50 p-6 rounded-2xl border border-amber-100 flex gap-4">
-                                <div className="text-amber-500 shrink-0">
-                                    <BookOpen size={24} />
-                                </div>
-                                <div className="text-sm">
-                                    <p className="font-bold text-amber-900 mb-1">💡 교회소개 / 목사님 페이지 관리</p>
-                                    <p className="text-amber-800/70 leading-relaxed text-xs">
-                                        이곳에서 교회소개 페이지의 상단 배너와 제목, 그리고 담임목사님 소개를 수정할 수 있습니다.
+                                <div className="p-6 flex-grow flex flex-col">
+                                    <h3 className="font-bold text-primary text-sm mb-3">
+                                        {word.verse || word.title}
+                                    </h3>
+                                    <p className="text-gray-600 text-sm italic leading-relaxed break-keep line-clamp-3">
+                                        "{word.content}"
                                     </p>
-                                </div>
-                            </div>
-
-                            <div className="space-y-6 border-b border-gray-100 pb-8 mb-8">
-                                <h3 className="text-lg font-bold text-gray-700 flex items-center gap-2">
-                                    <LayoutDashboard size={20} className="text-primary" /> 페이지 상단 설정
-                                </h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="space-y-2 md:col-span-2">
-                                        <label className="text-sm font-bold text-gray-500 ml-1">상단 배너 이미지</label>
-                                        <BannerManager
-                                            label="교회소개 배너"
-                                            value={siteConfig.aboutBanner}
-                                            fieldName="aboutBanner"
-                                            onChange={(val) => setSiteConfig({ ...siteConfig, aboutBanner: val })}
-                                            bannerFiles={bannerFiles}
-                                            setBannerFiles={setBannerFiles}
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-500 ml-1">페이지 제목 (비워두면 숨김)</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                            placeholder="기본값: 교회 소개"
-                                            value={siteConfig.aboutTitle ?? ''}
-                                            onChange={(e) => setSiteConfig({ ...siteConfig, aboutTitle: e.target.value })}
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-500 ml-1">부제목 / 성구 (비워두면 숨김)</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                            placeholder="기본값: 사도행전 16장 31절..."
-                                            value={siteConfig.aboutSubtitle ?? ''}
-                                            onChange={(e) => setSiteConfig({ ...siteConfig, aboutSubtitle: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">목사님 성함</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                        value={siteConfig.pastor?.name || ''}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            pastor: { ...siteConfig.pastor, name: e.target.value }
-                                        })}
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">직분/역할 (예: 담임목사)</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                        value={siteConfig.pastor?.role || ''}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            pastor: { ...siteConfig.pastor, role: e.target.value }
-                                        })}
-                                    />
-                                </div>
-                                <div className="space-y-2 md:col-span-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">인사말 내용</label>
-                                    <textarea
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-48"
-                                        value={siteConfig.pastor?.greeting || ''}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            pastor: { ...siteConfig.pastor, greeting: e.target.value }
-                                        })}
-                                    />
-                                </div>
-                                <div className="space-y-2 md:col-span-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">약력 (Biography) - 줄바꿈으로 구분</label>
-                                    <textarea
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-32"
-                                        placeholder="서울신학대학교 졸업&#13;&#10;기둥교회 부목사"
-                                        value={Array.isArray(siteConfig.pastor?.history)
-                                            ? siteConfig.pastor.history.join('\n')
-                                            : (siteConfig.pastor?.history || '')}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            pastor: {
-                                                ...siteConfig.pastor,
-                                                history: e.target.value.split('\n').filter(line => line.trim() !== '')
-                                            }
-                                        })}
-                                    />
-                                </div>
-                                <div className="space-y-2 md:col-span-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">목사님 사진 링크 (Drive URL)</label>
-                                    <div className="flex gap-2">
-                                        <input
-                                            type="url"
-                                            id="drive-input-pastor-image"
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
-                                            placeholder="https://drive.google.com/..."
-                                            defaultValue={siteConfig.pastor?.image || ''}
-                                            onChange={(e) => setSiteConfig({
-                                                ...siteConfig,
-                                                pastor: { ...siteConfig.pastor, image: e.target.value }
-                                            })}
-                                        />
+                                    <div className="mt-8 flex gap-2 border-t border-gray-50 pt-6">
                                         <button
-                                            type="button"
                                             onClick={() => {
-                                                const inputElement = document.getElementById('drive-input-pastor-image');
-                                                const input = inputElement?.value;
-                                                if (input && input.includes('drive.google.com')) {
-                                                    const formatted = dbService.formatDriveImage(input);
-                                                    setSiteConfig({
-                                                        ...siteConfig,
-                                                        pastor: { ...siteConfig.pastor, image: formatted }
-                                                    });
-                                                    inputElement.value = formatted;
-                                                    alert('✅ 이미지로 변환되었습니다!');
+                                                setEditingId(word.id);
+                                                setFormData({
+                                                    ...formData,
+                                                    title: word.verse || word.title || '',
+                                                    content: word.content || '',
+                                                    date: word.date || '',
+                                                    fileUrl: word.image || ''
+                                                });
+                                                setShowAddForm(true);
+                                            }}
+                                            className="flex-grow py-3 bg-gray-50 text-gray-600 rounded-xl text-xs font-bold hover:bg-primary/10 hover:text-primary transition-all"
+                                        >
+                                            수정하기
+                                        </button>
+                                        <button
+                                            onClick={async () => {
+                                                if (window.confirm('정말 삭제하시겠습니까?')) {
+                                                    await dbService.deleteDailyWord(word.id);
+                                                    setDailyWords(dailyWords.filter(dw => dw.id !== word.id));
                                                 }
                                             }}
-                                            className="px-4 bg-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-300 transition-colors shrink-0 text-sm"
+                                            className="p-3 bg-red-50 text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-sm"
                                         >
-                                            이미지 변환
+                                            <Trash2 size={16} />
                                         </button>
                                     </div>
-                                    {siteConfig.pastor?.image && (
-                                        <div className="mt-4 w-48 h-64 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 shadow-lg mx-auto md:mx-0">
-                                            <img src={siteConfig.pastor.image} alt="Pastor Preview" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+            )}
+
+            {/* Empty State */}
+            {(activeTab === 'sermons' ? sermons :
+                activeTab === 'bulletins' ? bulletins :
+                    activeTab === 'notices' ? notices :
+                        activeTab === 'columns' ? columns :
+                            activeTab === 'dailyWord' ? dailyWords : gallery).length === 0 && activeTab !== 'dailyWord' && (
+                    <div className="p-20 text-center text-gray-400 font-medium">
+                        데이터가 없습니다. 상단 '새 항목 등록하기'를 눌러 추가해 주세요.
+                    </div>
+                )}
+        </div>
+
+    )
+}
+{
+    !isFirebaseConfigured && (
+        <div className="mt-10 p-10 bg-amber-50 rounded-[2.5rem] border border-amber-100 flex flex-col md:flex-row gap-8 items-start relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
+                <Shield size={120} />
+            </div>
+            <div className="p-5 bg-amber-100 rounded-3xl text-amber-600 shadow-sm border border-amber-200">
+                <AlertTriangle size={32} />
+            </div>
+            <div className="relative z-10 font-sans">
+                <h4 className="font-black text-amber-900 text-xl mb-3 flex items-center gap-2">
+                    Firebase Firestore 활성화가 필요합니다
+                </h4>
+                <p className="text-amber-800/80 leading-relaxed max-w-2xl mb-8 font-medium">
+                    현재 <code className="bg-amber-100 px-2 py-0.5 rounded text-amber-900">src/lib/firebase.js</code>에 프로젝트 키는 잘 입력되었습니다.
+                    마지막으로 **Firebase Console** 사이트에서 [Firestore Database]를 활성화(테스트 모드로 시작)해 주셔야 여기서 저장하는 내용이 전 세계에 실시간 반영됩니다.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                    <a href="https://console.firebase.google.com/" target="_blank" className="bg-amber-600 text-white px-8 py-3.5 rounded-2xl font-bold shadow-lg shadow-amber-600/20 hover:bg-amber-700 transition-all flex items-center gap-2">파이어베이스 콘솔 바로가기 <ExternalLink size={16} /></a>
+                    <button onClick={loadData} className="bg-white text-amber-800 border border-amber-200 px-8 py-3.5 rounded-2xl font-bold hover:bg-amber-100 transition-all">연결 재시도</button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+{/* Staff List View */ }
+{
+    activeTab === 'staff' && !showAddForm && (
+        <div className="animate-fade-in-up">
+            {staffList.length === 0 ? (
+                <div className="text-center py-20 bg-white rounded-[2rem] border border-gray-100 shadow-sm">
+                    <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
+                        <Users size={40} />
+                    </div>
+                    <p className="text-gray-400 font-bold mb-2">등록된 섬기는 분이 없습니다.</p>
+                    <p className="text-gray-300 text-sm">새 항목 등록하기 버튼을 눌러 추가해주세요.</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {staffList.map((staff) => (
+                        <div key={staff.id || staff.name} className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all group relative overflow-hidden">
+                            <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                                <button
+                                    onClick={() => handleEdit(staff, 'staff')}
+                                    className="p-2 bg-blue-50 text-blue-500 rounded-xl hover:bg-blue-100 transition-colors shadow-sm"
+                                    title="수정"
+                                >
+                                    <Settings size={18} />
+                                </button>
+                                <button
+                                    onClick={() => handleDelete('staff', staff.id)}
+                                    className="p-2 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-colors shadow-sm"
+                                    title="삭제"
+                                >
+                                    <Trash2 size={18} />
+                                </button>
+                            </div>
+
+                            <div className="flex flex-col items-center">
+                                <div className="w-48 h-48 bg-gray-100 rounded-full mb-6 overflow-hidden border-8 border-gray-50 shadow-inner group-hover:scale-105 transition-transform duration-300">
+                                    {staff.image ? (
+                                        <img
+                                            src={staff.image}
+                                            alt={staff.name}
+                                            referrerPolicy="no-referrer"
+                                            className="w-full h-full object-cover"
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.style.display = 'none';
+                                                e.target.parentElement.classList.add('flex', 'items-center', 'justify-center', 'bg-gray-100');
+                                                e.target.parentElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-50 text-gray-400"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>';
+                                            }}
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-gray-300 bg-gray-100">
+                                            <Users size={64} className="opacity-50" />
                                         </div>
                                     )}
                                 </div>
-                            </div>
-                            <div className="pt-4 flex justify-end">
-                                <button
-                                    onClick={async () => {
-                                        const btn = document.getElementById('save-pastor-btn');
-                                        btn.innerText = '저장 중...';
-                                        try {
-                                            await dbService.updateSiteConfig(siteConfig);
-                                            alert('✅ 저장되었습니다.');
-                                        } catch (e) {
-                                            alert('저장 실패: ' + e.message);
-                                        }
-                                        btn.innerText = '설정 저장하기';
-                                    }}
-                                    id="save-pastor-btn"
-                                    className="px-8 py-3 bg-primary text-white rounded-xl font-bold shadow-lg hover:bg-primary-dark transition-all"
-                                >
-                                    설정 저장하기
-                                </button>
+                                <h3 className="text-xl font-bold text-gray-800">{staff.name}</h3>
+                                {staff.englishName && <p className="text-[10px] font-bold text-gray-400 -mt-1 uppercase tracking-wider">{staff.englishName}</p>}
+                                <p className="text-accent font-medium text-sm mb-3 mt-1">{staff.role}</p>
+                                <p className="text-gray-400 text-xs px-3 py-1 bg-gray-50 rounded-full">{staff.email || '이메일 없음'}</p>
                             </div>
                         </div>
-                    )
-                }
+                    ))}
+                </div>
+            )}
+        </div>
+    )
+}
 
-                {/* Dashboard Card */}
-                {
-                    (activeTab === 'sermons' || activeTab === 'bulletins' || activeTab === 'gallery' || activeTab === 'columns') && (
-                        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-                            <div className="p-8 border-b border-gray-50 flex justify-between items-center bg-white">
-                                <h2 className="font-black text-primary text-xl flex items-center gap-3">
-                                    <LayoutDashboard size={22} className="text-accent" />
-                                    {activeTab.toUpperCase()} DATABASE
-                                    <span className="text-sm font-bold text-gray-300 ml-2">
-                                        {activeTab === 'sermons' ? sermons.length :
-                                            activeTab === 'bulletins' ? bulletins.length :
-                                                gallery.length} Items
-                                    </span>
-                                </h2>
-                            </div>
-
-                            {/* Desktop Table View */}
-                            <div className="hidden md:block overflow-x-auto">
-                                <table className="w-full">
-                                    <thead>
-                                        <tr className="text-left bg-gray-50/50 text-[11px] uppercase tracking-[0.2em] text-gray-400 font-black">
-                                            <th className="px-8 py-6 border-b border-gray-50 whitespace-nowrap">Date</th>
-                                            <th className="px-8 py-6 border-b border-gray-50">Title & Information</th>
-                                            <th className="px-8 py-6 border-b border-gray-50 text-right">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-gray-50">
-                                        {activeTab === 'sermons' && sermons.map((item, idx) => (
-                                            <AdminTableRow
-                                                key={item.id || idx}
-                                                date={item.date}
-                                                title={item.title}
-                                                subText={item.preacher}
-                                                onEdit={() => handleEdit(item, 'sermon')}
-                                                onDelete={() => handleDelete('sermon', item.id)}
-                                                link={item.link || (item.youtubeId ? `https://youtube.com/watch?v=${item.youtubeId}` : null)}
-                                                onMoveUp={() => handleMoveItem(idx, -1, sermons, setSermons, 'sermons')}
-                                                onMoveDown={() => handleMoveItem(idx, 1, sermons, setSermons, 'sermons')}
-                                                isFirst={idx === 0}
-                                                isLast={idx === sermons.length - 1}
-                                            />
-                                        ))}
-                                        {activeTab === 'bulletins' && bulletins.map((item, idx) => (
-                                            <AdminTableRow
-                                                key={item.id || idx}
-                                                date={item.date}
-                                                title={item.title}
-                                                subText="PDF Bulletin"
-                                                onEdit={() => handleEdit(item, 'bulletin')}
-                                                onDelete={() => handleDelete('bulletin', item.id)}
-                                                link={item.fileUrl}
-                                                onMoveUp={() => handleMoveItem(idx, -1, bulletins, setBulletins, 'bulletins')}
-                                                onMoveDown={() => handleMoveItem(idx, 1, bulletins, setBulletins, 'bulletins')}
-                                                isFirst={idx === 0}
-                                                isLast={idx === bulletins.length - 1}
-                                            />
-                                        ))}
-
-                                        {activeTab === 'gallery' && gallery.map((item, idx) => (
-                                            <AdminTableRow
-                                                key={item.id || idx}
-                                                date={item.date}
-                                                title={item.title}
-                                                subText={item.type === 'video' ? 'Video' : item.type === 'audio' ? 'Audio' : 'Image'}
-                                                onEdit={() => handleEdit(item, 'gallery')}
-                                                onDelete={() => handleDelete('gallery', item.id)}
-                                                link={item.url}
-                                            />
-                                        ))}
-                                        {activeTab === 'columns' && columns.map((item, idx) => (
-                                            <AdminTableRow
-                                                key={item.id || idx}
-                                                date={item.date}
-                                                title={item.title}
-                                                subText={item.author || '이남규 목사'}
-                                                onEdit={() => handleEdit(item, 'column')}
-                                                onDelete={() => handleDelete('column', item.id)}
-                                                link={item.fileUrl}
-                                                onMoveUp={() => handleMoveItem(idx, -1, columns, setColumns, 'columns')}
-                                                onMoveDown={() => handleMoveItem(idx, 1, columns, setColumns, 'columns')}
-                                                isFirst={idx === 0}
-                                                isLast={idx === columns.length - 1}
-                                            />
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            {/* Mobile Card View */}
-                            <div className="md:hidden space-y-4">
-                                {activeTab === 'sermons' && sermons.map((item, idx) => (
-                                    <AdminMobileCard
-                                        key={item.id || idx}
-                                        date={item.date}
-                                        title={item.title}
-                                        subText={item.preacher}
-                                        onEdit={() => handleEdit(item, 'sermon')}
-                                        onDelete={() => handleDelete('sermon', item.id)}
-                                        link={item.link || (item.youtubeId ? `https://youtube.com/watch?v=${item.youtubeId}` : null)}
-                                        onMoveUp={() => handleMoveItem(idx, -1, sermons, setSermons, 'sermons')}
-                                        onMoveDown={() => handleMoveItem(idx, 1, sermons, setSermons, 'sermons')}
-                                        isFirst={idx === 0}
-                                        isLast={idx === sermons.length - 1}
-                                    />
-                                ))}
-                                {activeTab === 'bulletins' && bulletins.map((item, idx) => (
-                                    <AdminMobileCard
-                                        key={item.id || idx}
-                                        date={item.date}
-                                        title={item.title}
-                                        subText="PDF Bulletin"
-                                        onEdit={() => handleEdit(item, 'bulletin')}
-                                        onDelete={() => handleDelete('bulletin', item.id)}
-                                        link={item.fileUrl}
-                                        onMoveUp={() => handleMoveItem(idx, -1, bulletins, setBulletins, 'bulletins')}
-                                        onMoveDown={() => handleMoveItem(idx, 1, bulletins, setBulletins, 'bulletins')}
-                                        isFirst={idx === 0}
-                                        isLast={idx === bulletins.length - 1}
-                                    />
-                                ))}
-                                {activeTab === 'gallery' && gallery.map((item, idx) => (
-                                    <AdminMobileCard
-                                        key={item.id || idx}
-                                        date={item.date}
-                                        title={item.title}
-                                        subText={item.type === 'video' ? 'Video' : item.type === 'audio' ? 'Audio' : 'Image'}
-                                        onEdit={() => handleEdit(item, 'gallery')}
-                                        onDelete={() => handleDelete('gallery', item.id)}
-                                        link={item.url}
-                                    />
-                                ))}
-                                {activeTab === 'columns' && columns.map((item, idx) => (
-                                    <AdminMobileCard
-                                        key={item.id || idx}
-                                        date={item.date}
-                                        title={item.title}
-                                        subText={item.author || '이남규 목사'}
-                                        onEdit={() => handleEdit(item, 'column')}
-                                        onDelete={() => handleDelete('column', item.id)}
-                                        link={item.fileUrl}
-                                        onMoveUp={() => handleMoveItem(idx, -1, columns, setColumns, 'columns')}
-                                        onMoveDown={() => handleMoveItem(idx, 1, columns, setColumns, 'columns')}
-                                        isFirst={idx === 0}
-                                        isLast={idx === columns.length - 1}
-                                    />
-                                ))}
-                            </div>
-
-                            {/* Empty State */}
-                            {(activeTab === 'sermons' ? sermons :
-                                activeTab === 'bulletins' ? bulletins :
-                                    activeTab === 'notices' ? notices :
-                                        activeTab === 'columns' ? columns : gallery).length === 0 && (
-                                    <div className="p-20 text-center text-gray-400 font-medium">
-                                        데이터가 없습니다. 상단 '새 항목 등록하기'를 눌러 추가해 주세요.
-                                    </div>
-                                )}
-                        </div>
-
-                    )
-                }
-                {
-                    !isFirebaseConfigured && (
-                        <div className="mt-10 p-10 bg-amber-50 rounded-[2.5rem] border border-amber-100 flex flex-col md:flex-row gap-8 items-start relative overflow-hidden">
-                            <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
-                                <Shield size={120} />
-                            </div>
-                            <div className="p-5 bg-amber-100 rounded-3xl text-amber-600 shadow-sm border border-amber-200">
-                                <AlertTriangle size={32} />
-                            </div>
-                            <div className="relative z-10 font-sans">
-                                <h4 className="font-black text-amber-900 text-xl mb-3 flex items-center gap-2">
-                                    Firebase Firestore 활성화가 필요합니다
-                                </h4>
-                                <p className="text-amber-800/80 leading-relaxed max-w-2xl mb-8 font-medium">
-                                    현재 <code className="bg-amber-100 px-2 py-0.5 rounded text-amber-900">src/lib/firebase.js</code>에 프로젝트 키는 잘 입력되었습니다.
-                                    마지막으로 **Firebase Console** 사이트에서 [Firestore Database]를 활성화(테스트 모드로 시작)해 주셔야 여기서 저장하는 내용이 전 세계에 실시간 반영됩니다.
-                                </p>
-                                <div className="flex flex-wrap gap-4">
-                                    <a href="https://console.firebase.google.com/" target="_blank" className="bg-amber-600 text-white px-8 py-3.5 rounded-2xl font-bold shadow-lg shadow-amber-600/20 hover:bg-amber-700 transition-all flex items-center gap-2">파이어베이스 콘솔 바로가기 <ExternalLink size={16} /></a>
-                                    <button onClick={loadData} className="bg-white text-amber-800 border border-amber-200 px-8 py-3.5 rounded-2xl font-bold hover:bg-amber-100 transition-all">연결 재시도</button>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                }
-
-                {/* Staff List View */}
-                {
-                    activeTab === 'staff' && !showAddForm && (
-                        <div className="animate-fade-in-up">
-                            {staffList.length === 0 ? (
-                                <div className="text-center py-20 bg-white rounded-[2rem] border border-gray-100 shadow-sm">
-                                    <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
-                                        <Users size={40} />
-                                    </div>
-                                    <p className="text-gray-400 font-bold mb-2">등록된 섬기는 분이 없습니다.</p>
-                                    <p className="text-gray-300 text-sm">새 항목 등록하기 버튼을 눌러 추가해주세요.</p>
-                                </div>
-                            ) : (
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {staffList.map((staff) => (
-                                        <div key={staff.id || staff.name} className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all group relative overflow-hidden">
-                                            <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-                                                <button
-                                                    onClick={() => handleEdit(staff, 'staff')}
-                                                    className="p-2 bg-blue-50 text-blue-500 rounded-xl hover:bg-blue-100 transition-colors shadow-sm"
-                                                    title="수정"
-                                                >
-                                                    <Settings size={18} />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete('staff', staff.id)}
-                                                    className="p-2 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-colors shadow-sm"
-                                                    title="삭제"
-                                                >
-                                                    <Trash2 size={18} />
-                                                </button>
-                                            </div>
-
-                                            <div className="flex flex-col items-center">
-                                                <div className="w-48 h-48 bg-gray-100 rounded-full mb-6 overflow-hidden border-8 border-gray-50 shadow-inner group-hover:scale-105 transition-transform duration-300">
-                                                    {staff.image ? (
-                                                        <img
-                                                            src={staff.image}
-                                                            alt={staff.name}
-                                                            referrerPolicy="no-referrer"
-                                                            className="w-full h-full object-cover"
-                                                            onError={(e) => {
-                                                                e.target.onerror = null;
-                                                                e.target.style.display = 'none';
-                                                                e.target.parentElement.classList.add('flex', 'items-center', 'justify-center', 'bg-gray-100');
-                                                                e.target.parentElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-50 text-gray-400"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>';
-                                                            }}
-                                                        />
-                                                    ) : (
-                                                        <div className="w-full h-full flex items-center justify-center text-gray-300 bg-gray-100">
-                                                            <Users size={64} className="opacity-50" />
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <h3 className="text-xl font-bold text-gray-800">{staff.name}</h3>
-                                                {staff.englishName && <p className="text-[10px] font-bold text-gray-400 -mt-1 uppercase tracking-wider">{staff.englishName}</p>}
-                                                <p className="text-accent font-medium text-sm mb-3 mt-1">{staff.role}</p>
-                                                <p className="text-gray-400 text-xs px-3 py-1 bg-gray-50 rounded-full">{staff.email || '이메일 없음'}</p>
-                                            </div>
+{/* Calendar List */ }
+{
+    activeTab === 'calendar' && (
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden animate-fade-in-up">
+            <div className="overflow-x-auto">
+                <table className="w-full">
+                    <thead>
+                        <tr className="bg-gray-50 border-b border-gray-100">
+                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider w-32">Date</th>
+                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Event</th>
+                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Note</th>
+                            <th className="px-8 py-5 text-right text-xs font-bold text-gray-400 uppercase tracking-wider w-32">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50">
+                        {calendarEvents.length === 0 ? (
+                            <tr>
+                                <td colSpan="4" className="px-8 py-10 text-center text-gray-400 font-medium">
+                                    등록된 일정이 없습니다.
+                                </td>
+                            </tr>
+                        ) : (
+                            calendarEvents.map((item) => (
+                                <tr key={item.id} className="hover:bg-gray-50/50 transition-all group">
+                                    <td className="px-8 py-5 whitespace-nowrap text-sm text-gray-400 font-mono font-bold">{item.date}</td>
+                                    <td className="px-8 py-5">
+                                        <div className="flex flex-col">
+                                            <span className="text-sm font-black text-slate-800">{item.title}</span>
+                                            <span className={clsx(
+                                                "text-[10px] font-bold px-2 py-0.5 rounded w-fit mt-1",
+                                                item.type === 'special' ? "bg-accent/10 text-accent" : "bg-gray-100 text-gray-500"
+                                            )}>
+                                                {item.type === 'special' ? '특별 일정' : '일반 일정'}
+                                            </span>
                                         </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    )
-                }
-
-                {/* Calendar List */}
-                {
-                    activeTab === 'calendar' && (
-                        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden animate-fade-in-up">
-                            <div className="overflow-x-auto">
-                                <table className="w-full">
-                                    <thead>
-                                        <tr className="bg-gray-50 border-b border-gray-100">
-                                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider w-32">Date</th>
-                                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Event</th>
-                                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Note</th>
-                                            <th className="px-8 py-5 text-right text-xs font-bold text-gray-400 uppercase tracking-wider w-32">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-gray-50">
-                                        {calendarEvents.length === 0 ? (
-                                            <tr>
-                                                <td colSpan="4" className="px-8 py-10 text-center text-gray-400 font-medium">
-                                                    등록된 일정이 없습니다.
-                                                </td>
-                                            </tr>
-                                        ) : (
-                                            calendarEvents.map((item) => (
-                                                <tr key={item.id} className="hover:bg-gray-50/50 transition-all group">
-                                                    <td className="px-8 py-5 whitespace-nowrap text-sm text-gray-400 font-mono font-bold">{item.date}</td>
-                                                    <td className="px-8 py-5">
-                                                        <div className="flex flex-col">
-                                                            <span className="text-sm font-black text-slate-800">{item.title}</span>
-                                                            <span className={clsx(
-                                                                "text-[10px] font-bold px-2 py-0.5 rounded w-fit mt-1",
-                                                                item.type === 'special' ? "bg-accent/10 text-accent" : "bg-gray-100 text-gray-500"
-                                                            )}>
-                                                                {item.type === 'special' ? '특별 일정' : '일반 일정'}
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-8 py-5 text-sm text-gray-500">{item.note}</td>
-                                                    <td className="px-8 py-5 whitespace-nowrap text-right space-x-2">
-                                                        <button
-                                                            onClick={() => handleEdit(item, 'calendar')}
-                                                            className="text-gray-200 hover:text-primary transition-all p-2 rounded-2xl hover:bg-primary/5 active:scale-90"
-                                                        >
-                                                            <Settings size={18} />
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleDelete('calendar', item.id)}
-                                                            className="text-gray-200 hover:text-red-500 transition-all p-2 rounded-2xl hover:bg-red-50 active:scale-90"
-                                                        >
-                                                            <Trash2 size={18} />
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    )
-                }
+                                    </td>
+                                    <td className="px-8 py-5 text-sm text-gray-500">{item.note}</td>
+                                    <td className="px-8 py-5 whitespace-nowrap text-right space-x-2">
+                                        <button
+                                            onClick={() => handleEdit(item, 'calendar')}
+                                            className="text-gray-200 hover:text-primary transition-all p-2 rounded-2xl hover:bg-primary/5 active:scale-90"
+                                        >
+                                            <Settings size={18} />
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete('calendar', item.id)}
+                                            className="text-gray-200 hover:text-red-500 transition-all p-2 rounded-2xl hover:bg-red-50 active:scale-90"
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    )
+}
             </main >
         </div >
     );
