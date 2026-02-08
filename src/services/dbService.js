@@ -264,12 +264,6 @@ export const dbService = {
     deleteNotice: (id) => dbService.deleteItem(NOTICES, id),
     deleteGalleryItem: (id) => dbService.deleteItem(DB_COLLECTIONS.GALLERY, id),
     deleteColumn: (id) => dbService.deleteItem(COLUMNS, id),
-    deleteDailyWord: (id) => dbService.deleteItem(DAILY_WORD, id),
-
-    // Specific Fetchers for Daily Word
-    getDailyWords: (count = 50) => dbService.fetchItems(DAILY_WORD, count),
-    addDailyWord: (data) => dbService.addItem(DAILY_WORD, data),
-    updateDailyWord: (id, data) => dbService.updateItem(DAILY_WORD, id, data),
 
     // Calendar
     getCalendarEvents: async () => {
