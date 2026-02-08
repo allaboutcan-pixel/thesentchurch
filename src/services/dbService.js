@@ -349,6 +349,52 @@ export const dbService = {
         }
     },
 
+    // Daily Word
+    getDailyWords: async () => {
+        try {
+            const q = query(collection(db, DAILY_WORD), orderBy("date", "desc"));
+            const querySnapshot = await getDocs(q);
+            return querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+        } catch (e) {
+            console.error("Error getting daily words: ", e);
+            return [];
+        }
+    },
+    addDailyWord: async (data) => {
+        try {
+            const docRef = await addDoc(collection(db, DAILY_WORD), {
+                ...data,
+                createdAt: new Date().toISOString()
+            });
+            return { id: docRef.id, ...data };
+        } catch (e) {
+            console.error("Error adding daily word: ", e);
+            throw e;
+        }
+    },
+    updateDailyWord: async (id, data) => {
+        try {
+            const docRef = doc(db, DAILY_WORD, id);
+            await updateDoc(docRef, data);
+            return { id, ...data };
+        } catch (e) {
+            console.error("Error updating daily word: ", e);
+            throw e;
+        }
+    },
+    deleteDailyWord: async (id) => {
+        try {
+            await deleteDoc(doc(db, DAILY_WORD, id));
+            return true;
+        } catch (e) {
+            console.error("Error deleting daily word: ", e);
+            throw e;
+        }
+    },
+
     // Real-time subscription for Site Config
     subscribeToSiteConfig: (callback) => {
         const docRef = doc(db, SITE_CONFIG, "settings");
