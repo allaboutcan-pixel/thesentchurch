@@ -139,11 +139,20 @@ const Resources = () => {
     useEffect(() => {
         let isMounted = true;
 
-        const fetchBulletins = async () => {
+        const fetchData = async () => {
             try {
-                const liveBulletins = await dbService.getBulletins();
+                // Fetch all data in parallel for speed optimization
+                const [liveBulletins, liveGallery, liveSermons, liveColumns, liveNotices] = await Promise.all([
+                    dbService.getBulletins().catch(() => []),
+                    dbService.getGallery().catch(() => []),
+                    dbService.getSermons().catch(() => []),
+                    dbService.getColumns().catch(() => []),
+                    dbService.fetchItems('notices').catch(() => [])
+                ]);
+
                 if (!isMounted) return;
 
+                // Process Bulletins
                 if (liveBulletins.length > 0) {
                     const sorted = [...liveBulletins].sort((a, b) => new Date(b.date) - new Date(a.date));
                     setBulletins(sorted);
@@ -166,28 +175,10 @@ const Resources = () => {
                     setSelectedMonth(parseInt(lm, 10).toString());
                 }
 
-                // Fetch notices too
-                const liveNotices = await dbService.fetchItems('notices');
-                if (!isMounted) return;
+                // Process Gallery
+                setGalleryItems(liveGallery);
 
-                if (liveNotices.length > 0) setNotices(liveNotices);
-            } catch (e) {
-                if (isMounted) console.warn("Using fallback bulletins.");
-            }
-        };
-        const fetchGallery = async () => {
-            try {
-                const liveGallery = await dbService.getGallery();
-                if (isMounted) setGalleryItems(liveGallery);
-            } catch (e) {
-                if (isMounted) console.warn("Failed to fetch gallery.");
-            }
-        };
-        const fetchSermons = async () => {
-            try {
-                const liveSermons = await dbService.getSermons();
-                if (!isMounted) return;
-
+                // Process Sermons
                 if (liveSermons.length > 0) {
                     const sorted = [...liveSermons].sort((a, b) => new Date(b.date) - new Date(a.date));
                     setSermons(sorted);
@@ -209,15 +200,8 @@ const Resources = () => {
                     setSelectedSermonYear(ly);
                     setSelectedSermonMonth(parseInt(lm, 10).toString());
                 }
-            } catch (e) {
-                if (isMounted) console.warn("Failed to fetch sermons.");
-            }
-        };
-        const fetchColumns = async () => {
-            try {
-                const liveColumns = await dbService.getColumns();
-                if (!isMounted) return;
 
+                // Process Columns
                 if (liveColumns.length > 0) {
                     const sorted = [...liveColumns].sort((a, b) => new Date(b.date) - new Date(a.date));
                     setColumns(sorted);
@@ -238,14 +222,16 @@ const Resources = () => {
                     setSelectedColumnYear(ly);
                     setSelectedColumnMonth(parseInt(lm, 10).toString());
                 }
-            } catch (e) {
-                if (isMounted) console.warn("Failed to fetch columns.");
+
+                // Process Notices
+                if (liveNotices.length > 0) setNotices(liveNotices);
+
+            } catch (error) {
+                console.warn("Failed to fetch some resources in parallel:", error);
             }
         };
-        fetchBulletins();
-        fetchGallery();
-        fetchSermons();
-        fetchColumns();
+
+        fetchData();
         return () => { isMounted = false; };
     }, []);
 

@@ -228,7 +228,7 @@ const DailyWord = () => {
                                 <Calendar size={28} className="text-primary" />
                                 {t('resources.daily_word_title')}
                             </h3>
-                            <p className="text-slate-400 font-medium text-sm mt-1">이번 주의 귀한 말씀들을 다시 묵상해보세요.</p>
+                            <p className="text-slate-400 font-medium text-sm mt-1">{t('resources.daily_word_archive_desc')}</p>
                         </div>
 
                         <div className="flex flex-wrap gap-2">
@@ -280,6 +280,7 @@ const DailyWord = () => {
                                                     src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
                                                     alt="Preview"
                                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                                                    loading="lazy"
                                                 />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
 

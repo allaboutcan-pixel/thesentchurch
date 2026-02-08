@@ -147,6 +147,7 @@ const resources = {
                 "subtitle": "교회의 소식과 은혜를 나눕니다.",
                 "daily_word_title": "오늘의 말씀",
                 "daily_word_subtitle": "오늘을 함께 걸어갈 하나님의 한 말씀",
+                "daily_word_archive_desc": "이번 주의 귀한 말씀들을 다시 묵상해보세요.",
                 "gallery_subtitle": "말씀 안에서 함께 걷는 우리의 일상과 예배의 순간들",
                 "gallery_view_title": "은혜의 기록들"
             },
@@ -308,6 +309,7 @@ const resources = {
                 "subtitle": "Sharing news and grace of our church.",
                 "daily_word_title": "Today's Word",
                 "daily_word_subtitle": "A Word from God to walk with you today",
+                "daily_word_archive_desc": "Meditate again on this week's precious words.",
                 "gallery_subtitle": "Our daily lives and moments of worship, walking together in the Word.",
                 "gallery_view_title": "Records of Grace"
             },

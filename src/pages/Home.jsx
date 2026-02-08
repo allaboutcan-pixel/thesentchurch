@@ -46,7 +46,7 @@ const Home = () => {
                 const [liveSermons, liveNotices, liveDailyWords] = await Promise.all([
                     dbService.getSermons(),
                     dbService.getNotices(3),
-                    dbService.getDailyWords(1)
+                    dbService.fetchItems('daily_word', 7) // Enough context to find today's word
                 ]);
 
                 if (!isMounted) return;
@@ -269,6 +269,7 @@ const Home = () => {
                                     src={latestDailyWord.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
                                     alt="Daily Word"
                                     className="w-full h-full object-cover scale-110"
+                                    loading="lazy"
                                 />
                             </div>
                         </div>
