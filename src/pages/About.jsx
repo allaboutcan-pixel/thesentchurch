@@ -550,7 +550,7 @@ const About = () => {
                                         <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-white hover:shadow-sm transition-all border border-transparent hover:border-gray-100">
                                             <div className="mb-1 sm:mb-0">
                                                 <h4 className="font-bold text-gray-800">{t(meeting.name?.trim())}</h4>
-                                                <p className="text-xs text-gray-500">{t(meeting.location?.trim())}</p>
+                                                <p className="text-xs text-accent font-medium">{t(meeting.location?.trim())}</p>
                                             </div>
                                             <div className="flex items-center gap-2">
                                                 <span className="px-3 py-1 bg-white text-primary text-sm font-bold rounded-lg border border-gray-100 shadow-sm min-w-[80px] text-center">
