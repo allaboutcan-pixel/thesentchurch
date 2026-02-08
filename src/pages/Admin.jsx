@@ -2928,71 +2928,6 @@ const Admin = () => {
                                 ))}
                             </div>
 
-                            {/* Daily Word List */}
-                            {activeTab === 'dailyWord' && !showAddForm && (
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {dailyWords.length === 0 ? (
-                                        <div className="col-span-full py-20 text-center text-gray-400 font-medium">
-                                            등록된 오늘의 말씀이 없습니다.
-                                        </div>
-                                    ) : (
-                                        dailyWords.map((word) => (
-                                            <div key={word.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 group transition-all hover:shadow-2xl flex flex-col">
-                                                <div className="aspect-video relative overflow-hidden bg-slate-100">
-                                                    <img
-                                                        src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
-                                                        alt="Preview"
-                                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                                    />
-                                                    <div className="absolute top-4 left-4">
-                                                        <span className="bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/20">
-                                                            {word.date}
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div className="p-6 flex-grow flex flex-col">
-                                                    <h3 className="font-bold text-primary text-sm mb-3">
-                                                        {word.verse || word.title}
-                                                    </h3>
-                                                    <p className="text-gray-600 text-sm italic leading-relaxed break-keep line-clamp-3">
-                                                        "{word.content}"
-                                                    </p>
-                                                    <div className="mt-8 flex gap-2 border-t border-gray-50 pt-6">
-                                                        <button
-                                                            onClick={() => {
-                                                                setEditingId(word.id);
-                                                                setFormData({
-                                                                    ...formData,
-                                                                    title: word.verse || word.title || '',
-                                                                    content: word.content || '',
-                                                                    date: word.date || '',
-                                                                    fileUrl: word.image || ''
-                                                                });
-                                                                setShowAddForm(true);
-                                                            }}
-                                                            className="flex-grow py-3 bg-gray-50 text-gray-600 rounded-xl text-xs font-bold hover:bg-primary/10 hover:text-primary transition-all"
-                                                        >
-                                                            수정하기
-                                                        </button>
-                                                        <button
-                                                            onClick={async () => {
-                                                                if (window.confirm('정말 삭제하시겠습니까?')) {
-                                                                    await dbService.deleteDailyWord(word.id);
-                                                                    setDailyWords(dailyWords.filter(dw => dw.id !== word.id));
-                                                                }
-                                                            }}
-                                                            className="p-3 bg-red-50 text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-sm"
-                                                        >
-                                                            <Trash2 size={16} />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))
-                                    )}
-                                </div>
-                            )}
-
                             {/* Empty State */}
                             {(activeTab === 'sermons' ? sermons :
                                 activeTab === 'bulletins' ? bulletins :
@@ -3006,6 +2941,86 @@ const Admin = () => {
                         </div>
                     )
                 }
+
+                {/* Daily Word List (Custom Grid View) */}
+                {activeTab === 'dailyWord' && !showAddForm && (
+                    <div className="animate-fade-in-up">
+                        {dailyWords.length > 0 && (
+                            <div className="flex justify-between items-center mb-6 px-2">
+                                <h2 className="font-black text-primary text-xl flex items-center gap-2">
+                                    <BookOpen size={22} className="text-accent" />
+                                    DAILY WORD DATABASE
+                                    <span className="text-sm font-bold text-gray-300 ml-2">{dailyWords.length} Items</span>
+                                </h2>
+                            </div>
+                        )}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {dailyWords.length === 0 ? (
+                                <div className="col-span-full py-20 text-center bg-white rounded-[2rem] border border-gray-100 shadow-sm">
+                                    <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
+                                        <BookOpen size={40} />
+                                    </div>
+                                    <p className="text-gray-400 font-bold mb-2">등록된 오늘의 말씀이 없습니다.</p>
+                                    <p className="text-gray-300 text-sm">새 항목 등록하기 버튼을 눌러 추가해주세요.</p>
+                                </div>
+                            ) : (
+                                dailyWords.map((word) => (
+                                    <div key={word.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 group transition-all hover:shadow-2xl flex flex-col">
+                                        <div className="aspect-video relative overflow-hidden bg-slate-100">
+                                            <img
+                                                src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
+                                                alt="Preview"
+                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                            />
+                                            <div className="absolute top-4 left-4">
+                                                <span className="bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/20">
+                                                    {word.date}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="p-6 flex-grow flex flex-col">
+                                            <h3 className="font-bold text-primary text-sm mb-3">
+                                                {word.verse || word.title}
+                                            </h3>
+                                            <p className="text-gray-600 text-sm italic leading-relaxed break-keep line-clamp-3">
+                                                "{word.content}"
+                                            </p>
+                                            <div className="mt-8 flex gap-2 border-t border-gray-50 pt-6">
+                                                <button
+                                                    onClick={() => {
+                                                        setEditingId(word.id);
+                                                        setFormData({
+                                                            ...formData,
+                                                            title: word.verse || word.title || '',
+                                                            content: word.content || '',
+                                                            date: word.date || '',
+                                                            fileUrl: word.image || ''
+                                                        });
+                                                        setShowAddForm(true);
+                                                    }}
+                                                    className="flex-grow py-3 bg-gray-50 text-gray-600 rounded-xl text-xs font-bold hover:bg-primary/10 hover:text-primary transition-all"
+                                                >
+                                                    수정하기
+                                                </button>
+                                                <button
+                                                    onClick={async () => {
+                                                        if (window.confirm('정말 삭제하시겠습니까?')) {
+                                                            await dbService.deleteDailyWord(word.id);
+                                                            setDailyWords(dailyWords.filter(dw => dw.id !== word.id));
+                                                        }
+                                                    }}
+                                                    className="p-3 bg-red-50 text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                )}
                 {
                     !isFirebaseConfigured && (
                         <div className="mt-10 p-10 bg-amber-50 rounded-[2.5rem] border border-amber-100 flex flex-col md:flex-row gap-8 items-start relative overflow-hidden">
