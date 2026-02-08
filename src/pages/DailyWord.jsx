@@ -120,7 +120,7 @@ const DailyWord = () => {
                             fontSize: titleSize ? `${titleSize}px` : undefined
                         }}
                     >
-                        {title || "오늘의 말씀"}
+                        {title || t('resources.daily_word_title')}
                     </h1>
                     <div className="w-20 h-1.5 bg-accent mx-auto mb-8 rounded-full animate-fade-in-up delay-75" />
                     <h2 className={clsx(
@@ -134,7 +134,7 @@ const DailyWord = () => {
                             fontSize: subtitleSize ? `${subtitleSize}px` : undefined
                         }}
                     >
-                        {subtitle || "Daily Bread for Soul"}
+                        {subtitle || t('resources.daily_word_subtitle')}
                     </h2>
                 </div>
             </section>
@@ -207,9 +207,9 @@ const DailyWord = () => {
                         <div>
                             <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
                                 <Calendar size={28} className="text-primary" />
-                                지난 말씀 보기
+                                {t('resources.daily_word_title')}
                             </h3>
-                            <p className="text-slate-400 font-medium text-sm mt-1">지나간 오늘의 말씀들을 다시 묵상해보세요.</p>
+                            <p className="text-slate-400 font-medium text-sm mt-1">{t('resources.daily_word_subtitle')}</p>
                         </div>
 
                         <div className="flex flex-wrap gap-2">
