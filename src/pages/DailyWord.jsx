@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Calendar, ChevronRight, BookOpen, Quote } from 'lucide-react';
+import { Calendar, ChevronRight, BookOpen, Quote, Play } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { dbService } from '../services/dbService';
@@ -138,7 +139,33 @@ const DailyWord = () => {
                 </div>
             </section>
 
-            <div className="container mx-auto px-4 py-16">
+            <div className="container mx-auto px-4 py-12">
+                {/* Tabs - Unified with Resources.jsx */}
+                <div className="flex justify-center mb-12">
+                    <div className="inline-flex rounded-xl shadow-sm bg-gray-100 p-1" role="group">
+                        <Link
+                            to="/sermons"
+                            className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all text-slate-400 hover:text-primary hover:bg-white/50"
+                        >
+                            <Play size={18} />
+                            <span>{t('nav.sunday_sermon')}</span>
+                        </Link>
+                        <button
+                            className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all bg-white text-primary shadow-lg scale-105"
+                        >
+                            <Quote size={18} />
+                            <span>{t('nav.daily_word')}</span>
+                        </button>
+                        <Link
+                            to="/sermons/column"
+                            className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black transition-all text-slate-400 hover:text-primary hover:bg-white/50"
+                        >
+                            <BookOpen size={18} />
+                            <span>{t('nav.column')}</span>
+                        </Link>
+                    </div>
+                </div>
+
                 {/* Latest Word Highlight */}
                 {latestWord && (
                     <div className="max-w-4xl mx-auto mb-24 animate-fade-in">
