@@ -442,8 +442,9 @@ const Admin = () => {
                 const initialStaff = (churchData.intro.staff || []).map((s, i) => ({ ...s, id: `init_${i}` }));
                 setStaffList(initialStaff);
             }
-        } catch (e) {
-            console.error("Firebase connection error:", e);
+        } catch (error) {
+            console.error("Failed to load data:", error);
+            alert(`데이터 로딩 중 오류가 발생했습니다: ${error.message}`);
             setIsFirebaseConfigured(false);
             setSermons(sermonsInitialData);
             setBulletins(bulletinsInitialData);
