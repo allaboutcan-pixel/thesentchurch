@@ -346,7 +346,7 @@ const Admin = () => {
                 if (orderA !== -1 && orderB !== -1) return orderB - orderA;
                 if (orderA !== -1) return -1;
                 if (orderB !== -1) return 1;
-                return new Date(a.date) - new Date(b.date); // ASCENDING
+                return new Date(b.date) - new Date(a.date); // DESCENDING (Fri -> Mon)
             });
             setDailyWords(sortedDailyWords);
             setCalendarEvents(sortedCalendar);
@@ -3001,6 +3001,9 @@ const Admin = () => {
                                     DAILY WORD DATABASE
                                     <span className="text-sm font-bold text-gray-300 ml-2">{dailyWords.length} Items</span>
                                 </h2>
+                                <span className="text-xs text-slate-400 font-bold bg-slate-100 px-3 py-1 rounded-full animate-pulse">
+                                    * 순서 변경 시 즉시 자동 저장됩니다 (모바일 앱 연동)
+                                </span>
                             </div>
                         )}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

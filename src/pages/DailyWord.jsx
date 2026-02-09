@@ -106,10 +106,10 @@ const DailyWord = () => {
             {/* Header Banner */}
             <section className={clsx(
                 "relative flex items-center justify-center overflow-hidden",
-                height === 'full' ? "h-[45vh] md:h-[55vh]" :
-                    height === 'large' ? "h-[30vh]" :
-                        height === 'medium' ? "h-[18vh] min-h-[160px]" :
-                            "h-[12vh]"
+                height === 'full' ? "h-[65vh] md:h-[85vh]" :
+                    height === 'large' ? "h-[65vh]" :
+                        height === 'medium' ? "h-[50vh] min-h-[400px]" :
+                            "h-[25vh]"
             )}>
                 <div className="absolute inset-0 z-0">
                     <img
@@ -274,47 +274,56 @@ const DailyWord = () => {
                         {/* Word Cards Grid */}
                         <div className="flex-grow">
                             {archiveData[selectedYear]?.[selectedMonth] ? (
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    {archiveData[selectedYear][selectedMonth].map((word) => (
-                                        <div key={word.id} className="bg-white rounded-[2.5rem] overflow-hidden border border-slate-100 group hover:shadow-2xl transition-all flex flex-col hover:-translate-y-1 duration-300 shadow-lg shadow-slate-200/50">
-                                            <div className="aspect-video relative overflow-hidden">
-                                                <img
-                                                    src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
-                                                    alt="Preview"
-                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
-                                                    loading="lazy"
-                                                />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                                <div className="flex flex-wrap justify-center gap-6">
+                                    {archiveData[selectedYear][selectedMonth]
+                                        .sort((a, b) => {
+                                            const orderA = a.order ?? -1;
+                                            const orderB = b.order ?? -1;
+                                            if (orderA !== -1 && orderB !== -1) return orderB - orderA;
+                                            if (orderA !== -1) return -1;
+                                            if (orderB !== -1) return 1;
+                                            return new Date(b.date) - new Date(a.date); // Descending
+                                        })
+                                        .map((word) => (
+                                            <div key={word.id} className="w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-white rounded-[2.5rem] overflow-hidden border border-slate-100 group hover:shadow-2xl transition-all flex flex-col hover:-translate-y-1 duration-300 shadow-lg shadow-slate-200/50">
+                                                <div className="aspect-video relative overflow-hidden">
+                                                    <img
+                                                        src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
+                                                        alt="Preview"
+                                                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                                                        loading="lazy"
+                                                    />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
 
-                                                {/* Card Badge UI */}
-                                                <div className="absolute top-6 left-6 flex items-center gap-2">
-                                                    <div className="bg-white/95 backdrop-blur-md text-primary w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg shadow-lg">
-                                                        {getDayName(word.date)}
+                                                    {/* Card Badge UI */}
+                                                    <div className="absolute top-6 left-6 flex items-center gap-2">
+                                                        <div className="bg-white/95 backdrop-blur-md text-primary w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg shadow-lg">
+                                                            {getDayName(word.date)}
+                                                        </div>
+                                                        <span className="bg-black/40 backdrop-blur-md text-white px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest border border-white/10">
+                                                            {word.date}
+                                                        </span>
                                                     </div>
-                                                    <span className="bg-black/40 backdrop-blur-md text-white px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest border border-white/10">
-                                                        {word.date}
-                                                    </span>
                                                 </div>
-                                            </div>
-                                            <div className="p-3 flex-grow flex flex-col text-center justify-between">
-                                                <h4 className="font-bold text-primary text-sm mb-2 line-clamp-1 mt-1">
-                                                    {word.verse || word.title}
-                                                </h4>
+                                                <div className="p-3 flex-grow flex flex-col text-center justify-between">
+                                                    <h4 className="font-bold text-primary text-sm mb-2 line-clamp-1 mt-1">
+                                                        {word.verse || word.title}
+                                                    </h4>
 
-                                                <div className="flex justify-center mb-1">
-                                                    <button
-                                                        onClick={() => {
-                                                            setLatestWord(word);
-                                                            window.scrollTo({ top: 300, behavior: 'smooth' });
-                                                        }}
-                                                        className="px-4 py-1.5 bg-slate-50 text-slate-400 font-bold text-[10px] uppercase tracking-widest rounded-full hover:bg-primary hover:text-white transition-all transform active:scale-95 border border-slate-100"
-                                                    >
-                                                        말씀 보기
-                                                    </button>
+                                                    <div className="flex justify-center mb-1">
+                                                        <button
+                                                            onClick={() => {
+                                                                setLatestWord(word);
+                                                                window.scrollTo({ top: 300, behavior: 'smooth' });
+                                                            }}
+                                                            className="px-4 py-1.5 bg-slate-50 text-slate-400 font-bold text-[10px] uppercase tracking-widest rounded-full hover:bg-primary hover:text-white transition-all transform active:scale-95 border border-slate-100"
+                                                        >
+                                                            말씀 보기
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
                                 </div>
                             ) : (
                                 <div className="py-20 flex flex-col items-center justify-center text-slate-300 gap-4">
