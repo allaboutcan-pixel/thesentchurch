@@ -346,7 +346,7 @@ const Admin = () => {
                 if (orderA !== -1 && orderB !== -1) return orderB - orderA;
                 if (orderA !== -1) return -1;
                 if (orderB !== -1) return 1;
-                return new Date(b.date) - new Date(a.date);
+                return new Date(a.date) - new Date(b.date); // ASCENDING
             });
             setDailyWords(sortedDailyWords);
             setCalendarEvents(sortedCalendar);
