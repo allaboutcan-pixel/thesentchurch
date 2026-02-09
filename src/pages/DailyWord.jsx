@@ -76,6 +76,7 @@ const DailyWord = () => {
                     const year = d.getFullYear();
                     const month = String(d.getMonth() + 1).padStart(2, '0');
                     const day = String(d.getDate()).padStart(2, '0');
+                    const todayStr = `${year}-${month}-${day}`;
                     // Find word exactly for today to support scheduling
                     const todayWord = sorted.find(w => w.date === todayStr);
 
