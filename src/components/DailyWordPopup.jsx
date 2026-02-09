@@ -84,23 +84,22 @@ const DailyWordPopup = ({ word }) => {
                     </div>
                 </div>
 
-                {/* Simplified Actions Area - More compact */}
-                <div className="p-4 bg-white flex flex-col gap-2">
-                    <Link
-                        to="/sermons/daily"
-                        className="w-full py-3 bg-primary text-white rounded-lg font-bold shadow-md hover:bg-primary-dark transition-all flex items-center justify-center gap-2 text-sm"
-                        onClick={() => handleClose(false)}
-                    >
-                        <span>더 많은 말씀 보기</span>
-                        <ExternalLink size={14} />
-                    </Link>
-
+                {/* Minimized Actions Area */}
+                <div className="px-4 py-3 bg-white flex items-center justify-between text-[11px] font-medium text-slate-400">
                     <button
                         onClick={() => handleClose(true)}
-                        className="text-gray-400 text-[10px] font-bold hover:text-gray-600 transition-colors uppercase tracking-widest text-center py-2"
+                        className="hover:text-slate-600 transition-colors"
                     >
                         {t('home.daily_word_popup_close')}
                     </button>
+                    <Link
+                        to="/sermons/daily"
+                        className="flex items-center gap-1 hover:text-primary transition-colors"
+                        onClick={() => handleClose(false)}
+                    >
+                        <span>더 많은 말씀 보기</span>
+                        <ExternalLink size={12} />
+                    </Link>
                 </div>
             </div>
         </div>
