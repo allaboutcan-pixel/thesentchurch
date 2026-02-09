@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { Play, FileText, MapPin, ChevronRight, Bell, ArrowRight, Youtube } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -10,11 +10,15 @@ import { useSiteConfig } from '../hooks/useSiteConfig';
 import { isVideo, getYoutubeId, getDriveId } from '../utils/mediaUtils';
 import QuickLinks from '../components/QuickLinks';
 import CalendarWidget from '../components/CalendarWidget';
-import DailyWordPopup from '../components/DailyWordPopup';
 import clsx from 'clsx';
+
+// Lazy load the popup to reduce initial bundle size
+const DailyWordPopup = lazy(() => import('../components/DailyWordPopup'));
+
 const DEFAULT_HERO_IMAGE = ""; // Set to empty to avoid accidental flashes
 
 const Home = () => {
+    // ... items ...
     const [latestSermon, setLatestSermon] = useState(sermonsInitialData[0] || {});
     const [recentNotices, setRecentNotices] = useState(noticesInitialData.slice(0, 3));
     const [latestDailyWord, setLatestDailyWord] = useState(null);
@@ -147,7 +151,9 @@ const Home = () => {
 
     return (
         <div className="min-h-screen">
-            <DailyWordPopup word={latestDailyWord} />
+            <Suspense fallback={null}>
+                <DailyWordPopup word={latestDailyWord} />
+            </Suspense>
             {/* Hero Section (Main Banner) */}
             <section className={clsx(
                 "relative flex items-center justify-center overflow-hidden bg-black", // Changed to bg-black for cleaner transitions

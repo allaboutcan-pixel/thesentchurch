@@ -59,9 +59,12 @@ const DailyWordPopup = ({ word }) => {
                 {/* Image Section - Auto height to show full image */}
                 <div className="relative w-full">
                     <img
-                        src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
+                        src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=600"} // Reduced width for mobile optimization
                         alt="Today's Word"
                         className="w-full h-auto object-contain"
+                        loading="eager"
+                        decoding="async"
+                        fetchpriority="high"
                     />
                     {/* Subtle gradient for text visibility if needed */}
                     <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
