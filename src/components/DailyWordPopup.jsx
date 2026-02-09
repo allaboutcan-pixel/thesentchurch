@@ -97,15 +97,15 @@ const DailyWordPopup = ({ word }) => {
 
                             const isIntro = introRegex.test(word.content) || englishIntroRegex.test(word.content);
 
-                            // Only show content if it's NOT just the intro text (prevent double text on image)
-                            if (!isIntro) {
-                                return (
-                                    <p className="text-lg md:text-xl font-black leading-tight break-keep drop-shadow-lg">
-                                        "{word.content}"
-                                    </p>
-                                );
-                            }
-                            return null;
+                            // If it's the intro text, show it very small. Otherwise show normal size.
+                            return (
+                                <p className={clsx(
+                                    "font-black leading-tight break-keep drop-shadow-lg",
+                                    isIntro ? "text-[10px] md:text-xs opacity-80 mb-1" : "text-lg md:text-xl"
+                                )}>
+                                    "{word.content}"
+                                </p>
+                            );
                         })()}
 
                         {word.verse && (

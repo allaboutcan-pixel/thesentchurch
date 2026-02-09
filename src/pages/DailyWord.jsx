@@ -250,14 +250,14 @@ const DailyWord = () => {
 
                                     const isIntro = introRegex.test(latestWord.content) || englishIntroRegex.test(latestWord.content);
 
-                                    if (!isIntro) {
-                                        return (
-                                            <p className="text-slate-600 text-lg md:text-xl font-medium leading-relaxed italic break-keep whitespace-pre-wrap">
-                                                " {latestWord.content} "
-                                            </p>
-                                        );
-                                    }
-                                    return null;
+                                    return (
+                                        <p className={clsx(
+                                            "leading-relaxed italic break-keep whitespace-pre-wrap",
+                                            isIntro ? "text-slate-400 text-sm mb-4" : "text-slate-600 text-lg md:text-xl font-medium"
+                                        )}>
+                                            " {latestWord.content} "
+                                        </p>
+                                    );
                                 })()}
                             </div>
                         </div>
