@@ -337,7 +337,18 @@ const Admin = () => {
             setNotices(fbNotices);
             setGallery(fbGallery);
             setColumns(fbColumns || []);
-            setDailyWords(fbDailyWords || []);
+            setColumns(fbColumns || []);
+
+            // Sort daily words: Order (desc) -> Date (desc)
+            const sortedDailyWords = (fbDailyWords || []).sort((a, b) => {
+                const orderA = a.order ?? -1;
+                const orderB = b.order ?? -1;
+                if (orderA !== -1 && orderB !== -1) return orderB - orderA;
+                if (orderA !== -1) return -1;
+                if (orderB !== -1) return 1;
+                return new Date(b.date) - new Date(a.date);
+            });
+            setDailyWords(sortedDailyWords);
             setCalendarEvents(sortedCalendar);
             if (fbConfig) {
                 setSiteConfig(fbConfig);
@@ -471,6 +482,43 @@ const Admin = () => {
         const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
         const match = url.match(regExp);
         return (match && match[7].length === 11) ? match[7] : url;
+    };
+
+
+    const handleMoveDailyWord = async (index, direction) => {
+        if (isLoading) return;
+        const newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= dailyWords.length) return;
+
+        setIsLoading(true);
+        try {
+            const newItems = [...dailyWords];
+            // Swap items in the array
+            [newItems[index], newItems[newIndex]] = [newItems[newIndex], newItems[index]];
+
+            // Assign order values to all items based on their new visual position
+            // Higher order = appears first (descending sort)
+            const updates = newItems.map((item, idx) => ({
+                id: item.id,
+                order: newItems.length - idx
+            }));
+
+            // Optimistic update
+            newItems.forEach((item, idx) => {
+                item.order = newItems.length - idx;
+            });
+            setDailyWords(newItems);
+
+            // Save to DB
+            await dbService.updateDailyWordsOrder(updates);
+
+        } catch (error) {
+            console.error("Error reordering:", error);
+            alert("순서 변경 중 오류가 발생했습니다.");
+            loadData(); // Revert on error
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleStaffSubmit = async (e) => {
@@ -2965,18 +3013,42 @@ const Admin = () => {
                                     <p className="text-gray-300 text-sm">새 항목 등록하기 버튼을 눌러 추가해주세요.</p>
                                 </div>
                             ) : (
-                                dailyWords.map((word) => (
-                                    <div key={word.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 group transition-all hover:shadow-2xl flex flex-col">
+                                dailyWords.map((word, idx) => (
+                                    <div key={word.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 group transition-all hover:shadow-2xl flex flex-col relative">
                                         <div className="aspect-video relative overflow-hidden bg-slate-100">
                                             <img
                                                 src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
                                                 alt="Preview"
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                             />
-                                            <div className="absolute top-4 left-4">
+                                            <div className="absolute top-4 left-4 flex gap-2">
                                                 <span className="bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/20">
                                                     {word.date}
                                                 </span>
+                                            </div>
+                                            <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleMoveDailyWord(idx, -1);
+                                                    }}
+                                                    disabled={idx === 0}
+                                                    className="p-1.5 bg-black/50 backdrop-blur-md text-white rounded-lg hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30 disabled:hover:bg-black/50 disabled:hover:text-white"
+                                                    title="Move Up"
+                                                >
+                                                    <ArrowUp size={14} />
+                                                </button>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleMoveDailyWord(idx, 1);
+                                                    }}
+                                                    disabled={idx === dailyWords.length - 1}
+                                                    className="p-1.5 bg-black/50 backdrop-blur-md text-white rounded-lg hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30 disabled:hover:bg-black/50 disabled:hover:text-white"
+                                                    title="Move Down"
+                                                >
+                                                    <ArrowDown size={14} />
+                                                </button>
                                             </div>
                                         </div>
                                         <div className="p-6 flex-grow flex flex-col">

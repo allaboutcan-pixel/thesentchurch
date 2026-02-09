@@ -388,6 +388,20 @@ export const dbService = {
             throw e;
         }
     },
+    updateDailyWordsOrder: async (items) => {
+        try {
+            const batch = writeBatch(db);
+            items.forEach(item => {
+                const docRef = doc(db, DAILY_WORD, item.id);
+                batch.update(docRef, { order: item.order });
+            });
+            await batch.commit();
+            return true;
+        } catch (e) {
+            console.error("Error updating daily words order: ", e);
+            throw e;
+        }
+    },
 
     // Real-time subscription for Site Config
     subscribeToSiteConfig: (callback) => {
