@@ -71,7 +71,12 @@ const DailyWord = () => {
                     const limitedWords = sorted.slice(0, 5);
                     setDailyWords(limitedWords);
 
-                    const todayStr = new Date().toISOString().split('T')[0];
+                    // Use local date components to match user's device time (fixes UTC/KST/PST offset issues)
+                    const d = new Date();
+                    const year = d.getFullYear();
+                    const month = String(d.getMonth() + 1).padStart(2, '0');
+                    const day = String(d.getDate()).padStart(2, '0');
+                    const todayStr = `${year}-${month}-${day}`;
                     const todayWord = sorted.find(w => w.date === todayStr) || sorted[0];
                     setLatestWord(todayWord);
 
