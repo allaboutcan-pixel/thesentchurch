@@ -296,20 +296,18 @@ const DailyWord = () => {
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div className="p-4 flex-grow flex flex-col text-center">
-                                                <h4 className="font-bold text-primary text-base mb-4 line-clamp-1">
+                                            <div className="p-3 flex-grow flex flex-col text-center justify-between">
+                                                <h4 className="font-bold text-primary text-sm mb-2 line-clamp-1 mt-1">
                                                     {word.verse || word.title}
                                                 </h4>
-                                                <p className="text-slate-600 font-medium text-sm leading-relaxed line-clamp-2 break-keep italic">
-                                                    "{word.content}"
-                                                </p>
-                                                <div className="mt-8 pt-6 border-t border-slate-50 flex justify-center">
+
+                                                <div className="flex justify-center mb-1">
                                                     <button
                                                         onClick={() => {
                                                             setLatestWord(word);
                                                             window.scrollTo({ top: 300, behavior: 'smooth' });
                                                         }}
-                                                        className="px-6 py-2 bg-slate-50 text-primary font-black text-[11px] uppercase tracking-widest rounded-full hover:bg-primary hover:text-white transition-all transform active:scale-95"
+                                                        className="px-4 py-1.5 bg-slate-50 text-slate-400 font-bold text-[10px] uppercase tracking-widest rounded-full hover:bg-primary hover:text-white transition-all transform active:scale-95 border border-slate-100"
                                                     >
                                                         말씀 보기
                                                     </button>
