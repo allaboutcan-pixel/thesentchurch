@@ -76,15 +76,22 @@ const DailyWord = () => {
                     const year = d.getFullYear();
                     const month = String(d.getMonth() + 1).padStart(2, '0');
                     const day = String(d.getDate()).padStart(2, '0');
-                    const todayStr = `${year}-${month}-${day}`;
-
                     // Find word exactly for today to support scheduling
                     const todayWord = sorted.find(w => w.date === todayStr);
 
-                    // If no word for today (e.g. Sunday), find the last available past word
+                    // User Request: If it's Sunday (0) and no word for today, look for tomorrow (Monday)
+                    let displayWord = todayWord;
+                    if (!displayWord && d.getDay() === 0) {
+                        const tomorrow = new Date(d);
+                        tomorrow.setDate(d.getDate() + 1);
+                        const tomStr = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
+                        displayWord = sorted.find(w => w.date === tomStr);
+                    }
+
+                    // If no word for today or tomorrow (e.g. general fallback), find the last available past word
                     const lastWord = sorted.find(w => w.date < todayStr) || sorted[0];
 
-                    setLatestWord(todayWord || lastWord);
+                    setLatestWord(displayWord || lastWord);
 
                     const grouped = {};
                     limitedWords.forEach(item => {

@@ -60,16 +60,22 @@ const Home = () => {
                     const year = d.getFullYear();
                     const month = String(d.getMonth() + 1).padStart(2, '0');
                     const day = String(d.getDate()).padStart(2, '0');
-                    const todayStr = `${year}-${month}-${day}`;
-
                     // Find word exactly for today to support scheduling
                     const todayWord = liveDailyWords.find(w => w.date === todayStr);
 
-                    // If no word for today (e.g. Sunday/Monday morning), find the last available past word
-                    // This prevents future scheduled words (like Friday) from showing too early
+                    // User Request: If it's Sunday (0) and no word for today, look for tomorrow (Monday)
+                    let displayWord = todayWord;
+                    if (!displayWord && d.getDay() === 0) {
+                        const tomorrow = new Date(d);
+                        tomorrow.setDate(d.getDate() + 1);
+                        const tomStr = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
+                        displayWord = liveDailyWords.find(w => w.date === tomStr);
+                    }
+
+                    // If no word for today or tomorrow (e.g. Sunday/Monday morning), find the last available past word
                     const lastWord = liveDailyWords.filter(w => w.date < todayStr).sort((a, b) => new Date(b.date) - new Date(a.date))[0];
 
-                    setLatestDailyWord(todayWord || lastWord || null);
+                    setLatestDailyWord(displayWord || lastWord || null);
                 }
 
                 if (config) {
