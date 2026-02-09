@@ -21,7 +21,14 @@ const DailyWordPopup = ({ word }) => {
         if (!word) return;
 
         const lastClosed = localStorage.getItem('daily_word_closed_date');
-        const todayStr = new Date().toISOString().split('T')[0];
+
+        // Use local date for today (Fix timezone issue)
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        const todayStr = `${year}-${month}-${day}`;
+
         const isActuallyToday = word.date === todayStr;
 
         if (lastClosed !== todayStr && isActuallyToday) {
@@ -33,7 +40,13 @@ const DailyWordPopup = ({ word }) => {
 
     const handleClose = (dontShowToday = false) => {
         if (dontShowToday) {
-            localStorage.setItem('daily_word_closed_date', new Date().toISOString().split('T')[0]);
+            // Use local date for storage
+            const d = new Date();
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            const todayStr = `${year}-${month}-${day}`;
+            localStorage.setItem('daily_word_closed_date', todayStr);
         }
         setIsOpen(false);
     };

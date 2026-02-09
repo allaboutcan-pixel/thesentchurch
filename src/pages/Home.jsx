@@ -55,8 +55,14 @@ const Home = () => {
                 if (liveNotices.length > 0) setRecentNotices(liveNotices);
 
                 if (liveDailyWords && liveDailyWords.length > 0) {
-                    const todayStr = new Date().toISOString().split('T')[0];
-                    // Find word exactly for today to support scheduling (future items won't show)
+                    // Use local date to match user's device time (fixes UTC/KST issues)
+                    const d = new Date();
+                    const year = d.getFullYear();
+                    const month = String(d.getMonth() + 1).padStart(2, '0');
+                    const day = String(d.getDate()).padStart(2, '0');
+                    const todayStr = `${year}-${month}-${day}`;
+
+                    // Find word exactly for today to support scheduling
                     const todayWord = liveDailyWords.find(w => w.date === todayStr);
                     setLatestDailyWord(todayWord || null);
                 }
