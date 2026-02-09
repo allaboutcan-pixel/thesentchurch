@@ -88,18 +88,36 @@ const DailyWordPopup = ({ word }) => {
                     </button>
 
                     {/* Verse overlay - Compact */}
+                    {/* Verse overlay - Compact */}
                     <div className="absolute bottom-4 left-4 right-4 text-white">
-                        <p className="text-lg md:text-xl font-black leading-tight break-keep drop-shadow-lg">
-                            "{word.content}"
-                        </p>
+                        {(() => {
+                            // Check if content is just the intro text or "A Verse for Today"
+                            const introRegex = /["']?이번\s*주.*?한\s*구절["']?/i;
+                            const englishIntroRegex = /a\s*verse\s*for\s*today/i;
+
+                            const isIntro = introRegex.test(word.content) || englishIntroRegex.test(word.content);
+
+                            // Only show content if it's NOT just the intro text (prevent double text on image)
+                            if (!isIntro) {
+                                return (
+                                    <p className="text-lg md:text-xl font-black leading-tight break-keep drop-shadow-lg">
+                                        "{word.content}"
+                                    </p>
+                                );
+                            }
+                            return null;
+                        })()}
+
                         {word.verse && (
                             <p className="font-bold text-accent text-[10px] md:text-xs mt-1 drop-shadow-md">
                                 {(() => {
-                                    // Regex to catch "이번 주 ... 한 구절" variations (with/without spaces) including the quote itself if present
+                                    // Regex to catch "이번 주 ... 한 구절" variations
                                     const introRegex = /["']?이번\s*주.*?한\s*구절["']?/i;
+                                    const englishIntroRegex = /a\s*verse\s*for\s*today/i;
 
-                                    // Simply remove the intro part for all screens
-                                    return word.verse.replace(introRegex, '').trim();
+                                    // Remove intro parts and "A Verse for Today"
+                                    let cleanVerse = word.verse.replace(introRegex, '').replace(englishIntroRegex, '').trim();
+                                    return cleanVerse;
                                 })()}
                             </p>
                         )}

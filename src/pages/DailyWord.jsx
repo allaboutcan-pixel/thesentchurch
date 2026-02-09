@@ -235,16 +235,30 @@ const DailyWord = () => {
                                         const text = latestWord.verse || latestWord.title;
                                         if (!text) return null;
 
-                                        // Regex to catch "이번 주 ... 한 구절" variations (with/without spaces) including the quote itself if present
+                                        // Regex to catch "이번 주 ... 한 구절" variations
                                         const introRegex = /["']?이번\s*주.*?한\s*구절["']?/i;
+                                        const englishIntroRegex = /a\s*verse\s*for\s*today/i;
 
-                                        // Simply remove the intro part for all screens
-                                        return text.replace(introRegex, '').trim();
+                                        // Remove intro parts and "A Verse for Today"
+                                        return text.replace(introRegex, '').replace(englishIntroRegex, '').trim();
                                     })()}
                                 </h2>
-                                <p className="text-slate-600 text-lg md:text-xl font-medium leading-relaxed italic break-keep whitespace-pre-wrap">
-                                    " {latestWord.content} "
-                                </p>
+                                {(() => {
+                                    // Check if content is just the intro text or "A Verse for Today"
+                                    const introRegex = /["']?이번\s*주.*?한\s*구절["']?/i;
+                                    const englishIntroRegex = /a\s*verse\s*for\s*today/i;
+
+                                    const isIntro = introRegex.test(latestWord.content) || englishIntroRegex.test(latestWord.content);
+
+                                    if (!isIntro) {
+                                        return (
+                                            <p className="text-slate-600 text-lg md:text-xl font-medium leading-relaxed italic break-keep whitespace-pre-wrap">
+                                                " {latestWord.content} "
+                                            </p>
+                                        );
+                                    }
+                                    return null;
+                                })()}
                             </div>
                         </div>
                     </div>
