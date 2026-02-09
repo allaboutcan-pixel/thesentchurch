@@ -253,11 +253,11 @@ const DailyWord = () => {
                                         transition={{ duration: 0.3, ease: "easeOut" }}
                                     >
                                         {/* Left Page (Image) - Mobile: Top Half */}
-                                        <div className="md:w-1/2 relative overflow-hidden group border-b md:border-b-0 md:border-r border-stone-200/50">
+                                        <div className="md:w-1/2 relative overflow-hidden group border-b md:border-b-0 md:border-r border-stone-200/50 bg-stone-100/50">
                                             <img
                                                 src={latestWord.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
                                                 alt="Today's Word"
-                                                className="w-full h-64 md:h-full object-cover transition-transform duration-1000"
+                                                className="w-full h-auto max-h-[500px] md:h-full object-contain md:object-cover transition-transform duration-1000"
                                             />
                                             {/* Vertical Gutter Shadow for Mobile */}
                                             <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/5 to-transparent pointer-events-none md:hidden" />
