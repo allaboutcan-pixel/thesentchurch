@@ -238,7 +238,7 @@ const DailyWord = () => {
                                     <Quote size={32} className="text-stone-400" />
                                 </div>
                                 <div className="hidden md:block mb-6">
-                                    <span className="text-stone-400 text-xs font-serif tracking-widest uppercase border-b border-stone-200 pb-1">
+                                    <span className="text-stone-500 text-xs font-serif tracking-widest uppercase border-b border-stone-300 pb-1">
                                         {latestWord.date}
                                     </span>
                                 </div>
@@ -267,7 +267,7 @@ const DailyWord = () => {
                                     return (
                                         <p className={clsx(
                                             "leading-relaxed break-keep whitespace-pre-wrap font-serif",
-                                            isIntro ? "text-stone-400 text-xs mb-4" : "text-stone-600 text-lg md:text-xl"
+                                            isIntro ? "text-stone-500 text-xs mb-4 font-medium" : "text-stone-600 text-lg md:text-xl"
                                         )}>
                                             {latestWord.content}
                                         </p>
@@ -275,8 +275,8 @@ const DailyWord = () => {
                                 })()}
 
                                 {/* Page Number Footer style */}
-                                <div className="mt-12 flex justify-center md:justify-end opacity-40">
-                                    <span className="text-stone-400 text-[10px] font-serif tracking-widest">THE SENT CHURCH</span>
+                                <div className="mt-12 flex justify-center md:justify-end">
+                                    <span className="text-amber-900/80 text-[10px] font-serif tracking-widest font-bold">The Church of the Sent</span>
                                 </div>
                             </div>
                         </div>
