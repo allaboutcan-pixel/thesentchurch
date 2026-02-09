@@ -90,7 +90,7 @@ const DailyWordPopup = ({ word }) => {
                             "{word.content}"
                         </p>
                         {word.verse && (
-                            <p className="font-bold text-accent text-xs mt-1 drop-shadow-md">
+                            <p className="font-bold text-accent text-xs mt-1 drop-shadow-md hidden md:block">
                                 {word.verse}
                             </p>
                         )}
