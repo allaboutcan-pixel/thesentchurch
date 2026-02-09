@@ -90,8 +90,15 @@ const DailyWordPopup = ({ word }) => {
                             "{word.content}"
                         </p>
                         {word.verse && (
-                            <p className="font-bold text-accent text-xs mt-1 drop-shadow-md hidden md:block">
-                                {word.verse}
+                            <p className="font-bold text-accent text-[10px] md:text-xs mt-1 drop-shadow-md">
+                                {word.verse.includes('이번주') ? (
+                                    <>
+                                        <span className="hidden md:inline">{word.verse.split('하나님의 한구절')[0]}하나님의 한구절 </span>
+                                        <span>{word.verse.split('하나님의 한구절')[1] || word.verse}</span>
+                                    </>
+                                ) : (
+                                    word.verse
+                                )}
                             </p>
                         )}
                     </div>

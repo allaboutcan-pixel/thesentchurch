@@ -3017,7 +3017,7 @@ const Admin = () => {
                                 </div>
                             ) : (
                                 dailyWords.map((word, idx) => (
-                                    <div key={word.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 group transition-all hover:shadow-md flex flex-col relative">
+                                    <div key={word.id} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group transition-all hover:shadow-lg flex flex-col relative">
                                         <div className="aspect-video relative overflow-hidden bg-slate-100">
                                             <img
                                                 src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
@@ -3054,14 +3054,14 @@ const Admin = () => {
                                                 </button>
                                             </div>
                                         </div>
-                                        <div className="p-3 flex-grow flex flex-col">
-                                            <h3 className="font-bold text-primary text-xs mb-1 truncate">
+                                        <div className="p-2.5 flex-grow flex flex-col">
+                                            <h3 className="font-bold text-primary text-[11px] mb-0.5 truncate">
                                                 {word.verse || word.title}
                                             </h3>
-                                            <p className="text-gray-500 text-xs leading-tight break-keep line-clamp-2 mb-3">
+                                            <p className="text-gray-400 text-[10px] leading-tight break-keep line-clamp-2 mb-2">
                                                 "{word.content}"
                                             </p>
-                                            <div className="mt-auto flex gap-1 pt-2 border-t border-gray-50">
+                                            <div className="mt-auto flex gap-1 pt-1.5 border-t border-gray-50">
                                                 <button
                                                     onClick={() => {
                                                         setEditingId(word.id);

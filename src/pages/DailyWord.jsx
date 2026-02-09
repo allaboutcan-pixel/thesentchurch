@@ -217,7 +217,14 @@ const DailyWord = () => {
                                 </div>
                                 <Quote size={48} className="text-primary/5 absolute top-12 right-12" />
                                 <h2 className="text-xl md:text-2xl font-black text-primary mb-8 leading-tight break-keep">
-                                    {latestWord.verse || latestWord.title}
+                                    {(latestWord.verse || latestWord.title)?.includes('이번주') ? (
+                                        <>
+                                            <span className="hidden md:inline">{(latestWord.verse || latestWord.title).split('하나님의 한구절')[0]}하나님의 한구절 </span>
+                                            <span>{(latestWord.verse || latestWord.title).split('하나님의 한구절')[1] || (latestWord.verse || latestWord.title)}</span>
+                                        </>
+                                    ) : (
+                                        latestWord.verse || latestWord.title
+                                    )}
                                 </h2>
                                 <p className="text-slate-600 text-lg md:text-xl font-medium leading-relaxed italic break-keep whitespace-pre-wrap">
                                     " {latestWord.content} "
@@ -310,8 +317,8 @@ const DailyWord = () => {
                                                     </div>
                                                 </div>
                                                 <div className="p-3 flex-grow flex flex-col text-center justify-between">
-                                                    <h4 className="font-bold text-primary text-sm mb-2 line-clamp-1 mt-1">
-                                                        {word.verse || word.title}
+                                                    <h4 className="font-bold text-primary text-[11px] md:text-sm mb-2 line-clamp-1 mt-1 transition-all">
+                                                        {word.verse?.includes('하나님의 한구절') ? word.verse.split('하나님의 한구절')[1]?.trim() : (word.verse || word.title)}
                                                     </h4>
 
                                                     <div className="flex justify-center mb-1">
