@@ -32,8 +32,8 @@ const DailyWordPopup = ({ word }) => {
         const isActuallyToday = word.date === todayStr;
 
         if (lastClosed !== todayStr && isActuallyToday) {
-            // Delay popup for better UX
-            const timer = setTimeout(() => setIsOpen(true), 1500);
+            // Delay popup for better UX - Reduced to 100ms for faster feedback
+            const timer = setTimeout(() => setIsOpen(true), 100);
             return () => clearTimeout(timer);
         }
     }, [word]);
