@@ -201,36 +201,49 @@ const DailyWord = () => {
                     </div>
                 </div>
 
-                {/* Latest Word Highlight */}
+                {/* Latest Word Highlight - Open Book Style */}
                 {latestWord && (
-                    <div className="max-w-4xl mx-auto mb-24 animate-fade-in px-2">
-                        <div className="bg-slate-50 rounded-[3.5rem] overflow-hidden shadow-2xl border border-slate-100 flex flex-col md:flex-row shadow-primary/5">
-                            <div className="md:w-3/5 md:aspect-auto relative overflow-hidden group">
+                    <div className="max-w-5xl mx-auto mb-24 animate-fade-in px-4">
+                        {/* Book Container */}
+                        <div className="relative bg-[#fdfbf7] rounded-3xl md:rounded-[2rem] overflow-hidden shadow-2xl shadow-stone-300/50 flex flex-col md:flex-row min-h-[500px]">
+
+                            {/* Spine/Gutter Effect (Center Shadow) - Desktop Only */}
+                            <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-16 pointer-events-none z-20 hidden md:block"
+                                style={{ background: 'linear-gradient(90deg, transparent, rgba(0,0,0,0.04) 45%, rgba(0,0,0,0.06) 50%, rgba(0,0,0,0.04) 55%, transparent)' }}>
+                            </div>
+
+                            {/* Left Page (Image) */}
+                            <div className="md:w-1/2 relative overflow-hidden group border-r border-stone-200/50">
                                 <img
                                     src={latestWord.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
                                     alt="Today's Word"
-                                    className="w-full h-auto md:h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                                    className="w-full h-64 md:h-full object-cover group-hover:scale-105 transition-transform duration-1000"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent md:hidden" />
-                                <div className="absolute top-8 left-8">
-                                    <div className="bg-white/95 backdrop-blur-md text-primary w-14 h-14 rounded-2xl flex items-center justify-center font-black text-2xl shadow-2xl">
+                                {/* Inner Shadow for page curl effect */}
+                                <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black/10 to-transparent pointer-events-none hidden md:block" />
+
+                                <div className="absolute top-6 left-6">
+                                    <div className="bg-white/90 backdrop-blur-sm text-stone-800 w-12 h-12 rounded-lg flex items-center justify-center font-serif font-bold text-xl shadow-md border border-stone-100/50">
                                         {getDayName(latestWord.date)}
                                     </div>
                                 </div>
-                                <div className="absolute bottom-6 left-8 md:hidden">
-                                    <span className="bg-black/30 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest uppercase border border-white/20">
-                                        {latestWord.date}
-                                    </span>
-                                </div>
                             </div>
-                            <div className="md:w-2/5 p-6 md:p-8 flex flex-col justify-center relative bg-white">
-                                <div className="hidden md:block mb-4">
-                                    <span className="bg-primary/5 text-primary px-4 py-2 rounded-xl text-[10px] font-black tracking-widest uppercase">
+
+                            {/* Right Page (Text) */}
+                            <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative">
+                                {/* Inner Shadow for page curl effect */}
+                                <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-black/5 to-transparent pointer-events-none hidden md:block" />
+
+                                <div className="absolute top-6 right-6 opacity-30">
+                                    <Quote size={32} className="text-stone-400" />
+                                </div>
+                                <div className="hidden md:block mb-6">
+                                    <span className="text-stone-400 text-xs font-serif tracking-widest uppercase border-b border-stone-200 pb-1">
                                         {latestWord.date}
                                     </span>
                                 </div>
-                                <Quote size={40} className="text-primary/5 absolute top-6 right-6" />
-                                <h2 className="text-xl md:text-2xl font-black text-primary mb-4 leading-tight break-keep">
+
+                                <h2 className="text-xl md:text-2xl font-black text-stone-800 mb-6 leading-tight break-keep font-serif">
                                     {(() => {
                                         const text = latestWord.verse || latestWord.title;
                                         if (!text) return null;
@@ -243,6 +256,7 @@ const DailyWord = () => {
                                         return text.replace(introRegex, '').replace(englishIntroRegex, '').trim();
                                     })()}
                                 </h2>
+
                                 {(() => {
                                     // Check if content is just the intro text or "A Verse for Today"
                                     const introRegex = /["']?이번\s*주.*?한\s*구절["']?/i;
@@ -252,13 +266,18 @@ const DailyWord = () => {
 
                                     return (
                                         <p className={clsx(
-                                            "leading-relaxed italic break-keep whitespace-pre-wrap",
-                                            isIntro ? "text-slate-400 text-sm mb-4" : "text-slate-600 text-lg md:text-xl font-medium"
+                                            "leading-relaxed break-keep whitespace-pre-wrap font-serif",
+                                            isIntro ? "text-stone-400 text-xs mb-4" : "text-stone-600 text-lg md:text-xl"
                                         )}>
-                                            " {latestWord.content} "
+                                            {latestWord.content}
                                         </p>
                                     );
                                 })()}
+
+                                {/* Page Number Footer style */}
+                                <div className="mt-12 flex justify-center md:justify-end opacity-40">
+                                    <span className="text-stone-400 text-[10px] font-serif tracking-widest">THE SENT CHURCH</span>
+                                </div>
                             </div>
                         </div>
                     </div>
