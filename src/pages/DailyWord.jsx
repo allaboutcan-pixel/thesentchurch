@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Calendar, ChevronRight, BookOpen, Quote, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { dbService } from '../services/dbService';
@@ -201,9 +202,37 @@ const DailyWord = () => {
                     </div>
                 </div>
 
-                {/* Latest Word Highlight - Open Book Style */}
-                {latestWord && (
-                    <div className="max-w-5xl mx-auto mb-24 animate-fade-in px-4">
+                {/* Latest Word Highlight - Open Book Style with Page Turning */}
+                {dailyWords.length > 0 && (
+                    <div className="max-w-5xl mx-auto mb-24 animate-fade-in px-4 relative">
+                        {/* Navigation Buttons */}
+                        <button
+                            onClick={() => {
+                                const currentIndex = dailyWords.findIndex(w => w.id === latestWord.id);
+                                if (currentIndex < dailyWords.length - 1) {
+                                    setLatestWord(dailyWords[currentIndex + 1]);
+                                }
+                            }}
+                            disabled={!latestWord || dailyWords.findIndex(w => w.id === latestWord.id) >= dailyWords.length - 1}
+                            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-12 z-30 p-2 text-stone-400 hover:text-stone-600 disabled:opacity-0 transition-all"
+                            aria-label="Previous Day"
+                        >
+                            <ChevronRight size={40} className="rotate-180" />
+                        </button>
+                        <button
+                            onClick={() => {
+                                const currentIndex = dailyWords.findIndex(w => w.id === latestWord.id);
+                                if (currentIndex > 0) {
+                                    setLatestWord(dailyWords[currentIndex - 1]);
+                                }
+                            }}
+                            disabled={!latestWord || dailyWords.findIndex(w => w.id === latestWord.id) <= 0}
+                            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-12 z-30 p-2 text-stone-400 hover:text-stone-600 disabled:opacity-0 transition-all"
+                            aria-label="Next Day"
+                        >
+                            <ChevronRight size={40} />
+                        </button>
+
                         {/* Book Container */}
                         <div className="relative bg-[#fdfbf7] rounded-3xl md:rounded-[2rem] overflow-hidden shadow-2xl shadow-stone-300/50 flex flex-col md:flex-row min-h-[500px]">
 
@@ -212,73 +241,87 @@ const DailyWord = () => {
                                 style={{ background: 'linear-gradient(90deg, transparent, rgba(0,0,0,0.04) 45%, rgba(0,0,0,0.06) 50%, rgba(0,0,0,0.04) 55%, transparent)' }}>
                             </div>
 
-                            {/* Left Page (Image) */}
-                            <div className="md:w-1/2 relative overflow-hidden group border-r border-stone-200/50">
-                                <img
-                                    src={latestWord.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
-                                    alt="Today's Word"
-                                    className="w-full h-64 md:h-full object-cover group-hover:scale-105 transition-transform duration-1000"
-                                />
-                                {/* Inner Shadow for page curl effect */}
-                                <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black/10 to-transparent pointer-events-none hidden md:block" />
+                            {/* Content with Animation */}
+                            <AnimatePresence mode="wait">
+                                {latestWord && (
+                                    <motion.div
+                                        key={latestWord.id || latestWord.date}
+                                        className="contents"
+                                        initial={{ opacity: 0, x: 50 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        exit={{ opacity: 0, x: -50 }}
+                                        transition={{ duration: 0.3, ease: "easeOut" }}
+                                    >
+                                        {/* Left Page (Image) */}
+                                        <div className="md:w-1/2 relative overflow-hidden group border-r border-stone-200/50">
+                                            <img
+                                                src={latestWord.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
+                                                alt="Today's Word"
+                                                className="w-full h-64 md:h-full object-cover transition-transform duration-1000"
+                                            />
+                                            {/* Inner Shadow for page curl effect */}
+                                            <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black/10 to-transparent pointer-events-none hidden md:block" />
 
-                                <div className="absolute top-6 left-6">
-                                    <div className="bg-white/90 backdrop-blur-sm text-stone-800 w-12 h-12 rounded-lg flex items-center justify-center font-serif font-bold text-xl shadow-md border border-stone-100/50">
-                                        {getDayName(latestWord.date)}
-                                    </div>
-                                </div>
-                            </div>
+                                            <div className="absolute top-6 left-6">
+                                                <div className="bg-white/90 backdrop-blur-sm text-stone-800 w-12 h-12 rounded-lg flex items-center justify-center font-serif font-bold text-xl shadow-md border border-stone-100/50">
+                                                    {getDayName(latestWord.date)}
+                                                </div>
+                                            </div>
+                                        </div>
 
-                            {/* Right Page (Text) */}
-                            <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative">
-                                {/* Inner Shadow for page curl effect */}
-                                <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-black/5 to-transparent pointer-events-none hidden md:block" />
+                                        {/* Right Page (Text) */}
+                                        <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative">
+                                            {/* Inner Shadow for page curl effect */}
+                                            <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-black/5 to-transparent pointer-events-none hidden md:block" />
 
-                                <div className="absolute top-6 right-6 opacity-30">
-                                    <Quote size={32} className="text-stone-400" />
-                                </div>
-                                <div className="hidden md:block mb-6">
-                                    <span className="text-stone-500 text-xs font-serif tracking-widest uppercase border-b border-stone-300 pb-1">
-                                        {latestWord.date}
-                                    </span>
-                                </div>
+                                            <div className="absolute top-6 right-6 opacity-30">
+                                                <Quote size={32} className="text-stone-400" />
+                                            </div>
+                                            <div className="hidden md:block mb-6">
+                                                <span className="text-stone-500 text-xs font-serif tracking-widest uppercase border-b border-stone-300 pb-1">
+                                                    {latestWord.date}
+                                                </span>
+                                            </div>
 
-                                <h2 className="text-xl md:text-2xl font-black text-stone-800 mb-6 leading-tight break-keep font-serif">
-                                    {(() => {
-                                        const text = latestWord.verse || latestWord.title;
-                                        if (!text) return null;
+                                            <h2 className="text-xl md:text-2xl font-black text-stone-800 mb-6 leading-tight break-keep font-serif">
+                                                {(() => {
+                                                    const text = latestWord.verse || latestWord.title;
+                                                    if (!text) return null;
 
-                                        // Regex to catch "이번 주 ... 한 구절" variations
-                                        const introRegex = /["']?이번\s*주.*?한\s*구절["']?/i;
-                                        const englishIntroRegex = /a\s*verse\s*for\s*today/i;
+                                                    // Regex to catch "이번 주 ... 한 구절" variations
+                                                    const introRegex = /["']?이번\s*주.*?한\s*구절["']?/i;
+                                                    const englishIntroRegex = /a\s*verse\s*for\s*today/i;
 
-                                        // Remove intro parts and "A Verse for Today"
-                                        return text.replace(introRegex, '').replace(englishIntroRegex, '').trim();
-                                    })()}
-                                </h2>
+                                                    // Remove intro parts and "A Verse for Today"
+                                                    return text.replace(introRegex, '').replace(englishIntroRegex, '').trim();
+                                                })()}
+                                            </h2>
 
-                                {(() => {
-                                    // Check if content is just the intro text or "A Verse for Today"
-                                    const introRegex = /["']?이번\s*주.*?한\s*구절["']?/i;
-                                    const englishIntroRegex = /a\s*verse\s*for\s*today/i;
+                                            {(() => {
+                                                // Check if content is just the intro text or "A Verse for Today"
+                                                const introRegex = /["']?이번\s*주.*?한\s*구절["']?/i;
+                                                const englishIntroRegex = /a\s*verse\s*for\s*today/i;
 
-                                    const isIntro = introRegex.test(latestWord.content) || englishIntroRegex.test(latestWord.content);
+                                                const isIntro = introRegex.test(latestWord.content) || englishIntroRegex.test(latestWord.content);
 
-                                    return (
-                                        <p className={clsx(
-                                            "leading-relaxed break-keep whitespace-pre-wrap font-serif",
-                                            isIntro ? "text-stone-500 text-xs mb-4 font-medium" : "text-stone-600 text-lg md:text-xl"
-                                        )}>
-                                            {latestWord.content}
-                                        </p>
-                                    );
-                                })()}
+                                                return (
+                                                    <p className={clsx(
+                                                        "leading-relaxed break-keep whitespace-pre-wrap font-serif",
+                                                        isIntro ? "text-stone-500 text-xs mb-4 font-medium" : "text-stone-600 text-lg md:text-xl"
+                                                    )}>
+                                                        {latestWord.content}
+                                                    </p>
+                                                );
+                                            })()}
 
-                                {/* Page Number Footer style */}
-                                <div className="mt-12 flex justify-center md:justify-end">
-                                    <span className="text-amber-900/80 text-[10px] font-serif tracking-widest font-bold">The Church of the Sent</span>
-                                </div>
-                            </div>
+                                            {/* Page Number Footer style */}
+                                            <div className="mt-12 flex justify-center md:justify-end">
+                                                <span className="text-amber-900/80 text-[10px] font-serif tracking-widest font-bold">The Church of the Sent</span>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
                     </div>
                 )}
