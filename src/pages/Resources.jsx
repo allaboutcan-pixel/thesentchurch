@@ -93,7 +93,7 @@ const Resources = () => {
         };
         fetchBanner();
         return () => { isMounted = false; };
-    }, []);
+    }, [location.pathname]);
 
     const getPreviewSource = (url) => {
         if (!url) return null;
