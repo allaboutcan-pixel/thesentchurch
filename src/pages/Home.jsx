@@ -247,21 +247,21 @@ const Home = () => {
                     <div className="container mx-auto px-4 py-12 md:py-16">
                         <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-16">
                             <div className="flex-1 text-center md:text-left">
-                                <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest rounded-full mb-4">
-                                    {t('home.daily_word_popup_title')}
+                                <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest rounded-full mb-3">
+                                    Today's Word
                                 </span>
-                                <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-6 leading-snug break-keep">
+                                <h3 className="text-lg md:text-xl font-black text-gray-800 mb-4 leading-relaxed break-keep">
                                     "{latestDailyWord.content}"
                                 </h3>
-                                <p className="text-primary font-bold text-lg mb-8">
+                                <p className="text-primary font-bold text-base mb-6">
                                     — {latestDailyWord.verse}
                                 </p>
                                 <Link
                                     to="/sermons/daily"
-                                    className="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-black text-sm transition-colors group"
+                                    className="inline-flex items-center gap-2 text-slate-400 hover:text-primary font-bold text-xs transition-colors group"
                                 >
                                     <span>{t('home.daily_word_view_more')}</span>
-                                    <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                    <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </div>
                             <div className="w-full md:w-1/3 aspect-square rounded-[3rem] overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500 border-8 border-white">
