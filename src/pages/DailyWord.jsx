@@ -77,8 +77,14 @@ const DailyWord = () => {
                     const month = String(d.getMonth() + 1).padStart(2, '0');
                     const day = String(d.getDate()).padStart(2, '0');
                     const todayStr = `${year}-${month}-${day}`;
-                    const todayWord = sorted.find(w => w.date === todayStr) || sorted[0];
-                    setLatestWord(todayWord);
+
+                    // Find word exactly for today to support scheduling
+                    const todayWord = sorted.find(w => w.date === todayStr);
+
+                    // If no word for today (e.g. Sunday), find the last available past word
+                    const lastWord = sorted.find(w => w.date < todayStr) || sorted[0];
+
+                    setLatestWord(todayWord || lastWord);
 
                     const grouped = {};
                     limitedWords.forEach(item => {

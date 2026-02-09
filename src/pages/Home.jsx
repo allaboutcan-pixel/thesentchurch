@@ -64,7 +64,12 @@ const Home = () => {
 
                     // Find word exactly for today to support scheduling
                     const todayWord = liveDailyWords.find(w => w.date === todayStr);
-                    setLatestDailyWord(todayWord || null);
+
+                    // If no word for today (e.g. Sunday/Monday morning), find the last available past word
+                    // This prevents future scheduled words (like Friday) from showing too early
+                    const lastWord = liveDailyWords.filter(w => w.date < todayStr).sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+
+                    setLatestDailyWord(todayWord || lastWord || null);
                 }
 
                 if (config) {
