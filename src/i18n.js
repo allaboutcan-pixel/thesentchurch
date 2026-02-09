@@ -22,7 +22,7 @@ const resources = {
                 "gallery": "갤러리",
                 "sermons_word": "설교와 말씀",
                 "sunday_sermon": "주일 예배",
-                "daily_word": "오늘 말씀",
+                "daily_word": "오늘의 말씀",
                 "column": "목회칼럼",
                 "tsc": "The Sent Children (TSC)",
                 "tsy": "The Sent Youth (TSY)",
