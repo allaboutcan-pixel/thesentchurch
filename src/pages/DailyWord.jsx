@@ -381,7 +381,7 @@ const DailyWord = () => {
                         {/* Word Cards Grid */}
                         <div className="flex-grow">
                             {archiveData[selectedYear]?.[selectedMonth] ? (
-                                <div className="flex flex-wrap justify-center gap-6">
+                                <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
                                     {archiveData[selectedYear][selectedMonth]
                                         .sort((a, b) => {
                                             const orderA = a.order ?? -1;
@@ -392,41 +392,51 @@ const DailyWord = () => {
                                             return new Date(b.date) - new Date(a.date); // Descending
                                         })
                                         .map((word) => (
-                                            <div key={word.id} className="w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] bg-white rounded-[2.5rem] overflow-hidden border border-slate-100 group hover:shadow-2xl transition-all flex flex-col hover:-translate-y-1 duration-300 shadow-lg shadow-slate-200/50">
-                                                <div className="aspect-video relative overflow-hidden">
+                                            <div
+                                                key={word.id}
+                                                onClick={() => {
+                                                    setLatestWord(word);
+                                                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                                                }}
+                                                className="w-full bg-white rounded-xl md:rounded-[2.5rem] overflow-hidden border border-slate-100 group hover:shadow-2xl transition-all flex flex-col hover:-translate-y-1 duration-300 shadow-sm md:shadow-lg shadow-slate-200/50 cursor-pointer"
+                                            >
+                                                <div className="aspect-square md:aspect-video relative overflow-hidden">
                                                     <img
                                                         src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
                                                         alt="Preview"
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                                                         loading="lazy"
                                                     />
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent md:bg-gradient-to-t md:from-black/20" />
 
-                                                    {/* Card Badge UI */}
-                                                    <div className="absolute top-6 left-6 flex items-center gap-2">
-                                                        <div className="bg-white/95 backdrop-blur-md text-primary w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg shadow-lg">
+                                                    {/* Card Badge UI - Mobile Compact */}
+                                                    <div className="absolute top-2 left-2 md:top-6 md:left-6 flex items-center gap-1 md:gap-2">
+                                                        <div className="bg-white/95 backdrop-blur-md text-primary w-6 h-6 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center font-black text-xs md:text-lg shadow-sm md:shadow-lg">
                                                             {getDayName(word.date)}
                                                         </div>
-                                                        <span className="bg-black/40 backdrop-blur-md text-white px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest border border-white/10">
+                                                        <span className="hidden md:block bg-black/40 backdrop-blur-md text-white px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest border border-white/10">
                                                             {word.date}
                                                         </span>
                                                     </div>
+
+                                                    {/* Mobile Title Overlay */}
+                                                    <div className="absolute bottom-2 left-2 right-2 md:hidden">
+                                                        <h4 className="font-bold text-white text-[10px] line-clamp-2 drop-shadow-md">
+                                                            {word.verse?.includes('하나님의 한구절') ? word.verse.split('하나님의 한구절')[1]?.trim() : (word.verse || word.title)}
+                                                        </h4>
+                                                    </div>
                                                 </div>
-                                                <div className="p-3 flex-grow flex flex-col text-center justify-between">
+
+                                                {/* Desktop Content */}
+                                                <div className="hidden md:flex p-3 flex-grow flex-col text-center justify-between">
                                                     <h4 className="font-bold text-primary text-[11px] md:text-sm mb-2 line-clamp-1 mt-1 transition-all">
                                                         {word.verse?.includes('하나님의 한구절') ? word.verse.split('하나님의 한구절')[1]?.trim() : (word.verse || word.title)}
                                                     </h4>
 
                                                     <div className="flex justify-center mb-1">
-                                                        <button
-                                                            onClick={() => {
-                                                                setLatestWord(word);
-                                                                window.scrollTo({ top: 300, behavior: 'smooth' });
-                                                            }}
-                                                            className="px-4 py-1.5 bg-slate-50 text-slate-400 font-bold text-[10px] uppercase tracking-widest rounded-full hover:bg-primary hover:text-white transition-all transform active:scale-95 border border-slate-100"
-                                                        >
+                                                        <span className="px-4 py-1.5 bg-slate-50 text-slate-400 font-bold text-[10px] uppercase tracking-widest rounded-full group-hover:bg-primary group-hover:text-white transition-all transform border border-slate-100">
                                                             말씀 보기
-                                                        </button>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
