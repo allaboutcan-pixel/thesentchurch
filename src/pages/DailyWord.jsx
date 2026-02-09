@@ -7,7 +7,9 @@ import { dbService } from '../services/dbService';
 
 const getDayName = (dateStr) => {
     if (!dateStr) return '';
-    const date = new Date(dateStr);
+    // Parse YYYY-MM-DD manually to prevent timezone offset issues
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
     const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
     return dayNames[date.getDay()];
 };
