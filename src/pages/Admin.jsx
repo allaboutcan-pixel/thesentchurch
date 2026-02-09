@@ -215,7 +215,7 @@ const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBann
                         <img
                             src={mediaUrl}
                             alt="Preview"
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
                         />
                     )}
                 </div>
