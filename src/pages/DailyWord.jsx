@@ -106,10 +106,10 @@ const DailyWord = () => {
             {/* Header Banner */}
             <section className={clsx(
                 "relative flex items-center justify-center overflow-hidden",
-                height === 'full' ? "h-[60vh] md:h-[70vh]" :
-                    height === 'large' ? "h-[45vh]" :
-                        height === 'medium' ? "h-[35vh] min-h-[300px]" :
-                            "h-[20vh]"
+                height === 'full' ? "h-[50vh] md:h-[60vh]" :
+                    height === 'large' ? "h-[35vh]" :
+                        height === 'medium' ? "h-[25vh] min-h-[200px]" :
+                            "h-[15vh]"
             )}>
                 <div className="absolute inset-0 z-0">
                     <img
@@ -274,7 +274,7 @@ const DailyWord = () => {
                         {/* Word Cards Grid */}
                         <div className="flex-grow">
                             {archiveData[selectedYear]?.[selectedMonth] ? (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                     {archiveData[selectedYear][selectedMonth].map((word) => (
                                         <div key={word.id} className="bg-white rounded-[2.5rem] overflow-hidden border border-slate-100 group hover:shadow-2xl transition-all flex flex-col hover:-translate-y-1 duration-300 shadow-lg shadow-slate-200/50">
                                             <div className="aspect-video relative overflow-hidden">
@@ -296,7 +296,7 @@ const DailyWord = () => {
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div className="p-6 flex-grow flex flex-col text-center">
+                                            <div className="p-4 flex-grow flex flex-col text-center">
                                                 <h4 className="font-bold text-primary text-base mb-4 line-clamp-1">
                                                     {word.verse || word.title}
                                                 </h4>
