@@ -6,7 +6,9 @@ import clsx from 'clsx';
 
 const getDayName = (dateStr) => {
     if (!dateStr) return '';
-    const date = new Date(dateStr);
+    // Parse YYYY-MM-DD manually to prevent timezone offset issues
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
     const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
     return dayNames[date.getDay()];
 };
@@ -40,69 +42,66 @@ const DailyWordPopup = ({ word }) => {
 
     return (
         <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-            <div className="relative bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-10 duration-500 flex flex-col">
-                {/* Image Section - Prominent for image-based word */}
-                <div className="relative w-full aspect-square md:aspect-[4/3] overflow-hidden">
+            <div className="relative bg-white w-full max-w-sm rounded-lg shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-10 duration-500 flex flex-col">
+                {/* Image Section - Auto height to show full image */}
+                <div className="relative w-full">
                     <img
                         src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
                         alt="Today's Word"
-                        className="w-full h-full object-cover"
+                        className="w-full h-auto object-contain"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    {/* Subtle gradient for text visibility if needed */}
+                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
 
                     {/* Day Badge */}
-                    <div className="absolute top-6 left-6 flex items-center gap-2">
-                        <div className="bg-white/95 backdrop-blur-md text-primary w-12 h-12 rounded-2xl flex items-center justify-center font-black text-xl shadow-xl">
+                    <div className="absolute top-4 left-4 flex items-center gap-2">
+                        <div className="bg-white/95 backdrop-blur-md text-primary w-10 h-10 rounded-lg flex items-center justify-center font-black text-lg shadow-md border border-gray-100">
                             {getDayName(word.date)}
                         </div>
-                        <div className="bg-black/30 backdrop-blur-md text-white px-4 py-1 rounded-xl text-xs font-bold border border-white/20">
+                        <div className="bg-black/40 backdrop-blur-md text-white px-3 py-1 rounded-md text-xs font-bold border border-white/20 shadow-sm">
                             {word.date}
                         </div>
                     </div>
 
-                    {/* Close Button UI optimized for background overlap */}
+                    {/* Close Button */}
                     <button
                         onClick={() => handleClose(false)}
-                        className="absolute top-6 right-6 p-2.5 bg-black/20 hover:bg-black/40 text-white backdrop-blur-md rounded-full transition-all z-10 border border-white/20"
+                        className="absolute top-4 right-4 p-2 bg-black/30 hover:bg-black/50 text-white backdrop-blur-md rounded-full transition-all z-10 border border-white/20"
                     >
-                        <X size={20} />
+                        <X size={18} />
                     </button>
 
-                    {/* Verse overlay if content exists but is short */}
-                    <div className="absolute bottom-8 left-8 right-8 text-white">
-                        <Quote size={24} fill="currentColor" className="opacity-50 mb-4" />
-                        <p className="text-xl md:text-2xl font-black leading-tight break-keep mb-2">
+                    {/* Verse overlay - Compact */}
+                    <div className="absolute bottom-4 left-4 right-4 text-white">
+                        <p className="text-lg md:text-xl font-black leading-tight break-keep drop-shadow-lg">
                             "{word.content}"
                         </p>
                         {word.verse && (
-                            <p className="font-bold text-accent text-sm">
+                            <p className="font-bold text-accent text-xs mt-1 drop-shadow-md">
                                 {word.verse}
                             </p>
                         )}
                     </div>
                 </div>
 
-                {/* Simplified Actions Area */}
-                <div className="p-6 md:p-8 bg-white flex flex-col gap-4">
+                {/* Simplified Actions Area - More compact */}
+                <div className="p-4 bg-white flex flex-col gap-2">
                     <Link
                         to="/sermons/daily"
-                        className="w-full py-4 bg-primary text-white rounded-2xl font-bold shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all flex items-center justify-center gap-2 text-sm"
+                        className="w-full py-3 bg-primary text-white rounded-lg font-bold shadow-md hover:bg-primary-dark transition-all flex items-center justify-center gap-2 text-sm"
                         onClick={() => handleClose(false)}
                     >
                         <span>더 많은 말씀 보기</span>
-                        <ExternalLink size={16} />
+                        <ExternalLink size={14} />
                     </Link>
 
                     <button
                         onClick={() => handleClose(true)}
-                        className="text-gray-400 text-[11px] font-bold hover:text-gray-600 transition-colors uppercase tracking-widest"
+                        className="text-gray-400 text-[10px] font-bold hover:text-gray-600 transition-colors uppercase tracking-widest text-center py-2"
                     >
                         {t('home.daily_word_popup_close')}
                     </button>
                 </div>
-
-                {/* Decorative Element */}
-                <div className="h-1.5 bg-gradient-to-r from-primary via-accent to-primary opacity-50" />
             </div>
         </div>
     );

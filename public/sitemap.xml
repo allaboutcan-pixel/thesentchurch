@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://thesentchurch-fws9.vercel.app/</loc>
+    <loc>https://thesentchurch.ca/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://thesentchurch-fws9.vercel.app/about</loc>
+    <loc>https://thesentchurch.ca/about</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thesentchurch-fws9.vercel.app/ministry</loc>
+    <loc>https://thesentchurch.ca/ministry</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thesentchurch-fws9.vercel.app/news</loc>
+    <loc>https://thesentchurch.ca/news</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thesentchurch-fws9.vercel.app/sermons</loc>
+    <loc>https://thesentchurch.ca/sermons</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://thesentchurch-fws9.vercel.app/sermons/daily</loc>
+    <loc>https://thesentchurch.ca/sermons/daily</loc>
     <priority>0.8</priority>
   </url>
 </urlset>
