@@ -91,14 +91,13 @@ const DailyWordPopup = ({ word }) => {
                         </p>
                         {word.verse && (
                             <p className="font-bold text-accent text-[10px] md:text-xs mt-1 drop-shadow-md">
-                                {word.verse.includes('이번주') ? (
-                                    <>
-                                        <span className="hidden md:inline">{word.verse.split('하나님의 한구절')[0]}하나님의 한구절 </span>
-                                        <span>{word.verse.split('하나님의 한구절')[1] || word.verse}</span>
-                                    </>
-                                ) : (
-                                    word.verse
-                                )}
+                                {(() => {
+                                    // Regex to catch "이번 주 ... 한 구절" variations (with/without spaces) including the quote itself if present
+                                    const introRegex = /["']?이번\s*주.*?한\s*구절["']?/i;
+
+                                    // Simply remove the intro part for all screens
+                                    return word.verse.replace(introRegex, '').trim();
+                                })()}
                             </p>
                         )}
                     </div>
