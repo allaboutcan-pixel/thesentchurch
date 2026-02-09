@@ -253,20 +253,19 @@ const DailyWord = () => {
 
                     <div className="flex flex-col md:flex-row gap-8 min-h-[400px]">
                         {/* Month Sidebar */}
-                        <div className="md:w-48 flex flex-row md:flex-col gap-2 overflow-x-auto pb-4 md:pb-0 md:border-r border-slate-100 pr-0 md:pr-6">
+                        <div className="md:w-32 flex flex-wrap md:flex-col content-start gap-2 md:border-r border-slate-100 pr-0 md:pr-6 mb-6 md:mb-0">
                             {archiveData[selectedYear] && Object.keys(archiveData[selectedYear]).sort((a, b) => b - a).map(month => (
                                 <button
                                     key={month}
                                     onClick={() => setSelectedMonth(month)}
                                     className={clsx(
-                                        "w-auto md:w-full px-5 py-3 rounded-xl flex items-center justify-between transition-all group shrink-0",
+                                        "px-4 py-2 rounded-lg text-sm font-bold transition-all shrink-0",
                                         selectedMonth === month
-                                            ? "bg-slate-900 text-white shadow-xl"
-                                            : "bg-white text-slate-500 hover:bg-slate-50 border border-slate-100"
+                                            ? "bg-slate-900 text-white shadow-md"
+                                            : "bg-slate-100 text-slate-500 hover:bg-slate-200"
                                     )}
                                 >
-                                    <span className="font-bold">{month}월</span>
-                                    <ChevronRight size={16} className={clsx("transition-transform", selectedMonth === month ? "opacity-100" : "opacity-0 group-hover:opacity-40")} />
+                                    {month}월
                                 </button>
                             ))}
                         </div>
