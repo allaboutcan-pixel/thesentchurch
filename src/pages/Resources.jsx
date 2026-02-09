@@ -276,7 +276,7 @@ const Resources = () => {
                         <img
                             src={headerBanner}
                             alt="Resources Banner"
-                            className="w-full h-full object-contain"
+                            className="w-full h-full object-cover"
                             referrerPolicy="no-referrer"
                         />
                     )}

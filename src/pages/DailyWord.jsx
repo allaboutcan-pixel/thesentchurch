@@ -135,7 +135,10 @@ const DailyWord = () => {
                     <img
                         src={headerBanner}
                         alt="Daily Word Banner"
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-cover"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
                         referrerPolicy="no-referrer"
                     />
                     <div className="absolute inset-0 bg-primary/40 mix-blend-multiply" />
