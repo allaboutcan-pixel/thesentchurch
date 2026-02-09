@@ -214,10 +214,10 @@ const DailyWord = () => {
                                 }
                             }}
                             disabled={!latestWord || dailyWords.findIndex(w => w.id === latestWord.id) >= dailyWords.length - 1}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-12 z-30 p-2 text-stone-400 hover:text-stone-600 disabled:opacity-0 transition-all"
+                            className="absolute left-2 top-1/2 -translate-y-1/2 md:-translate-x-12 z-30 p-2 md:p-3 text-stone-400 hover:text-stone-600 disabled:opacity-0 transition-all bg-white/60 md:bg-transparent rounded-full backdrop-blur-md md:backdrop-blur-none shadow-lg md:shadow-none border border-white/50 md:border-none"
                             aria-label="Previous Day"
                         >
-                            <ChevronRight size={40} className="rotate-180" />
+                            <ChevronRight size={24} className="rotate-180 md:w-10 md:h-10" />
                         </button>
                         <button
                             onClick={() => {
@@ -227,10 +227,10 @@ const DailyWord = () => {
                                 }
                             }}
                             disabled={!latestWord || dailyWords.findIndex(w => w.id === latestWord.id) <= 0}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-12 z-30 p-2 text-stone-400 hover:text-stone-600 disabled:opacity-0 transition-all"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 md:translate-x-12 z-30 p-2 md:p-3 text-stone-400 hover:text-stone-600 disabled:opacity-0 transition-all bg-white/60 md:bg-transparent rounded-full backdrop-blur-md md:backdrop-blur-none shadow-lg md:shadow-none border border-white/50 md:border-none"
                             aria-label="Next Day"
                         >
-                            <ChevronRight size={40} />
+                            <ChevronRight size={24} className="md:w-10 md:h-10" />
                         </button>
 
                         {/* Book Container */}
@@ -247,19 +247,21 @@ const DailyWord = () => {
                                     <motion.div
                                         key={latestWord.id || latestWord.date}
                                         className="contents"
-                                        initial={{ opacity: 0, x: 50 }}
+                                        initial={{ opacity: 0, x: 20 }}
                                         animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -50 }}
+                                        exit={{ opacity: 0, x: -20 }}
                                         transition={{ duration: 0.3, ease: "easeOut" }}
                                     >
-                                        {/* Left Page (Image) */}
-                                        <div className="md:w-1/2 relative overflow-hidden group border-r border-stone-200/50">
+                                        {/* Left Page (Image) - Mobile: Top Half */}
+                                        <div className="md:w-1/2 relative overflow-hidden group border-b md:border-b-0 md:border-r border-stone-200/50">
                                             <img
                                                 src={latestWord.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
                                                 alt="Today's Word"
                                                 className="w-full h-64 md:h-full object-cover transition-transform duration-1000"
                                             />
-                                            {/* Inner Shadow for page curl effect */}
+                                            {/* Vertical Gutter Shadow for Mobile */}
+                                            <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/5 to-transparent pointer-events-none md:hidden" />
+                                            {/* Inner Shadow for page curl effect (Desktop) */}
                                             <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-black/10 to-transparent pointer-events-none hidden md:block" />
 
                                             <div className="absolute top-6 left-6">
@@ -269,21 +271,23 @@ const DailyWord = () => {
                                             </div>
                                         </div>
 
-                                        {/* Right Page (Text) */}
-                                        <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative">
-                                            {/* Inner Shadow for page curl effect */}
+                                        {/* Right Page (Text) - Mobile: Bottom Half */}
+                                        <div className="md:w-1/2 p-6 md:p-12 flex flex-col justify-center relative min-h-[300px] md:min-h-0">
+                                            {/* Inner Shadow for page curl effect (Desktop) */}
                                             <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-black/5 to-transparent pointer-events-none hidden md:block" />
+                                            {/* Top Shadow for Mobile Gutter */}
+                                            <div className="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-black/5 to-transparent pointer-events-none md:hidden" />
 
                                             <div className="absolute top-6 right-6 opacity-30">
-                                                <Quote size={32} className="text-stone-400" />
+                                                <Quote size={28} className="text-stone-400 md:w-8 md:h-8" />
                                             </div>
-                                            <div className="hidden md:block mb-6">
-                                                <span className="text-stone-500 text-xs font-serif tracking-widest uppercase border-b border-stone-300 pb-1">
+                                            <div className="mb-4 md:mb-6">
+                                                <span className="text-stone-500 text-[10px] md:text-xs font-serif tracking-widest uppercase border-b border-stone-300 pb-1">
                                                     {latestWord.date}
                                                 </span>
                                             </div>
 
-                                            <h2 className="text-xl md:text-2xl font-black text-stone-800 mb-6 leading-tight break-keep font-serif">
+                                            <h2 className="text-xl md:text-2xl font-black text-stone-800 mb-4 md:mb-6 leading-tight break-keep font-serif">
                                                 {(() => {
                                                     const text = latestWord.verse || latestWord.title;
                                                     if (!text) return null;
@@ -307,7 +311,7 @@ const DailyWord = () => {
                                                 return (
                                                     <p className={clsx(
                                                         "leading-relaxed break-keep whitespace-pre-wrap font-serif",
-                                                        isIntro ? "text-stone-500 text-xs mb-4 font-medium" : "text-stone-600 text-lg md:text-xl"
+                                                        isIntro ? "text-stone-500 text-xs mb-4 font-medium" : "text-stone-600 text-base md:text-xl"
                                                     )}>
                                                         {latestWord.content}
                                                     </p>
@@ -315,7 +319,7 @@ const DailyWord = () => {
                                             })()}
 
                                             {/* Page Number Footer style */}
-                                            <div className="mt-12 flex justify-center md:justify-end">
+                                            <div className="mt-8 md:mt-12 flex justify-center md:justify-end">
                                                 <span className="text-amber-900/80 text-[10px] font-serif tracking-widest font-bold">The Church of the Sent</span>
                                             </div>
                                         </div>
