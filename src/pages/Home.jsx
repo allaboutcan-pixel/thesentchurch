@@ -56,9 +56,9 @@ const Home = () => {
 
                 if (liveDailyWords && liveDailyWords.length > 0) {
                     const todayStr = new Date().toISOString().split('T')[0];
-                    // Find word exactly for today, otherwise take the latest (fallback)
-                    const todayWord = liveDailyWords.find(w => w.date === todayStr) || liveDailyWords[0];
-                    setLatestDailyWord(todayWord);
+                    // Find word exactly for today to support scheduling (future items won't show)
+                    const todayWord = liveDailyWords.find(w => w.date === todayStr);
+                    setLatestDailyWord(todayWord || null);
                 }
 
                 if (config) {
