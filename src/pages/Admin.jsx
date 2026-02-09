@@ -3006,7 +3006,7 @@ const Admin = () => {
                                 </span>
                             </div>
                         )}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4">
                             {dailyWords.length === 0 ? (
                                 <div className="col-span-full py-20 text-center bg-white rounded-[2rem] border border-gray-100 shadow-sm">
                                     <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
@@ -3017,29 +3017,29 @@ const Admin = () => {
                                 </div>
                             ) : (
                                 dailyWords.map((word, idx) => (
-                                    <div key={word.id} className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 group transition-all hover:shadow-2xl flex flex-col relative">
+                                    <div key={word.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 group transition-all hover:shadow-md flex flex-col relative">
                                         <div className="aspect-video relative overflow-hidden bg-slate-100">
                                             <img
                                                 src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
                                                 alt="Preview"
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                                             />
-                                            <div className="absolute top-4 left-4 flex gap-2">
-                                                <span className="bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/20">
+                                            <div className="absolute top-2 left-2 flex gap-1">
+                                                <span className="bg-black/60 backdrop-blur-sm text-white px-2 py-0.5 rounded text-[10px] font-bold border border-white/10">
                                                     {word.date}
                                                 </span>
                                             </div>
-                                            <div className="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                            <div className="absolute top-2 right-2 flex gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation();
                                                         handleMoveDailyWord(idx, -1);
                                                     }}
                                                     disabled={idx === 0}
-                                                    className="p-1.5 bg-black/50 backdrop-blur-md text-white rounded-lg hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30 disabled:hover:bg-black/50 disabled:hover:text-white"
+                                                    className="p-1 bg-black/60 backdrop-blur-sm text-white rounded hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30"
                                                     title="Move Up"
                                                 >
-                                                    <ArrowUp size={14} />
+                                                    <ArrowUp size={12} />
                                                 </button>
                                                 <button
                                                     onClick={(e) => {
@@ -3047,21 +3047,21 @@ const Admin = () => {
                                                         handleMoveDailyWord(idx, 1);
                                                     }}
                                                     disabled={idx === dailyWords.length - 1}
-                                                    className="p-1.5 bg-black/50 backdrop-blur-md text-white rounded-lg hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30 disabled:hover:bg-black/50 disabled:hover:text-white"
+                                                    className="p-1 bg-black/60 backdrop-blur-sm text-white rounded hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30"
                                                     title="Move Down"
                                                 >
-                                                    <ArrowDown size={14} />
+                                                    <ArrowDown size={12} />
                                                 </button>
                                             </div>
                                         </div>
-                                        <div className="p-6 flex-grow flex flex-col">
-                                            <h3 className="font-bold text-primary text-sm mb-3">
+                                        <div className="p-3 flex-grow flex flex-col">
+                                            <h3 className="font-bold text-primary text-xs mb-1 truncate">
                                                 {word.verse || word.title}
                                             </h3>
-                                            <p className="text-gray-600 text-sm italic leading-relaxed break-keep line-clamp-3">
+                                            <p className="text-gray-500 text-xs leading-tight break-keep line-clamp-2 mb-3">
                                                 "{word.content}"
                                             </p>
-                                            <div className="mt-8 flex gap-2 border-t border-gray-50 pt-6">
+                                            <div className="mt-auto flex gap-1 pt-2 border-t border-gray-50">
                                                 <button
                                                     onClick={() => {
                                                         setEditingId(word.id);
@@ -3074,9 +3074,9 @@ const Admin = () => {
                                                         });
                                                         setShowAddForm(true);
                                                     }}
-                                                    className="flex-grow py-3 bg-gray-50 text-gray-600 rounded-xl text-xs font-bold hover:bg-primary/10 hover:text-primary transition-all"
+                                                    className="flex-grow py-1.5 bg-gray-50 text-gray-500 rounded-lg text-[10px] font-bold hover:bg-primary/10 hover:text-primary transition-all"
                                                 >
-                                                    수정하기
+                                                    수정
                                                 </button>
                                                 <button
                                                     onClick={async () => {
@@ -3085,9 +3085,9 @@ const Admin = () => {
                                                             setDailyWords(dailyWords.filter(dw => dw.id !== word.id));
                                                         }
                                                     }}
-                                                    className="p-3 bg-red-50 text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                                                    className="p-1.5 bg-red-50 text-red-400 rounded-lg hover:bg-red-500 hover:text-white transition-all shadow-sm"
                                                 >
-                                                    <Trash2 size={16} />
+                                                    <Trash2 size={12} />
                                                 </button>
                                             </div>
                                         </div>
