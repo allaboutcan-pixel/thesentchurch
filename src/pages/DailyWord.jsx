@@ -106,10 +106,10 @@ const DailyWord = () => {
             {/* Header Banner */}
             <section className={clsx(
                 "relative flex items-center justify-center overflow-hidden",
-                height === 'full' ? "h-[50vh] md:h-[60vh]" :
-                    height === 'large' ? "h-[35vh]" :
-                        height === 'medium' ? "h-[25vh] min-h-[200px]" :
-                            "h-[15vh]"
+                height === 'full' ? "h-[45vh] md:h-[55vh]" :
+                    height === 'large' ? "h-[30vh]" :
+                        height === 'medium' ? "h-[18vh] min-h-[160px]" :
+                            "h-[12vh]"
             )}>
                 <div className="absolute inset-0 z-0">
                     <img
@@ -126,19 +126,19 @@ const DailyWord = () => {
                 </div>
                 <div className="relative z-10 container mx-auto px-4 text-center">
                     <h1 className={clsx(
-                        "mb-8 animate-fade-in-up break-keep",
+                        "mb-3 animate-fade-in-up break-keep",
                         titleWeight,
                         titleFont,
                         titleItalic && "italic"
                     )}
                         style={{
                             color: titleColor,
-                            fontSize: titleSize ? `${titleSize}px` : undefined
+                            fontSize: titleSize ? `${Math.max(24, titleSize * 0.7)}px` : undefined // Scale down title automatically
                         }}
                     >
                         {title || t('resources.daily_word_title')}
                     </h1>
-                    <div className="w-20 h-1.5 bg-accent mx-auto mb-8 rounded-full animate-fade-in-up delay-75" />
+                    <div className="w-12 h-1 bg-accent mx-auto mb-3 rounded-full animate-fade-in-up delay-75" />
                     <h2 className={clsx(
                         "tracking-wide opacity-90 animate-fade-in-up delay-100",
                         subtitleWeight,
