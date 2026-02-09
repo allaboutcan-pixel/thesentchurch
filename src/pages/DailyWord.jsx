@@ -186,11 +186,11 @@ const DailyWord = () => {
                 {latestWord && (
                     <div className="max-w-4xl mx-auto mb-24 animate-fade-in px-2">
                         <div className="bg-slate-50 rounded-[3.5rem] overflow-hidden shadow-2xl border border-slate-100 flex flex-col md:flex-row shadow-primary/5">
-                            <div className="md:w-3/5 aspect-[4/3] md:aspect-auto relative overflow-hidden group">
+                            <div className="md:w-3/5 md:aspect-auto relative overflow-hidden group">
                                 <img
                                     src={latestWord.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
                                     alt="Today's Word"
-                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                                    className="w-full h-auto md:h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent md:hidden" />
                                 <div className="absolute top-8 left-8">
@@ -204,8 +204,8 @@ const DailyWord = () => {
                                     </span>
                                 </div>
                             </div>
-                            <div className="md:w-2/5 p-10 md:p-14 flex flex-col justify-center relative bg-white">
-                                <div className="hidden md:block mb-8">
+                            <div className="md:w-2/5 p-6 md:p-14 flex flex-col justify-center relative bg-white">
+                                <div className="hidden md:block mb-6">
                                     <span className="bg-primary/5 text-primary px-4 py-2 rounded-xl text-[10px] font-black tracking-widest uppercase">
                                         {latestWord.date}
                                     </span>
