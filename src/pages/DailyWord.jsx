@@ -311,7 +311,7 @@ const DailyWord = () => {
                                                 return (
                                                     <p className={clsx(
                                                         "leading-relaxed break-keep whitespace-pre-wrap font-serif",
-                                                        isIntro ? "text-stone-500 text-xs mb-4 font-medium" : "text-stone-600 text-base md:text-xl"
+                                                        isIntro ? "text-stone-500 text-xs mb-4 font-medium" : "text-stone-600 text-sm md:text-base"
                                                     )}>
                                                         {latestWord.content}
                                                     </p>
