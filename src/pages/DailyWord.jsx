@@ -223,14 +223,14 @@ const DailyWord = () => {
                                     </span>
                                 </div>
                             </div>
-                            <div className="md:w-2/5 p-6 md:p-14 flex flex-col justify-center relative bg-white">
-                                <div className="hidden md:block mb-6">
+                            <div className="md:w-2/5 p-6 md:p-8 flex flex-col justify-center relative bg-white">
+                                <div className="hidden md:block mb-4">
                                     <span className="bg-primary/5 text-primary px-4 py-2 rounded-xl text-[10px] font-black tracking-widest uppercase">
                                         {latestWord.date}
                                     </span>
                                 </div>
-                                <Quote size={48} className="text-primary/5 absolute top-12 right-12" />
-                                <h2 className="text-xl md:text-2xl font-black text-primary mb-8 leading-tight break-keep">
+                                <Quote size={40} className="text-primary/5 absolute top-6 right-6" />
+                                <h2 className="text-xl md:text-2xl font-black text-primary mb-4 leading-tight break-keep">
                                     {(() => {
                                         const text = latestWord.verse || latestWord.title;
                                         if (!text) return null;
