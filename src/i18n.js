@@ -116,7 +116,7 @@ const resources = {
                     "Fort Langley Community Church 부목사",
                     "Port of Hope Ministry in Canada 이사 역임"
                 ],
-                "denomination_info": "보내심을 받은 생명의소리 교회는 <blue>\"예수교대한성결교회\"</blue>의 미주 총회에 소속되어 있으며,<br /> 캐나다에서는 <blue>\"EFCC (Evangelical Free Church of Canada)\"</blue>에 속해 있습니다.<br /> EFCC의 대표적인 교육 기관으로는 캐나다 밴쿠버에 소재한 <blue>Trinity Western University</blue>가 있고,<br /> 미국에는 <blue>Trinity Evangelical Divinity School (TEDS)</blue>이 있습니다.",
+                "denomination_info": "보내심을 받은 생명의소리 교회는 <mbr /> <blue>\"예수교대한성결교회\"</blue>의 미주 총회에 소속되어 있으며, <mbr /> 캐나다에서는 <blue>\"EFCC (Evangelical Free Church of <mbr /> Canada)\"</blue>에 속해 있습니다.<br /> EFCC의 대표적인 교육 기관으로는 <mbr /> 캐나다 밴쿠버에 소재한 <blue>Trinity Western University</blue>가 있고,<br /> 미국에는 <blue>Trinity Evangelical Divinity School <mbr /> (TEDS)</blue>이 있습니다.",
                 "affiliated_orgs_title": "함께하는 기관"
             },
             "worship": {
