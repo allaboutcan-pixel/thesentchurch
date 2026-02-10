@@ -14,6 +14,7 @@ const resources = {
                 "location": "오시는 길",
                 "worship": "예배 안내",
                 "worship_guide": "예배 안내",
+                "affiliated_orgs": "함께하는 기관",
                 "nextgen": "다음 세대",
                 "news": "교회 소식",
                 "calendar": "교회 일정",
@@ -115,7 +116,8 @@ const resources = {
                     "Fort Langley Community Church 부목사",
                     "Port of Hope Ministry in Canada 이사 역임"
                 ],
-                "denomination_info": "보내심을 받은 생명의소리 교회는<mbr /> <blue>\"예수교대한성결교회\"</blue>의 미주 총회에 소속되어 있으며,<br /> 캐나다에서는 <blue>\"EFCC (Evangelical Free Church<mbr /> of Canada)\"</blue>에 속해 있습니다."
+                "denomination_info": "보내심을 받은 생명의소리 교회는<mbr /> <blue>\"예수교대한성결교회\"</blue>의 미주 총회에 소속되어 있으며,<br /> 캐나다에서는 <blue>\"EFCC (Evangelical Free Church<mbr /> of Canada)\"</blue>에 속해 있습니다.",
+                "affiliated_orgs_title": "함께하는 기관"
             },
             "worship": {
                 "title": "예배 안내",
@@ -176,6 +178,7 @@ const resources = {
                 "location": "Location",
                 "worship": "Worship",
                 "worship_guide": "Worship Guide",
+                "affiliated_orgs": "Affiliated Organizations",
                 "nextgen": "Next Gen",
                 "news": "News",
                 "calendar": "Church Calendar",
@@ -277,7 +280,8 @@ const resources = {
                     "Associate Pastor, Fort Langley Community Church",
                     "Former Director, Port of Hope Ministry in Canada"
                 ],
-                "denomination_info": "The Church of the Sent is affiliated with the <blue>Korea Evangelical Holiness Church of the Americas</blue> and is a member of the <blue>EFCC (Evangelical Free Church of Canada)</blue> in British Columbia."
+                "denomination_info": "The Church of the Sent is affiliated with the <blue>Korea Evangelical Holiness Church of the Americas</blue> and is a member of the <blue>EFCC (Evangelical Free Church of Canada)</blue> in British Columbia.",
+                "affiliated_orgs_title": "Affiliated Organizations"
             },
             "worship": {
                 "title": "Worship",

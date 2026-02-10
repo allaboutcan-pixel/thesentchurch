@@ -360,10 +360,16 @@ const About = () => {
                 </div>
             </section>
 
-            {/* Denomination Introduction Section */}
-            <section className="py-24 bg-gray-50/50">
+            {/* Affiliated Organizations Section */}
+            <section id="affiliated_orgs" className="py-32 scroll-mt-24">
                 <div className="container mx-auto px-4 text-center">
-                    <p className="text-gray-700 font-bold italic font-sans text-sm md:text-base leading-[2.2] max-w-3xl mx-auto mb-8 break-keep">
+                    <div className="mb-16">
+                        <span className="text-accent font-bold tracking-wider text-sm uppercase mb-2 block">AFFILIATED</span>
+                        <h2 className="text-3xl font-bold text-primary">{t('about.affiliated_orgs_title')}</h2>
+                        <div className="w-16 h-1 bg-accent mx-auto mt-6" />
+                    </div>
+
+                    <p className="text-gray-700 font-bold italic font-sans text-sm md:text-base leading-[2.2] max-w-3xl mx-auto mb-16 break-keep">
                         <Trans
                             i18nKey="about.denomination_info"
                             components={{
@@ -373,19 +379,24 @@ const About = () => {
                             }}
                         />
                     </p>
-                    <div className="flex items-center justify-center gap-4 md:gap-8 flex-wrap">
-                        <img
-                            src={dbService.formatDriveImage("https://drive.google.com/file/d/1F_bVHLk_kuptf_tXbUo9l-AywOQXIfCw/view?usp=drive_link")}
-                            alt="EFCC"
-                            className="h-12 md:h-16 object-contain transition-all duration-300"
-                            loading="lazy"
-                        />
-                        <div className="w-px h-10 bg-gray-200 hidden md:block" />
-                        <img
-                            src={dbService.formatDriveImage("https://drive.google.com/file/d/1hDlHKMFvCefn4blOYJnBjS7coqx4QjVZ/view?usp=drive_link")}
-                            alt="예수교 대한 성결 교단"
-                            className="h-12 md:h-16 object-contain transition-all duration-300"
-                        />
+
+                    <div className="flex items-center justify-center gap-8 md:gap-16 flex-wrap">
+                        <div className="group p-8 rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300">
+                            <img
+                                src={dbService.formatDriveImage("https://drive.google.com/file/d/1F_bVHLk_kuptf_tXbUo9l-AywOQXIfCw/view?usp=drive_link")}
+                                alt="EFCC"
+                                className="h-16 md:h-20 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 transform group-hover:scale-110"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div className="w-px h-20 bg-gray-200 hidden md:block" />
+                        <div className="group p-8 rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300">
+                            <img
+                                src={dbService.formatDriveImage("https://drive.google.com/file/d/1hDlHKMFvCefn4blOYJnBjS7coqx4QjVZ/view?usp=drive_link")}
+                                alt="예수교 대한 성결 교단"
+                                className="h-16 md:h-20 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 transform group-hover:scale-110"
+                            />
+                        </div>
                     </div>
                 </div>
             </section>
