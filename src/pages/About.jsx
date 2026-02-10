@@ -380,34 +380,37 @@ const About = () => {
                         />
                     </p>
 
-                    <div className="flex items-center justify-center gap-8 md:gap-12 flex-wrap">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-6xl mx-auto px-2 md:px-0">
                         {/* 1. Korea Evangelical Holiness Church */}
-                        <div className="group p-6 rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300">
+                        <div className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4">
                             <img
                                 src={dbService.formatDriveImage("https://drive.google.com/file/d/1hDlHKMFvCefn4blOYJnBjS7coqx4QjVZ/view?usp=drive_link")}
                                 alt="예수교 대한 성결 교단"
-                                className="h-16 md:h-20 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 transform group-hover:scale-110"
+                                className="h-10 md:h-16 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 transform group-hover:scale-110"
                             />
                         </div>
 
-                        <div className="w-px h-16 bg-gray-200 hidden md:block" />
-
                         {/* 2. EFCC */}
-                        <div className="group p-6 rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300">
+                        <div className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4">
                             <img
                                 src={dbService.formatDriveImage("https://drive.google.com/file/d/1F_bVHLk_kuptf_tXbUo9l-AywOQXIfCw/view?usp=drive_link")}
                                 alt="EFCC"
-                                className="h-16 md:h-20 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 transform group-hover:scale-110"
+                                className="h-10 md:h-16 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 transform group-hover:scale-110"
                                 loading="lazy"
                             />
                         </div>
 
-                        <div className="w-px h-16 bg-gray-200 hidden md:block" />
-
                         {/* 3. Trinity Western University (Text Only) */}
-                        <div className="group px-8 py-6 rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center h-[114px]">
-                            <span className="text-xl md:text-2xl font-black text-gray-400 group-hover:text-[#002856] transition-colors duration-300 text-center leading-tight">
+                        <div className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4">
+                            <span className="text-[10px] md:text-xl font-black text-gray-400 group-hover:text-[#002856] transition-colors duration-300 text-center leading-tight">
                                 Trinity Western<br />University
+                            </span>
+                        </div>
+
+                        {/* 4. Trinity Evangelical Divinity School (TEDS) (Text Only) */}
+                        <div className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4">
+                            <span className="text-[10px] md:text-xl font-black text-gray-400 group-hover:text-[#002856] transition-colors duration-300 text-center leading-tight">
+                                Trinity Evangelical<br />Divinity School
                             </span>
                         </div>
                     </div>
