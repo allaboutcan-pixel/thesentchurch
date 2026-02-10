@@ -414,9 +414,9 @@ const About = () => {
                                         href={org.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="group bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 flex flex-col items-center justify-center gap-3 aspect-square"
+                                        className="group bg-white rounded-xl p-3 md:p-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 flex flex-col items-center justify-center gap-2 h-full"
                                     >
-                                        <div className="flex items-center justify-center w-full h-12">
+                                        <div className="flex items-center justify-center w-full h-10 md:h-12">
                                             {org.type === 'image' ? (
                                                 <img
                                                     src={org.src}
@@ -424,15 +424,15 @@ const About = () => {
                                                     className="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
                                                 />
                                             ) : (
-                                                <div className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 group-hover:bg-primary/5 group-hover:text-primary transition-colors">
-                                                    <org.icon size={20} />
+                                                <div className="w-8 h-8 md:w-10 md:h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 group-hover:bg-primary/5 group-hover:text-primary transition-colors">
+                                                    <org.icon size={18} className="md:w-5 md:h-5" />
                                                 </div>
                                             )}
                                         </div>
-                                        <h4 className="font-bold text-gray-800 text-sm text-center">
+                                        <h4 className="font-bold text-gray-800 text-xs md:text-sm text-center leading-tight">
                                             {t(`about.org_${org.id}`)}
                                         </h4>
-                                        <div className="text-xs text-primary font-medium flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <div className="hidden md:flex text-xs text-primary font-medium items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                             {t('about.visit_website')}
                                             <ExternalLink size={12} />
                                         </div>
