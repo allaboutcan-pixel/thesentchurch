@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, FileText, MapPin, ChevronRight, Bell, ArrowRight, Youtube } from 'lucide-react';
+import { Play, ArrowRight, Youtube } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import churchData from '../data/church_data.json';
 import sermonsInitialData from '../data/sermons.json';
