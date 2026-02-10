@@ -414,18 +414,18 @@ const About = () => {
                                         href={org.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="group bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 flex flex-col items-center gap-4 h-full justify-between"
+                                        className="group bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 flex flex-col items-center justify-center gap-3 aspect-square"
                                     >
-                                        <div className="flex-1 flex items-center justify-center w-full min-h-[60px]">
+                                        <div className="flex items-center justify-center w-full h-12">
                                             {org.type === 'image' ? (
                                                 <img
                                                     src={org.src}
                                                     alt={org.alt}
-                                                    className="max-w-full max-h-16 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                                                    className="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
                                                 />
                                             ) : (
-                                                <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 group-hover:bg-primary/5 group-hover:text-primary transition-colors">
-                                                    <org.icon size={24} />
+                                                <div className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 group-hover:bg-primary/5 group-hover:text-primary transition-colors">
+                                                    <org.icon size={20} />
                                                 </div>
                                             )}
                                         </div>
