@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Upload, FileText, Check, X, Shield, Play, Bell, LayoutDashboard, AlertTriangle, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, Type, BookOpen, Quote, Calendar, MapPin, Clock, Video, ArrowUp, ArrowDown } from 'lucide-react';
+import { Upload, FileText, Check, X, Shield, Play, LayoutDashboard, AlertTriangle, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, ArrowUp, ArrowDown } from 'lucide-react';
 import sermonsInitialData from '../data/sermons.json';
 import bulletinsInitialData from '../data/bulletins.json';
 import noticesInitialData from '../data/notices.json';

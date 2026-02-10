@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { dbService } from '../../services/dbService';
 import { useSiteConfig } from '../../hooks/useSiteConfig';
