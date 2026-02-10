@@ -382,37 +382,57 @@ const About = () => {
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-6xl mx-auto px-2 md:px-0">
                         {/* 1. Korea Evangelical Holiness Church */}
-                        <div className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4 overflow-hidden">
+                        <a
+                            href="http://www.sungkyulusa.org/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4"
+                        >
                             <img
                                 src={dbService.formatDriveImage("https://drive.google.com/file/d/1hDlHKMFvCefn4blOYJnBjS7coqx4QjVZ/view?usp=drive_link")}
                                 alt="예수교 대한 성결 교단"
                                 className="h-10 md:h-16 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 transform group-hover:scale-110"
                             />
-                        </div>
+                        </a>
 
                         {/* 2. EFCC */}
-                        <div className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4">
+                        <a
+                            href="https://www.lpd-efcc.ca/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4"
+                        >
                             <img
                                 src={dbService.formatDriveImage("https://drive.google.com/file/d/1F_bVHLk_kuptf_tXbUo9l-AywOQXIfCw/view?usp=drive_link")}
                                 alt="EFCC"
                                 className="h-10 md:h-16 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 transform group-hover:scale-110"
                                 loading="lazy"
                             />
-                        </div>
+                        </a>
 
                         {/* 3. Trinity Western University (Text Only) */}
-                        <div className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4">
+                        <a
+                            href="https://www.twu.ca/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4"
+                        >
                             <span className="text-[10px] md:text-xl font-black text-gray-400 group-hover:text-[#002856] transition-colors duration-300 text-center leading-tight">
                                 Trinity Western<br />University
                             </span>
-                        </div>
+                        </a>
 
                         {/* 4. Trinity Evangelical Divinity School (TEDS) (Text Only) */}
-                        <div className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4">
+                        <a
+                            href="https://www.tiu.edu/divinity/?utm_source=googlemybusiness_TEDS&utm_medium=organic&utm_campaign=googlemybusiness"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4"
+                        >
                             <span className="text-[10px] md:text-xl font-black text-gray-400 group-hover:text-[#002856] transition-colors duration-300 text-center leading-tight">
                                 Trinity Evangelical<br />Divinity School
                             </span>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </section>
