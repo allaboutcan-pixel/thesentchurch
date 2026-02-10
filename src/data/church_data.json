@@ -120,6 +120,11 @@
                     "path": "/about#intro"
                 },
                 {
+                    "id": "affiliated_orgs",
+                    "label": "함께하는 기관",
+                    "path": "/about#affiliated_orgs"
+                },
+                {
                     "id": "staff",
                     "label": "섬기는 사람들",
                     "path": "/about#staff"
@@ -133,11 +138,6 @@
                     "id": "location",
                     "label": "오시는 길",
                     "path": "/about#location"
-                },
-                {
-                    "id": "affiliated_orgs",
-                    "label": "함께하는 기관",
-                    "path": "/about#affiliated_orgs"
                 }
             ]
         },
