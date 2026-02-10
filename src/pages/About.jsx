@@ -375,9 +375,10 @@ const About = () => {
                                 <Handshake size={40} />
                             </div>
                             <h3 className="text-xl font-bold text-gray-800 mb-6">{t('about.affiliated_orgs_title')}</h3>
-                            <div className="text-gray-600 leading-loose">
-                                <Trans i18nKey="about.affiliated_orgs_desc" />
-                            </div>
+                            <div
+                                className="text-gray-600 leading-loose"
+                                dangerouslySetInnerHTML={{ __html: t('about.affiliated_orgs_desc') }}
+                            />
                         </div>
                     </div>
                 </div>
