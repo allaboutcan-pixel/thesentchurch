@@ -386,14 +386,14 @@ const About = () => {
                                         id: 'kehc',
                                         url: 'http://www.sungkyulusa.org/',
                                         type: 'image',
-                                        src: 'http://www.sungkyul.org/core/public/images/logo_bottom.png',
+                                        src: 'https://drive.google.com/thumbnail?id=19s88h637lSLOhzn5iaTXFQTgreUAZ0t7&sz=w1000',
                                         alt: 'KEHC Logo'
                                     },
                                     {
                                         id: 'efcc',
                                         url: 'https://www.efcc.ca',
                                         type: 'image',
-                                        src: 'https://www.efcc.ca/wp-content/uploads/2019/11/EFCCM-logo-2019-b-300x138.png',
+                                        src: 'https://drive.google.com/thumbnail?id=1hDlHKMFvCefn4blOYJnBjS7coqx4QjVZ&sz=w1000',
                                         alt: 'EFCC Logo'
                                     },
                                     {
