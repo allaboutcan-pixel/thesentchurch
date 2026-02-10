@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import churchData from '../data/church_data.json';
-import { Mail, Clock, Video, Users, MapPin, Phone, Youtube, Facebook, Instagram } from 'lucide-react';
+import { Mail, Clock, Video, Users, MapPin, Youtube, Phone, Facebook, Instagram } from 'lucide-react';
 import { useTranslation, Trans } from 'react-i18next';
 import { dbService } from '../services/dbService';
 import { useSiteConfig } from '../hooks/useSiteConfig';

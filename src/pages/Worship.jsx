@@ -9,7 +9,6 @@ import clsx from 'clsx';
 
 const Worship = () => {
     const { t, i18n } = useTranslation();
-    const isKO = i18n.language === 'ko';
     const [headerBanner, setHeaderBanner] = useState("/images/worship_banner.jpg");
     const [title, setTitle] = useState("");
     const [subtitle, setSubtitle] = useState("");
