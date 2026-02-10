@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import churchData from '../data/church_data.json';
-import { Mail, Clock, Video, Users, MapPin, Youtube, Phone, Facebook, Instagram } from 'lucide-react';
+import { Mail, Clock, Video, Users, MapPin, Youtube, Phone, Facebook, Instagram, Handshake } from 'lucide-react';
 import { useTranslation, Trans } from 'react-i18next';
 import { dbService } from '../services/dbService';
 import { useSiteConfig } from '../hooks/useSiteConfig';
@@ -355,6 +355,31 @@ const About = () => {
                                     })}
                                 </ul>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Affiliated Organizations Section */}
+            <section id="affiliated_orgs" className="py-32 bg-gray-50 scroll-mt-24">
+                <div className="container mx-auto px-4">
+                    <div className="text-center mb-16">
+                        <span className="text-accent font-bold tracking-wider text-sm uppercase mb-2 block">{t('about.affiliated_orgs_label')}</span>
+                        <h2 className="text-3xl font-bold text-primary">{t('about.affiliated_orgs_title')}</h2>
+                        <div className="w-16 h-1 bg-accent mx-auto mt-6" />
+                    </div>
+
+                    <div className="max-w-4xl mx-auto">
+                        <div className="bg-white rounded-3xl p-12 text-center shadow-sm border border-gray-100">
+                            <div className="w-20 h-20 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
+                                <Handshake size={40} />
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-800 mb-4">{t('about.affiliated_orgs_title')}</h3>
+                            <p className="text-gray-500 leading-relaxed">
+                                {i18n.language === 'en'
+                                    ? "Content for affiliated organizations is being prepared."
+                                    : "함께하는 기관에 대한 내용이 준비 중입니다."}
+                            </p>
                         </div>
                     </div>
                 </div>
