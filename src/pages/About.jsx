@@ -374,8 +374,7 @@ const About = () => {
                             i18nKey="about.denomination_info"
                             components={{
                                 blue: <span className="text-primary" />,
-                                br: <br />,
-                                mbr: <br className="md:hidden" />
+                                br: <br />
                             }}
                         />
                     </p>
