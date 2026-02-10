@@ -374,7 +374,7 @@ const About = () => {
                             <div className="w-20 h-20 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
                                 <Handshake size={40} />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-800 mb-6">{t('about.affiliated_orgs_title')}</h3>
+
                             <div
                                 className="text-gray-600 leading-loose mb-12"
                                 dangerouslySetInnerHTML={{ __html: t('about.affiliated_orgs_desc') }}
