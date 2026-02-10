@@ -381,21 +381,7 @@ const About = () => {
                     </p>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-6xl mx-auto px-2 md:px-0">
-                        {/* 1. Korea Evangelical Holiness Church */}
-                        <a
-                            href="http://www.sungkyulusa.org/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4"
-                        >
-                            <img
-                                src={dbService.formatDriveImage("https://drive.google.com/file/d/1hDlHKMFvCefn4blOYJnBjS7coqx4QjVZ/view?usp=drive_link") + "?v=2"}
-                                alt="예수교 대한 성결 교단"
-                                className="h-10 md:h-16 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 transform group-hover:scale-110"
-                            />
-                        </a>
-
-                        {/* 2. EFCC */}
+                        {/* 1. EFCC */}
                         <a
                             href="https://www.lpd-efcc.ca/"
                             target="_blank"
@@ -403,10 +389,24 @@ const About = () => {
                             className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4"
                         >
                             <img
-                                src={dbService.formatDriveImage("https://drive.google.com/file/d/1F_bVHLk_kuptf_tXbUo9l-AywOQXIfCw/view?usp=drive_link") + "?v=2"}
+                                src={dbService.formatDriveImage("https://drive.google.com/file/d/1F_bVHLk_kuptf_tXbUo9l-AywOQXIfCw/view?usp=drive_link") + "?v=3"}
                                 alt="EFCC"
                                 className="h-10 md:h-16 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 transform group-hover:scale-110"
                                 loading="lazy"
+                            />
+                        </a>
+
+                        {/* 2. Korea Evangelical Holiness Church */}
+                        <a
+                            href="http://www.sungkyulusa.org/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4"
+                        >
+                            <img
+                                src={dbService.formatDriveImage("https://drive.google.com/file/d/1hDlHKMFvCefn4blOYJnBjS7coqx4QjVZ/view?usp=drive_link") + "?v=3"}
+                                alt="예수교 대한 성결 교단"
+                                className="h-10 md:h-16 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 transform group-hover:scale-110"
                             />
                         </a>
 
