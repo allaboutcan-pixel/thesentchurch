@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, Globe, Mail } from 'lucide-react';
+import { Menu, X, ChevronDown, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import churchData from '../../data/church_data.json';
 import { useSiteConfig } from '../../hooks/useSiteConfig';
