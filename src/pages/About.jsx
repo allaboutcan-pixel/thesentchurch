@@ -374,12 +374,10 @@ const About = () => {
                             <div className="w-20 h-20 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
                                 <Handshake size={40} />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-800 mb-4">{t('about.affiliated_orgs_title')}</h3>
-                            <p className="text-gray-500 leading-relaxed">
-                                {i18n.language === 'en'
-                                    ? "Content for affiliated organizations is being prepared."
-                                    : "함께하는 기관에 대한 내용이 준비 중입니다."}
-                            </p>
+                            <h3 className="text-xl font-bold text-gray-800 mb-6">{t('about.affiliated_orgs_title')}</h3>
+                            <div className="text-gray-600 leading-loose">
+                                <Trans i18nKey="about.affiliated_orgs_desc" />
+                            </div>
                         </div>
                     </div>
                 </div>
