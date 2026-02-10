@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import churchData from '../data/church_data.json';
 import { MapPin, Phone, Mail, Clock, Calendar, Handshake, Globe, School, BookOpen, ExternalLink } from 'lucide-react';
 import { useTranslation, Trans } from 'react-i18next';
-import { dbService } from '../services/dbService';
+import { dbService } from '../services/dbService'; // Fixed iframe embed syntax
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import { useLocation } from 'react-router-dom';
 import { isVideo, getYoutubeId } from '../utils/mediaUtils';
