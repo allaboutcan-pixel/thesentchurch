@@ -2573,7 +2573,7 @@ const Admin = () => {
                                                                                 if (window.confirm(`${file.name} 파일을 업로드하시겠습니까?`)) {
                                                                                     try {
                                                                                         // Upload indicator
-                                                                                        const downloadUrl = await dbService.uploadImage(file, `ministry/${item.id}_${Date.now()}`);
+                                                                                        const downloadUrl = await dbService.uploadFile(file, `ministry/${item.id}_${Date.now()}`);
                                                                                         const newItems = formData.ministryItems.map((it, i) =>
                                                                                             i === idx ? { ...it, image: downloadUrl } : it
                                                                                         );
