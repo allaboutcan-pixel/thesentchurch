@@ -369,7 +369,7 @@ const About = () => {
                         <div className="w-16 h-1 bg-accent mx-auto mt-6" />
                     </div>
 
-                    <p className="text-gray-700 font-bold italic font-sans text-sm md:text-base leading-[2.2] max-w-3xl mx-auto mb-16 break-keep">
+                    <p className="text-gray-700 font-bold italic font-sans text-sm md:text-base leading-[2.5] max-w-4xl mx-auto mb-16 break-keep">
                         <Trans
                             i18nKey="about.denomination_info"
                             components={{
