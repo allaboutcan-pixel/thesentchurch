@@ -361,77 +361,86 @@ const About = () => {
             </section>
 
             {/* Affiliated Organizations Section */}
-            <section id="affiliated_orgs" className="py-32 scroll-mt-24">
+            <section id="affiliated_orgs" className="py-24 bg-white scroll-mt-24 border-t border-gray-50">
                 <div className="container mx-auto px-4 text-center">
                     <div className="mb-16">
-                        <span className="text-accent font-bold tracking-wider text-sm uppercase mb-2 block">AFFILIATED</span>
+                        <span className="text-accent font-bold tracking-wider text-sm uppercase mb-2 block">PARTNERS & AFFILIATIONS</span>
                         <h2 className="text-3xl font-bold text-primary">{t('about.affiliated_orgs_title')}</h2>
-                        <div className="w-16 h-1 bg-accent mx-auto mt-6" />
+                        <div className="w-16 h-1 bg-accent mx-auto mt-6 rounded-full" />
                     </div>
 
-                    <p className="text-gray-700 font-bold italic font-sans text-sm md:text-base leading-[2.5] max-w-4xl mx-auto mb-16 break-keep">
+                    <p className="text-gray-600 font-medium text-sm md:text-base leading-relaxed max-w-4xl mx-auto mb-16 break-keep">
                         <Trans
                             i18nKey="about.denomination_info"
                             components={{
-                                blue: <span className="text-primary" />,
+                                blue: <span className="text-primary font-bold" />,
                                 br: <br />,
                                 mbr: <br className="md:hidden" />
                             }}
                         />
                     </p>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-6xl mx-auto px-2 md:px-0">
-                        {/* 1. EFCC */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                        {/* 1. EFCC (Evangelical Free Church of Canada) */}
                         <a
-                            href="https://www.lpd-efcc.ca/"
+                            href="https://www.efcc.ca/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4"
+                            className="group flex flex-col items-center justify-center p-8 rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-blue-100 hover:shadow-2xl transition-all duration-500"
                         >
                             <img
-                                src={dbService.formatDriveImage("https://drive.google.com/file/d/1hDlHKMFvCefn4blOYJnBjS7coqx4QjVZ/view?usp=drive_link") + "?v=3"}
-                                alt="EFCC"
-                                className="h-10 md:h-16 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 transform group-hover:scale-110"
+                                src={dbService.formatDriveImage("https://drive.google.com/file/d/1hDlHKMFvCefn4blOYJnBjS7coqx4QjVZ/view?usp=drive_link")}
+                                alt="Evangelical Free Church of Canada"
+                                className="h-12 md:h-16 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-70 group-hover:opacity-100"
                                 loading="lazy"
                             />
+                            <span className="mt-4 text-[10px] uppercase tracking-widest font-black text-gray-400 group-hover:text-primary transition-colors">EFCC Canada</span>
                         </a>
 
-                        {/* 2. Korea Evangelical Holiness Church */}
+                        {/* 2. Korea Evangelical Holiness Church of the Americas (예수교 미주 성결교회) */}
                         <a
                             href="http://www.sungkyulusa.org/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4"
+                            className="group flex flex-col items-center justify-center p-8 rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-blue-100 hover:shadow-2xl transition-all duration-500"
                         >
                             <img
-                                src={dbService.formatDriveImage("https://drive.google.com/file/d/1F_bVHLk_kuptf_tXbUo9l-AywOQXIfCw/view?usp=drive_link") + "?v=3"}
-                                alt="예수교 대한 성결 교단"
-                                className="h-10 md:h-16 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100 transform group-hover:scale-110"
+                                src={dbService.formatDriveImage("https://drive.google.com/file/d/1F_bVHLk_kuptf_tXbUo9l-AywOQXIfCw/view?usp=drive_link")}
+                                alt="Korea Evangelical Holiness Church"
+                                className="h-12 md:h-16 object-contain grayscale group-hover:grayscale-0 transition-all duration-500 opacity-70 group-hover:opacity-100"
+                                loading="lazy"
                             />
+                            <span className="mt-4 text-[10px] uppercase tracking-widest font-black text-gray-400 group-hover:text-primary transition-colors">KEHC Americas</span>
                         </a>
 
-                        {/* 3. Trinity Western University (Text Only) */}
+                        {/* 3. Trinity Western University (TWU) */}
                         <a
                             href="https://www.twu.ca/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4"
+                            className="group flex flex-col items-center justify-center p-8 rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-blue-100 hover:shadow-2xl transition-all duration-500 text-center"
                         >
-                            <span className="text-[10px] md:text-xl font-black text-gray-400 group-hover:text-[#002856] transition-colors duration-300 text-center leading-tight">
-                                Trinity Western<br />University
-                            </span>
+                            <div className="h-12 md:h-16 flex items-center justify-center">
+                                <span className="text-xl md:text-2xl font-black text-gray-300 group-hover:text-[#002856] transition-colors leading-tight">
+                                    TWU
+                                </span>
+                            </div>
+                            <p className="mt-4 text-[10px] font-black text-gray-400 group-hover:text-[#002856] uppercase tracking-wider">Trinity Western University</p>
                         </a>
 
-                        {/* 4. Trinity Evangelical Divinity School (TEDS) (Text Only) */}
+                        {/* 4. Trinity Evangelical Divinity School (TEDS) */}
                         <a
-                            href="https://www.tiu.edu/divinity/?utm_source=googlemybusiness_TEDS&utm_medium=organic&utm_campaign=googlemybusiness"
+                            href="https://www.tiu.edu/divinity/"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group h-24 md:h-40 rounded-2xl md:rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-gray-100 hover:shadow-xl transition-all duration-300 flex items-center justify-center p-2 md:p-4"
+                            className="group flex flex-col items-center justify-center p-8 rounded-3xl bg-gray-50 hover:bg-white border border-transparent hover:border-blue-100 hover:shadow-2xl transition-all duration-500 text-center"
                         >
-                            <span className="text-[10px] md:text-xl font-black text-gray-400 group-hover:text-[#002856] transition-colors duration-300 text-center leading-tight">
-                                Trinity Evangelical<br />Divinity School
-                            </span>
+                            <div className="h-12 md:h-16 flex items-center justify-center">
+                                <span className="text-xl md:text-2xl font-black text-gray-300 group-hover:text-[#002856] transition-colors leading-tight">
+                                    TEDS
+                                </span>
+                            </div>
+                            <p className="mt-4 text-[10px] font-black text-gray-400 group-hover:text-[#002856] uppercase tracking-wider">Trinity Evangelical Divinity School</p>
                         </a>
                     </div>
                 </div>
