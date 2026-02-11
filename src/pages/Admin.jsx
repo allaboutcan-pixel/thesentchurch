@@ -1421,7 +1421,7 @@ const Admin = () => {
                     />
                     <SidebarItem
                         icon={<Calendar size={20} />}
-                        label="교회 일정 관리"
+                        label="교회일정 관리"
                         active={activeTab === 'calendar'}
                         onClick={() => { setActiveTab('calendar'); setShowAddForm(false); }}
                     />
@@ -1469,7 +1469,7 @@ const Admin = () => {
                             {activeTab === 'site' && '⚙️ 사이트 설정'}
                             {activeTab === 'intro' && '📖 교회소개 관리'}
                             {activeTab === 'staff' && '👥 섬기는 분들 관리'}
-                            {activeTab === 'calendar' && '📅 교회 일정 관리'}
+                            {activeTab === 'calendar' && '📅 교회일정 관리'}
                             {activeTab === 'location' && '📍 오시는길 관리'}
                         </h1>
                         <p className="flex items-center gap-2 text-sm mt-2 font-medium">
@@ -2150,7 +2150,7 @@ const Admin = () => {
                             <div className="flex items-center justify-between mb-8">
                                 <div>
                                     <h2 className="text-3xl font-black text-primary">예배 정보 관리</h2>
-                                    <p className="text-gray-500 mt-2 font-medium">홈페이지의 '예배 안내' 페이지에 표시되는 정보를 관리합니다.</p>
+                                    <p className="text-gray-500 mt-2 font-medium">홈페이지의 '예배안내' 페이지에 표시되는 정보를 관리합니다.</p>
                                 </div>
                                 <button
                                     onClick={handleFormSubmit}
@@ -2166,7 +2166,7 @@ const Admin = () => {
                                 <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
                                     <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
                                         <div className="p-2 bg-primary/10 rounded-xl text-primary"><Clock size={20} /></div>
-                                        주일 예배 (Sunday Services)
+                                        주일예배 (Sunday Services)
                                     </h3>
                                     <div className="space-y-6">
                                         {(siteConfig.services || churchData.services).map((service, index) => (
