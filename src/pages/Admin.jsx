@@ -933,10 +933,11 @@ const Admin = () => {
                 // Done inside the if (activeTab === 'site') block
             } else {
                 setFormData({
+                    ...formData,
                     title: '', date: '', preacher: '', youtubeId: '', fileUrl: '', fileUrl2: '', category: '공지', content: '', important: false, type: 'image',
                     staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', thumbnailUrl: '',
                     note: '', eventType: 'default',
-                    startDate: '', endDate: ''
+                    startDate: '', endDate: '', staffEnglishName: ''
                 });
             }
             alert('성공적으로 저장되었습니다!');
@@ -1491,6 +1492,7 @@ const Admin = () => {
                             onClick={() => {
                                 setEditingId(null);
                                 setFormData({
+                                    ...formData,
                                     title: '', date: '', preacher: '', youtubeId: '', fileUrl: '', fileUrl2: '', category: '공지', content: '', important: false, type: 'image',
                                     staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', thumbnailUrl: '',
                                     note: '', eventType: 'default',
@@ -2499,9 +2501,9 @@ const Admin = () => {
 
                             <div className="space-y-12">
                                 {renderBannerSettings('hero', '🏠 메인 홈 히어로 (Home Hero)', 'heroImage')}
-                                {renderBannerSettings('news', '📢 교회 소식 (News)', 'newsBanner')}
+                                {renderBannerSettings('news', '📢 교회소식 (News)', 'newsBanner')}
                                 {renderBannerSettings('resources', '⛪ 설교와 말씀 (Sermons)', 'resourcesBanner')}
-                                {renderBannerSettings('ministry', '🌱 다음 세대 (Ministry)', 'ministryBanner')}
+                                {renderBannerSettings('ministry', '🌱 다음세대 (Ministry)', 'ministryBanner')}
                                 {renderBannerSettings('mission', '🌏 선교사역 (Mission)', 'missionBanner')}
 
                                 {/* Individual Ministry Management */}
