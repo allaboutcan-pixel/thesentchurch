@@ -48,9 +48,10 @@ const ComingSoon = ({ type = 'mission' }) => {
                     {/* Content */}
                     <div className="relative z-10 container mx-auto px-6 text-center">
                         <h1
-                            className={`text-4xl md:text-6xl lg:text-7xl mb-6 leading-tight drop-shadow-lg ${titleFont} ${siteConfig?.[`${type}TitleWeight`] || 'font-bold'}`}
+                            className={`mb-6 leading-tight drop-shadow-lg ${titleFont} ${siteConfig?.[`${type}TitleWeight`] || 'font-bold'}`}
                             style={{
                                 color: titleColor,
+                                fontSize: siteConfig?.[`${type}TitleSize`] ? `${siteConfig[`${type}TitleSize`]}px` : undefined,
                                 fontStyle: siteConfig?.[`${type}TitleItalic`] ? 'italic' : 'normal'
                             }}
                         >
@@ -59,9 +60,10 @@ const ComingSoon = ({ type = 'mission' }) => {
 
                         {subtitle && (
                             <p
-                                className={`text-lg md:text-2xl max-w-3xl mx-auto leading-relaxed drop-shadow-md whitespace-pre-line ${subtitleFont} ${siteConfig?.[`${type}SubtitleWeight`] || 'font-medium'}`}
+                                className={`max-w-3xl mx-auto leading-relaxed drop-shadow-md whitespace-pre-line ${subtitleFont} ${siteConfig?.[`${type}SubtitleWeight`] || 'font-medium'}`}
                                 style={{
                                     color: subtitleColor,
+                                    fontSize: siteConfig?.[`${type}SubtitleSize`] ? `${siteConfig[`${type}SubtitleSize`]}px` : undefined,
                                     fontStyle: siteConfig?.[`${type}SubtitleItalic`] ? 'italic' : 'normal'
                                 }}
                             >
