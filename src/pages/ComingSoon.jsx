@@ -22,10 +22,10 @@ const ComingSoon = ({ type = 'mission' }) => {
 
     // Height classes map
     const heightClasses = {
-        short: 'h-[40vh] min-h-[400px]',
-        medium: 'h-[60vh] min-h-[500px]',
-        large: 'h-[80vh] min-h-[600px]',
-        full: 'h-screen'
+        short: 'h-[30vh] min-h-[300px]',
+        medium: 'h-[50vh] min-h-[400px]',
+        large: 'h-[65vh] min-h-[500px]',
+        full: 'h-[85vh] min-h-[600px]'
     };
 
     if (banner) {
