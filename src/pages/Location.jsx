@@ -124,8 +124,8 @@ const Location = () => {
                                                 ? rawPhone
                                                 : (typeof rawPhone === 'string' ? rawPhone.split(/[,\/]/) : [rawPhone]);
 
-                                            return phones.map((p, i) => (
-                                                <span key={i} className="block text-gray-800 font-bold text-lg leading-tight">{p && p.trim()}</span>
+                                            return (phones || []).map((p, i) => (
+                                                <span key={i} className="block text-gray-800 font-bold text-lg leading-tight">{p && p.trim ? p.trim() : p}</span>
                                             ));
                                         })()}
                                     </div>
