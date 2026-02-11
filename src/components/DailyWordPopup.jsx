@@ -89,7 +89,7 @@ const DailyWordPopup = ({ word }) => {
 
                     {/* Verse overlay - Compact */}
                     {/* Verse overlay - Compact */}
-                    <div className="absolute bottom-4 left-4 right-4 text-white">
+                    <div className="absolute bottom-2 left-4 right-4 text-white text-center">
                         {(() => {
                             // Check if content is just the intro text or "A Verse for Today"
                             const introRegex = /["']?이번\s*주.*?한\s*구절["']?/i;
