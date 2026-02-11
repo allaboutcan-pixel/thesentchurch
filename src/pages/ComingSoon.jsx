@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import React from 'react';
+import MinistryNav from '../components/MinistryNav';
 import { useTranslation } from 'react-i18next';
 import { Home, ArrowRight, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -81,7 +82,14 @@ const ComingSoon = ({ type = 'mission' }) => {
                     </div>
                 </div>
 
-                {/* Default Content Area (Only if specifically "Coming Soon" is still implied by lack of other content, 
+                {/* Ministry Nav (Only for ministry related types) */}
+                {['mission', 'prayer'].includes(type) && (
+                    <div className="container mx-auto px-4 -mt-8 mb-8 relative z-20">
+                        <MinistryNav active={type} />
+                    </div>
+                )}
+
+                {/* Default Content Area (Only if specifically "Coming Soon" is still implied by lack of other content,  
                     OR we just show a simple "Coming Soon" body below if it's not fully ready? 
                     The user asked for Banner and Content management. 
                     If they provided a banner, they might NOT want the "Coming Soon" icon and text below it. 

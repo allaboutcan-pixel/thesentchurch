@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import MinistryNav from '../components/MinistryNav';
 import { dbService } from '../services/dbService';
 import churchData from '../data/church_data.json';
 import { useTranslation } from 'react-i18next';
@@ -216,6 +217,11 @@ const Ministry = () => {
                         "{t('ministry.sunday_school_subtitle')}"
                     </p>
                 </div>
+            </div>
+
+            {/* Quick Menu Nav */}
+            <div className="container mx-auto px-4 -mt-16 mb-16 relative z-10">
+                <MinistryNav active="nextgen" />
             </div>
 
             <div className="container mx-auto px-4 py-16">

@@ -208,6 +208,7 @@ const resources = {
                 "tsc": "The Sent Children (TSC)",
                 "tsy": "The Sent Youth (TSY)",
                 "mission": "Mission",
+                "prayer": "Prayer",
                 "nextgen_tsc_tsy": "Next Gen - TSC/TSY",
                 "senior_pastor": "Senior Pastor",
                 "role_pastor": "Senior Pastor",
