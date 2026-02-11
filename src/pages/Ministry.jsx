@@ -199,8 +199,13 @@ const Ministry = () => {
                 </div>
             </div>
 
+            {/* Quick Menu Nav */}
+            <div className="container mx-auto px-4 mt-12">
+                <MinistryNav active="nextgen" />
+            </div>
+
             {/* Sunday School Introduction Section */}
-            <div className="bg-white py-32">
+            <div className="bg-white pb-32 pt-12">
                 <div className="max-w-4xl mx-auto text-center px-4">
                     {/* Desktop Version: Keep as is */}
                     <h2 className="hidden md:block text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line break-keep">
@@ -217,11 +222,6 @@ const Ministry = () => {
                         "{t('ministry.sunday_school_subtitle')}"
                     </p>
                 </div>
-            </div>
-
-            {/* Quick Menu Nav */}
-            <div className="container mx-auto px-4 -mt-16 mb-16 relative z-10">
-                <MinistryNav active="nextgen" />
             </div>
 
             <div className="container mx-auto px-4 py-16">
