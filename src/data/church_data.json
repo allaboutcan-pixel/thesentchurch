@@ -173,6 +173,11 @@
                     "id": "mission",
                     "label": "선교사역",
                     "path": "/ministry/mission"
+                },
+                {
+                    "id": "prayer",
+                    "label": "중보기도",
+                    "path": "/ministry/prayer"
                 }
             ]
         },

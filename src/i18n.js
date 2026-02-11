@@ -31,6 +31,7 @@ const resources = {
                 "tsc": "The Sent Children (TSC)",
                 "tsy": "The Sent Youth (TSY)",
                 "mission": "선교사역",
+                "prayer": "중보기도",
                 "nextgen_tsc_tsy": "다음세대 - TSC/TSY",
                 "senior_pastor": "담임목사",
                 "role_pastor": "담임목사",

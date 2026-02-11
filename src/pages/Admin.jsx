@@ -886,7 +886,7 @@ const Admin = () => {
 
                 // Process all banner fields - REMOVED others, only heroImage remains
                 // Process ONLY media fields that might need upload or drive formatting
-                const mediaFields = ['heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner', 'missionBanner'];
+                const mediaFields = ['heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner', 'missionBanner', 'prayerBanner'];
                 for (const field of mediaFields) {
                     await processField(field);
                 }
@@ -899,7 +899,8 @@ const Admin = () => {
                     'ministryTitle', 'ministrySubtitle', 'ministryTitleFont', 'ministrySubtitleFont', 'ministryTitleColor', 'ministrySubtitleColor', 'ministryTitleItalic', 'ministrySubtitleItalic', 'ministryTitleSize', 'ministrySubtitleSize', 'ministryHeight', 'ministryOverlayOpacity',
                     'resourcesTitle', 'resourcesSubtitle', 'resourcesTitleFont', 'resourcesSubtitleFont', 'resourcesTitleColor', 'resourcesSubtitleColor', 'resourcesTitleItalic', 'resourcesSubtitleItalic', 'resourcesTitleSize', 'resourcesSubtitleSize', 'resourcesHeight', 'resourcesOverlayOpacity',
                     'ministryItems',
-                    'missionTitle', 'missionSubtitle', 'missionTitleFont', 'missionSubtitleFont', 'missionTitleColor', 'missionSubtitleColor', 'missionTitleItalic', 'missionSubtitleItalic', 'missionTitleWeight', 'missionSubtitleWeight', 'missionTitleSize', 'missionSubtitleSize', 'missionHeight', 'missionOverlayOpacity'
+                    'missionTitle', 'missionSubtitle', 'missionTitleFont', 'missionSubtitleFont', 'missionTitleColor', 'missionSubtitleColor', 'missionTitleItalic', 'missionSubtitleItalic', 'missionTitleWeight', 'missionSubtitleWeight', 'missionTitleSize', 'missionSubtitleSize', 'missionHeight', 'missionOverlayOpacity',
+                    'prayerTitle', 'prayerSubtitle', 'prayerTitleFont', 'prayerSubtitleFont', 'prayerTitleColor', 'prayerSubtitleColor', 'prayerTitleItalic', 'prayerSubtitleItalic', 'prayerTitleWeight', 'prayerSubtitleWeight', 'prayerTitleSize', 'prayerSubtitleSize', 'prayerHeight', 'prayerOverlayOpacity'
                 ];
                 for (const field of otherFields) {
                     currentConfig[field] = formData[field];
@@ -2505,6 +2506,7 @@ const Admin = () => {
                                 {renderBannerSettings('resources', '⛪ 설교와 말씀 (Sermons)', 'resourcesBanner')}
                                 {renderBannerSettings('ministry', '🌱 다음세대 (Ministry)', 'ministryBanner')}
                                 {renderBannerSettings('mission', '🌏 선교사역 (Mission)', 'missionBanner')}
+                                {renderBannerSettings('prayer', '🙏 중보기도 (Intercessory Prayer)', 'prayerBanner')}
 
                                 {/* Individual Ministry Management */}
                                 <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-8">

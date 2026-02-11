@@ -4,21 +4,21 @@ import { Home, ArrowRight, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 
-const ComingSoon = () => {
+const ComingSoon = ({ type = 'mission' }) => {
     const { t } = useTranslation();
     const { config: siteConfig } = useSiteConfig();
 
-    const banner = siteConfig?.missionBanner;
-    const title = siteConfig?.missionTitle || t('coming_soon.title', '페이지 준비중');
-    const subtitle = siteConfig?.missionSubtitle || t('coming_soon.desc', '선교사역 페이지는 현재 준비 중입니다.\n더 좋은 모습으로 찾아뵙겠습니다.');
+    const banner = siteConfig?.[`${type}Banner`];
+    const title = siteConfig?.[`${type}Title`] || t('coming_soon.title', '페이지 준비중');
+    const subtitle = siteConfig?.[`${type}Subtitle`] || t('coming_soon.desc', '현재 페이지는 준비 중입니다.\n더 좋은 모습으로 찾아뵙겠습니다.');
 
     // Style settings from config or defaults
-    const titleFont = siteConfig?.missionTitleFont || 'font-sans';
-    const subtitleFont = siteConfig?.missionSubtitleFont || 'font-sans';
-    const titleColor = siteConfig?.missionTitleColor || '#ffffff';
-    const subtitleColor = siteConfig?.missionSubtitleColor || '#f8fafc';
-    const overlayOpacity = siteConfig?.missionOverlayOpacity || 40;
-    const height = siteConfig?.missionHeight || 'medium';
+    const titleFont = siteConfig?.[`${type}TitleFont`] || 'font-sans';
+    const subtitleFont = siteConfig?.[`${type}SubtitleFont`] || 'font-sans';
+    const titleColor = siteConfig?.[`${type}TitleColor`] || '#ffffff';
+    const subtitleColor = siteConfig?.[`${type}SubtitleColor`] || '#f8fafc';
+    const overlayOpacity = siteConfig?.[`${type}OverlayOpacity`] || 40;
+    const height = siteConfig?.[`${type}Height`] || 'medium';
 
     // Height classes map
     const heightClasses = {
@@ -48,10 +48,10 @@ const ComingSoon = () => {
                     {/* Content */}
                     <div className="relative z-10 container mx-auto px-6 text-center">
                         <h1
-                            className={`text-4xl md:text-6xl lg:text-7xl mb-6 leading-tight drop-shadow-lg ${titleFont} ${siteConfig?.missionTitleWeight || 'font-bold'}`}
+                            className={`text-4xl md:text-6xl lg:text-7xl mb-6 leading-tight drop-shadow-lg ${titleFont} ${siteConfig?.[`${type}TitleWeight`] || 'font-bold'}`}
                             style={{
                                 color: titleColor,
-                                fontStyle: siteConfig?.missionTitleItalic ? 'italic' : 'normal'
+                                fontStyle: siteConfig?.[`${type}TitleItalic`] ? 'italic' : 'normal'
                             }}
                         >
                             {title}
@@ -59,10 +59,10 @@ const ComingSoon = () => {
 
                         {subtitle && (
                             <p
-                                className={`text-lg md:text-2xl max-w-3xl mx-auto leading-relaxed drop-shadow-md whitespace-pre-line ${subtitleFont} ${siteConfig?.missionSubtitleWeight || 'font-medium'}`}
+                                className={`text-lg md:text-2xl max-w-3xl mx-auto leading-relaxed drop-shadow-md whitespace-pre-line ${subtitleFont} ${siteConfig?.[`${type}SubtitleWeight`] || 'font-medium'}`}
                                 style={{
                                     color: subtitleColor,
-                                    fontStyle: siteConfig?.missionSubtitleItalic ? 'italic' : 'normal'
+                                    fontStyle: siteConfig?.[`${type}SubtitleItalic`] ? 'italic' : 'normal'
                                 }}
                             >
                                 {subtitle}
@@ -82,7 +82,7 @@ const ComingSoon = () => {
                     <div className="max-w-4xl mx-auto text-center space-y-8">
                         <div className="w-16 h-1 bg-primary/20 mx-auto rounded-full"></div>
                         <p className="text-gray-500 font-medium leading-relaxed">
-                            {siteConfig?.missionSubtitle ? '' : '현재 페이지 내용을 준비하고 있습니다.'}
+                            {siteConfig?.[`${type}Subtitle`] ? '' : '현재 페이지 내용을 준비하고 있습니다.'}
                         </p>
 
                         <div className="flex justify-center">
