@@ -699,16 +699,16 @@ const About = () => {
                                         <div>
                                             <p className="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">{t('location.phone')}</p>
                                             <div className="space-y-2">
-                                                {typeof locationConfig.phone === 'string' ? (
-                                                    (() => {
-                                                        const phones = locationConfig.phone.split(/[,\/]/);
-                                                        return phones.map((p, i) => (
-                                                            <span key={i} className="block text-gray-800 font-bold text-lg leading-tight">{p.trim()}</span>
-                                                        ));
-                                                    })()
-                                                ) : (
-                                                    <span className="text-gray-700 font-bold text-lg">{locationConfig.phone}</span>
-                                                )}
+                                                {(() => {
+                                                    const rawPhone = locationConfig.phone;
+                                                    const phones = Array.isArray(rawPhone)
+                                                        ? rawPhone
+                                                        : (typeof rawPhone === 'string' ? rawPhone.split(/[,\/]/) : [rawPhone]);
+
+                                                    return phones.map((p, i) => (
+                                                        <span key={i} className="block text-gray-800 font-bold text-lg leading-tight">{p && p.trim()}</span>
+                                                    ));
+                                                })()}
                                             </div>
                                         </div>
                                         <div>

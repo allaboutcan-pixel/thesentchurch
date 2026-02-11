@@ -16,7 +16,9 @@ const resources = {
                 "worship": "예배 안내",
                 "worship_guide": "예배 안내",
                 "worship_guide": "예배 안내",
+                "worship_guide": "예배 안내",
                 "nextgen": "다음 세대",
+                "ministry": "사역내용",
                 "news": "교회 소식",
                 "calendar": "교회 일정",
                 "notices": "공지사항",
@@ -28,6 +30,8 @@ const resources = {
                 "column": "목회칼럼",
                 "tsc": "The Sent Children (TSC)",
                 "tsy": "The Sent Youth (TSY)",
+                "mission": "선교사역",
+                "nextgen_tsc_tsy": "다음세대 - TSC/TSY",
                 "senior_pastor": "담임목사",
                 "role_pastor": "담임목사",
                 "role_youth": "유스 담당",
@@ -147,7 +151,10 @@ const resources = {
                 "tsy_name": "The Sent Youth (TSY)",
                 "tsy_target": "Gr.8 - 12",
                 "tsy_desc": "2:30 PM Gathering Room (2시 세대통합예배 후 모임)",
-                "tsy_detail": "사역표어\n세상을 거스르는 거룩한 세대 (Holy Generation)\n\n사역비전\n청소년 시기는 인생의 가치관이 형성되는 중요한 때입니다. 세상의 문화가 아닌 하나님의 말씀으로 가치관을 정립하고, 세상 속에서 구별된 거룩한 하나님의 자녀로 살아가도록 양육합니다."
+                "tsy_detail": "사역표어\n세상을 거스르는 거룩한 세대 (Holy Generation)\n\n사역비전\n청소년 시기는 인생의 가치관이 형성되는 중요한 때입니다. 세상의 문화가 아닌 하나님의 말씀으로 가치관을 정립하고, 세상 속에서 구별된 거룩한 하나님의 자녀로 살아가도록 양육합니다.",
+                "mission_name": "선교사역",
+                "mission_target": "전교인 (All)",
+                "mission_desc": "오직 성령이 너희에게 임하시면 너희가 권능을 받고 예루살렘과 온 유대와 사마리아와 땅 끝까지 이르러 내 증인이 되리라 하시니라 (사도행전 1장 8절)\n\n생명의소리교회는 이 말씀을 따라 땅 끝까지 복음을 전하는 선교적 교회(Missional Church)를 지향합니다."
             },
             "resources": {
                 "title": "주보 및 소식",
@@ -185,7 +192,9 @@ const resources = {
                 "worship": "Worship",
                 "worship_guide": "Worship Guide",
                 "worship_guide": "Worship Guide",
+                "worship_guide": "Worship Guide",
                 "nextgen": "Next Gen",
+                "ministry": "Ministry",
                 "news": "News",
                 "calendar": "Church Calendar",
                 "notices": "Notices",
@@ -197,6 +206,8 @@ const resources = {
                 "column": "Column",
                 "tsc": "The Sent Children (TSC)",
                 "tsy": "The Sent Youth (TSY)",
+                "mission": "Mission",
+                "nextgen_tsc_tsy": "Next Gen - TSC/TSY",
                 "senior_pastor": "Senior Pastor",
                 "role_pastor": "Senior Pastor",
                 "role_youth": "Youth Director",
@@ -316,7 +327,10 @@ const resources = {
                 "tsy_name": "The Sent Youth (TSY)",
                 "tsy_target": "Gr.8 - 12",
                 "tsy_desc": "2:30 PM Gathering Room (Meeting after 2:00 PM Joint Worship)",
-                "tsy_detail": "Motto\nHoly Generation Going Against the World\n\nVision\nAdolescence is a crucial time when life values are formed. We nurture them to establish values based on God's Word rather than worldly culture, and to live as holy children of God distinguished in the world."
+                "tsy_detail": "Motto\nHoly Generation Going Against the World\n\nVision\nAdolescence is a crucial time when life values are formed. We nurture them to establish values based on God's Word rather than worldly culture, and to live as holy children of God distinguished in the world.",
+                "mission_name": "Mission Ministry",
+                "mission_target": "All",
+                "mission_desc": "But you will receive power when the Holy Spirit comes on you; and you will be my witnesses in Jerusalem, and in all Judea and Samaria, and to the ends of the earth. (Acts 1:8)\n\nThe Church of the Sent aims to be a Missional Church that preaches the gospel to the ends of the earth according to this word."
             },
             "resources": {
                 "title": "Bulletin & News",

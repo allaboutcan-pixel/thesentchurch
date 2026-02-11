@@ -13,6 +13,7 @@ const Resources = lazy(() => import('./pages/Resources'));
 const Ministry = lazy(() => import('./pages/Ministry'));
 const Admin = lazy(() => import('./pages/Admin'));
 const DailyWord = lazy(() => import('./pages/DailyWord'));
+const ComingSoon = lazy(() => import('./pages/ComingSoon'));
 
 // Loading Fallback Component
 const PageLoader = () => (
@@ -37,6 +38,7 @@ function App() {
                 <Route path="about/*" element={<About />} />
 
                 <Route path="ministry" element={<Ministry />} />
+                <Route path="ministry/mission" element={<ComingSoon />} />
                 <Route path="ministry/*" element={<Ministry />} />
 
                 <Route path="news" element={<Resources />} />

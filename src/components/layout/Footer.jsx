@@ -56,16 +56,16 @@ const Footer = () => {
                                 <div className="flex items-start gap-4">
                                     <span className="font-bold text-white min-w-[80px]">{t('location.footer_phone')}</span>
                                     <div className="space-y-1">
-                                        {typeof config.phone === 'string' ? (
-                                            (() => {
-                                                const phones = config.phone.split(/[,\/]/);
-                                                return phones.map((p, i) => (
-                                                    <p key={i} className="text-sm md:text-base leading-tight">{p.trim()}</p>
-                                                ));
-                                            })()
-                                        ) : (
-                                            <p>{config.phone}</p>
-                                        )}
+                                        {(() => {
+                                            const rawPhone = config.location?.phone || config.phone;
+                                            const phones = Array.isArray(rawPhone)
+                                                ? rawPhone
+                                                : (typeof rawPhone === 'string' ? rawPhone.split(/[,\/]/) : [rawPhone]);
+
+                                            return phones.map((p, i) => (
+                                                <p key={i} className="text-sm md:text-base leading-tight">{p && p.trim()}</p>
+                                            ));
+                                        })()}
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-4">

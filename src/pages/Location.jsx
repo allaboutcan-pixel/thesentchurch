@@ -116,20 +116,18 @@ const Location = () => {
                                     {t('location.contact_label')}
                                 </h3>
                                 <div className="pl-2 border-l-2 border-gray-100 ml-3 space-y-6">
-                                    <div>
-                                        <p className="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">{t('location.phone')}</p>
-                                        <div className="space-y-2">
-                                            {typeof config.phone === 'string' ? (
-                                                (() => {
-                                                    const phones = config.phone.split(/[,\/]/);
-                                                    return phones.map((p, i) => (
-                                                        <span key={i} className="block text-gray-800 font-bold text-lg leading-tight">{p.trim()}</span>
-                                                    ));
-                                                })()
-                                            ) : (
-                                                <span className="text-gray-700 font-bold text-lg">{config.phone}</span>
-                                            )}
-                                        </div>
+                                    <p className="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">{t('location.phone')}</p>
+                                    <div className="space-y-2">
+                                        {(() => {
+                                            const rawPhone = config.phone;
+                                            const phones = Array.isArray(rawPhone)
+                                                ? rawPhone
+                                                : (typeof rawPhone === 'string' ? rawPhone.split(/[,\/]/) : [rawPhone]);
+
+                                            return phones.map((p, i) => (
+                                                <span key={i} className="block text-gray-800 font-bold text-lg leading-tight">{p && p.trim()}</span>
+                                            ));
+                                        })()}
                                     </div>
                                     <div>
                                         <p className="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">{t('location.email')}</p>
@@ -144,7 +142,7 @@ const Location = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

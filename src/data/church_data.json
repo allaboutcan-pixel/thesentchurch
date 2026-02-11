@@ -30,8 +30,7 @@
             "name": "The Sent Youth (TSY)",
             "target": "Youth",
             "description": "2:30 PM Gathering Room (2시 세대통합예배 후 모임)",
-            "image": "https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&q=80&w=800",
-            "theme": "bg-accent text-white"
+            "image": "https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&q=80&w=800"
         }
     ],
     "services": [
@@ -161,19 +160,19 @@
             ]
         },
         {
-            "id": "nextgen",
-            "label": "다음 세대",
+            "id": "ministry",
+            "label": "사역내용",
             "path": "/ministry",
             "subItems": [
                 {
-                    "id": "tsc",
-                    "label": "The Sent Children (TSC)",
-                    "path": "/ministry/tsc"
+                    "id": "nextgen",
+                    "label": "다음세대 - TSC/TSY",
+                    "path": "/ministry"
                 },
                 {
-                    "id": "tsy",
-                    "label": "The Sent Youth (TSY)",
-                    "path": "/ministry/tsy"
+                    "id": "mission",
+                    "label": "선교사역",
+                    "path": "/ministry/mission"
                 }
             ]
         },

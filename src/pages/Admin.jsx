@@ -301,6 +301,15 @@ const Admin = () => {
         resourcesTitleSize: 40, resourcesSubtitleSize: 18,
         resourcesHeight: 'medium', resourcesOverlayOpacity: 40,
 
+        // Mission
+        missionBanner: '', missionTitle: '', missionSubtitle: '',
+        missionTitleFont: 'font-sans', missionSubtitleFont: 'font-sans',
+        missionTitleColor: '#ffffff', missionSubtitleColor: '#f8fafc',
+        missionTitleItalic: false, missionSubtitleItalic: false,
+        missionTitleWeight: 'font-bold', missionSubtitleWeight: 'font-medium',
+        missionTitleSize: 40, missionSubtitleSize: 18,
+        missionHeight: 'medium', missionOverlayOpacity: 40,
+
         // Individual Ministry Items
         ministryItems: [],
 
@@ -433,6 +442,22 @@ const Admin = () => {
                     resourcesSubtitleSize: fbConfig.resourcesSubtitleSize || 18,
                     resourcesHeight: fbConfig.resourcesHeight || 'medium',
                     resourcesOverlayOpacity: fbConfig.resourcesOverlayOpacity || 40,
+
+                    missionBanner: fbConfig.missionBanner || '',
+                    missionTitle: fbConfig.missionTitle || '',
+                    missionSubtitle: fbConfig.missionSubtitle || '',
+                    missionTitleFont: fbConfig.missionTitleFont || 'font-sans',
+                    missionSubtitleFont: fbConfig.missionSubtitleFont || 'font-sans',
+                    missionTitleColor: fbConfig.missionTitleColor || '#ffffff',
+                    missionSubtitleColor: fbConfig.missionSubtitleColor || '#f8fafc',
+                    missionTitleItalic: fbConfig.missionTitleItalic || false,
+                    missionSubtitleItalic: fbConfig.missionSubtitleItalic || false,
+                    missionTitleWeight: fbConfig.missionTitleWeight || 'font-bold',
+                    missionSubtitleWeight: fbConfig.missionSubtitleWeight || 'font-medium',
+                    missionTitleSize: fbConfig.missionTitleSize || 40,
+                    missionSubtitleSize: fbConfig.missionSubtitleSize || 18,
+                    missionHeight: fbConfig.missionHeight || 'medium',
+                    missionOverlayOpacity: fbConfig.missionOverlayOpacity || 40,
 
                     ministryItems: fbConfig.ministryItems || churchData.ministries.map(m => ({
                         ...m,
@@ -861,7 +886,7 @@ const Admin = () => {
 
                 // Process all banner fields - REMOVED others, only heroImage remains
                 // Process ONLY media fields that might need upload or drive formatting
-                const mediaFields = ['heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner'];
+                const mediaFields = ['heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner', 'missionBanner'];
                 for (const field of mediaFields) {
                     await processField(field);
                 }
@@ -873,7 +898,8 @@ const Admin = () => {
                     'newsTitle', 'newsSubtitle', 'newsTitleFont', 'newsSubtitleFont', 'newsTitleColor', 'newsSubtitleColor', 'newsTitleItalic', 'newsSubtitleItalic', 'newsTitleSize', 'newsSubtitleSize', 'newsHeight', 'newsOverlayOpacity',
                     'ministryTitle', 'ministrySubtitle', 'ministryTitleFont', 'ministrySubtitleFont', 'ministryTitleColor', 'ministrySubtitleColor', 'ministryTitleItalic', 'ministrySubtitleItalic', 'ministryTitleSize', 'ministrySubtitleSize', 'ministryHeight', 'ministryOverlayOpacity',
                     'resourcesTitle', 'resourcesSubtitle', 'resourcesTitleFont', 'resourcesSubtitleFont', 'resourcesTitleColor', 'resourcesSubtitleColor', 'resourcesTitleItalic', 'resourcesSubtitleItalic', 'resourcesTitleSize', 'resourcesSubtitleSize', 'resourcesHeight', 'resourcesOverlayOpacity',
-                    'ministryItems'
+                    'ministryItems',
+                    'missionTitle', 'missionSubtitle', 'missionTitleFont', 'missionSubtitleFont', 'missionTitleColor', 'missionSubtitleColor', 'missionTitleItalic', 'missionSubtitleItalic', 'missionTitleWeight', 'missionSubtitleWeight', 'missionTitleSize', 'missionSubtitleSize', 'missionHeight', 'missionOverlayOpacity'
                 ];
                 for (const field of otherFields) {
                     currentConfig[field] = formData[field];
@@ -2476,6 +2502,7 @@ const Admin = () => {
                                 {renderBannerSettings('news', '📢 교회 소식 (News)', 'newsBanner')}
                                 {renderBannerSettings('resources', '⛪ 설교와 말씀 (Sermons)', 'resourcesBanner')}
                                 {renderBannerSettings('ministry', '🌱 다음 세대 (Ministry)', 'ministryBanner')}
+                                {renderBannerSettings('mission', '🌏 선교사역 (Mission)', 'missionBanner')}
 
                                 {/* Individual Ministry Management */}
                                 <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-8">

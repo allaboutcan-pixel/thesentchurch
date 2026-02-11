@@ -63,7 +63,7 @@ const Ministry = () => {
     useEffect(() => {
         // Scroll to section based on URL path (e.g. /ministry/tsc)
         const path = location.pathname.split('/').pop(); // Get last segment 'tsc' or 'tsy'
-        if (path && (path === 'tsc' || path === 'tsy')) {
+        if (path && (path === 'tsc' || path === 'tsy' || path === 'mission')) {
             // Slight delay to ensure DOM is ready
             setTimeout(() => {
                 const element = document.getElementById(path);
