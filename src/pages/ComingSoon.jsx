@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Home, ArrowRight } from 'lucide-react';
+import { Home, ArrowRight, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 
 const ComingSoon = () => {
     const { t } = useTranslation();
-    const siteConfig = useSiteConfig();
+    const { config: siteConfig } = useSiteConfig();
 
     const banner = siteConfig?.missionBanner;
     const title = siteConfig?.missionTitle || t('coming_soon.title', '페이지 준비중');
@@ -109,7 +109,7 @@ const ComingSoon = () => {
                 <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto shadow-xl shadow-gray-200/50 mb-8 relative overflow-hidden group">
                     <div className="absolute inset-0 bg-primary/5 group-hover:bg-primary/10 transition-colors"></div>
                     <div className="absolute bottom-0 left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
-                    <SettingsIcon className="w-10 h-10 text-gray-400 group-hover:text-primary transition-colors duration-300" />
+                    <Settings className="w-10 h-10 text-gray-400 group-hover:text-primary transition-colors duration-300" />
                 </div>
 
                 {/* Text Content */}
