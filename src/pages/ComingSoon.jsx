@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Home, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import useSiteConfig from '../hooks/useSiteConfig';
+import { useSiteConfig } from '../hooks/useSiteConfig';
 
 const ComingSoon = () => {
     const { t } = useTranslation();
