@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Home, ArrowRight, Settings } from 'lucide-react';
@@ -57,6 +58,13 @@ const ComingSoon = ({ type = 'mission' }) => {
                         >
                             {title}
                         </h1>
+
+                        <motion.div
+                            initial={{ opacity: 0, width: 0 }}
+                            animate={{ opacity: 1, width: "5rem" }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            className="h-1.5 bg-accent mx-auto mb-8 rounded-full"
+                        />
 
                         {subtitle && (
                             <p
