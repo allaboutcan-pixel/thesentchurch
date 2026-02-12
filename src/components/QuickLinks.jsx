@@ -9,35 +9,41 @@ const QuickLinks = ({ services }) => {
     const { t } = useTranslation();
 
     const serviceTimes = services && services.length > 0
-        ? services.map(s => s.time)
+        ? services.map(s => {
+            const time = s.time;
+            const name = s.name || '';
+            if (name.includes('1부')) return `${time} (1부예배)`;
+            if (name.includes('2부')) return `${time} (2부예배)`;
+            return time;
+        })
         : [t('home.quick_sunday_time')];
 
     const menuItems = [
         {
             title: t('home.quick_sunday'),
-            subTitle: "Sunday Worship",
+            subTitle: t('home.quick_sunday_sub'),
             desc: serviceTimes,
             image: quickSunday,
             link: "/about#worship"
         },
         {
             title: t('home.quick_morning'),
-            subTitle: "Early Morning Prayer",
+            subTitle: t('home.quick_morning_sub'),
             desc: [t('home.quick_morning_desc1'), t('home.quick_morning_desc2')],
             image: quickMorning,
             link: "/about#dawn"
         },
         {
             title: t('home.quick_bulletin'),
-            subTitle: "Weekly Bulletin",
-            desc: ['매주 주보 업데이트', 'PDF 다운로드'],
+            subTitle: t('home.quick_bulletin_sub'),
+            desc: [t('home.quick_bulletin_desc1'), t('home.quick_bulletin_desc2')],
             image: quickBulletin,
             link: "/news/bulletin"
         },
         {
             title: t('home.quick_gallery'),
-            subTitle: "Gallery",
-            desc: ['은혜의 순간들', '사진 갤러리'],
+            subTitle: t('home.quick_gallery_sub'),
+            desc: [t('home.quick_gallery_desc1'), t('home.quick_gallery_desc2')],
             image: quickGallery,
             link: "/news/gallery"
         }

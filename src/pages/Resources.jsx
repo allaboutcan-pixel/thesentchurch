@@ -410,7 +410,7 @@ const Resources = () => {
                                         </div>
                                         <div className="p-4 md:p-5">
                                             <div className="flex items-center gap-3 mb-2">
-                                                <span className="bg-accent/20 text-accent px-3 py-1 rounded-full text-[11px] font-black tracking-widest uppercase">Latest Sermon</span>
+                                                <span className="bg-accent/20 text-accent px-3 py-1 rounded-full text-[11px] font-black tracking-widest uppercase">{t('resources.latest_sermon')}</span>
                                                 <span className="text-white/40 text-sm font-medium">{latestSermon.date}</span>
                                             </div>
                                             <h2 className="text-2xl md:text-3xl font-black text-white mb-3 leading-tight">
@@ -426,7 +426,7 @@ const Resources = () => {
                                     </div>
                                 ) : (
                                     <div className="bg-slate-50 rounded-[2.5rem] aspect-video flex items-center justify-center text-slate-300">
-                                        등록된 설교 영상이 없습니다.
+                                        {t('resources.no_sermons')}
                                     </div>
                                 )}
                             </div>
@@ -438,7 +438,7 @@ const Resources = () => {
                                         <Play size={20} className="text-primary" />
                                         {t('home.latest_word')}
                                     </h3>
-                                    <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">{sermons.length} Videos</span>
+                                    <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">{t('resources.video_count', { count: sermons.length })}</span>
                                 </div>
                                 <div className="space-y-3 overflow-y-auto max-h-[600px] pr-2 custom-scrollbar">
                                     {sermons.slice(0, 5).map((sermon, idx) => (
@@ -498,7 +498,7 @@ const Resources = () => {
                                                 : "bg-slate-100 text-slate-400 hover:bg-slate-200"
                                         )}
                                     >
-                                        {year}년
+                                        {t('resources.year_label', { year })}
                                     </button>
                                 ))}
                             </div>
@@ -517,7 +517,7 @@ const Resources = () => {
                                                     : "bg-white text-slate-500 hover:bg-slate-50 border border-slate-100"
                                             )}
                                         >
-                                            <span className="font-bold">{month}{i18n.language.startsWith('en') ? '' : '월'}</span>
+                                            <span className="font-bold">{t('resources.month_label', { month })}</span>
                                             <ChevronRight size={16} className={clsx("transition-transform", selectedSermonMonth === month ? "opacity-100" : "opacity-0 group-hover:opacity-40")} />
                                         </button>
                                     ))}
@@ -554,7 +554,7 @@ const Resources = () => {
                                             <div className="bg-slate-50 p-6 rounded-full">
                                                 <Calendar size={48} className="opacity-20" />
                                             </div>
-                                            <p className="font-bold">선택하신 날짜의 말씀이 없습니다.</p>
+                                            <p className="font-bold">{t('resources.no_archive_sermons')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -572,7 +572,7 @@ const Resources = () => {
                                     <div className="lg:w-[35%] text-white space-y-6">
                                         <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/20 text-accent rounded-full text-[10px] font-black tracking-widest uppercase">
                                             <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-                                            Latest Bulletin
+                                            {t('resources.latest_bulletin')}
                                         </div>
                                         <h2 className="text-2xl md:text-4xl font-black leading-tight text-white">
                                             {latestBulletin.title}
@@ -589,7 +589,7 @@ const Resources = () => {
                                                 className="px-6 py-3 bg-white text-slate-900 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-100 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-white/5 text-sm"
                                             >
                                                 <BookOpen size={16} />
-                                                주보 크게 보기
+                                                {t('resources.view_larger')}
                                             </a>
                                             <a
                                                 href={dbService.formatDriveDownloadLink(latestBulletin.fileUrl)}
@@ -597,7 +597,7 @@ const Resources = () => {
                                                 className="px-6 py-3 bg-white/10 text-white rounded-xl font-bold flex items-center gap-2 hover:bg-white/20 transition-all border border-white/20 text-sm"
                                             >
                                                 <Download size={16} />
-                                                다운로드
+                                                {t('resources.download')}
                                             </a>
                                         </div>
                                     </div>
@@ -639,7 +639,7 @@ const Resources = () => {
                             </div>
                         ) : (
                             <div className="py-20 flex flex-col items-center justify-center text-slate-300 gap-4">
-                                <p>등록된 주보가 없습니다.</p>
+                                <p>{t('resources.no_bulletins')}</p>
                             </div>
                         )}
 
@@ -666,7 +666,7 @@ const Resources = () => {
                                                 : "bg-slate-100 text-slate-400 hover:bg-slate-200"
                                         )}
                                     >
-                                        {year}년
+                                        {t('resources.year_label', { year })}
                                     </button>
                                 ))}
                             </div>
@@ -685,7 +685,7 @@ const Resources = () => {
                                                     : "bg-white text-slate-500 hover:bg-slate-50 border border-slate-100"
                                             )}
                                         >
-                                            <span className="font-bold">{month}{i18n.language.startsWith('en') ? '' : '월'}</span>
+                                            <span className="font-bold">{t('resources.month_label', { month })}</span>
                                             <ChevronRight size={16} className={clsx("transition-transform", selectedMonth === month ? "opacity-100" : "opacity-0 group-hover:opacity-40")} />
                                         </button>
                                     ))}
@@ -729,7 +729,7 @@ const Resources = () => {
                                             <div className="bg-slate-50 p-6 rounded-full">
                                                 <Calendar size={48} className="opacity-20" />
                                             </div>
-                                            <p className="font-bold">선택하신 날짜의 주보가 없습니다.</p>
+                                            <p className="font-bold">{t('resources.no_archive_bulletins')}</p>
                                         </div>
                                     )}
                                 </div>
@@ -747,7 +747,7 @@ const Resources = () => {
                                     <div className="lg:w-[35%] text-white space-y-6">
                                         <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/20 text-accent rounded-full text-[10px] font-black tracking-widest uppercase">
                                             <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-                                            Latest Column
+                                            {t('resources.latest_column')}
                                         </div>
                                         <h2 className="text-2xl md:text-4xl font-black leading-tight text-white">
                                             {latestColumn.title}
@@ -758,7 +758,7 @@ const Resources = () => {
                                                 {latestColumn.date || ""}
                                             </div>
                                             <div className="text-white/80 font-bold">
-                                                작성: {latestColumn.author || '이남규 목사'}
+                                                {t('resources.author_prefix')}{latestColumn.author || '이남규 목사'}
                                             </div>
                                         </div>
                                         <div className="flex flex-wrap gap-2 pt-2">
@@ -769,7 +769,7 @@ const Resources = () => {
                                                 className="px-6 py-3 bg-white text-slate-900 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-100 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-white/5 text-sm"
                                             >
                                                 <BookOpen size={16} />
-                                                칼럼 크게 보기
+                                                {t('resources.view_larger')}
                                             </a>
                                             <a
                                                 href={dbService.formatDriveDownloadLink(latestColumn.fileUrl)}
@@ -777,7 +777,7 @@ const Resources = () => {
                                                 className="px-6 py-3 bg-white/10 text-white rounded-xl font-bold flex items-center gap-2 hover:bg-white/20 transition-all border border-white/20 text-sm"
                                             >
                                                 <Download size={16} />
-                                                다운로드
+                                                {t('resources.download')}
                                             </a>
                                         </div>
                                     </div>

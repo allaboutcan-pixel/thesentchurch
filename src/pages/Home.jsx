@@ -301,7 +301,7 @@ const Home = () => {
                                         </div>
                                     </div>
                                     <div className="absolute bottom-4 right-4 bg-black/60 text-white text-xs px-2 py-1 rounded font-bold">
-                                        Click to Play
+                                        {t('home.click_to_play')}
                                     </div>
                                 </>
                             )}
@@ -330,7 +330,7 @@ const Home = () => {
                                     <span>YouTube</span>
                                 </div>
                                 <div className="flex items-center gap-1 text-[11px] md:text-xs font-bold opacity-70 group-hover:opacity-100">
-                                    <span>바로가기</span>
+                                    <span>{t('home.go_to')}</span>
                                     <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                                 </div>
                             </a>
