@@ -498,7 +498,7 @@ const Resources = () => {
                                                 : "bg-slate-100 text-slate-400 hover:bg-slate-200"
                                         )}
                                     >
-                                        {t('resources.year_label', { year })}
+                                        {year}{i18n.language.startsWith('ko') ? '년' : ''}
                                     </button>
                                 ))}
                             </div>
@@ -517,7 +517,7 @@ const Resources = () => {
                                                     : "bg-white text-slate-500 hover:bg-slate-50 border border-slate-100"
                                             )}
                                         >
-                                            <span className="font-bold">{t('resources.month_label', { month })}</span>
+                                            <span className="font-bold">{month}{i18n.language.startsWith('ko') ? '월' : ''}</span>
                                             <ChevronRight size={16} className={clsx("transition-transform", selectedSermonMonth === month ? "opacity-100" : "opacity-0 group-hover:opacity-40")} />
                                         </button>
                                     ))}
@@ -666,7 +666,7 @@ const Resources = () => {
                                                 : "bg-slate-100 text-slate-400 hover:bg-slate-200"
                                         )}
                                     >
-                                        {t('resources.year_label', { year })}
+                                        {year}{i18n.language.startsWith('ko') ? '년' : ''}
                                     </button>
                                 ))}
                             </div>
@@ -685,7 +685,7 @@ const Resources = () => {
                                                     : "bg-white text-slate-500 hover:bg-slate-50 border border-slate-100"
                                             )}
                                         >
-                                            <span className="font-bold">{t('resources.month_label', { month })}</span>
+                                            <span className="font-bold">{month}{i18n.language.startsWith('ko') ? '월' : ''}</span>
                                             <ChevronRight size={16} className={clsx("transition-transform", selectedMonth === month ? "opacity-100" : "opacity-0 group-hover:opacity-40")} />
                                         </button>
                                     ))}
@@ -845,7 +845,7 @@ const Resources = () => {
                                                 : "bg-slate-100 text-slate-400 hover:bg-slate-200"
                                         )}
                                     >
-                                        {year}년
+                                        {year}{i18n.language.startsWith('ko') ? '년' : ''}
                                     </button>
                                 ))}
                             </div>
@@ -864,7 +864,7 @@ const Resources = () => {
                                                     : "bg-white text-slate-500 hover:bg-slate-50 border border-slate-100"
                                             )}
                                         >
-                                            <span className="font-bold">{month}월</span>
+                                            <span className="font-bold">{month}{i18n.language.startsWith('ko') ? '월' : ''}</span>
                                             <ChevronRight size={16} className={clsx("transition-transform", selectedColumnMonth === month ? "opacity-100" : "opacity-0 group-hover:opacity-40")} />
                                         </button>
                                     ))}

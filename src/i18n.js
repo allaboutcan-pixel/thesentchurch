@@ -155,7 +155,9 @@ const resources = {
                 "video_count": "{{count}}개 영상",
                 "view_larger": "크게 보기",
                 "download": "다운로드",
-                "author_prefix": "작성: "
+                "author_prefix": "작성: ",
+                "banner_title": "교회 자료실",
+                "banner_subtitle": "말씀과 은혜를 나눕니다"
             },
 
             "worship": {
