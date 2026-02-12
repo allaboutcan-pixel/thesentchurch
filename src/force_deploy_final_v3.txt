@@ -1,0 +1,2 @@
+Force deploy trigger - 2026-02-11 18:30
+Update: Mobile layout optimization and church name spacing.
