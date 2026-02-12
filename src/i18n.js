@@ -369,11 +369,26 @@ const resources = {
             "resources": {
                 "title": "Bulletin & News",
                 "subtitle": "Sharing news and grace of our church.",
+                "latest_sermon": "Latest Sermon",
+                "latest_bulletin": "Latest Bulletin",
+                "latest_column": "Latest Column",
+                "no_sermons": "No sermons available.",
+                "no_bulletins": "No bulletins available.",
+                "no_archive_sermons": "No sermons found for the selected date.",
+                "no_archive_bulletins": "No bulletins found for the selected date.",
+                "year_label": "{{year}}",
+                "month_label": "{{month}}",
+                "video_count": "{{count}} videos",
+                "view_larger": "View Larger",
+                "download": "Download",
+                "author_prefix": "By: ",
                 "daily_word_title": "Today's Word",
                 "daily_word_subtitle": "A Word from God to walk with you today",
                 "daily_word_archive_desc": "Meditate again on this week's precious words.",
                 "gallery_subtitle": "Our daily lives and moments of worship, walking together in the Word.",
-                "gallery_view_title": "Records of Grace"
+                "gallery_view_title": "Records of Grace",
+                "banner_title": "Resources",
+                "banner_subtitle": "Sharing the Word and Grace"
             },
             "location": {
                 "title": "Find Us",
