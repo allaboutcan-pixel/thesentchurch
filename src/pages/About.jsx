@@ -376,8 +376,12 @@ const About = () => {
                             </div>
 
                             <div
-                                className="text-gray-600 leading-[2.5] mb-12 max-w-4xl mx-auto"
+                                className="hidden md:block text-gray-600 leading-[2.5] mb-12 max-w-4xl mx-auto"
                                 dangerouslySetInnerHTML={{ __html: t('about.affiliated_orgs_desc') }}
+                            />
+                            <div
+                                className="md:hidden text-gray-600 leading-relaxed mb-8 text-justify"
+                                dangerouslySetInnerHTML={{ __html: t('about.affiliated_orgs_desc_mobile') || t('about.affiliated_orgs_desc') }}
                             />
 
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
