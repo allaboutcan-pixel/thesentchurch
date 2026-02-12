@@ -369,19 +369,26 @@ const About = () => {
                         <div className="w-16 h-1 bg-accent mx-auto mt-6" />
                     </div>
 
-                    <div className="max-w-4xl mx-auto">
+                    <div className="max-w-7xl mx-auto">
                         <div className="bg-white rounded-3xl p-12 text-center shadow-sm border border-gray-100">
                             <div className="w-20 h-20 bg-primary/5 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
                                 <Handshake size={40} />
                             </div>
 
                             <div
-                                className="text-gray-600 leading-loose mb-12"
+                                className="text-gray-600 leading-[2.5] mb-12 max-w-4xl mx-auto"
                                 dangerouslySetInnerHTML={{ __html: t('about.affiliated_orgs_desc') }}
                             />
 
-                            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
                                 {[
+                                    {
+                                        id: 'kehc_korea',
+                                        url: 'https://www.sungkyul.org/',
+                                        type: 'image',
+                                        src: 'https://drive.google.com/thumbnail?id=19s88h637lSLOhzn5iaTXFQTgreUAZ0t7&sz=w1000',
+                                        alt: 'KEHC Korea Logo'
+                                    },
                                     {
                                         id: 'kehc',
                                         url: 'http://www.sungkyulusa.org/',
@@ -395,6 +402,13 @@ const About = () => {
                                         type: 'image',
                                         src: 'https://drive.google.com/thumbnail?id=1hDlHKMFvCefn4blOYJnBjS7coqx4QjVZ&sz=w1000',
                                         alt: 'EFCC Logo'
+                                    },
+                                    {
+                                        id: 'ldp',
+                                        url: 'https://www.lpd-efcc.ca/',
+                                        type: 'image',
+                                        src: 'https://drive.google.com/thumbnail?id=1Rn01SNP4d6MFhAWVu6C_Ht-X_ViCwXYv&sz=w1000',
+                                        alt: 'LDP Logo'
                                     },
                                     {
                                         id: 'twu',
@@ -414,9 +428,9 @@ const About = () => {
                                         href={org.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="group bg-white rounded-xl p-2 md:p-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 flex flex-col items-center justify-center gap-1 aspect-square"
+                                        className="group bg-white rounded-xl p-2 md:p-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 flex flex-col items-center justify-start h-full py-8 gap-3"
                                     >
-                                        <div className="flex items-center justify-center w-full h-8 md:h-12">
+                                        <div className="flex items-center justify-center w-full h-12 md:h-16 mb-2">
                                             {org.type === 'image' ? (
                                                 <img
                                                     src={org.src}
@@ -424,8 +438,8 @@ const About = () => {
                                                     className="max-w-full max-h-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
                                                 />
                                             ) : (
-                                                <div className="w-8 h-8 md:w-10 md:h-10 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 group-hover:bg-primary/5 group-hover:text-primary transition-colors">
-                                                    <org.icon size={16} className="md:w-5 md:h-5" />
+                                                <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 group-hover:bg-primary/5 group-hover:text-primary transition-colors">
+                                                    <org.icon size={20} className="md:w-6 md:h-6" />
                                                 </div>
                                             )}
                                         </div>

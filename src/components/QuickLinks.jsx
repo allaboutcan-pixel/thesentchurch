@@ -9,14 +9,14 @@ const QuickLinks = ({ services }) => {
     const { t } = useTranslation();
 
     const serviceTimes = services && services.length > 0
-        ? services.map(s => s.time).join(' / ')
-        : t('home.quick_sunday_time');
+        ? services.map(s => s.time)
+        : [t('home.quick_sunday_time')];
 
     const menuItems = [
         {
             title: t('home.quick_sunday'),
             subTitle: "Sunday Worship",
-            desc: [serviceTimes],
+            desc: serviceTimes,
             image: quickSunday,
             link: "/about#worship"
         },
@@ -30,14 +30,14 @@ const QuickLinks = ({ services }) => {
         {
             title: t('home.quick_bulletin'),
             subTitle: "Weekly Bulletin",
-            desc: [],
+            desc: ['매주 주보 업데이트', 'PDF 다운로드'],
             image: quickBulletin,
             link: "/news/bulletin"
         },
         {
             title: t('home.quick_gallery'),
             subTitle: "Gallery",
-            desc: [],
+            desc: ['은혜의 순간들', '사진 갤러리'],
             image: quickGallery,
             link: "/news/gallery"
         }

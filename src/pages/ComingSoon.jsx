@@ -103,6 +103,8 @@ const ComingSoon = ({ type = 'mission' }) => {
                             {siteConfig?.[`${type}Subtitle`] ? '' : '현재 페이지 내용을 준비하고 있습니다.'}
                         </p>
 
+                        <p className="text-2xl font-bold text-gray-400">페이지 준비중입니다</p>
+
                         <div className="flex justify-center">
                             <Link
                                 to="/"
