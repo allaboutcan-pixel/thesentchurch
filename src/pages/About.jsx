@@ -380,7 +380,7 @@ const About = () => {
                                 dangerouslySetInnerHTML={{ __html: t('about.affiliated_orgs_desc') }}
                             />
                             <div
-                                className="md:hidden text-gray-600 leading-relaxed mb-8 text-justify"
+                                className="md:hidden text-gray-600 leading-relaxed mb-8 text-center"
                                 dangerouslySetInnerHTML={{ __html: t('about.affiliated_orgs_desc_mobile') || t('about.affiliated_orgs_desc') }}
                             />
 
