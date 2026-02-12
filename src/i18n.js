@@ -174,7 +174,7 @@ const resources = {
                 "subtitle": "함께 성장하는 믿음의 공동체",
                 "learn_more": "자세히 보기",
                 "fold": "접기",
-                "sunday_school_title": "우리 Sunday School은\\n아이들이 말씀 안에서 성장하며, 믿음과 충성으로\\n하나님을 섬기는 제자로 자라도록 돕습니다.",
+                "sunday_school_title": "우리 Sunday School은\n아이들이 말씀 안에서 성장하며, 믿음과 충성으로\n하나님을 섬기는 제자로 자라도록 돕습니다.",
                 "sunday_school_desc_mobile": "우리 Sunday School은<br/>아이들이 말씀 안에서 성장하며,<br/>믿음과 충성으로 하나님을 섬기는<br/>제자로 자라도록 돕습니다.",
                 "sunday_school_subtitle": "마땅히 행할 길을 아이에게 가르치라 그리하면 늙어도 그것을 떠나지 아니하리라(잠 22:6)",
                 "tsc_name": "The Sent Children (TSC)",
