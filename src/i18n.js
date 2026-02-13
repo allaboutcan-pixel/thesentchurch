@@ -143,6 +143,8 @@ const resources = {
                 "values_title": "사역 (핵심가치)",
             },
             "resources": {
+                "title": "주보 및 소식",
+                "subtitle": "교회의 소식과 은혜를 나눕니다.",
                 "latest_sermon": "최신 설교",
                 "latest_bulletin": "최신 주보",
                 "latest_column": "최신 칼럼",
@@ -157,7 +159,12 @@ const resources = {
                 "download": "다운로드",
                 "author_prefix": "작성: ",
                 "banner_title": "교회 자료실",
-                "banner_subtitle": "말씀과 은혜를 나눕니다"
+                "banner_subtitle": "말씀과 은혜를 나눕니다",
+                "daily_word_title": "한 주를 살아갈 말씀",
+                "daily_word_subtitle": "오늘을 함께 걸어갈 하나님의 한 말씀",
+                "daily_word_archive_desc": "이번 주의 귀한 말씀들을 다시 묵상해보세요.",
+                "gallery_subtitle": "말씀 안에서 함께 걷는 우리의 일상과 예배의 순간들",
+                "gallery_view_title": "은혜의 기록들"
             },
 
             "worship": {
@@ -189,15 +196,7 @@ const resources = {
                 "mission_target": "전교인 (All)",
                 "mission_desc": "오직 성령이 너희에게 임하시면 너희가 권능을 받고 예루살렘과 온 유대와 사마리아와 땅 끝까지 이르러 내 증인이 되리라 하시니라 (사도행전 1장 8절)\n\n생명의소리교회는 이 말씀을 따라 땅 끝까지 복음을 전하는 선교적 교회(Missional Church)를 지향합니다."
             },
-            "resources": {
-                "title": "주보 및 소식",
-                "subtitle": "교회의 소식과 은혜를 나눕니다.",
-                "daily_word_title": "한 주를 살아갈 말씀",
-                "daily_word_subtitle": "오늘을 함께 걸어갈 하나님의 한 말씀",
-                "daily_word_archive_desc": "이번 주의 귀한 말씀들을 다시 묵상해보세요.",
-                "gallery_subtitle": "말씀 안에서 함께 걷는 우리의 일상과 예배의 순간들",
-                "gallery_view_title": "은혜의 기록들"
-            },
+
             "location": {
                 "title": "오시는 길",
                 "subtitle": "생명의소리교회로 오시는 길을 안내해 드립니다.",
