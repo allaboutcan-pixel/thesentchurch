@@ -83,9 +83,12 @@ const ComingSoon = ({ type = 'mission' }) => {
                 </div>
 
                 {/* Ministry Nav (Only for ministry related types) */}
-                {['mission', 'prayer'].includes(type) && (
+                {['mission', 'prayer', 'team', 'tee'].includes(type) && (
                     <div className="container mx-auto px-4 mt-12 mb-8">
-                        <MinistryNav active={type === 'mission' ? 'mission_evangelism' : type} category="ministry" />
+                        <MinistryNav
+                            active={type === 'mission' ? 'mission_evangelism' : (type === 'team' ? 'team_ministry' : type)}
+                            category={['tee'].includes(type) ? 'education' : 'ministry'}
+                        />
                     </div>
                 )}
 
@@ -155,7 +158,7 @@ const ComingSoon = ({ type = 'mission' }) => {
                         <div className="absolute inset-0 w-1 bg-primary transform origin-left scale-y-0 group-hover:scale-y-100 transition-transform duration-300"></div>
                         <div className="flex items-center gap-2 relative z-10">
                             <Home size={20} />
-                            <span>홈으로 돌아가기</span>
+                            <span>메인으로 돌아가기</span>
                         </div>
                     </Link>
                 </div>
