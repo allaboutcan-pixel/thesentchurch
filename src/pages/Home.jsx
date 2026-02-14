@@ -39,6 +39,7 @@ const Home = () => {
     const [heroSubtitleFont, setHeroSubtitleFont] = useState("font-sans");
     const [heroOverlayOpacity, setHeroOverlayOpacity] = useState(50);
     const [heroHeight, setHeroHeight] = useState("full");
+    const [heroBannerFit, setHeroBannerFit] = useState("cover");
     const { config, loading: configLoading } = useSiteConfig();
     const { t } = useTranslation();
 
@@ -103,6 +104,7 @@ const Home = () => {
                     else if (config.overlayOpacity !== undefined) setHeroOverlayOpacity(config.overlayOpacity);
 
                     if (config.heroHeight) setHeroHeight(config.heroHeight);
+                    if (config.heroBannerFit) setHeroBannerFit(config.heroBannerFit);
                     if (config.youtubeUrl) setYoutubeUrl(config.youtubeUrl);
                 }
             } catch (e) {
@@ -172,7 +174,8 @@ const Home = () => {
                             src={posterUrl}
                             alt="Background"
                             className={clsx(
-                                "absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-1000", // Slower fade for smoother switch
+                                "absolute inset-0 w-full h-full z-0 transition-opacity duration-1000", // Slower fade for smoother switch
+                                heroBannerFit === 'contain' ? "object-contain" : "object-cover",
                                 isVideoLoaded ? "opacity-0" : "opacity-100"
                             )}
                             referrerPolicy="no-referrer"
@@ -193,7 +196,10 @@ const Home = () => {
                             getYoutubeId(heroImage) ? (
                                 <div className="absolute inset-0 w-full h-full">
                                     <iframe
-                                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[115%] h-[115%] min-w-full min-h-full pointer-events-none object-cover"
+                                        className={clsx(
+                                            "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-sans pointer-events-none transition-all",
+                                            heroBannerFit === 'contain' ? "w-full h-full object-contain" : "w-[115%] h-[115%] min-w-full min-h-full object-cover"
+                                        )}
                                         src={`https://www.youtube.com/embed/${getYoutubeId(heroImage)}?autoplay=1&mute=1&loop=1&playlist=${getYoutubeId(heroImage)}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&origin=${window.location.origin}`}
                                         frameBorder="0"
                                         allow="autoplay; encrypted-media"
@@ -205,7 +211,10 @@ const Home = () => {
                                 <video
                                     key={heroImage}
                                     src={heroImage.includes('drive.google.com') ? dbService.formatDriveVideo(heroImage) : heroImage}
-                                    className="w-full h-full object-cover"
+                                    className={clsx(
+                                        "w-full h-full transition-all",
+                                        heroBannerFit === 'contain' ? "object-contain" : "object-cover"
+                                    )}
                                     autoPlay
                                     muted
                                     loop

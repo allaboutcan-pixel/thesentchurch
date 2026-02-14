@@ -26,6 +26,7 @@ const Ministry = () => {
     const [subtitleSize, setSubtitleSize] = useState(18);
     const [overlayOpacity, setOverlayOpacity] = useState(40);
     const [height, setHeight] = useState("medium");
+    const [bannerFit, setBannerFit] = useState("cover");
     const [expandedSection, setExpandedSection] = useState(null);
     const [ministryList, setMinistryList] = useState(churchData.ministries);
 
@@ -110,6 +111,7 @@ const Ministry = () => {
                 if (config.ministrySubtitleSize) setSubtitleSize(config.ministrySubtitleSize);
                 if (config.ministryOverlayOpacity !== undefined) setOverlayOpacity(config.ministryOverlayOpacity);
                 if (config.ministryHeight) setHeight(config.ministryHeight);
+                if (config.ministryBannerFit) setBannerFit(config.ministryBannerFit);
                 if (config.ministryItems) setMinistryList(config.ministryItems);
             }
         };
@@ -135,7 +137,10 @@ const Ministry = () => {
                         getYoutubeId(headerBanner) ? (
                             <div className="absolute inset-0 w-full h-full">
                                 <iframe
-                                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[115%] h-[115%] min-w-full min-h-full pointer-events-none object-cover opacity-80"
+                                    className={clsx(
+                                        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-sans pointer-events-none transition-all duration-700 opacity-80",
+                                        bannerFit === 'contain' ? "w-full h-full object-contain" : "w-[115%] h-[115%] min-w-full min-h-full object-cover"
+                                    )}
                                     src={`https://www.youtube.com/embed/${getYoutubeId(headerBanner)}?autoplay=1&mute=1&loop=1&playlist=${getYoutubeId(headerBanner)}?autoplay=1&mute=1&loop=1&playlist=${getYoutubeId(headerBanner)}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&origin=${window.location.origin}`}
                                     frameBorder="0"
                                     allow="autoplay; encrypted-media"
@@ -146,7 +151,10 @@ const Ministry = () => {
                             <video
                                 key={headerBanner}
                                 src={headerBanner.includes('drive.google.com') ? dbService.formatDriveVideo(headerBanner) : headerBanner}
-                                className="w-full h-full object-cover"
+                                className={clsx(
+                                    "w-full h-full transition-all duration-700",
+                                    bannerFit === 'contain' ? "object-contain" : "object-cover"
+                                )}
                                 autoPlay
                                 muted
                                 loop
@@ -157,7 +165,10 @@ const Ministry = () => {
                         <img
                             src={headerBanner}
                             alt="Ministry Banner"
-                            className="w-full h-full object-cover"
+                            className={clsx(
+                                "w-full h-full transition-all duration-700",
+                                bannerFit === 'contain' ? "object-contain" : "object-cover"
+                            )}
                             referrerPolicy="no-referrer"
                             loading="lazy"
                         />

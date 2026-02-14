@@ -19,6 +19,7 @@ const ComingSoon = ({ type = 'mission' }) => {
     const bannerTitle = siteConfig?.[`${type}Title`] || (type === 'tee' ? 'TEE' : (type === 'team' ? '팀사역' : (['mission', 'prayer'].includes(type) ? t(`nav.${type}`) : t('nav.ministry'))));
     const bannerSubtitle = siteConfig?.[`${type}Subtitle`] || ministryItem?.description || siteConfig?.ministrySubtitle || "";
 
+    const bannerFit = siteConfig?.[`${type}BannerFit`] || 'cover';
     const overlayOpacity = siteConfig?.[`${type}OverlayOpacity`] || 40;
     const height = siteConfig?.[`${type}Height`] || 'medium';
 
@@ -50,7 +51,10 @@ const ComingSoon = ({ type = 'mission' }) => {
                     {banner ? (
                         <>
                             <div
-                                className="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105"
+                                className={clsx(
+                                    "absolute inset-0 bg-no-repeat bg-center transform scale-105 transition-all duration-700",
+                                    bannerFit === 'contain' ? "bg-contain" : "bg-cover"
+                                )}
                                 style={{ backgroundImage: `url(${banner})` }}
                             />
                             <div
