@@ -187,7 +187,7 @@ const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBann
                 </div>
 
                 {/* Preview Thumbnail */}
-                <div className="aspect-[21/9] rounded-2xl overflow-hidden bg-slate-100 border border-gray-100 mt-2 relative shadow-inner">
+                <div className="aspect-video rounded-2xl overflow-hidden bg-slate-100 border border-gray-100 mt-2 relative shadow-inner">
                     <div className="absolute top-2 right-2 z-10">
                         <span className="px-2 py-1 bg-black/40 backdrop-blur-md text-[9px] font-black text-white rounded-md uppercase tracking-widest">Live Preview</span>
                     </div>
@@ -307,7 +307,6 @@ const Admin = () => {
         missionTitleColor: '#ffffff', missionSubtitleColor: '#f8fafc',
         missionTitleItalic: false, missionSubtitleItalic: false,
         missionTitleWeight: 'font-bold', missionSubtitleWeight: 'font-medium',
-        missionTitleSize: 40, missionSubtitleSize: 18,
         missionTitleSize: 40, missionSubtitleSize: 18,
         missionHeight: 'medium', missionOverlayOpacity: 40,
 
@@ -475,17 +474,6 @@ const Admin = () => {
                     prayerSubtitleSize: fbConfig.prayerSubtitleSize || 18,
                     prayerHeight: fbConfig.prayerHeight || 'medium',
                     prayerOverlayOpacity: fbConfig.prayerOverlayOpacity || 40,
-                    missionTitleColor: fbConfig.missionTitleColor || '#ffffff',
-                    missionSubtitleColor: fbConfig.missionSubtitleColor || '#f8fafc',
-                    missionTitleItalic: fbConfig.missionTitleItalic || false,
-                    missionSubtitleItalic: fbConfig.missionSubtitleItalic || false,
-                    missionTitleWeight: fbConfig.missionTitleWeight || 'font-bold',
-                    missionSubtitleWeight: fbConfig.missionSubtitleWeight || 'font-medium',
-                    missionTitleSize: fbConfig.missionTitleSize || 40,
-                    missionSubtitleSize: fbConfig.missionSubtitleSize || 18,
-                    missionHeight: fbConfig.missionHeight || 'medium',
-                    missionOverlayOpacity: fbConfig.missionOverlayOpacity || 40,
-
                     ministryItems: fbConfig.ministryItems || churchData.ministries.map(m => ({
                         ...m,
                         detail: m.id === 'tsc' ?
@@ -1425,7 +1413,7 @@ const Admin = () => {
                     />
                     <SidebarItem
                         icon={<FileText size={20} />}
-                        label="목회 칼럼 관리"
+                        label="신학 칼럼 관리"
                         active={activeTab === 'columns'}
                         onClick={() => { setActiveTab('columns'); setShowAddForm(false); }}
                     />
@@ -1493,7 +1481,7 @@ const Admin = () => {
                             {activeTab === 'bulletins' && '📄 주보 파일 관리'}
                             {activeTab === 'dailyWord' && '📜 오늘의 말씀 관리'}
                             {activeTab === 'gallery' && '🖼️ 갤러리 관리'}
-                            {activeTab === 'columns' && '✍️ 목회 칼럼 관리'}
+                            {activeTab === 'columns' && '✍️ 신학 칼럼 관리'}
                             {activeTab === 'site' && '⚙️ 사이트 설정'}
                             {activeTab === 'intro' && '📖 교회소개 관리'}
                             {activeTab === 'staff' && '👥 섬기는 분들 관리'}
@@ -1547,7 +1535,7 @@ const Admin = () => {
                                 {activeTab === 'sermons' ? '새 설교 정보 입력' :
                                     activeTab === 'bulletins' ? '새 주보 정보 입력' :
                                         activeTab === 'gallery' ? '새 갤러리 항목 등록' :
-                                            activeTab === 'columns' ? '새 목회 칼럼 등록' :
+                                            activeTab === 'columns' ? '새 신학 칼럼 등록' :
                                                 activeTab === 'staff' ? '새 섬기는 분 등록' :
                                                     activeTab === 'calendar' ? '새 일정 등록' :
                                                         activeTab === 'dailyWord' ? '새 오늘의 말씀 등록' : '정보 수정'}
@@ -1862,7 +1850,7 @@ const Admin = () => {
                                             <BookOpen size={24} />
                                         </div>
                                         <div className="text-sm">
-                                            <p className="font-bold text-emerald-900 mb-1">💡 목회 칼럼 등록 안내</p>
+                                            <p className="font-bold text-emerald-900 mb-1">💡 신학 칼럼 등록 안내</p>
                                             <p className="text-emerald-800/70 leading-relaxed text-xs">
                                                 칼럼의 종류(문서, 사진, 영상)를 선택하고 링크를 입력하거나 파일을 직접 업로드해 주세요. <br />
                                                 <strong>영상</strong>인 경우 유튜브 링크를, <strong>사진</strong>이나 <strong>문서</strong>는 구글 드라이브 링크를 추천합니다.
@@ -2531,7 +2519,7 @@ const Admin = () => {
                                 {renderBannerSettings('hero', '🏠 메인 홈 히어로 (Home Hero)', 'heroImage')}
                                 {renderBannerSettings('news', '📢 교회소식 (News)', 'newsBanner')}
                                 {renderBannerSettings('resources', '⛪ 설교와 말씀 (Sermons)', 'resourcesBanner')}
-                                {renderBannerSettings('ministry', '🌱 다음세대 (Ministry)', 'ministryBanner')}
+                                {renderBannerSettings('ministry', '🎓 교육 (Education)', 'ministryBanner')}
                                 {renderBannerSettings('mission', '🌏 선교사역 (Mission)', 'missionBanner')}
                                 {renderBannerSettings('prayer', '🙏 중보기도 (Intercessory Prayer)', 'prayerBanner')}
 

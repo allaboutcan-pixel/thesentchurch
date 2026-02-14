@@ -154,30 +154,47 @@
                 },
                 {
                     "id": "column",
-                    "label": "목회 칼럼",
+                    "label": "신학 칼럼",
                     "path": "/sermons/column"
                 }
             ]
         },
         {
-            "id": "ministry",
-            "label": "사역내용",
+            "id": "education",
+            "label": "교육",
             "path": "/ministry",
             "subItems": [
                 {
                     "id": "nextgen",
-                    "label": "다음세대 - TSC/TSY",
+                    "label": "TSC/TSY",
                     "path": "/ministry"
                 },
                 {
-                    "id": "mission",
-                    "label": "선교사역",
-                    "path": "/ministry/mission"
+                    "id": "tee",
+                    "label": "TEE",
+                    "path": "/ministry/tee"
+                }
+            ]
+        },
+        {
+            "id": "ministry",
+            "label": "사역",
+            "path": "/ministry",
+            "subItems": [
+                {
+                    "id": "team_ministry",
+                    "label": "팀사역",
+                    "path": "/ministry/team"
                 },
                 {
                     "id": "prayer",
                     "label": "중보기도",
                     "path": "/ministry/prayer"
+                },
+                {
+                    "id": "mission_evangelism",
+                    "label": "선교와 전도",
+                    "path": "/ministry/mission"
                 }
             ]
         },

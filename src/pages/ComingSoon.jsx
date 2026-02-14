@@ -85,7 +85,7 @@ const ComingSoon = ({ type = 'mission' }) => {
                 {/* Ministry Nav (Only for ministry related types) */}
                 {['mission', 'prayer'].includes(type) && (
                     <div className="container mx-auto px-4 mt-12 mb-8">
-                        <MinistryNav active={type} />
+                        <MinistryNav active={type === 'mission' ? 'mission_evangelism' : type} category="ministry" />
                     </div>
                 )}
 

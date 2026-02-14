@@ -63,15 +63,25 @@ const Ministry = () => {
 
     useEffect(() => {
         // Scroll to section based on URL path (e.g. /ministry/tsc)
-        const path = location.pathname.split('/').pop(); // Get last segment 'tsc' or 'tsy'
-        if (path && (path === 'tsc' || path === 'tsy' || path === 'mission')) {
+        const path = location.pathname.split('/').pop(); // Get last segment 'tsc', 'tsy', 'tee', 'team'
+
+        // Map of URL paths to section IDs
+        const pathMap = {
+            'ministry': 'nextgen',
+            'tee': 'tee',
+            'team': 'team_ministry',
+            'mission': 'mission_evangelism',
+            'prayer': 'prayer'
+        };
+
+        const targetId = pathMap[path] || 'nextgen';
+
+        if (path && (path === 'tsc' || path === 'tsy' || path === 'mission' || path === 'tee' || path === 'team')) {
             // Slight delay to ensure DOM is ready
             setTimeout(() => {
                 const element = document.getElementById(path);
                 if (element) {
                     element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    // Optionally auto-expand the section? User just asked to scroll, but expanding might be nice.
-                    // Let's expanded it too for better UX
                     setExpandedSection(path);
                 }
             }, 100);
@@ -201,7 +211,10 @@ const Ministry = () => {
 
             {/* Quick Menu Nav */}
             <div className="container mx-auto px-4 mt-12">
-                <MinistryNav active="nextgen" />
+                <MinistryNav
+                    active={location.pathname.includes('/tee') ? 'tee' : (location.pathname.includes('/team') ? 'team_ministry' : 'nextgen')}
+                    category={location.pathname.includes('/team') ? 'ministry' : 'education'}
+                />
             </div>
 
             {/* Sunday School Introduction Section */}

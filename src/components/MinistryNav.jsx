@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Users, Globe, Heart } from 'lucide-react';
+import { Users, Globe, Heart, BookOpen, UserPlus } from 'lucide-react';
 import clsx from 'clsx';
 
 const NavItem = ({ to, active, icon, label }) => (
@@ -19,30 +19,34 @@ const NavItem = ({ to, active, icon, label }) => (
     </Link>
 );
 
-const MinistryNav = ({ active }) => {
+const MinistryNav = ({ active, category = 'education' }) => {
     const { t } = useTranslation();
+
+    const educationItems = [
+        { id: 'nextgen', to: '/ministry', icon: <Users size={18} /> },
+        { id: 'tee', to: '/ministry/tee', icon: <BookOpen size={18} /> }
+    ];
+
+    const ministryItems = [
+        { id: 'team_ministry', to: '/ministry/team', icon: <UserPlus size={18} /> },
+        { id: 'prayer', to: '/ministry/prayer', icon: <Heart size={18} /> },
+        { id: 'mission_evangelism', to: '/ministry/mission', icon: <Globe size={18} /> }
+    ];
+
+    const items = category === 'education' ? educationItems : ministryItems;
 
     return (
         <div className="flex justify-center mb-12 animate-fade-in-up delay-100 relative z-20">
-            <div className="inline-flex rounded-xl shadow-sm bg-gray-100 p-1" role="group">
-                <NavItem
-                    to="/ministry"
-                    active={active === 'nextgen'}
-                    icon={<Users size={18} />}
-                    label={t('nav.nextgen', '다음세대')}
-                />
-                <NavItem
-                    to="/ministry/mission"
-                    active={active === 'mission'}
-                    icon={<Globe size={18} />}
-                    label={t('nav.mission', '선교사역')}
-                />
-                <NavItem
-                    to="/ministry/prayer"
-                    active={active === 'prayer'}
-                    icon={<Heart size={18} />}
-                    label={t('nav.prayer', '중보기도')}
-                />
+            <div className="inline-flex rounded-xl shadow-sm bg-gray-100 p-1 overflow-x-auto max-w-full" role="group">
+                {items.map(item => (
+                    <NavItem
+                        key={item.id}
+                        to={item.to}
+                        active={active === item.id}
+                        icon={item.icon}
+                        label={t(`nav.${item.id}`)}
+                    />
+                ))}
             </div>
         </div>
     );

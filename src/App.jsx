@@ -11,6 +11,7 @@ const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 const Resources = lazy(() => import('./pages/Resources'));
 const Ministry = lazy(() => import('./pages/Ministry'));
+const Prayer = lazy(() => import('./pages/Prayer'));
 const Admin = lazy(() => import('./pages/Admin'));
 const DailyWord = lazy(() => import('./pages/DailyWord'));
 const ComingSoon = lazy(() => import('./pages/ComingSoon'));
@@ -39,7 +40,7 @@ function App() {
 
                 <Route path="ministry" element={<Ministry />} />
                 <Route path="ministry/mission" element={<ComingSoon type="mission" />} />
-                <Route path="ministry/prayer" element={<ComingSoon type="prayer" />} />
+                <Route path="ministry/prayer" element={<Prayer />} />
                 <Route path="ministry/*" element={<Ministry />} />
 
                 <Route path="news" element={<Resources />} />

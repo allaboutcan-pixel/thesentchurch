@@ -384,7 +384,7 @@ const About = () => {
                                 dangerouslySetInnerHTML={{ __html: t('about.affiliated_orgs_desc_mobile') || t('about.affiliated_orgs_desc') }}
                             />
 
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+                            <div className="flex flex-wrap justify-center gap-4 md:gap-6">
                                 {[
                                     {
                                         id: 'kehc_korea',
@@ -413,18 +413,6 @@ const About = () => {
                                         type: 'image',
                                         src: 'https://drive.google.com/thumbnail?id=1Rn01SNP4d6MFhAWVu6C_Ht-X_ViCwXYv&sz=w1000',
                                         alt: 'LDP Logo'
-                                    },
-                                    {
-                                        id: 'twu',
-                                        url: 'https://www.twu.ca',
-                                        type: 'icon',
-                                        icon: School
-                                    },
-                                    {
-                                        id: 'teds',
-                                        url: 'https://www.teds.edu',
-                                        type: 'icon',
-                                        icon: BookOpen
                                     }
                                 ].map((org) => (
                                     <a
@@ -432,7 +420,7 @@ const About = () => {
                                         href={org.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="group bg-white rounded-xl p-2 md:p-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 flex flex-col items-center justify-start h-full py-8 gap-3"
+                                        className="w-[calc(50%-1rem)] sm:w-40 md:w-48 lg:w-52 group bg-white rounded-xl p-2 md:p-4 border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 flex flex-col items-center justify-start h-full py-8 gap-3"
                                     >
                                         <div className="flex items-center justify-center w-full h-12 md:h-16 mb-2">
                                             {org.type === 'image' ? (
