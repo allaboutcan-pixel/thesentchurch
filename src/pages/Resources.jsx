@@ -240,10 +240,10 @@ const Resources = () => {
             {/* Header with Banner */}
             <section className={clsx(
                 "relative flex items-center justify-center overflow-hidden",
-                height === 'full' ? "h-[75vh] md:h-screen" :
-                    height === 'large' ? "h-[70vh]" :
-                        height === 'medium' ? "h-[60vh] min-h-[500px]" :
-                            "h-[35vh]"
+                height === 'full' ? "h-screen" :
+                    height === 'large' ? "h-[85vh]" :
+                        height === 'medium' ? "h-[75vh]" :
+                            "h-[50vh]"
             )}>
                 {/* Background Image Container - Easy to replace later */}
                 <div className={clsx(

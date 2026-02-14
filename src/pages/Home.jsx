@@ -157,10 +157,10 @@ const Home = () => {
             {/* Hero Section (Main Banner) */}
             <section className={clsx(
                 "relative flex items-center justify-center overflow-hidden bg-black", // Changed to bg-black for cleaner transitions
-                heroHeight === 'full' ? "h-[65vh] md:h-[85vh]" :
-                    heroHeight === 'large' ? "h-[60vh] md:h-[70vh]" :
-                        heroHeight === 'medium' ? "h-[45vh]" :
-                            "h-[35vh]"
+                heroHeight === 'full' ? "h-screen" :
+                    heroHeight === 'large' ? "h-[85vh]" :
+                        heroHeight === 'medium' ? "h-[75vh]" :
+                            "h-[50vh]"
             )}>
                 <div className={clsx(
                     "absolute inset-0 z-0",

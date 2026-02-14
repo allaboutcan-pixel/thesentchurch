@@ -122,10 +122,10 @@ const Ministry = () => {
             {/* Header with Banner */}
             <div className={clsx(
                 "relative flex items-center justify-center overflow-hidden",
-                height === 'full' ? "h-[75vh] md:h-screen" :
-                    height === 'large' ? "h-[70vh]" :
-                        height === 'medium' ? "h-[60vh] min-h-[500px]" :
-                            "h-[35vh]"
+                height === 'full' ? "h-screen" :
+                    height === 'large' ? "h-[85vh]" :
+                        height === 'medium' ? "h-[75vh]" :
+                            "h-[50vh]"
             )}>
                 <div className={clsx(
                     "absolute inset-0 z-0 pointer-events-none",
