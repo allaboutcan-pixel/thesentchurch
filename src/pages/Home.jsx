@@ -315,7 +315,7 @@ const Home = () => {
                                 </>
                             )}
                         </div>
-                        <div className="mt-16 text-center md:text-left flex flex-col md:flex-row md:items-center justify-between gap-4 px-4">
+                        <div className="mt-16 text-center flex flex-col md:flex-row md:items-center justify-between gap-4 px-4">
                             <div>
                                 <p className="text-accent font-black text-base mb-4 tracking-wide uppercase">
                                     {latestSermon.date} • {latestSermon.preacher || '이남규 목사'}

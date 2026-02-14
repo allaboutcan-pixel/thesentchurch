@@ -27,7 +27,6 @@ const Ministry = () => {
     const [overlayOpacity, setOverlayOpacity] = useState(40);
     const [height, setHeight] = useState("medium");
     const [bannerFit, setBannerFit] = useState("cover");
-    const [expandedSection, setExpandedSection] = useState(null);
     const [ministryList, setMinistryList] = useState(churchData.ministries);
 
     const formatDetail = (text) => {
@@ -58,9 +57,6 @@ const Ministry = () => {
         );
     };
 
-    const toggleSection = (section) => {
-        setExpandedSection(expandedSection === section ? null : section);
-    };
 
     useEffect(() => {
         // Scroll to section based on URL path (e.g. /ministry/tsc)
@@ -83,7 +79,6 @@ const Ministry = () => {
                 const element = document.getElementById(path);
                 if (element) {
                     element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    setExpandedSection(path);
                 }
             }, 100);
         }
@@ -311,22 +306,13 @@ const Ministry = () => {
                                         <p className="text-base md:text-xl text-gray-600 leading-relaxed">
                                             {displayDesc}
                                         </p>
-                                        <button
-                                            onClick={() => toggleSection(ministry.id)}
-                                            className={`px-8 py-3 border-2 font-bold rounded-full transition-all duration-300 ${ministry.id === 'tsc'
-                                                ? 'border-yellow-400 text-yellow-600 hover:bg-yellow-400 hover:text-white'
-                                                : 'border-primary text-primary hover:bg-primary hover:text-white'
-                                                }`}
-                                        >
-                                            {expandedSection === ministry.id ? t('ministry.fold') : t('ministry.learn_more')}
-                                        </button>
-                                        {expandedSection === ministry.id && (
-                                            displayDetail ? formatDetail(displayDetail) : (
-                                                <div className="mt-8 pt-6 border-t border-gray-100 text-gray-700 space-y-4 animate-fade-in text-lg italic">
+                                        <div className="mt-8">
+                                            {displayDetail ? formatDetail(displayDetail) : (
+                                                <div className="pt-6 border-t border-gray-100 text-gray-700 space-y-4 animate-fade-in text-lg italic">
                                                     {t('home.no_content_yet')}
                                                 </div>
-                                            )
-                                        )}
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                                 {index < ministryList.length - 1 && (
