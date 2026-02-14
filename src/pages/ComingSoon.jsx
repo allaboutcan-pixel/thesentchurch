@@ -2,9 +2,10 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import MinistryNav from '../components/MinistryNav';
 import { useTranslation } from 'react-i18next';
-import { Home, ArrowRight, Settings } from 'lucide-react';
+import { Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSiteConfig } from '../hooks/useSiteConfig';
+import clsx from 'clsx';
 
 const ComingSoon = ({ type = 'mission' }) => {
     const { t } = useTranslation();
