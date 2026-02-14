@@ -179,7 +179,7 @@
         {
             "id": "ministry",
             "label": "사역",
-            "path": "/ministry",
+            "path": "/ministry/team",
             "subItems": [
                 {
                     "id": "team_ministry",
