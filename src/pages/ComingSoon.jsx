@@ -72,7 +72,7 @@ const ComingSoon = ({ type = 'mission' }) => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className={clsx(
-                            "text-4xl md:text-6xl drop-shadow-lg tracking-tight",
+                            "text-4xl md:text-6xl drop-shadow-lg tracking-tight mb-8",
                             titleFont,
                             titleWeight,
                             titleItalic && "italic"
@@ -84,13 +84,21 @@ const ComingSoon = ({ type = 'mission' }) => {
                     >
                         {bannerTitle}
                     </motion.h1>
+
+                    <motion.div
+                        initial={{ opacity: 0, width: 0 }}
+                        animate={{ opacity: 1, width: "5rem" }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        className="h-1.5 bg-accent mx-auto mb-8 rounded-full"
+                    />
+
                     {bannerSubtitle && (
                         <motion.p
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 }}
                             className={clsx(
-                                "mt-4 drop-shadow-md max-w-2xl mx-auto",
+                                "max-w-2xl mx-auto drop-shadow-md",
                                 subtitleFont,
                                 subtitleWeight,
                                 subtitleItalic && "italic"
