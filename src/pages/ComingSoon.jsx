@@ -11,77 +11,101 @@ const ComingSoon = ({ type = 'mission' }) => {
     const { t } = useTranslation();
     const { config: siteConfig } = useSiteConfig();
 
-    const banner = siteConfig?.[`${type}Banner`];
-    const title = siteConfig?.[`${type}Title`] || "페이지 준비중입니다";
-    const subtitle = siteConfig?.[`${type}Subtitle`] || "";
+    // Standard ministry/education banner and title settings
+    // Fallback to general ministry banner if specific one is missing
+    const banner = siteConfig?.[`${type}Banner`] || siteConfig?.ministryBanner;
+    const bannerTitle = siteConfig?.[`${type}Title`] || (['tee'].includes(type) ? t('nav.education') : t('nav.ministry'));
+    const bannerSubtitle = siteConfig?.[`${type}Subtitle`] || siteConfig?.ministrySubtitle || "";
 
     const overlayOpacity = siteConfig?.[`${type}OverlayOpacity`] || 40;
-    const height = 'h-[50vh] min-h-[400px] md:h-[60vh]';
+    const heroHeight = 'h-[35vh] min-h-[300px] md:h-[45vh]';
 
     return (
-        <div className="flex flex-col w-full min-h-[80vh] bg-slate-50">
-            {/* Dynamic Hero Section - Unified Design */}
-            <div className={`relative w-full ${height} flex items-center justify-center overflow-hidden`}>
-                {/* Background (Color if no banner, Image if banner exists) */}
-                {banner ? (
-                    <>
-                        <div
-                            className="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105"
-                            style={{ backgroundImage: `url(${banner})` }}
-                        />
-                        <div
-                            className="absolute inset-0 bg-black/30"
-                            style={{ opacity: overlayOpacity / 100 }}
-                        />
-                    </>
-                ) : (
-                    <div className="absolute inset-0 bg-gradient-to-b from-slate-100 to-white" />
-                )}
+        <div className="flex flex-col w-full min-h-screen bg-white">
+            {/* 1. Hero Banner Section at Top */}
+            <div className={clsx("relative w-full flex items-center justify-center overflow-hidden", heroHeight)}>
+                <div className="absolute inset-0 z-0">
+                    {banner ? (
+                        <>
+                            <div
+                                className="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105"
+                                style={{ backgroundImage: `url(${banner})` }}
+                            />
+                            <div
+                                className="absolute inset-0 bg-black/40"
+                                style={{ backgroundColor: `rgba(0,0,0, ${overlayOpacity / 100})` }}
+                            />
+                        </>
+                    ) : (
+                        <div className="absolute inset-0 bg-primary/80" />
+                    )}
+                </div>
 
-                {/* Content - Matches User Image Design */}
-                <div className="relative z-10 container mx-auto px-6 text-center space-y-10">
+                <div className="relative z-10 container mx-auto px-6 text-center pt-8">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className={clsx(
-                            "text-3xl md:text-5xl font-black tracking-tight drop-shadow-sm",
-                            banner ? "text-white" : "text-slate-800"
-                        )}
+                        className="text-4xl md:text-6xl font-black text-white drop-shadow-lg tracking-tight"
                     >
-                        {title}
+                        {bannerTitle}
                     </motion.h1>
-
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="flex justify-center pt-2"
-                    >
-                        <Link
-                            to="/"
-                            className="group flex items-center gap-3 px-10 py-5 bg-slate-900 text-white rounded-full font-black text-lg transition-all shadow-2xl hover:bg-primary hover:shadow-primary/30 active:scale-95"
+                    {bannerSubtitle && (
+                        <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="mt-4 text-white/90 text-lg md:text-xl font-medium drop-shadow-md max-w-2xl mx-auto"
                         >
-                            <Home size={22} className="group-hover:-translate-y-1 transition-transform" />
-                            <span>메인으로 돌아가기</span>
-                        </Link>
-                    </motion.div>
-
-                    {subtitle && banner && (
-                        <p className="max-w-2xl mx-auto text-white/90 font-medium text-lg md:text-xl drop-shadow-md">
-                            {subtitle}
-                        </p>
+                            {bannerSubtitle}
+                        </motion.p>
                     )}
                 </div>
             </div>
 
-            {/* Ministry Nav - Hidden for a cleaner look if desired, or kept for navigation */}
+            {/* 2. Coming Soon Content Section Below Banner (Matches User Image) */}
+            <div className="flex-grow flex flex-col items-center justify-center py-24 px-6 bg-slate-50/30">
+                <div className="max-w-2xl w-full text-center space-y-12">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="space-y-4"
+                    >
+                        <div className="w-12 h-1 bg-primary/20 mx-auto rounded-full mb-8"></div>
+                        <h2 className="text-3xl md:text-4xl font-black text-slate-800 tracking-tight">
+                            페이지 준비중입니다
+                        </h2>
+                        <p className="text-slate-500 font-medium text-lg md:text-xl">
+                            더 나은 서비스를 위해 내용을 준비하고 있습니다.
+                        </p>
+                    </motion.div>
+
+                    {/* Pill-shaped Black Button with Home Icon */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.3 }}
+                        className="flex justify-center pt-4"
+                    >
+                        <Link
+                            to="/"
+                            className="group flex items-center gap-4 px-10 py-5 bg-slate-900 text-white rounded-full font-black text-xl transition-all shadow-xl hover:bg-primary hover:shadow-primary/30 active:scale-95"
+                        >
+                            <Home size={24} className="group-hover:-translate-y-0.5 transition-transform" />
+                            <span>메인으로 돌아가기</span>
+                        </Link>
+                    </motion.div>
+                </div>
+            </div>
+
+            {/* 3. Ministry Navigation at Bottom */}
             {['mission', 'prayer', 'team', 'tee'].includes(type) && (
-                <div className="container mx-auto px-4 mt-20 mb-12">
-                    <div className="w-12 h-1 bg-slate-200 mx-auto mb-12 rounded-full" />
-                    <MinistryNav
-                        active={type === 'mission' ? 'mission_evangelism' : (type === 'team' ? 'team_ministry' : type)}
-                        category={['tee'].includes(type) ? 'education' : 'ministry'}
-                    />
+                <div className="w-full py-16 border-t border-slate-100 bg-white">
+                    <div className="container mx-auto px-4">
+                        <MinistryNav
+                            active={type === 'mission' ? 'mission_evangelism' : (type === 'team' ? 'team_ministry' : type)}
+                            category={['tee'].includes(type) ? 'education' : 'ministry'}
+                        />
+                    </div>
                 </div>
             )}
         </div>
