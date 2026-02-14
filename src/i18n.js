@@ -233,6 +233,48 @@ const resources = {
                 "footer_address": "Address",
                 "footer_phone": "Phone",
                 "footer_email": "Email"
+            },
+            "tee": {
+                "banner_title": "TEE",
+                "banner_subtitle": "Theological Education by Extension",
+                "intro_title": "TEE는 무엇인가요?",
+                "intro_desc": "TEE는 <span class='text-blue-600 font-bold'>Theological Education by Extension</span>의 약자로,<br/>디모데후서 2장 2절 말씀에 기초한 “확장에 의한 신학 교육”입니다.<br/><br/>성경 공부와 제자 양육을 통해 신앙이 다음 세대로 이어지도록 돕는,<br/>검증된 훈련 방법입니다.",
+                "intro_subdesc": "현재 TEE는 전 세계 110여 개국에서 70여 개 언어로 사용되며,<br/>수많은 교회가 평신도 양육과 지도자 훈련을 위해 활용하고 있습니다.",
+                "bible_verse": "또 네가 많은 증인 앞에서 내게 들은 바를 충성된 사람들에게 부탁하라<br/>그들이 또 다른 사람들을 가르칠 수 있으리라",
+                "bible_ref": "디모데후서 2장 2절",
+
+                "ministry_goal_title": "사역 목표",
+                "ministry_goal_subtitle": "양육을 통한 재생산",
+                "ministry_goal_eng": "Reproduction through Discipleship",
+                "ministry_goal_quote": "“The Goal of TEE is Reproduce!”",
+
+                "core_goal_title": "핵심 목표",
+                "core_goal_desc": "한 사람의 제자가 또 다른 제자를 세우는 <strong>영적 재생산</strong>입니다.<br/>소그룹 중심의 훈련을 통해 성도들을 영적으로 세우고,<br/>교회의 다음 세대 지도자로 성장하도록 돕습니다.<br/><br/>처음에는 느리고 작게 시작되지만,<br/>복음과 제자가 함께 확산될 때<br/>놀라운 영향력과 열매를 맺게 됩니다.",
+
+                "core_value_title": "핵심 가치",
+                "core_value_subtitle": "적용 (Application)",
+                "core_value_desc": "TEE가 가장 중요하게 여기는 가치는 말씀의 실제적인 적용입니다.<br/>지식에 머무는 신앙이 아니라 삶으로 나타나는 제자도를 목표로 합니다.<br/>“행함이 없는 믿음은 죽은 믿음입니다.”",
+                "core_value_box": "말씀을 배우고, 삶에 적용하며,\n실천을 통해 그리스도를 닮아가는 것",
+                "core_value_sub": "",
+
+                "features_title": "TEE의 특징",
+                "features_desc": "TEE는 실천을 강요하지 않습니다.\n교재와 가이드라인을 따라 공부하다 보면\n자연스럽게 삶에 적용하고 실천하도록 돕습니다.\n학생들이 자발적으로 순종하고 성장하도록\n동행하는 훈련 과정입니다.",
+
+                "method_title": "TEE의 교육 방식",
+                "method_desc": "다음과 같은 원칙을 따릅니다.",
+                "smart_s_title": "S – Specific",
+                "smart_s_desc": "구체적입니다",
+                "smart_m_title": "M – Measurable",
+                "smart_m_desc": "측정 가능합니다",
+                "smart_a_title": "A – Attainable",
+                "smart_a_desc": "달성 가능합니다",
+                "smart_r_title": "R – Realistic",
+                "smart_r_desc": "실제적입니다",
+                "smart_t_title": "T – Tangible",
+                "smart_t_desc": "실체적 훈련입니다",
+
+                "fruits_title": "우리가 기대하는 열매",
+                "fruits_desc": "TEE를 통해 성도 한 사람 한 사람이 말씀으로 세워지고,<br/>소그룹 공동체 안에서 서로를 세우며,<br/>또 다른 제자를 세우는 건강한 교회로 성장해 가기를 기대합니다."
             }
         }
     },
