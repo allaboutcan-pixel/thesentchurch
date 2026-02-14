@@ -22,6 +22,18 @@ const ComingSoon = ({ type = 'mission' }) => {
     const overlayOpacity = siteConfig?.[`${type}OverlayOpacity`] || 40;
     const height = siteConfig?.[`${type}Height`] || 'medium';
 
+    // Dynamic Style Settings
+    const titleFont = siteConfig?.[`${type}TitleFont`] || 'font-sans';
+    const subtitleFont = siteConfig?.[`${type}SubtitleFont`] || 'font-sans';
+    const titleColor = siteConfig?.[`${type}TitleColor`] || '#ffffff';
+    const subtitleColor = siteConfig?.[`${type}SubtitleColor`] || '#f8fafc';
+    const titleItalic = siteConfig?.[`${type}TitleItalic`] || false;
+    const subtitleItalic = siteConfig?.[`${type}SubtitleItalic`] || false;
+    const titleWeight = siteConfig?.[`${type}TitleWeight`] || 'font-black';
+    const subtitleWeight = siteConfig?.[`${type}SubtitleWeight`] || 'font-medium';
+    const titleSize = siteConfig?.[`${type}TitleSize`];
+    const subtitleSize = siteConfig?.[`${type}SubtitleSize`];
+
     const heroHeightClass = clsx(
         "relative w-full flex items-center justify-center overflow-hidden",
         height === 'full' ? "h-screen" :
@@ -55,7 +67,16 @@ const ComingSoon = ({ type = 'mission' }) => {
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-4xl md:text-6xl font-black text-white drop-shadow-lg tracking-tight"
+                        className={clsx(
+                            "text-4xl md:text-6xl drop-shadow-lg tracking-tight",
+                            titleFont,
+                            titleWeight,
+                            titleItalic && "italic"
+                        )}
+                        style={{
+                            color: titleColor,
+                            fontSize: titleSize ? `${titleSize}px` : undefined
+                        }}
                     >
                         {bannerTitle}
                     </motion.h1>
@@ -64,7 +85,16 @@ const ComingSoon = ({ type = 'mission' }) => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.2 }}
-                            className="mt-4 text-white/90 text-lg md:text-xl font-medium drop-shadow-md max-w-2xl mx-auto"
+                            className={clsx(
+                                "mt-4 drop-shadow-md max-w-2xl mx-auto",
+                                subtitleFont,
+                                subtitleWeight,
+                                subtitleItalic && "italic"
+                            )}
+                            style={{
+                                color: subtitleColor,
+                                fontSize: subtitleSize ? `${subtitleSize}px` : undefined
+                            }}
                         >
                             {bannerSubtitle}
                         </motion.p>
