@@ -113,7 +113,7 @@ const resources = {
                 "org_kehc": "예수교미주성결교회",
                 "org_efcc": "EFCC",
                 "org_twu": "Trinity Western University",
-                "org_kehc_korea": "예수교대한성결교회 (본부)",
+                "org_kehc_korea": "예수교대한성결교회",
                 "org_ldp": "LDP",
                 "org_teds": "Trinity Evangelical Divinity School",
                 "visit_website": "홈페이지 방문",
