@@ -20,12 +20,20 @@ const ComingSoon = ({ type = 'mission' }) => {
     const bannerSubtitle = siteConfig?.[`${type}Subtitle`] || ministryItem?.description || siteConfig?.ministrySubtitle || "";
 
     const overlayOpacity = siteConfig?.[`${type}OverlayOpacity`] || 40;
-    const heroHeight = 'h-[35vh] min-h-[300px] md:h-[45vh]';
+    const height = siteConfig?.[`${type}Height`] || 'medium';
+
+    const heroHeightClass = clsx(
+        "relative w-full flex items-center justify-center overflow-hidden",
+        height === 'full' ? "h-[75vh] md:h-screen" :
+            height === 'large' ? "h-[70vh]" :
+                height === 'medium' ? "h-[60vh] min-h-[500px]" :
+                    "h-[35vh]"
+    );
 
     return (
         <div className="flex flex-col w-full min-h-screen bg-white">
             {/* 1. Hero Banner Section at Top */}
-            <div className={clsx("relative w-full flex items-center justify-center overflow-hidden", heroHeight)}>
+            <div className={heroHeightClass}>
                 <div className="absolute inset-0 z-0">
                     {banner ? (
                         <>

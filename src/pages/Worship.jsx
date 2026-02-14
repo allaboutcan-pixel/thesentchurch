@@ -88,7 +88,7 @@ const Worship = () => {
                 "relative flex items-center justify-center overflow-hidden",
                 height === 'full' ? "h-[75vh] md:h-screen" :
                     height === 'large' ? "h-[70vh]" :
-                        height === 'medium' ? "h-[45vh] min-h-[350px]" :
+                        height === 'medium' ? "h-[60vh] min-h-[500px]" :
                             "h-[35vh]"
             )}>
                 <div className="absolute inset-0 z-0">
