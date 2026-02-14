@@ -12,10 +12,12 @@ const ComingSoon = ({ type = 'mission' }) => {
     const { config: siteConfig } = useSiteConfig();
 
     // Standard ministry/education banner and title settings
-    // Fallback to general ministry banner if specific one is missing
-    const banner = siteConfig?.[`${type}Banner`] || siteConfig?.ministryBanner;
-    const bannerTitle = siteConfig?.[`${type}Title`] || (['tee'].includes(type) ? t('nav.education') : t('nav.ministry'));
-    const bannerSubtitle = siteConfig?.[`${type}Subtitle`] || siteConfig?.ministrySubtitle || "";
+    // Fallback logic: Use specific banner if exists, else look for ministryItem, else fallback to general ministryBanner
+    const ministryItem = siteConfig?.ministryItems?.find(m => m.id === type || (type === 'team' && m.id === 'team_ministry'));
+
+    const banner = siteConfig?.[`${type}Banner`] || ministryItem?.image || siteConfig?.ministryBanner;
+    const bannerTitle = siteConfig?.[`${type}Title`] || (type === 'tee' ? 'TEE' : (type === 'team' ? '팀사역' : (['mission', 'prayer'].includes(type) ? t(`nav.${type}`) : t('nav.ministry'))));
+    const bannerSubtitle = siteConfig?.[`${type}Subtitle`] || ministryItem?.description || siteConfig?.ministrySubtitle || "";
 
     const overlayOpacity = siteConfig?.[`${type}OverlayOpacity`] || 40;
     const heroHeight = 'h-[35vh] min-h-[300px] md:h-[45vh]';

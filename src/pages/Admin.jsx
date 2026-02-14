@@ -319,6 +319,24 @@ const Admin = () => {
         prayerTitleSize: 40, prayerSubtitleSize: 18,
         prayerHeight: 'medium', prayerOverlayOpacity: 40,
 
+        // TEE
+        teeBanner: '', teeTitle: '', teeSubtitle: '',
+        teeTitleFont: 'font-sans', teeSubtitleFont: 'font-sans',
+        teeTitleColor: '#ffffff', teeSubtitleColor: '#f8fafc',
+        teeTitleItalic: false, teeSubtitleItalic: false,
+        teeTitleWeight: 'font-bold', teeSubtitleWeight: 'font-medium',
+        teeTitleSize: 40, teeSubtitleSize: 18,
+        teeHeight: 'medium', teeOverlayOpacity: 40,
+
+        // Team Ministry
+        teamBanner: '', teamTitle: '', teamSubtitle: '',
+        teamTitleFont: 'font-sans', teamSubtitleFont: 'font-sans',
+        teamTitleColor: '#ffffff', teamSubtitleColor: '#f8fafc',
+        teamTitleItalic: false, teamSubtitleItalic: false,
+        teamTitleWeight: 'font-bold', teamSubtitleWeight: 'font-medium',
+        teamTitleSize: 40, teamSubtitleSize: 18,
+        teamHeight: 'medium', teamOverlayOpacity: 40,
+
         // Individual Ministry Items
         ministryItems: [],
 
@@ -474,6 +492,39 @@ const Admin = () => {
                     prayerSubtitleSize: fbConfig.prayerSubtitleSize || 18,
                     prayerHeight: fbConfig.prayerHeight || 'medium',
                     prayerOverlayOpacity: fbConfig.prayerOverlayOpacity || 40,
+
+                    teeBanner: fbConfig.teeBanner || '',
+                    teeTitle: fbConfig.teeTitle || '',
+                    teeSubtitle: fbConfig.teeSubtitle || '',
+                    teeTitleFont: fbConfig.teeTitleFont || 'font-sans',
+                    teeSubtitleFont: fbConfig.teeSubtitleFont || 'font-sans',
+                    teeTitleColor: fbConfig.teeTitleColor || '#ffffff',
+                    teeSubtitleColor: fbConfig.teeSubtitleColor || '#f8fafc',
+                    teeTitleItalic: fbConfig.teeTitleItalic || false,
+                    teeSubtitleItalic: fbConfig.teeSubtitleItalic || false,
+                    teeTitleWeight: fbConfig.teeTitleWeight || 'font-bold',
+                    teeSubtitleWeight: fbConfig.teeSubtitleWeight || 'font-medium',
+                    teeTitleSize: fbConfig.teeTitleSize || 40,
+                    teeSubtitleSize: fbConfig.teeSubtitleSize || 18,
+                    teeHeight: fbConfig.teeHeight || 'medium',
+                    teeOverlayOpacity: fbConfig.teeOverlayOpacity || 40,
+
+                    teamBanner: fbConfig.teamBanner || '',
+                    teamTitle: fbConfig.teamTitle || '',
+                    teamSubtitle: fbConfig.teamSubtitle || '',
+                    teamTitleFont: fbConfig.teamTitleFont || 'font-sans',
+                    teamSubtitleFont: fbConfig.teamSubtitleFont || 'font-sans',
+                    teamTitleColor: fbConfig.teamTitleColor || '#ffffff',
+                    teamSubtitleColor: fbConfig.teamSubtitleColor || '#f8fafc',
+                    teamTitleItalic: fbConfig.teamTitleItalic || false,
+                    teamSubtitleItalic: fbConfig.teamSubtitleItalic || false,
+                    teamTitleWeight: fbConfig.teamTitleWeight || 'font-bold',
+                    teamSubtitleWeight: fbConfig.teamSubtitleWeight || 'font-medium',
+                    teamTitleSize: fbConfig.teamTitleSize || 40,
+                    teamSubtitleSize: fbConfig.teamSubtitleSize || 18,
+                    teamHeight: fbConfig.teamHeight || 'medium',
+                    teamOverlayOpacity: fbConfig.teamOverlayOpacity || 40,
+
                     ministryItems: fbConfig.ministryItems || churchData.ministries.map(m => ({
                         ...m,
                         detail: m.id === 'tsc' ?
@@ -901,7 +952,10 @@ const Admin = () => {
 
                 // Process all banner fields - REMOVED others, only heroImage remains
                 // Process ONLY media fields that might need upload or drive formatting
-                const mediaFields = ['heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner', 'missionBanner', 'prayerBanner'];
+                const mediaFields = [
+                    'heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner',
+                    'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner'
+                ];
                 for (const field of mediaFields) {
                     await processField(field);
                 }
@@ -915,7 +969,9 @@ const Admin = () => {
                     'resourcesTitle', 'resourcesSubtitle', 'resourcesTitleFont', 'resourcesSubtitleFont', 'resourcesTitleColor', 'resourcesSubtitleColor', 'resourcesTitleItalic', 'resourcesSubtitleItalic', 'resourcesTitleSize', 'resourcesSubtitleSize', 'resourcesHeight', 'resourcesOverlayOpacity',
                     'ministryItems',
                     'missionTitle', 'missionSubtitle', 'missionTitleFont', 'missionSubtitleFont', 'missionTitleColor', 'missionSubtitleColor', 'missionTitleItalic', 'missionSubtitleItalic', 'missionTitleWeight', 'missionSubtitleWeight', 'missionTitleSize', 'missionSubtitleSize', 'missionHeight', 'missionOverlayOpacity',
-                    'prayerTitle', 'prayerSubtitle', 'prayerTitleFont', 'prayerSubtitleFont', 'prayerTitleColor', 'prayerSubtitleColor', 'prayerTitleItalic', 'prayerSubtitleItalic', 'prayerTitleWeight', 'prayerSubtitleWeight', 'prayerTitleSize', 'prayerSubtitleSize', 'prayerHeight', 'prayerOverlayOpacity'
+                    'prayerTitle', 'prayerSubtitle', 'prayerTitleFont', 'prayerSubtitleFont', 'prayerTitleColor', 'prayerSubtitleColor', 'prayerTitleItalic', 'prayerSubtitleItalic', 'prayerTitleWeight', 'prayerSubtitleWeight', 'prayerTitleSize', 'prayerSubtitleSize', 'prayerHeight', 'prayerOverlayOpacity',
+                    'teeTitle', 'teeSubtitle', 'teeTitleFont', 'teeSubtitleFont', 'teeTitleColor', 'teeSubtitleColor', 'teeTitleItalic', 'teeSubtitleItalic', 'teeTitleWeight', 'teeSubtitleWeight', 'teeTitleSize', 'teeSubtitleSize', 'teeHeight', 'teeOverlayOpacity',
+                    'teamTitle', 'teamSubtitle', 'teamTitleFont', 'teamSubtitleFont', 'teamTitleColor', 'teamSubtitleColor', 'teamTitleItalic', 'teamSubtitleItalic', 'teamTitleWeight', 'teamSubtitleWeight', 'teamTitleSize', 'teamSubtitleSize', 'teamHeight', 'teamOverlayOpacity'
                 ];
                 for (const field of otherFields) {
                     currentConfig[field] = formData[field];
@@ -2520,7 +2576,9 @@ const Admin = () => {
                                 {renderBannerSettings('news', '📢 교회소식 (News)', 'newsBanner')}
                                 {renderBannerSettings('resources', '⛪ 설교와 말씀 (Sermons)', 'resourcesBanner')}
                                 {renderBannerSettings('ministry', '🎓 교육 (Education)', 'ministryBanner')}
+                                {renderBannerSettings('tee', '📖 TEE 교육 (TEE)', 'teeBanner')}
                                 {renderBannerSettings('mission', '🌏 선교사역 (Mission)', 'missionBanner')}
+                                {renderBannerSettings('team', '👥 팀사역 (Team Ministry)', 'teamBanner')}
                                 {renderBannerSettings('prayer', '🙏 중보기도 (Intercessory Prayer)', 'prayerBanner')}
 
                                 {/* Individual Ministry Management */}
