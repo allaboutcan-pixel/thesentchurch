@@ -318,13 +318,10 @@ const TEE = () => {
                             rel="noopener noreferrer"
                             className="inline-block transition-transform hover:scale-105"
                         >
-                            {/* Replaced button with Logo Image as requested */}
-                            {/* User should place the image at 'public/images/tee_korea_logo.png' */}
-                            <img
-                                src="/images/tee_korea_logo.png"
-                                alt="TEE Korea"
-                                className="h-16 md:h-20 object-contain drop-shadow-md"
-                            />
+                            <div className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors">
+                                <span className="font-bold">TEE Korea 바로가기</span>
+                                <ExternalLink size={18} />
+                            </div>
                         </a>
                     </div>
                 </div>
