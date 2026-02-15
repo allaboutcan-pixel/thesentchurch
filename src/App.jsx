@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'; // Deployment trigger: 2026-02-14 20:30
+import React from 'react'; // Deployment trigger: 2026-02-14 20:45 Fix unused var
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import ScrollToTop from './components/ScrollToTop';
