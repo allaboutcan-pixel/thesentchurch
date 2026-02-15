@@ -267,15 +267,15 @@ const Ministry = () => {
                         const displayTarget = (tTarget && tTarget !== `ministry.${ministry.id}_target`) ? tTarget : ministry.target;
 
                         // Check if this section should have the brown background
-                        // IDs: 'team_ministry', 'mission_evangelism', 'prayer' (if added later)
-                        const isBrownBg = ['team_ministry', 'mission_evangelism', 'prayer'].includes(ministry.id);
+                        // IDs: 'team_ministry', 'mission_evangelism', 'prayer', 'tsc', 'tsy'
+                        const isBrownBg = ['team_ministry', 'mission_evangelism', 'prayer', 'tsc', 'tsy'].includes(ministry.id);
 
                         return (
                             <div
                                 key={ministry.id}
                                 id={ministry.id}
                                 className={clsx(
-                                    "w-full py-24 scroll-mt-[60px]", // Added padding and scroll margin
+                                    "w-full py-24 scroll-mt-[60px]",
                                     isBrownBg ? "bg-[#efebe9]" : "bg-white"
                                 )}
                             >
@@ -285,7 +285,6 @@ const Ministry = () => {
                                         <div className="w-full lg:w-1/2">
                                             <div className={clsx(
                                                 "aspect-video rounded-2xl overflow-hidden shadow-2xl relative group",
-                                                // If brown bg, maybe add a white ring or different shadow?
                                                 isBrownBg && "ring-4 ring-white/50"
                                             )}>
                                                 <div className={`absolute inset-0 bg-primary/20 group-hover:bg-transparent transition-colors duration-500`} />
@@ -303,13 +302,13 @@ const Ministry = () => {
                                             <div>
                                                 <div className={clsx(
                                                     "inline-block px-4 py-1.5 rounded-full text-sm font-bold tracking-widest uppercase mb-4 shadow-sm",
-                                                    isBrownBg ? "bg-white text-primary" : "bg-white border border-gray-100 text-green-600"
+                                                    "bg-green-50 border border-green-200 text-green-600"
                                                 )}>
                                                     {displayTarget}
                                                 </div>
                                                 <h2 className={clsx(
-                                                    "text-3xl md:text-5xl font-black tracking-tight mb-6",
-                                                    isBrownBg ? "text-[#3e2723]" : "text-gray-900"
+                                                    "text-3xl md:text-4xl font-black tracking-tight mb-6",
+                                                    isBrownBg ? "text-blue-900" : "text-gray-900"
                                                 )}>
                                                     {displayName}
                                                 </h2>
