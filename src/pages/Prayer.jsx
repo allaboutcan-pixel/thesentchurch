@@ -45,9 +45,9 @@ const Prayer = () => {
     const overlayOpacity = siteConfig?.prayerOverlayOpacity || 40;
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-[#efebe9]">
             {/* Hero Section */}
-            <div className="relative h-[40vh] md:h-[50vh] flex items-center justify-center overflow-hidden">
+            <div className="relative h-[50vh] md:h-[75vh] flex items-center justify-center overflow-hidden">
                 <div
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] scale-105"
                     style={{ backgroundImage: `url(${banner})` }}
@@ -80,9 +80,11 @@ const Prayer = () => {
                 </div>
             </div>
 
-            {/* Ministry Navigation */}
-            <div className="container mx-auto px-4 mt-12">
-                <MinistryNav active="prayer" category="ministry" />
+            {/* Ministry Navigation - Added white background wrapper for better contrast/TEE style */}
+            <div className="bg-white border-b border-stone-200 shadow-sm py-6">
+                <div className="container mx-auto px-4">
+                    <MinistryNav active="prayer" category="ministry" />
+                </div>
             </div>
 
             <main className="container mx-auto px-6 py-20 max-w-6xl">
@@ -91,18 +93,18 @@ const Prayer = () => {
                     <div className="grid lg:grid-cols-2 gap-16 items-center">
                         <div className="space-y-8">
                             <div>
-                                <span className="inline-block px-4 py-1.5 bg-primary/5 text-primary text-sm font-bold tracking-widest uppercase rounded-full mb-4">
+                                <span className="inline-block px-4 py-1.5 bg-white/50 border border-primary/20 text-primary text-sm font-bold tracking-widest uppercase rounded-full mb-4 backdrop-blur-sm">
                                     {t('ministry.prayer.intro_title')}
                                 </span>
                                 <h2 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight">
                                     {t('ministry.prayer.intro_subtitle')}
                                 </h2>
                             </div>
-                            <p className="text-lg text-gray-600 leading-relaxed whitespace-pre-line">
+                            <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
                                 {t('ministry.prayer.intro_content')}
                             </p>
-                            <div className="flex items-center gap-6 p-6 bg-slate-50 rounded-2xl border border-slate-100">
-                                <ShieldCheck className="text-green-600 shrink-0" size={40} />
+                            <div className="flex items-center gap-6 p-6 bg-white/60 rounded-2xl border border-white/50 shadow-sm backdrop-blur-md">
+                                <ShieldCheck className="text-green-700 shrink-0" size={40} />
                                 <p className="text-sm md:text-base font-medium text-slate-700 italic">
                                     {t('ministry.prayer.privacy_notice')}
                                 </p>
@@ -110,7 +112,7 @@ const Prayer = () => {
                         </div>
                         <div className="relative group max-w-xl mx-auto lg:ml-auto">
                             <div className="absolute -inset-4 bg-gradient-to-tr from-primary/10 to-accent/10 rounded-[2.5rem] blur-2xl group-hover:opacity-100 opacity-50 transition-opacity" />
-                            <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-2xl">
+                            <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-2xl ring-4 ring-white/50">
                                 <img
                                     src="https://drive.google.com/uc?export=download&id=1mc1PsV0gscCVVRtuaIyh4RBNPijTtXWf"
                                     alt="Intercessory Prayer"
@@ -126,30 +128,30 @@ const Prayer = () => {
                 <div className="flex flex-col gap-16 mb-32">
                     <section className="space-y-8">
                         <SectionTitle icon={Target}>{t('ministry.prayer.section2_title')}</SectionTitle>
-                        <div className="bg-slate-50 p-12 rounded-3xl min-h-[200px] border border-dashed border-slate-300 flex items-center justify-center text-slate-400 font-medium text-xl">
+                        <div className="bg-white/80 p-12 rounded-3xl min-h-[200px] border border-dashed border-stone-300 flex items-center justify-center text-stone-400 font-medium text-xl shadow-sm">
                             Coming Soon
                         </div>
                     </section>
 
                     <section className="space-y-8">
                         <SectionTitle icon={Users}>{t('ministry.prayer.section3_title')}</SectionTitle>
-                        <div className="bg-slate-50 p-12 rounded-3xl min-h-[200px] border border-dashed border-slate-300 flex items-center justify-center text-slate-400 font-medium text-xl">
+                        <div className="bg-white/80 p-12 rounded-3xl min-h-[200px] border border-dashed border-stone-300 flex items-center justify-center text-stone-400 font-medium text-xl shadow-sm">
                             Coming Soon
                         </div>
                     </section>
 
                     <section className="space-y-8">
                         <SectionTitle icon={Clock}>{t('ministry.prayer.section4_title')}</SectionTitle>
-                        <div className="bg-slate-50 p-12 rounded-3xl min-h-[200px] border border-dashed border-slate-300 flex items-center justify-center text-slate-400 font-medium text-center text-xl">
+                        <div className="bg-white/80 p-12 rounded-3xl min-h-[200px] border border-dashed border-stone-300 flex items-center justify-center text-stone-400 font-medium text-center text-xl shadow-sm">
                             준비 중입니다.
                         </div>
                     </section>
                 </div>
 
                 {/* Reordered: Prayer Topics moved here */}
-                <section className="mb-32 pt-16 border-t border-gray-100">
+                <section className="mb-32 pt-16 border-t border-stone-200">
                     <SectionTitle icon={Heart}>{t('ministry.prayer.section1_title')}</SectionTitle>
-                    <p className="text-lg text-gray-600 mb-12 max-w-3xl leading-relaxed whitespace-pre-line ml-0 lg:ml-20">
+                    <p className="text-lg text-gray-700 mb-12 max-w-3xl leading-relaxed whitespace-pre-line ml-0 lg:ml-20">
                         {t('ministry.prayer.section1_desc')}
                     </p>
 
@@ -170,7 +172,7 @@ const Prayer = () => {
                 </section>
 
                 {/* Request Button CTA */}
-                <section className="relative max-w-[300px] mx-auto aspect-[3/4] rounded-none overflow-hidden mb-20 group border border-white/10 shadow-xl">
+                <section className="relative max-w-[300px] mx-auto aspect-[3/4] rounded-none overflow-hidden mb-20 group border border-white/10 shadow-2xl">
                     {/* Background Image with Overlay */}
                     <div className="absolute inset-0">
                         <img
@@ -181,7 +183,7 @@ const Prayer = () => {
                                 e.target.src = "https://images.unsplash.com/photo-1544427928-c49cddee11bb?q=80&w=2000&auto=format&fit=crop";
                             }}
                         />
-                        <div className="absolute inset-0 bg-slate-900/75 backdrop-blur-[1px] transition-all duration-500 group-hover:bg-slate-900/60" />
+                        <div className="absolute inset-0 bg-stone-900/70 backdrop-blur-[1px] transition-all duration-500 group-hover:bg-stone-900/60" />
                     </div>
 
                     <div className="relative z-10 w-full h-full flex flex-col justify-between pt-24 pb-2 text-center">
@@ -202,7 +204,7 @@ const Prayer = () => {
                             transition={{ delay: 0.2 }}
                             className="flex flex-col items-center gap-4"
                         >
-                            <button className="group relative inline-flex items-center gap-2 px-5 py-2 bg-white text-slate-900 rounded-full font-bold shadow-lg hover:bg-accent hover:text-white transition-all duration-500 hover:scale-105 active:scale-95 overflow-hidden">
+                            <button className="group relative inline-flex items-center gap-2 px-5 py-2 bg-white text-stone-900 rounded-full font-bold shadow-lg hover:bg-accent hover:text-white transition-all duration-500 hover:scale-105 active:scale-95 overflow-hidden">
                                 <div className="absolute inset-0 bg-gradient-to-r from-accent to-accent-light opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                                 <Mail className="relative z-10" size={14} />
                                 <span className="relative z-10 text-xs md:text-sm">{t('ministry.prayer.request_button')}</span>

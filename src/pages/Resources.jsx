@@ -240,13 +240,7 @@ const Resources = () => {
     return (
         <div className="min-h-screen">
             {/* Header with Banner */}
-            <section className={clsx(
-                "relative flex items-center justify-center overflow-hidden",
-                height === 'full' ? "h-screen" :
-                    height === 'large' ? "h-[85vh]" :
-                        height === 'medium' ? "h-[75vh]" :
-                            "h-[50vh]"
-            )}>
+            <section className="relative w-full flex items-center justify-center overflow-hidden h-[50vh] md:h-[75vh]">
                 {/* Background Image Container - Easy to replace later */}
                 <div className={clsx(
                     "absolute inset-0 z-0 pointer-events-none",

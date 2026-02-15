@@ -241,28 +241,15 @@ const Ministry = () => {
                 </div>
             </div>
 
-            <div className="container mx-auto px-4 py-16">
-                <div className="max-w-5xl mx-auto space-y-20">
+            <div className="w-full">
+                <div className="flex flex-col">
 
                     {ministryList.map((ministry, index) => {
                         // Determine translated content
-                        // If ministry.id exists (tsc, tsy), try to get translation from i18n
-                        // This allows us to override DB/JSON content with localized static text if needed
                         const tName = ministry.id ? t(`ministry.${ministry.id}_name`) : ministry.name;
                         const tTarget = ministry.id ? t(`ministry.${ministry.id}_target`) : ministry.target;
-                        // Check if translation key exists by comparing output to key name, or just use it if reliable. 
-                        // i18next returns key if missing. safe way:
                         const tDesc = ministry.id ? t(`ministry.${ministry.id}_desc`) : ministry.description;
                         const tDetail = ministry.id ? t(`ministry.${ministry.id}_detail`) : ministry.detail;
-
-                        // Fallback logic: if translation returns key (meaning missing), stick to original
-                        // note: standard i18next returns key on miss. 
-                        // However, we are confident we added keys for tsc and tsy.
-                        // For other IDs, it might fail, so we should check.
-
-                        // Priority Logic:
-                        // If language is English, try to show the English translation first.
-                        // If language is not English (Korean), prioritize the DB content (ministry.detail) so Admin changes are shown.
 
                         const isEn = i18n.language === 'en';
                         const tDetailValid = tDetail && tDetail !== `ministry.${ministry.id}_detail`;
@@ -272,7 +259,6 @@ const Ministry = () => {
                             ? (tDetailValid ? tDetail : ministry.detail)
                             : (ministry.detail || (tDetailValid ? tDetail : ''));
 
-                        // Similar logic for Description
                         const displayDesc = isEn
                             ? (tDescValid ? tDesc : ministry.description)
                             : (ministry.description || (tDescValid ? tDesc : ''));
@@ -280,45 +266,80 @@ const Ministry = () => {
                         const displayName = (tName && tName !== `ministry.${ministry.id}_name`) ? tName : ministry.name;
                         const displayTarget = (tTarget && tTarget !== `ministry.${ministry.id}_target`) ? tTarget : ministry.target;
 
-                        return (
-                            <React.Fragment key={ministry.id}>
-                                <div id={ministry.id} className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 items-start scroll-mt-32`}>
-                                    {/* Image Section */}
-                                    <div className="w-full lg:w-1/2">
-                                        <div className="aspect-video rounded-2xl overflow-hidden shadow-2xl relative group">
-                                            <div className={`absolute inset-0 bg-primary/20 group-hover:bg-transparent transition-colors duration-500`} />
-                                            <img
-                                                src={ministry.image}
-                                                alt={displayName}
-                                                referrerPolicy="no-referrer"
-                                                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 sepia-[.15] saturate-[.85] contrast-[1.10] brightness-[1.05]"
-                                            />
-                                        </div>
-                                    </div>
+                        // Check if this section should have the brown background
+                        // IDs: 'team_ministry', 'mission_evangelism', 'prayer' (if added later)
+                        const isBrownBg = ['team_ministry', 'mission_evangelism', 'prayer'].includes(ministry.id);
 
-                                    {/* Content Section */}
-                                    <div className="w-full lg:w-1/2 space-y-6">
-                                        <div className="inline-block px-6 py-2 bg-green-600 rounded-full text-lg font-bold text-white mb-4 shadow-md">
-                                            {displayTarget}
+                        return (
+                            <div
+                                key={ministry.id}
+                                id={ministry.id}
+                                className={clsx(
+                                    "w-full py-24 scroll-mt-[60px]", // Added padding and scroll margin
+                                    isBrownBg ? "bg-[#efebe9]" : "bg-white"
+                                )}
+                            >
+                                <div className="container mx-auto px-6 max-w-6xl">
+                                    <div className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 lg:gap-20 items-start`}>
+                                        {/* Image Section */}
+                                        <div className="w-full lg:w-1/2">
+                                            <div className={clsx(
+                                                "aspect-video rounded-2xl overflow-hidden shadow-2xl relative group",
+                                                // If brown bg, maybe add a white ring or different shadow?
+                                                isBrownBg && "ring-4 ring-white/50"
+                                            )}>
+                                                <div className={`absolute inset-0 bg-primary/20 group-hover:bg-transparent transition-colors duration-500`} />
+                                                <img
+                                                    src={ministry.image}
+                                                    alt={displayName}
+                                                    referrerPolicy="no-referrer"
+                                                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 sepia-[.15] saturate-[.85] contrast-[1.10] brightness-[1.05]"
+                                                />
+                                            </div>
                                         </div>
-                                        <h2 className="text-2xl md:text-4xl font-bold text-primary tracking-tight">{displayName}</h2>
-                                        <div className="w-20 h-1.5 bg-accent rounded-full" />
-                                        <p className="text-base md:text-xl text-gray-600 leading-relaxed">
-                                            {displayDesc}
-                                        </p>
-                                        <div className="mt-8">
-                                            {displayDetail ? formatDetail(displayDetail) : (
-                                                <div className="pt-6 border-t border-gray-100 text-gray-700 space-y-4 animate-fade-in text-lg italic">
-                                                    {t('home.no_content_yet')}
+
+                                        {/* Content Section */}
+                                        <div className="w-full lg:w-1/2 space-y-8">
+                                            <div>
+                                                <div className={clsx(
+                                                    "inline-block px-4 py-1.5 rounded-full text-sm font-bold tracking-widest uppercase mb-4 shadow-sm",
+                                                    isBrownBg ? "bg-white text-primary" : "bg-white border border-gray-100 text-green-600"
+                                                )}>
+                                                    {displayTarget}
                                                 </div>
-                                            )}
+                                                <h2 className={clsx(
+                                                    "text-3xl md:text-5xl font-black tracking-tight mb-6",
+                                                    isBrownBg ? "text-[#3e2723]" : "text-gray-900"
+                                                )}>
+                                                    {displayName}
+                                                </h2>
+                                                <div className={clsx(
+                                                    "w-20 h-1.5 rounded-full",
+                                                    isBrownBg ? "bg-[#8d6e63]" : "bg-accent"
+                                                )} />
+                                            </div>
+
+                                            <p className={clsx(
+                                                "text-lg md:text-xl leading-relaxed font-medium",
+                                                isBrownBg ? "text-stone-600" : "text-gray-600"
+                                            )}>
+                                                {displayDesc}
+                                            </p>
+
+                                            <div className="pt-2">
+                                                {displayDetail ? formatDetail(displayDetail) : (
+                                                    <div className={clsx(
+                                                        "p-6 rounded-2xl border border-dashed flex items-center justify-center min-h-[100px]",
+                                                        isBrownBg ? "bg-white/50 border-stone-300 text-stone-500" : "bg-gray-50 border-gray-200 text-gray-400"
+                                                    )}>
+                                                        <span className="italic font-medium">{t('home.no_content_yet')}</span>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                {index < ministryList.length - 1 && (
-                                    <div className="w-full border-t-2 border-white my-20" />
-                                )}
-                            </React.Fragment>
+                            </div>
                         );
                     })}
 

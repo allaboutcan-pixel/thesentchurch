@@ -124,13 +124,7 @@ const DailyWord = () => {
     return (
         <div className="min-h-screen bg-white">
             {/* Header Banner */}
-            <section className={clsx(
-                "relative flex items-center justify-center overflow-hidden",
-                height === 'full' ? "h-[65vh] md:h-[85vh]" :
-                    height === 'large' ? "h-[65vh]" :
-                        height === 'medium' ? "h-[50vh] min-h-[400px]" :
-                            "h-[25vh]"
-            )}>
+            <section className="relative w-full flex items-center justify-center overflow-hidden h-[50vh] md:h-[75vh]">
                 <div className="absolute inset-0 z-0">
                     <img
                         src={headerBanner}

@@ -256,7 +256,8 @@ const TEE = () => {
                                     <span className="text-white">{t('tee.features_title')}</span>
                                 </h3>
                                 <div className="space-y-6 text-blue-50 text-xl leading-relaxed whitespace-pre-line font-light text-center">
-                                    {t('tee.features_desc')}
+                                    <span className="md:hidden">{t('tee.features_desc_mobile')}</span>
+                                    <span className="hidden md:block">{t('tee.features_desc')}</span>
                                 </div>
                             </div>
                         </motion.div>
@@ -307,7 +308,10 @@ const TEE = () => {
                         <h2 className="text-3xl font-serif font-bold text-slate-900 mb-8">
                             {t('tee.fruits_title')}
                         </h2>
-                        <p className="text-xl text-slate-600 leading-loose break-keep font-light" dangerouslySetInnerHTML={{ __html: t('tee.fruits_desc') }} />
+                        <p className="text-xl text-slate-600 leading-loose break-keep font-light">
+                            <span className="md:hidden" dangerouslySetInnerHTML={{ __html: t('tee.fruits_desc_mobile') }} />
+                            <span className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('tee.fruits_desc') }} />
+                        </p>
                     </motion.div>
 
                     {/* TEE Link Button */}

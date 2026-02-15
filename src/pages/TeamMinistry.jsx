@@ -1,0 +1,154 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
+import { Users, Video, Heart, Settings, PieChart, Music, Coffee, HandHeart } from 'lucide-react';
+import MinistryNav from '../components/MinistryNav';
+import { useSiteConfig } from '../hooks/useSiteConfig';
+import churchData from '../data/church_data.json';
+
+const iconMap = {
+    Users,
+    Video,
+    Heart,
+    Settings,
+    PieChart,
+    Music,
+    Coffee
+};
+
+const TeamMinistry = () => {
+    const { t, i18n } = useTranslation();
+    const { config: siteConfig } = useSiteConfig();
+
+    const banner = siteConfig?.ministryBanner || "/images/ministry_banner.jpg";
+    const title = siteConfig?.ministryTitle || "사역"; // Fallback title
+    const subtitle = siteConfig?.ministrySubtitle || "하나님의 사랑을 실천하는 현장";
+
+    // Get team ministries from data
+    const teams = churchData.team_ministries || [];
+
+    return (
+        <div className="min-h-screen bg-[#efebe9]">
+            {/* Hero Section */}
+            <div className="relative h-[50vh] md:h-[75vh] flex items-center justify-center overflow-hidden">
+                <div
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] scale-105"
+                    style={{ backgroundImage: `url(${banner})` }}
+                />
+                <div className="absolute inset-0 bg-black/40" />
+                <div className="relative z-10 container mx-auto px-6 text-center">
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-3xl md:text-5xl font-black text-white mb-6 drop-shadow-xl"
+                    >
+                        {title}
+                    </motion.h1>
+                    <motion.div
+                        initial={{ opacity: 0, width: 0 }}
+                        animate={{ opacity: 1, width: "4rem" }}
+                        className="h-1.5 bg-accent mx-auto mb-8 rounded-full"
+                    />
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                        className="text-lg md:text-xl text-white/90 font-medium max-w-2xl mx-auto drop-shadow-lg"
+                    >
+                        {subtitle}
+                    </motion.p>
+                </div>
+            </div>
+
+            {/* Ministry Navigation */}
+            <div className="bg-white border-b border-stone-200 shadow-sm py-6">
+                <div className="container mx-auto px-4">
+                    <MinistryNav active="team" category="ministry" />
+                </div>
+            </div>
+
+            <main className="container mx-auto px-6 py-20 max-w-6xl">
+                {/* Intro Section */}
+                <div className="text-center mb-20">
+                    <span className="inline-block px-4 py-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-sm font-bold tracking-widest uppercase rounded-full mb-6 backdrop-blur-sm shadow-sm">
+                        Team Ministry
+                    </span>
+                    <h2 className="text-3xl md:text-5xl font-black text-blue-900 mb-8 leading-tight">
+                        함께 섬기는 기쁨
+                    </h2>
+                    <p className="text-lg md:text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed">
+                        각자의 은사를 통해 그리스도의 몸 된 교회를 세워갑니다.<br className="hidden md:block" />
+                        작은 헌신이 모여 아름다운 열매를 맺는 사역의 현장으로 여러분을 초대합니다.
+                    </p>
+                </div>
+
+                {/* Teams Grid */}
+                <div className="grid md:grid-cols-2 gap-8">
+                    {teams.map((team, index) => {
+                        const Icon = iconMap[team.icon] || HandHeart;
+
+                        return (
+                            <motion.div
+                                key={team.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                className="group bg-white rounded-[2rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/50"
+                            >
+                                {/* Image Overlay */}
+                                <div className="relative h-48 overflow-hidden">
+                                    <div className="absolute inset-0 bg-stone-900/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
+                                    <img
+                                        src={team.image}
+                                        alt={team.name}
+                                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                                    />
+                                    <div className="absolute top-4 right-4 z-20 bg-white/90 backdrop-blur p-2.5 rounded-full shadow-lg text-primary">
+                                        <Icon size={20} />
+                                    </div>
+                                </div>
+
+                                <div className="p-8">
+                                    <div className="mb-4">
+                                        <h3 className="text-2xl font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors">
+                                            {team.name}
+                                        </h3>
+                                        <p className="text-sm font-bold text-accent uppercase tracking-wider">
+                                            {team.englishName}
+                                        </p>
+                                    </div>
+                                    <p className="text-gray-600 leading-loose text-sm md:text-base">
+                                        {team.description}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        );
+                    })}
+                </div>
+
+                {/* Join CTA */}
+                <div className="mt-24 text-center">
+                    <div className="inline-flex flex-col items-center p-8 bg-white/60 backdrop-blur-md rounded-3xl border border-white/50 shadow-lg max-w-2xl mx-auto">
+                        <HandHeart className="text-primary mb-4" size={48} />
+                        <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
+                            섬김의 자리에 초대합니다
+                        </h3>
+                        <p className="text-stone-600 mb-8 leading-relaxed">
+                            하나님께서 주신 달란트로 교회를 섬기기 원하시는 분들은<br />
+                            언제든지 각 팀의 문을 두드려주세요.
+                        </p>
+                        <a
+                            href="mailto:thesentnamgyu@gmail.com"
+                            className="inline-block px-8 py-3 bg-primary text-white rounded-full font-bold shadow-lg hover:bg-primary/90 hover:scale-105 transition-all active:scale-95"
+                        >
+                            사역 신청하기
+                        </a>
+                    </div>
+                </div>
+            </main>
+        </div>
+    );
+};
+
+export default TeamMinistry;

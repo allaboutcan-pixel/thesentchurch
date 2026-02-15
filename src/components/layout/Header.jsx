@@ -91,7 +91,7 @@ const Header = () => {
                             {item.subItems && (
                                 <div className={clsx(
                                     "absolute top-full pt-2 opacity-0 invisible group-hover/menu:opacity-100 group-hover/menu:visible transition-all duration-200 transform translate-y-2 group-hover/menu:translate-y-0",
-                                    index > 2 ? "right-0" : "left-1/2 -translate-x-1/2"
+                                    "left-1/2 -translate-x-1/2"
                                 )}>
                                     <div className="bg-white rounded-lg shadow-xl border border-gray-100 overflow-hidden min-w-[200px]">
                                         {item.subItems.map((sub, idx) => (

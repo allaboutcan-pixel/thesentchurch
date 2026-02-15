@@ -238,8 +238,8 @@ const resources = {
                 "banner_title": "TEE",
                 "banner_subtitle": "Theological Education by Extension",
                 "intro_title": "TEE는 무엇인가요?",
-                "intro_desc": "TEE는 <span class='text-blue-600 font-bold'>Theological Education by Extension</span>의 약자로,<br/>디모데후서 2장 2절 말씀에 기초한 “확장에 의한 신학 교육”입니다.<br/><br/>성경 공부와 제자 양육을 통해 신앙이 다음 세대로 이어지도록 돕는,<br/>검증된 훈련 방법입니다.",
-                "intro_subdesc": "현재 TEE는 전 세계 110여 개국에서 70여 개 언어로 사용되며,<br/>수많은 교회가 평신도 양육과 지도자 훈련을 위해 활용하고 있습니다.",
+                "intro_desc": "TEE는 <span class='text-blue-600 font-bold'>Theological Education by Extension</span>의 약자로,<br/>디모데후서 2장 2절 말씀에 기초한<br/>“확장에 의한 신학 교육”입니다.<br/><br/>성경 공부와 제자 양육을 통해<br/>신앙이 다음 세대로 이어지도록 돕는,<br/>검증된 훈련 방법입니다.",
+                "intro_subdesc": "현재 TEE는 전 세계 110여 개국에서<br/>70여 개 언어로 사용되며,<br/>수많은 교회가 평신도 양육과<br/>지도자 훈련을 위해 활용하고 있습니다.",
                 "bible_verse": "또 네가 많은 증인 앞에서 내게 들은 바를 충성된 사람들에게 부탁하라<br/>그들이 또 다른 사람들을 가르칠 수 있으리라",
                 "bible_ref": "디모데후서 2장 2절",
 
@@ -259,6 +259,7 @@ const resources = {
 
                 "features_title": "TEE의 특징",
                 "features_desc": "TEE는 실천을 강요하지 않습니다.\n교재와 가이드라인을 따라 공부하다 보면\n자연스럽게 삶에 적용하고 실천하도록 돕습니다.\n학생들이 자발적으로 순종하고 성장하도록\n동행하는 훈련 과정입니다.",
+                "features_desc_mobile": "TEE는 실천을 강요하지 않습니다.\n교재와 가이드라인을 따라\n공부하다 보면,\n자연스럽게 삶에 적용하고\n실천하도록 돕습니다.\n학생들이 자발적으로\n순종하고 성장하도록\n동행하는 훈련 과정입니다.",
 
                 "method_title": "TEE의 교육 방식",
                 "method_desc": "다음과 같은 원칙을 따릅니다.",
@@ -274,7 +275,8 @@ const resources = {
                 "smart_t_desc": "실체적 훈련입니다",
 
                 "fruits_title": "우리가 기대하는 열매",
-                "fruits_desc": "TEE를 통해 성도 한 사람 한 사람이 말씀으로 세워지고,<br/>소그룹 공동체 안에서 서로를 세우며,<br/>또 다른 제자를 세우는 건강한 교회로 성장해 가기를 기대합니다."
+                "fruits_desc": "TEE를 통해 성도 한 사람 한 사람이 말씀으로 세워지고,<br/>소그룹 공동체 안에서 서로를 세우며,<br/>또 다른 제자를 세우는 건강한 교회로 성장해 가기를 기대합니다.",
+                "fruits_desc_mobile": "TEE를 통해 성도 한 사람 한 사람이<br/>말씀으로 세워지고,<br/>소그룹 공동체 안에서 서로를 세우며,<br/>또 다른 제자를 세우는 건강한 교회로<br/>성장해 가기를 기대합니다."
             }
         }
     },
