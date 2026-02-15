@@ -115,7 +115,7 @@ const Ministry = () => {
     }, []);
 
     return (
-        <div className="min-h-screen">
+        <div className="min-h-screen bg-[#efebe9]">
             {/* Header with Banner */}
             <div className={clsx(
                 "relative flex items-center justify-center overflow-hidden",

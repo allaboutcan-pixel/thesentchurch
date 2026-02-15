@@ -44,6 +44,18 @@ const Prayer = () => {
     const subtitle = siteConfig?.prayerSubtitle || t('ministry.prayer.subtitle');
     const overlayOpacity = siteConfig?.prayerOverlayOpacity || 40;
 
+    // Dynamic Style Settings
+    const titleFont = siteConfig?.prayerTitleFont || 'font-sans';
+    const subtitleFont = siteConfig?.prayerSubtitleFont || 'font-sans';
+    const titleColor = siteConfig?.prayerTitleColor || '#ffffff';
+    const subtitleColor = siteConfig?.prayerSubtitleColor || '#f8fafc';
+    const titleItalic = siteConfig?.prayerTitleItalic || false;
+    const subtitleItalic = siteConfig?.prayerSubtitleItalic || false;
+    const titleWeight = siteConfig?.prayerTitleWeight || 'font-black';
+    const subtitleWeight = siteConfig?.prayerSubtitleWeight || 'font-medium';
+    const titleSize = siteConfig?.prayerTitleSize;
+    const subtitleSize = siteConfig?.prayerSubtitleSize;
+
     return (
         <div className="min-h-screen bg-[#efebe9]">
             {/* Hero Section */}
@@ -60,7 +72,16 @@ const Prayer = () => {
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-3xl md:text-5xl font-black text-white mb-6 drop-shadow-xl"
+                        className={clsx(
+                            "text-3xl md:text-5xl drop-shadow-xl mb-6",
+                            titleFont,
+                            titleWeight,
+                            titleItalic && "italic"
+                        )}
+                        style={{
+                            color: titleColor,
+                            fontSize: titleSize ? `${titleSize}px` : undefined
+                        }}
                     >
                         {title}
                     </motion.h1>
@@ -73,7 +94,16 @@ const Prayer = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3 }}
-                        className="text-lg md:text-xl text-white/90 font-medium max-w-2xl mx-auto drop-shadow-lg"
+                        className={clsx(
+                            "max-w-2xl mx-auto drop-shadow-lg",
+                            subtitleFont,
+                            subtitleWeight,
+                            subtitleItalic && "italic"
+                        )}
+                        style={{
+                            color: subtitleColor,
+                            fontSize: subtitleSize ? `${subtitleSize}px` : undefined
+                        }}
                     >
                         {subtitle}
                     </motion.p>

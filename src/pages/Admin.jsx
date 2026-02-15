@@ -558,6 +558,7 @@ const Admin = () => {
                             "[교육 목표]\n하나님을 알고, 하나님을 사랑하며, 하나님을 닮아가는 어린이\n\n[주요 활동]\n- 통합 예배: 부모님과 함께 드리는 예배를 통해 경외감을 배웁니다.\n- 분반 공부: 연령별 맞춤 성경 공부로 말씀의 기초를 다집니다.\n- 절기 행사: 부활절, 추수감사절, 성탄절 등 기독교 문화를 체험합니다.\n\nTSC는 우리 아이들이 세상의 빛과 소금으로 자라나도록 기도와 사랑으로 양육합니다." :
                             "[교육 비전]\n복음으로 무장하여 세상을 변화시키는 차세대 리더\n\n[주요 활동]\n- 열린 예배: 청소년들의 눈높이에 맞춘 찬양과 말씀 선포\n- 소그룹 나눔: 고민을 나누고 서로 중보하며 믿음의 우정을 쌓습니다.\n- 비전 트립: 수련회와 탐방을 통해 더 넓은 세상을 경험하고 비전을 찾습니다.\n\nTSY는 혼자가 아닌 '함께'의 가치를 배우며 믿음의 여정을 걸어가는 공동체입니다."
                     })),
+                    teamMinistryItems: fbConfig.teamMinistryItems || churchData.team_ministries || [],
                 }));
                 setColumns(fbColumns || []);
                 if (fbConfig.staff) {
@@ -995,6 +996,7 @@ const Admin = () => {
                     'ministryTitle', 'ministrySubtitle', 'ministryTitleFont', 'ministrySubtitleFont', 'ministryTitleColor', 'ministrySubtitleColor', 'ministryTitleItalic', 'ministrySubtitleItalic', 'ministryTitleSize', 'ministrySubtitleSize', 'ministryHeight', 'ministryOverlayOpacity',
                     'resourcesTitle', 'resourcesSubtitle', 'resourcesTitleFont', 'resourcesSubtitleFont', 'resourcesTitleColor', 'resourcesSubtitleColor', 'resourcesTitleItalic', 'resourcesSubtitleItalic', 'resourcesTitleSize', 'resourcesSubtitleSize', 'resourcesHeight', 'resourcesOverlayOpacity',
                     'ministryItems',
+                    'teamMinistryItems',
                     'missionTitle', 'missionSubtitle', 'missionTitleFont', 'missionSubtitleFont', 'missionTitleColor', 'missionSubtitleColor', 'missionTitleItalic', 'missionSubtitleItalic', 'missionTitleWeight', 'missionSubtitleWeight', 'missionTitleSize', 'missionSubtitleSize', 'missionHeight', 'missionOverlayOpacity', 'missionBannerFit',
                     'prayerTitle', 'prayerSubtitle', 'prayerTitleFont', 'prayerSubtitleFont', 'prayerTitleColor', 'prayerSubtitleColor', 'prayerTitleItalic', 'prayerSubtitleItalic', 'prayerTitleWeight', 'prayerSubtitleWeight', 'prayerTitleSize', 'prayerSubtitleSize', 'prayerHeight', 'prayerOverlayOpacity', 'prayerBannerFit',
                     'teeTitle', 'teeSubtitle', 'teeTitleFont', 'teeSubtitleFont', 'teeTitleColor', 'teeSubtitleColor', 'teeTitleItalic', 'teeSubtitleItalic', 'teeTitleWeight', 'teeSubtitleWeight', 'teeTitleSize', 'teeSubtitleSize', 'teeHeight', 'teeOverlayOpacity', 'teeBannerFit',
@@ -1620,6 +1622,9 @@ const Admin = () => {
                                 setEditingId(null);
                                 setFormData({
                                     ...formData,
+                                    ministryItems: [], // This seems to be the target for dynamic list items
+                                    teamMinistryItems: [],
+                                    // ...
                                     title: '', date: '', preacher: '', youtubeId: '', fileUrl: '', fileUrl2: '', category: '공지', content: '', important: false, type: 'image',
                                     staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', thumbnailUrl: '',
                                     note: '', eventType: 'default',
@@ -2734,6 +2739,7 @@ const Admin = () => {
                                                             const newItems = [...formData.ministryItems];
                                                             newItems[idx] = { ...newItems[idx], detail: e.target.value };
                                                             setFormData({ ...formData, ministryItems: newItems });
+                                                            setFormData({ ...formData, ministryItems: newItems });
                                                         }}
                                                     />
                                                 </div>
@@ -3049,7 +3055,11 @@ const Admin = () => {
                                         const btn = document.getElementById('save-pastor-btn');
                                         btn.innerText = '저장 중...';
                                         try {
-                                            await dbService.updateSiteConfig(siteConfig);
+                                            const currentConfig = { ...siteConfig };
+                                            currentConfig['ministryItems'] = formData.ministryItems;
+                                            currentConfig['teamMinistryItems'] = formData.teamMinistryItems;
+
+                                            await dbService.updateSiteConfig(currentConfig);
                                             alert('✅ 저장되었습니다.');
                                         } catch (e) {
                                             alert('저장 실패: ' + e.message);

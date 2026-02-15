@@ -129,7 +129,7 @@ const TEE = () => {
                         <span className="inline-block px-4 py-1.5 rounded-full border border-blue-600 text-blue-700 text-sm font-bold tracking-widest uppercase mb-4">
                             Introduction
                         </span>
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-slate-900">
+                        <h2 className="text-3xl md:text-4xl font-sans font-bold text-slate-900">
                             {t('tee.intro_title')}
                         </h2>
                         <div className="space-y-6 text-lg text-slate-600 leading-relaxed word-keep break-keep">
@@ -141,7 +141,7 @@ const TEE = () => {
                         <div className="mt-12 p-8 md:p-10 bg-white rounded-xl border-l-4 border-blue-600 shadow-md max-w-3xl mx-auto">
                             <Quote className="w-8 h-8 text-blue-400 mb-4 mx-auto opacity-50" />
                             <p
-                                className="text-lg md:text-xl font-serif italic text-slate-700 mb-4 leading-relaxed break-keep"
+                                className="text-lg md:text-xl font-sans italic text-slate-700 mb-4 leading-relaxed break-keep"
                                 dangerouslySetInnerHTML={{ __html: `"${t('tee.bible_verse')}"` }}
                             />
                             <p className="text-sm font-bold text-blue-600 uppercase tracking-wide">
@@ -175,13 +175,13 @@ const TEE = () => {
                             </div>
 
                             <div className="flex-1 flex items-center justify-center py-4">
-                                <h4 className="text-2xl md:text-3xl font-serif font-bold text-[#3e2723] text-center">
+                                <h4 className="text-2xl md:text-3xl font-sans font-bold text-[#3e2723] text-center">
                                     {t('tee.ministry_goal_subtitle')}
                                 </h4>
                             </div>
 
                             <div className="h-px bg-slate-200 w-full mb-6 mt-auto" />
-                            <p className="text-lg font-black text-center text-slate-700 italic font-serif">
+                            <p className="text-lg font-black text-center text-slate-700 italic font-sans">
                                 {t('tee.ministry_goal_quote')}
                             </p>
                         </motion.div>
@@ -224,14 +224,14 @@ const TEE = () => {
                                     <Heart size={20} className="text-blue-500" />
                                     {t('tee.core_value_title')}
                                 </h3>
-                                <h2 className="text-xl font-serif font-bold text-slate-900 mb-4">
+                                <h2 className="text-xl font-sans font-bold text-slate-900 mb-4">
                                     {t('tee.core_value_subtitle')}
                                 </h2>
                                 <p className="text-base text-slate-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: t('tee.core_value_desc') }} />
                             </div>
 
                             <div className="bg-slate-50 p-6 rounded-xl border border-blue-100 mt-auto">
-                                <p className="text-sm font-medium text-center text-slate-800 whitespace-pre-line leading-loose italic font-serif">
+                                <p className="text-sm font-medium text-center text-slate-800 whitespace-pre-line leading-loose italic font-sans">
                                     {t('tee.core_value_box')}
                                 </p>
                             </div>
@@ -269,7 +269,7 @@ const TEE = () => {
             < section className="py-20 bg-[#faf8f5]" >
                 <div className="container mx-auto px-6">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl font-serif font-bold text-slate-900 mb-8">
+                        <h2 className="text-3xl font-sans font-bold text-slate-900 mb-8">
                             {t('tee.method_title')}
                         </h2>
                         <p className="text-stone-500 font-medium">S.M.A.R.T Principles</p>
@@ -305,7 +305,7 @@ const TEE = () => {
                         <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-8 text-blue-600">
                             <Leaf size={32} />
                         </div>
-                        <h2 className="text-3xl font-serif font-bold text-slate-900 mb-8">
+                        <h2 className="text-3xl font-sans font-bold text-slate-900 mb-8">
                             {t('tee.fruits_title')}
                         </h2>
                         <p className="text-xl text-slate-600 leading-loose break-keep font-light">

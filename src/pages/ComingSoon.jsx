@@ -44,7 +44,7 @@ const ComingSoon = ({ type = 'mission' }) => {
     );
 
     return (
-        <div className="flex flex-col w-full min-h-screen bg-white">
+        <div className="flex flex-col w-full min-h-screen bg-[#efebe9]">
             {/* 1. Hero Banner Section at Top */}
             <div className={heroHeightClass}>
                 <div className="absolute inset-0 z-0">

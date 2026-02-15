@@ -2,9 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Users, Video, Heart, Settings, PieChart, Music, Coffee, HandHeart } from 'lucide-react';
-import MinistryNav from '../components/MinistryNav';
-import { useSiteConfig } from '../hooks/useSiteConfig';
-import churchData from '../data/church_data.json';
+import clsx from 'clsx';
 
 const iconMap = {
     Users,
@@ -23,9 +21,24 @@ const TeamMinistry = () => {
     const banner = siteConfig?.teamBanner || "/images/ministry_banner.jpg";
     const title = siteConfig?.teamTitle || "Team Ministry";
     const subtitle = siteConfig?.teamSubtitle || "함께 섬기는 기쁨";
+    const overlayOpacity = siteConfig?.teamOverlayOpacity || 40;
 
-    // Get team ministries from data
-    const teams = churchData.team_ministries || [];
+    // Dynamic Style Settings
+    const titleFont = siteConfig?.teamTitleFont || 'font-sans';
+    const subtitleFont = siteConfig?.teamSubtitleFont || 'font-sans';
+    const titleColor = siteConfig?.teamTitleColor || '#ffffff';
+    const subtitleColor = siteConfig?.teamSubtitleColor || '#f8fafc';
+    const titleItalic = siteConfig?.teamTitleItalic || false;
+    const subtitleItalic = siteConfig?.teamSubtitleItalic || false;
+    const titleWeight = siteConfig?.teamTitleWeight || 'font-black';
+    const subtitleWeight = siteConfig?.teamSubtitleWeight || 'font-medium';
+    const titleSize = siteConfig?.teamTitleSize;
+    const subtitleSize = siteConfig?.teamSubtitleSize;
+
+    // Get team ministries from site config (Firebase) or fallback to static data
+    const teams = (siteConfig?.ministryItems && siteConfig.ministryItems.length > 0)
+        ? siteConfig.ministryItems
+        : (churchData.team_ministries || []);
 
     return (
         <div className="min-h-screen bg-[#efebe9]">
@@ -35,12 +48,24 @@ const TeamMinistry = () => {
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] scale-105"
                     style={{ backgroundImage: `url(${banner})` }}
                 />
-                <div className="absolute inset-0 bg-black/40" />
+                <div
+                    className="absolute inset-0 bg-black"
+                    style={{ opacity: overlayOpacity / 100 }}
+                />
                 <div className="relative z-10 container mx-auto px-6 text-center">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-3xl md:text-5xl font-black text-white mb-6 drop-shadow-xl"
+                        className={clsx(
+                            "text-3xl md:text-5xl drop-shadow-xl mb-6",
+                            titleFont,
+                            titleWeight,
+                            titleItalic && "italic"
+                        )}
+                        style={{
+                            color: titleColor,
+                            fontSize: titleSize ? `${titleSize}px` : undefined
+                        }}
                     >
                         {title}
                     </motion.h1>
@@ -53,7 +78,16 @@ const TeamMinistry = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3 }}
-                        className="text-lg md:text-xl text-white/90 font-medium max-w-2xl mx-auto drop-shadow-lg"
+                        className={clsx(
+                            "max-w-2xl mx-auto drop-shadow-lg",
+                            subtitleFont,
+                            subtitleWeight,
+                            subtitleItalic && "italic"
+                        )}
+                        style={{
+                            color: subtitleColor,
+                            fontSize: subtitleSize ? `${subtitleSize}px` : undefined
+                        }}
                     >
                         {subtitle}
                     </motion.p>
