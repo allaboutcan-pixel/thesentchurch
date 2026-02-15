@@ -56,7 +56,17 @@ const Home = () => {
 
                 if (!isMounted) return;
 
-                if (liveSermons.length > 0) setLatestSermon(liveSermons[0]);
+                if (liveSermons.length > 0) {
+                    // Safety check: extract ID for all sermons to handle malformed data
+                    const cleanedSermons = liveSermons.map(s => {
+                        if (s.youtubeId && s.youtubeId.length > 11) {
+                            const extractedId = getYoutubeId(s.youtubeId);
+                            if (extractedId) return { ...s, youtubeId: extractedId };
+                        }
+                        return s;
+                    });
+                    setLatestSermon(cleanedSermons[0]);
+                }
                 if (liveNotices.length > 0) setRecentNotices(liveNotices);
 
                 if (liveDailyWords && liveDailyWords.length > 0) {
@@ -126,7 +136,7 @@ const Home = () => {
 
         try {
             const ytId = getYoutubeId(heroImage);
-            if (ytId) return `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+            if (ytId) return `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
 
             // Google Drive handling
             if (heroImage.includes('drive.google.com')) {
@@ -289,7 +299,7 @@ const Home = () => {
                             {latestSermon.isPlaying ? (
                                 <iframe
                                     className="w-full h-full"
-                                    src={`https://www.youtube.com/embed/${latestSermon.youtubeId}?autoplay=1`}
+                                    src={`https://www.youtube.com/embed/${latestSermon.youtubeId}?autoplay=1&rel=0&origin=${window.location.origin}`}
                                     title={latestSermon.title}
                                     frameBorder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

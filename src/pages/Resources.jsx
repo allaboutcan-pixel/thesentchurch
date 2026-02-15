@@ -100,7 +100,7 @@ const Resources = () => {
     const getPreviewSource = (url) => {
         if (!url) return null;
         const ytId = getYoutubeId(url);
-        if (ytId) return `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+        if (ytId) return `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
 
         if (url.includes('drive.google.com')) {
             const idMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
@@ -182,12 +182,19 @@ const Resources = () => {
 
                 // Process Sermons
                 if (liveSermons.length > 0) {
-                    const sorted = [...liveSermons].sort((a, b) => new Date(b.date) - new Date(a.date));
-                    setSermons(sorted);
-                    setLatestSermon(sorted[0]);
+                    // Safety check: extract ID for all sermons to handle malformed data
+                    const cleanedSermons = liveSermons.map(s => {
+                        if (s.youtubeId && s.youtubeId.length > 11) {
+                            const extractedId = getYoutubeId(s.youtubeId);
+                            if (extractedId) return { ...s, youtubeId: extractedId };
+                        }
+                        return s;
+                    });
+                    setSermons(cleanedSermons);
+                    setLatestSermon(cleanedSermons[0]);
 
                     const grouped = {};
-                    sorted.forEach(item => {
+                    cleanedSermons.forEach(item => {
                         if (!item.date) return;
                         const [y, m] = item.date.split('-');
                         const year = y;
@@ -198,7 +205,7 @@ const Resources = () => {
                     });
                     setSermonArchiveData(grouped);
 
-                    const [ly, lm] = sorted[0].date.split('-');
+                    const [ly, lm] = cleanedSermons[0].date.split('-');
                     setSelectedSermonYear(ly);
                     setSelectedSermonMonth(parseInt(lm, 10).toString());
                 }
@@ -391,7 +398,7 @@ const Resources = () => {
                                         <div className="aspect-video relative group cursor-pointer" onClick={() => setLatestSermon(prev => ({ ...prev, isPlaying: true }))}>
                                             {latestSermon.isPlaying ? (
                                                 <iframe
-                                                    src={`https://www.youtube.com/embed/${latestSermon.youtubeId}?autoplay=1&rel=0&vq=hd1080`}
+                                                    src={`https://www.youtube.com/embed/${latestSermon.youtubeId}?autoplay=1&rel=0&vq=hd1080&origin=${window.location.origin}`}
                                                     className="w-full h-full border-none"
                                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                     allowFullScreen
@@ -400,7 +407,7 @@ const Resources = () => {
                                             ) : (
                                                 <>
                                                     <img
-                                                        src={`https://img.youtube.com/vi/${latestSermon.youtubeId}/maxresdefault.jpg`}
+                                                        src={`https://img.youtube.com/vi/${latestSermon.youtubeId}/hqdefault.jpg`}
                                                         alt={latestSermon.title}
                                                         className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                                                         loading="lazy"
@@ -935,7 +942,7 @@ const Resources = () => {
                                     if (img.url.includes('youtube.com') || img.url.includes('youtu.be')) {
                                         const ytId = img.url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?/]+)/)?.[1];
                                         if (ytId) {
-                                            thumbnailUrl = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+                                            thumbnailUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
                                         }
                                     } else if (img.url.includes('drive.google.com')) {
                                         const driveMatch = img.url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||

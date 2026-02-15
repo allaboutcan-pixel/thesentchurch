@@ -22,7 +22,7 @@ export const isVideo = (source) => {
         // Only treat Drive links as video if they are explicitly formatted for streaming/download
         const driveVideo = /drive\.google\.com.*(export=download|export=media)/i;
         // YouTube detection
-        const youtubeVideo = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+        const youtubeVideo = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|live|shorts)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
 
         return videoExtensions.test(source) ||
             videoDataUri.test(source) ||
@@ -40,7 +40,7 @@ export const isVideo = (source) => {
  */
 export const getYoutubeId = (url) => {
     if (!url || typeof url !== 'string') return null;
-    const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
+    const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|live|shorts)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
     return match ? match[1] : null;
 };
 

@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from 'react';
-import { Upload, FileText, Check, X, Play, LayoutDashboard, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, Shield, AlertTriangle, Type, ArrowUp, ArrowDown } from 'lucide-react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Upload, FileText, Check, X, Play, LayoutDashboard, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, Shield, AlertTriangle, Type, ArrowUp, ArrowDown, Heart } from 'lucide-react';
 import sermonsInitialData from '../data/sermons.json';
 import bulletinsInitialData from '../data/bulletins.json';
 import noticesInitialData from '../data/notices.json';
@@ -9,12 +9,14 @@ import { dbService } from '../services/dbService';
 import { isVideo, getYoutubeId } from '../utils/mediaUtils';
 import clsx from 'clsx';
 
-const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBannerFiles }) => {
+const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBannerFiles, aspectRatio = "aspect-video" }) => {
     const currentFile = bannerFiles[fieldName];
     const setFile = (file) => setBannerFiles(prev => ({ ...prev, [fieldName]: file }));
 
     // For preview, if we have a newly selected file, use that. Otherwise use the saved value.
-    const previewUrl = currentFile ? URL.createObjectURL(currentFile) : (value || 'https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2073&auto=format&fit=crop');
+    const previewUrl = React.useMemo(() => {
+        return currentFile ? URL.createObjectURL(currentFile) : (value || 'https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2073&auto=format&fit=crop');
+    }, [currentFile, value]);
 
     // Check if it's a Drive link and specifically if it's already formatted for image/video
     const isDriveThumbnail = typeof previewUrl === 'string' && previewUrl.includes('drive.google.com/thumbnail');
@@ -187,7 +189,7 @@ const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBann
                 </div>
 
                 {/* Preview Thumbnail */}
-                <div className="aspect-video rounded-2xl overflow-hidden bg-slate-100 border border-gray-100 mt-2 relative shadow-inner">
+                <div className={`${aspectRatio} rounded-2xl overflow-hidden bg-slate-100 border border-gray-100 mt-2 relative shadow-inner`}>
                     <div className="absolute top-2 right-2 z-10">
                         <span className="px-2 py-1 bg-black/40 backdrop-blur-md text-[9px] font-black text-white rounded-md uppercase tracking-widest">Live Preview</span>
                     </div>
@@ -195,7 +197,7 @@ const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBann
                         getYoutubeId(mediaUrl) ? (
                             <iframe
                                 key={mediaUrl}
-                                className="w-full h-[150%] aspect-video pointer-events-none"
+                                className={`w-full h-[150%] ${aspectRatio} pointer-events-none`}
                                 src={`https://www.youtube.com/embed/${getYoutubeId(mediaUrl)}?autoplay=1&mute=1&loop=1&playlist=${getYoutubeId(mediaUrl)}&controls=0&showinfo=0&rel=0&iv_load_policy=3`}
                                 frameBorder="0"
                                 allow="autoplay; encrypted-media"
@@ -348,6 +350,18 @@ const Admin = () => {
 
         // Individual Ministry Items
         ministryItems: [],
+        teamMinistryItems: [],
+
+        // Prayer Management
+        prayerIntroImage: '',
+        prayerCommonTopics: '',
+        prayerPastorTopics: '',
+        prayerChurchTopics: '',
+        prayerWorldTopics: '',
+        prayerChurchTopics2026: '', // New field for 2026 topics
+        prayerCoreValues: '',
+        prayerGoals: '',
+        prayerHours: '',
 
         author: '', fileType: 'pdf',
         note: '', eventType: 'default',
@@ -381,7 +395,6 @@ const Admin = () => {
             setBulletins(fbBulletins);
             setNotices(fbNotices);
             setGallery(fbGallery);
-            setColumns(fbColumns || []);
             setColumns(fbColumns || []);
 
             // Sort daily words: Order (desc) -> Date (desc)
@@ -559,6 +572,16 @@ const Admin = () => {
                             "[교육 비전]\n복음으로 무장하여 세상을 변화시키는 차세대 리더\n\n[주요 활동]\n- 열린 예배: 청소년들의 눈높이에 맞춘 찬양과 말씀 선포\n- 소그룹 나눔: 고민을 나누고 서로 중보하며 믿음의 우정을 쌓습니다.\n- 비전 트립: 수련회와 탐방을 통해 더 넓은 세상을 경험하고 비전을 찾습니다.\n\nTSY는 혼자가 아닌 '함께'의 가치를 배우며 믿음의 여정을 걸어가는 공동체입니다."
                     })),
                     teamMinistryItems: fbConfig.teamMinistryItems || churchData.team_ministries || [],
+
+                    // Prayer Items
+                    prayerIntroImage: fbConfig.prayerIntroImage || '',
+                    prayerCommonTopics: fbConfig.prayerCommonTopics || '',
+                    prayerPastorTopics: fbConfig.prayerPastorTopics || '',
+                    prayerChurchTopics: fbConfig.prayerChurchTopics || '',
+                    prayerChurchTopics2026: fbConfig.prayerChurchTopics2026 || '',
+                    prayerCoreValues: fbConfig.prayerCoreValues || '',
+                    prayerGoals: fbConfig.prayerGoals || '',
+                    prayerHours: fbConfig.prayerHours || '',
                 }));
                 setColumns(fbColumns || []);
                 if (fbConfig.staff) {
@@ -598,9 +621,9 @@ const Admin = () => {
     };
 
     const extractYoutubeId = (url) => {
-        const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-        const match = url.match(regExp);
-        return (match && match[7].length === 11) ? match[7] : url;
+        if (!url || typeof url !== 'string') return url;
+        const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|live|shorts)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
+        return match ? match[1] : url;
     };
 
 
@@ -770,7 +793,7 @@ const Admin = () => {
                     preacher: formData.preacher,
                     date: formData.date,
                     youtubeId: vidId,
-                    thumbnail: `https://img.youtube.com/vi/${vidId}/maxresdefault.jpg`,
+                    thumbnail: `https://img.youtube.com/vi/${vidId}/hqdefault.jpg`,
                     link: formData.link || ''
                 };
 
@@ -864,7 +887,7 @@ const Admin = () => {
                 // Final fallback for missing thumbnail for videos
                 if (!finalThumbnailUrl && detectedType === 'video' && finalUrl.includes('youtube.com')) {
                     const vidId = extractYoutubeId(finalUrl);
-                    finalThumbnailUrl = `https://img.youtube.com/vi/${vidId}/maxresdefault.jpg`;
+                    finalThumbnailUrl = `https://img.youtube.com/vi/${vidId}/hqdefault.jpg`;
                 }
 
                 const newItem = {
@@ -950,7 +973,7 @@ const Admin = () => {
                     savedItem = await Promise.race([dbService.addDailyWord(dailyWordData), timeout]);
                     setDailyWords([savedItem, ...dailyWords]);
                 }
-            } else if (activeTab === 'site') {
+            } else if (activeTab === 'site' || activeTab === 'intro' || activeTab === 'prayer') {
                 let currentConfig = { ...siteConfig };
 
                 // Processing function that handles both files and URLs
@@ -982,7 +1005,7 @@ const Admin = () => {
                 // Process ONLY media fields that might need upload or drive formatting
                 const mediaFields = [
                     'heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner',
-                    'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner'
+                    'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage'
                 ];
                 for (const field of mediaFields) {
                     await processField(field);
@@ -998,7 +1021,7 @@ const Admin = () => {
                     'ministryItems',
                     'teamMinistryItems',
                     'missionTitle', 'missionSubtitle', 'missionTitleFont', 'missionSubtitleFont', 'missionTitleColor', 'missionSubtitleColor', 'missionTitleItalic', 'missionSubtitleItalic', 'missionTitleWeight', 'missionSubtitleWeight', 'missionTitleSize', 'missionSubtitleSize', 'missionHeight', 'missionOverlayOpacity', 'missionBannerFit',
-                    'prayerTitle', 'prayerSubtitle', 'prayerTitleFont', 'prayerSubtitleFont', 'prayerTitleColor', 'prayerSubtitleColor', 'prayerTitleItalic', 'prayerSubtitleItalic', 'prayerTitleWeight', 'prayerSubtitleWeight', 'prayerTitleSize', 'prayerSubtitleSize', 'prayerHeight', 'prayerOverlayOpacity', 'prayerBannerFit',
+                    'prayerCommonTopics', 'prayerPastorTopics', 'prayerChurchTopics', 'prayerChurchTopics2026', 'prayerCoreValues', 'prayerGoals', 'prayerHours',
                     'teeTitle', 'teeSubtitle', 'teeTitleFont', 'teeSubtitleFont', 'teeTitleColor', 'teeSubtitleColor', 'teeTitleItalic', 'teeSubtitleItalic', 'teeTitleWeight', 'teeSubtitleWeight', 'teeTitleSize', 'teeSubtitleSize', 'teeHeight', 'teeOverlayOpacity', 'teeBannerFit',
                     'teamTitle', 'teamSubtitle', 'teamTitleFont', 'teamSubtitleFont', 'teamTitleColor', 'teamSubtitleColor', 'teamTitleItalic', 'teamSubtitleItalic', 'teamTitleWeight', 'teamSubtitleWeight', 'teamTitleSize', 'teamSubtitleSize', 'teamHeight', 'teamOverlayOpacity', 'teamBannerFit',
                     'heroBannerFit', 'aboutBannerFit', 'newsBannerFit', 'ministryBannerFit', 'resourcesBannerFit'
@@ -1207,6 +1230,19 @@ const Admin = () => {
                             setBannerFiles={setBannerFiles}
                             onChange={(val) => setFormData(prev => ({ ...prev, [imageField]: val }))}
                         />
+                        {pageKey === 'prayer' && (
+                            <div className="max-w-2xl">
+                                <BannerManager
+                                    label="기도 페이지 소개 이미지"
+                                    value={formData.prayerIntroImage}
+                                    fieldName="prayerIntroImage"
+                                    bannerFiles={bannerFiles}
+                                    setBannerFiles={setBannerFiles}
+                                    onChange={(val) => setFormData(prev => ({ ...prev, prayerIntroImage: val }))}
+                                    aspectRatio="aspect-[4/3]"
+                                />
+                            </div>
+                        )}
                         <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
                             <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 flex justify-between mb-4">
                                 <span>배경 어둡기 (Overlay Opacity)</span>
@@ -1547,6 +1583,12 @@ const Admin = () => {
                         label="섬기는 분들 관리"
                         active={activeTab === 'staff'}
                         onClick={() => { setActiveTab('staff'); setShowAddForm(false); }}
+                    />
+                    <SidebarItem
+                        icon={<Heart size={20} />}
+                        label="중보기도 관리"
+                        active={activeTab === 'prayer'}
+                        onClick={() => { setActiveTab('prayer'); setShowAddForm(false); }}
                     />
                     <SidebarItem
                         icon={<Calendar size={20} />}
@@ -2273,7 +2315,115 @@ const Admin = () => {
                         </div>
                     )
                 }
-                {/* Site Settings Section */}
+                {/* Prayer Management Section */}
+                {
+                    activeTab === 'prayer' && (
+                        <section className="space-y-12 animate-fade-in">
+                            <div className="flex items-center justify-between mb-8">
+                                <div>
+                                    <h2 className="text-3xl font-black text-primary">중보기도 관리</h2>
+                                    <p className="text-gray-500 mt-2 font-medium">중보기도 페이지의 상단 이미지와 기도 제목을 관리합니다.</p>
+                                </div>
+                                <button
+                                    onClick={handleFormSubmit}
+                                    disabled={isLoading}
+                                    className="flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-2xl font-bold hover:bg-primary-dark transition-all shadow-lg hover:shadow-primary/20 disabled:opacity-50"
+                                >
+                                    {isLoading ? <span className="animate-pulse">저장 중...</span> : <><Check size={20} /> 설정 저장하기</>}
+                                </button>
+                            </div>
+
+                            <div className="space-y-8">
+                                {/* Intro Photo Banner Section */}
+                                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                        <div className="p-2 bg-primary/10 rounded-xl text-primary"><ImageIcon size={20} /></div>
+                                        소개 사진 배너 (Intro Photo Banner)
+                                    </h3>
+                                    <div className="p-6 bg-gray-50 rounded-2xl border border-gray-100">
+                                        <div className="max-w-2xl">
+                                            <BannerManager
+                                                label="소개 섹션 하단 이미지 배너"
+                                                value={formData.prayerIntroImage}
+                                                fieldName="prayerIntroImage"
+                                                bannerFiles={bannerFiles}
+                                                setBannerFiles={setBannerFiles}
+                                                onChange={(val) => setFormData(prev => ({ ...prev, prayerIntroImage: val }))}
+                                                aspectRatio="aspect-video"
+                                            />
+                                        </div>
+                                        <p className="text-xs text-gray-400 mt-4 ml-1">
+                                            * 중보기도 소개 문구 바로 아래에 표시되는 가로형 배너 이미지입니다.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Prayer Topics Section */}
+                                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                        <div className="p-2 bg-accent/10 rounded-xl text-accent"><Heart size={20} /></div>
+                                        보내심을 받은 생명의소리 교회 기도 제목
+                                    </h3>
+
+                                    <div className="space-y-8">
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-gray-600 ml-1">2026년 교회 기도제목 (2026 Church Prayer Topics)</label>
+                                            <textarea
+                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-48 resize-none leading-relaxed"
+                                                placeholder="예: 1. 2026년 표어...&#13;&#10;2. 비전..."
+                                                value={formData.prayerChurchTopics2026}
+                                                onChange={(e) => setFormData({ ...formData, prayerChurchTopics2026: e.target.value })}
+                                            />
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-gray-600 ml-1">사역의 핵심 가치 (Core Values)</label>
+                                            <textarea
+                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                placeholder="예: 하나님과의 친밀함, 정결한 삶..."
+                                                value={formData.prayerCoreValues}
+                                                onChange={(e) => setFormData({ ...formData, prayerCoreValues: e.target.value })}
+                                            />
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-gray-600 ml-1">중보기도부 목표 (Goals)</label>
+                                            <textarea
+                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                placeholder="예: 기도의 용사를 양성하고..."
+                                                value={formData.prayerGoals}
+                                                onChange={(e) => setFormData({ ...formData, prayerGoals: e.target.value })}
+                                            />
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-gray-600 ml-1">운영시간 (Operating Hours)</label>
+                                            <textarea
+                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                placeholder="예: 매주 수요일 오후 7시..."
+                                                value={formData.prayerHours}
+                                                onChange={(e) => setFormData({ ...formData, prayerHours: e.target.value })}
+                                            />
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-gray-600 ml-1">이번주 우리교회 기도내용 (Weekly Church Prayer)</label>
+                                            <textarea
+                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-96 resize-none leading-relaxed"
+                                                placeholder="예: 1. 나라와 민족을 위해...&#13;&#10;2. 교회의 부흥을 위해..."
+                                                value={formData.prayerCommonTopics}
+                                                onChange={(e) => setFormData({ ...formData, prayerCommonTopics: e.target.value })}
+                                            />
+                                            <p className="text-xs text-gray-400 ml-1">
+                                                * 여러 줄로 입력하면 자동으로 목록으로 변환되어 표시됩니다.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    )
+                }
 
                 {/* Worship Management Section */}
                 {

@@ -56,6 +56,16 @@ const Prayer = () => {
     const titleSize = siteConfig?.prayerTitleSize;
     const subtitleSize = siteConfig?.prayerSubtitleSize;
 
+    const getTopics = (configValue, fallbackKey) => {
+        if (configValue) {
+            return configValue.split('\n').filter(line => line.trim() !== '');
+        }
+        const fallback = t(fallbackKey, { returnObjects: true });
+        return Array.isArray(fallback) ? fallback : [];
+    };
+
+    const introImage = siteConfig?.prayerIntroImage || "https://drive.google.com/uc?export=download&id=1mc1PsV0gscCVVRtuaIyh4RBNPijTtXWf";
+
     return (
         <div className="min-h-screen bg-[#efebe9]">
             {/* Hero Section */}
@@ -73,7 +83,7 @@ const Prayer = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className={clsx(
-                            "text-3xl md:text-5xl drop-shadow-xl mb-6",
+                            "text-3xl md:text-5xl drop-shadow-xl mb-10",
                             titleFont,
                             titleWeight,
                             titleItalic && "italic"
@@ -88,7 +98,7 @@ const Prayer = () => {
                     <motion.div
                         initial={{ opacity: 0, width: 0 }}
                         animate={{ opacity: 1, width: "4rem" }}
-                        className="h-1.5 bg-accent mx-auto mb-8 rounded-full"
+                        className="h-1.5 bg-accent mx-auto mb-12 rounded-full"
                     />
                     <motion.p
                         initial={{ opacity: 0 }}
@@ -120,84 +130,111 @@ const Prayer = () => {
             <main className="container mx-auto px-6 py-20 max-w-6xl">
                 {/* Introduction Section */}
                 <section className="mb-32">
-                    <div className="grid lg:grid-cols-2 gap-16 items-center">
-                        <div className="space-y-8">
-                            <div>
-                                <span className="inline-block px-4 py-1.5 bg-white/50 border border-primary/20 text-primary text-sm font-bold tracking-widest uppercase rounded-full mb-4 backdrop-blur-sm">
-                                    {t('ministry.prayer.intro_title')}
-                                </span>
-                                <h2 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight">
-                                    {t('ministry.prayer.intro_subtitle')}
-                                </h2>
-                            </div>
-                            <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line">
-                                {t('ministry.prayer.intro_content')}
-                            </p>
-                            <div className="flex items-center gap-6 p-6 bg-white/60 rounded-2xl border border-white/50 shadow-sm backdrop-blur-md">
-                                <ShieldCheck className="text-green-700 shrink-0" size={40} />
-                                <p className="text-sm md:text-base font-medium text-slate-700 italic">
-                                    {t('ministry.prayer.privacy_notice')}
-                                </p>
-                            </div>
+                    <div className="max-w-3xl mx-auto space-y-12 text-center">
+                        <div>
+                            <span className="inline-block px-4 py-1.5 bg-white/50 border border-primary/20 text-primary text-sm font-bold tracking-widest uppercase rounded-full mb-6 backdrop-blur-sm">
+                                {t('ministry.prayer.intro_title')}
+                            </span>
+                            <h2 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight">
+                                {t('ministry.prayer.intro_subtitle')}
+                            </h2>
                         </div>
-                        <div className="relative group max-w-xl mx-auto lg:ml-auto">
-                            <div className="absolute -inset-4 bg-gradient-to-tr from-primary/10 to-accent/10 rounded-[2.5rem] blur-2xl group-hover:opacity-100 opacity-50 transition-opacity" />
-                            <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-2xl ring-4 ring-white/50">
+                        <p className="text-lg text-gray-700 leading-relaxed whitespace-pre-line max-w-2xl mx-auto">
+                            {t('ministry.prayer.intro_content')}
+                        </p>
+
+                        {/* Centered Photo Banner */}
+                        <div className="pt-8 max-w-4xl mx-auto">
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                className="relative aspect-video rounded-[2.5rem] overflow-hidden shadow-2xl ring-1 ring-black/5"
+                            >
                                 <img
-                                    src="https://drive.google.com/uc?export=download&id=1mc1PsV0gscCVVRtuaIyh4RBNPijTtXWf"
-                                    alt="Intercessory Prayer"
+                                    src={siteConfig?.prayerIntroImage || "/images/prayer_intro_banner.jpg"}
+                                    alt="Prayer Ministry"
                                     className="w-full h-full object-cover"
-                                    onError={(e) => { e.target.src = "/images/prayer_intro.jpg"; }}
+                                    onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1445077100181-a33e9ac94bd6?q=80&w=2074&auto=format&fit=crop"; }}
                                 />
-                            </div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+                            </motion.div>
                         </div>
                     </div>
                 </section>
 
-                {/* Stacking Core Values, Goals, and Hours Vertically */}
-                <div className="flex flex-col gap-16 mb-32">
-                    <section className="space-y-8">
+                {/* Stacking Core Values, Goals, and Hours in 3 columns */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+                    <section className="space-y-6">
                         <SectionTitle icon={Target}>{t('ministry.prayer.section2_title')}</SectionTitle>
-                        <div className="bg-white/80 p-12 rounded-3xl min-h-[200px] border border-dashed border-stone-300 flex items-center justify-center text-stone-400 font-medium text-xl shadow-sm">
-                            Coming Soon
+                        <div className="bg-white/80 p-8 rounded-3xl min-h-[180px] border border-stone-100 flex items-start justify-start text-stone-700 font-medium text-base shadow-sm whitespace-pre-line leading-relaxed transition-all hover:shadow-md hover:bg-white">
+                            {siteConfig?.prayerCoreValues || "준비 중입니다."}
                         </div>
                     </section>
 
-                    <section className="space-y-8">
+                    <section className="space-y-6">
                         <SectionTitle icon={Users}>{t('ministry.prayer.section3_title')}</SectionTitle>
-                        <div className="bg-white/80 p-12 rounded-3xl min-h-[200px] border border-dashed border-stone-300 flex items-center justify-center text-stone-400 font-medium text-xl shadow-sm">
-                            Coming Soon
+                        <div className="bg-white/80 p-8 rounded-3xl min-h-[180px] border border-stone-100 flex items-start justify-start text-stone-700 font-medium text-base shadow-sm whitespace-pre-line leading-relaxed transition-all hover:shadow-md hover:bg-white">
+                            {siteConfig?.prayerGoals || "준비 중입니다."}
                         </div>
                     </section>
 
-                    <section className="space-y-8">
+                    <section className="space-y-6">
                         <SectionTitle icon={Clock}>{t('ministry.prayer.section4_title')}</SectionTitle>
-                        <div className="bg-white/80 p-12 rounded-3xl min-h-[200px] border border-dashed border-stone-300 flex items-center justify-center text-stone-400 font-medium text-center text-xl shadow-sm">
-                            준비 중입니다.
+                        <div className="bg-white/80 p-8 rounded-3xl min-h-[180px] border border-stone-100 flex items-start justify-start text-stone-700 font-medium text-base shadow-sm whitespace-pre-line leading-relaxed transition-all hover:shadow-md hover:bg-white">
+                            {siteConfig?.prayerHours || "준비 중입니다."}
                         </div>
                     </section>
                 </div>
 
                 {/* Reordered: Prayer Topics moved here */}
+                {/* Reordered: Prayer Topics moved here */}
                 <section className="mb-32 pt-16 border-t border-stone-200">
-                    <SectionTitle icon={Heart}>{t('ministry.prayer.section1_title')}</SectionTitle>
-                    <p className="text-lg text-gray-700 mb-12 max-w-3xl leading-relaxed whitespace-pre-line ml-0 lg:ml-20">
-                        {t('ministry.prayer.section1_desc')}
-                    </p>
+                    <div className="flex flex-col items-center mb-12">
+                        <div className="p-3 bg-primary/10 rounded-2xl text-primary mb-4">
+                            <Heart size={24} />
+                        </div>
+                        <h2 className="text-2xl md:text-3xl font-black text-gray-900 text-center">
+                            보내심을 받은 생명의소리 교회 기도 제목
+                        </h2>
+                    </div>
 
-                    <div className="grid md:grid-cols-3 gap-8">
-                        <PrayerCard
-                            title={t('ministry.prayer.common_prayer_title')}
-                            topics={t('ministry.prayer.common_topics', { returnObjects: true })}
-                        />
-                        <PrayerCard
-                            title={t('ministry.prayer.pastor_prayer_title')}
-                            topics={t('ministry.prayer.pastor_topics', { returnObjects: true })}
-                        />
-                        <PrayerCard
-                            title={t('ministry.prayer.church_prayer_title')}
-                            topics={t('ministry.prayer.church_topics', { returnObjects: true })}
-                        />
+                    <div className="max-w-4xl mx-auto space-y-12">
+                        {/* 2026 Church Topics */}
+                        {siteConfig?.prayerChurchTopics2026 && (
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-500 mb-8 flex items-center gap-2">
+                                    <div className="w-1.5 h-6 bg-accent rounded-full" />
+                                    2026년 교회 기도제목
+                                </h3>
+                                <div className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl shadow-gray-200/50 border border-gray-100">
+                                    <ul className="space-y-6">
+                                        {getTopics(siteConfig.prayerChurchTopics2026, 'ministry.prayer.church_topics_2026').map((topic, i) => (
+                                            <li key={i} className="flex items-start">
+                                                <span className="text-lg text-gray-700 leading-relaxed font-medium">{topic}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Weekly Topics */}
+                        <div>
+                            <h3 className="text-lg font-bold text-gray-500 mb-8 flex items-center gap-2">
+                                <div className="w-1.5 h-6 bg-accent rounded-full" />
+                                금주의 기도제목
+                            </h3>
+                            <div className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl shadow-gray-200/50 border border-gray-100">
+                                <ul className="space-y-6">
+                                    {getTopics(siteConfig?.prayerCommonTopics, 'ministry.prayer.common_topics').map((topic, i) => (
+                                        <li key={i} className="flex items-start">
+                                            <span className="text-lg text-gray-700 leading-relaxed font-medium">{topic}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
