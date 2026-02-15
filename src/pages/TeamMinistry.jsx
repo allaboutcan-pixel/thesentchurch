@@ -20,9 +20,9 @@ const TeamMinistry = () => {
     const { t, i18n } = useTranslation();
     const { config: siteConfig } = useSiteConfig();
 
-    const banner = siteConfig?.ministryBanner || "/images/ministry_banner.jpg";
-    const title = siteConfig?.ministryTitle || "사역"; // Fallback title
-    const subtitle = siteConfig?.ministrySubtitle || "하나님의 사랑을 실천하는 현장";
+    const banner = siteConfig?.teamBanner || "/images/ministry_banner.jpg";
+    const title = siteConfig?.teamTitle || "Team Ministry";
+    const subtitle = siteConfig?.teamSubtitle || "함께 섬기는 기쁨";
 
     // Get team ministries from data
     const teams = churchData.team_ministries || [];
@@ -152,3 +152,5 @@ const TeamMinistry = () => {
 };
 
 export default TeamMinistry;
+
+// Force deployment trigger
