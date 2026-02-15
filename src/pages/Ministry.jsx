@@ -314,7 +314,7 @@ const Ministry = () => {
                                                 </h2>
                                                 <div className={clsx(
                                                     "w-20 h-1.5 rounded-full",
-                                                    isBrownBg ? "bg-[#8d6e63]" : "bg-accent"
+                                                    (isBrownBg && !['tsc', 'tsy'].includes(ministry.id)) ? "bg-[#8d6e63]" : "bg-accent"
                                                 )} />
                                             </div>
 
