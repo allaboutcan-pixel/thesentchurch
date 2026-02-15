@@ -39,8 +39,8 @@ const TeamMinistry = () => {
     const subtitleSize = siteConfig?.teamSubtitleSize;
 
     // Get team ministries from site config (Firebase) or fallback to static data
-    const teams = (siteConfig?.ministryItems && siteConfig.ministryItems.length > 0)
-        ? siteConfig.ministryItems
+    const teams = (siteConfig?.teamMinistryItems && siteConfig.teamMinistryItems.length > 0)
+        ? siteConfig.teamMinistryItems
         : (churchData.team_ministries || []);
 
     return (
