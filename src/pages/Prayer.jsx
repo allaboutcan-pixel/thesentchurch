@@ -226,7 +226,7 @@ const Prayer = () => {
                                     {t('ministry.prayer.section2_title')}
                                 </h3>
                             </div>
-                            <div className="text-base md:text-lg text-stone-600 leading-[1.8] whitespace-pre-line font-medium break-keep pl-4">
+                            <div className="text-base md:text-lg text-stone-600 leading-[1.8] whitespace-pre-line font-medium break-keep pl-8">
                                 {siteConfig?.prayerCoreValues !== undefined ? siteConfig.prayerCoreValues : t('ministry.prayer.values_default')}
                             </div>
                         </motion.div>
@@ -274,66 +274,76 @@ const Prayer = () => {
                 </motion.div>
 
                 {/* 3. Prayer Topics Section */}
-                <div className="mb-24 mt-32">
-                    <div className="text-center mb-32 space-y-6">
-                        <h2 className="text-2xl md:text-3xl font-black text-blue-900 tracking-tight">
+                <div className="max-w-5xl mx-auto px-4 pb-32">
+                    <div className="mb-12">
+                        <div className="flex items-center gap-3 mb-2">
+                            <Sparkles className="text-blue-500 w-5 h-5" />
+                            <span className="text-blue-600 font-bold tracking-widest text-sm uppercase">Intercessory Ministry</span>
+                        </div>
+                        <h2 className="text-3xl md:text-4xl font-black text-blue-900 mb-4 tracking-tight">
                             {siteConfig?.prayerTopicsTitle || t('ministry.prayer.section1_title')}
                         </h2>
-                        <p className="text-lg text-stone-500 break-keep" dangerouslySetInnerHTML={{ __html: siteConfig?.prayerTopicsSubtitle || t('ministry.prayer.section1_desc') }} />
+                        <div
+                            className="text-lg text-stone-500 font-medium leading-relaxed max-w-2xl"
+                            dangerouslySetInnerHTML={{ __html: (siteConfig?.prayerTopicsSubtitle || t('ministry.prayer.section1_desc')).replace(/\n/g, '<br/>') }}
+                        />
                     </div>
 
-                    <div className="flex flex-col gap-12 max-w-4xl mx-auto items-start">
-                        {/* Prayer Topics List */}
-                        <div className="w-full space-y-16">
-                            {prayerSections.map((section) => (
-                                <div key={section.id} className="space-y-6">
-                                    <div className="flex items-center gap-4 border-b border-blue-100 pb-4">
-                                        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
-                                            {section.icon}
-                                        </div>
-                                        <h3 className="text-2xl font-bold text-blue-900">
-                                            {section.title}
-                                        </h3>
+                    <div className="space-y-8">
+                        {prayerSections.map((section) => (
+                            <motion.div
+                                key={section.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                className="bg-white p-8 md:p-10 rounded-[2rem] shadow-lg border border-white/50"
+                            >
+                                <div className="flex items-center gap-4 mb-8">
+                                    <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
+                                        {section.icon}
                                     </div>
+                                    <h3 className="text-xl md:text-2xl font-black text-blue-900 tracking-tight">
+                                        {section.title}
+                                    </h3>
+                                </div>
 
-                                    <div className="pl-2 space-y-4">
-                                        {/* Special handling for 'Prayer for the Church': First line is title */}
-                                        {section.id === 'church' && section.topics.length > 0 ? (
-                                            <>
-                                                <div className="text-xl font-bold text-blue-600 mb-2 pl-2 break-keep">
-                                                    {section.topics[0]}
-                                                </div>
+                                <div className="pl-4 md:pl-8">
+                                    {section.topics.length > 0 ? (
+                                        section.id === 'church' ? (
+                                            <div className="space-y-6">
+                                                {section.topics.length > 0 && (
+                                                    <div className="text-xl md:text-2xl font-black text-blue-600 leading-tight mb-4">
+                                                        {section.topics[0]}
+                                                    </div>
+                                                )}
                                                 {section.topics.length > 1 && (
-                                                    <ol className="list-decimal list-outside space-y-3 ml-5 marker:text-blue-400 marker:font-bold">
-                                                        {section.topics.slice(1).map((topic, i) => (
-                                                            <li key={i} className="text-lg text-stone-700 leading-relaxed font-medium break-keep pl-2">
+                                                    <ol className="list-decimal marker:text-blue-500 marker:font-black pl-5 space-y-4 text-stone-600 font-medium text-lg lg:text-xl leading-relaxed">
+                                                        {section.topics.slice(1).map((topic, idx) => (
+                                                            <li key={idx} className="pl-2">
                                                                 {topic}
                                                             </li>
                                                         ))}
                                                     </ol>
                                                 )}
-                                            </>
+                                            </div>
                                         ) : (
-                                            /* Standard handling for other sections */
-                                            section.topics.length > 0 ? (
-                                                <ol className={clsx(
-                                                    "list-outside space-y-3",
-                                                    section.topics.length > 1 ? "list-decimal ml-5 marker:text-blue-400 marker:font-bold" : "list-none ml-1"
-                                                )}>
-                                                    {section.topics.map((topic, i) => (
-                                                        <li key={i} className="text-lg text-stone-700 leading-relaxed font-medium break-keep pl-2">
-                                                            {topic}
-                                                        </li>
-                                                    ))}
-                                                </ol>
-                                            ) : (
-                                                <p className="text-stone-400 font-bold py-2">내용 준비 중</p>
-                                            )
-                                        )}
-                                    </div>
+                                            <ol className={clsx(
+                                                "space-y-4 text-stone-600 font-medium text-lg lg:text-xl leading-relaxed pl-5",
+                                                section.topics.length > 1 ? "list-decimal marker:text-blue-500 marker:font-black" : "list-none"
+                                            )}>
+                                                {section.topics.map((topic, idx) => (
+                                                    <li key={idx} className="pl-2">
+                                                        {topic}
+                                                    </li>
+                                                ))}
+                                            </ol>
+                                        )
+                                    ) : (
+                                        <p className="text-stone-400 font-bold py-2">내용 준비 중</p>
+                                    )}
                                 </div>
-                            ))}
-                        </div>
+                            </motion.div>
+                        ))}
                     </div>
                 </div>
 
