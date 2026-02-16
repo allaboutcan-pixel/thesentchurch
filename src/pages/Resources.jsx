@@ -645,8 +645,7 @@ const Resources = () => {
                                             <div className="w-full h-full overflow-hidden">
                                                 <iframe
                                                     src={dbService.formatDriveLink(activePage === 1 ? latestBulletin.fileUrl : latestBulletin.fileUrl2)}
-                                                    className="w-full transition-opacity"
-                                                    style={{ height: 'calc(100% + 25px)', marginTop: '-25px' }}
+                                                    className="w-full transition-opacity bulletin-preview-iframe"
                                                     title="Latest Bulletin Preview"
                                                     loading="lazy"
                                                 ></iframe>
@@ -1341,8 +1340,7 @@ const Resources = () => {
                                 <div className="w-full h-full overflow-hidden bg-white">
                                     <iframe
                                         src={dbService.formatDriveLink(activeArchivePage === 1 ? selectedArchiveBulletin.fileUrl : selectedArchiveBulletin.fileUrl2)}
-                                        className="w-full"
-                                        style={{ height: 'calc(100% + 25px)', marginTop: '-25px' }}
+                                        className="w-full bulletin-preview-iframe"
                                         title="Bulletin Modal Preview"
                                     ></iframe>
                                 </div>
@@ -1469,8 +1467,7 @@ const Resources = () => {
                         <div className="w-full h-full overflow-hidden bg-white">
                             <iframe
                                 src={dbService.formatDriveLink(activeArchivePage === 1 ? selectedArchiveBulletin.fileUrl : selectedArchiveBulletin.fileUrl2)}
-                                className="w-full"
-                                style={{ height: 'calc(100% + 25px)', marginTop: '-25px' }}
+                                className="w-full bulletin-fullscreen-iframe"
                                 title="Full Screen Bulletin Viewer"
                             ></iframe>
                         </div>

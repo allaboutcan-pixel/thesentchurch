@@ -69,6 +69,39 @@
     /* Block interaction with video overlays */
   }
 
+  /* Add these for bulletin previews */
+  .bulletin-preview-iframe {
+    margin-top: -25px;
+    height: calc(100% + 25px);
+  }
+
+  .bulletin-fullscreen-iframe {
+    margin-top: -40px;
+    height: calc(100% + 40px);
+  }
+
+  @media (max-width: 768px) {
+    .bulletin-preview-iframe {
+      margin-top: -12px;
+      /* Reduced offset for mobile */
+      height: calc(100% + 12px);
+    }
+
+    .bulletin-fullscreen-iframe {
+      margin-top: -20px;
+      /* Reduced offset for mobile */
+      height: calc(100% + 20px);
+    }
+
+    /* Adjust hero mask for mobile */
+    .hero-video-mask video,
+    .hero-video-mask iframe {
+      top: -30px;
+      /* Reduced from -60px */
+      height: calc(100% + 30px);
+    }
+  }
+
   /* Extra layer of protection: Dark gradient at the top */
   .hero-video-mask::after {
     content: '';
