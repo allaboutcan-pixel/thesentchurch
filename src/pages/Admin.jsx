@@ -354,6 +354,7 @@ const Admin = () => {
 
         // Prayer Management
         prayerIntroImage: '',
+        prayerRequestImage: '',
         prayerCommonTopics: '',
         prayerPastorTopics: '',
         prayerChurchTopics: '',
