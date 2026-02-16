@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Upload, FileText, Check, X, Play, LayoutDashboard, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, Shield, AlertTriangle, Type, ArrowUp, ArrowDown, Heart } from 'lucide-react';
+import { Upload, FileText, Check, X, Play, LayoutDashboard, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, Shield, AlertTriangle, Type, ArrowUp, ArrowDown, Heart, Send } from 'lucide-react';
 import sermonsInitialData from '../data/sermons.json';
 import bulletinsInitialData from '../data/bulletins.json';
 import noticesInitialData from '../data/notices.json';
@@ -372,6 +372,8 @@ const Admin = () => {
         prayerChurchTopics: '',
         prayerWorldTopics: '',
         prayerChurchTopics2026: '', // New field for 2026 topics
+        prayerTopicsTitle: '',
+        prayerTopicsSubtitle: '',
         prayerCoreValues: '',
         prayerGoals: '',
         prayerHours: '',
@@ -593,6 +595,8 @@ const Admin = () => {
                     prayerPastorTopics: fbConfig.prayerPastorTopics || '',
                     prayerChurchTopics: fbConfig.prayerChurchTopics || '',
                     prayerChurchTopics2026: fbConfig.prayerChurchTopics2026 || '',
+                    prayerTopicsTitle: fbConfig.prayerTopicsTitle || '',
+                    prayerTopicsSubtitle: fbConfig.prayerTopicsSubtitle || '',
                     prayerCoreValues: fbConfig.prayerCoreValues || '',
                     prayerGoals: fbConfig.prayerGoals || '',
                     prayerHours: fbConfig.prayerHours || '',
@@ -1035,7 +1039,7 @@ const Admin = () => {
                     'ministryItems',
                     'teamMinistryItems',
                     'missionTitle', 'missionSubtitle', 'missionTitleFont', 'missionSubtitleFont', 'missionTitleColor', 'missionSubtitleColor', 'missionTitleItalic', 'missionSubtitleItalic', 'missionTitleWeight', 'missionSubtitleWeight', 'missionTitleSize', 'missionSubtitleSize', 'missionHeight', 'missionOverlayOpacity', 'missionBannerFit',
-                    'prayerCommonTopics', 'prayerPastorTopics', 'prayerChurchTopics', 'prayerChurchTopics2026', 'prayerCoreValues', 'prayerGoals', 'prayerHours',
+                    'prayerCommonTopics', 'prayerPastorTopics', 'prayerChurchTopics', 'prayerChurchTopics2026', 'prayerTopicsTitle', 'prayerTopicsSubtitle', 'prayerCoreValues', 'prayerGoals', 'prayerHours',
                     'teeTitle', 'teeSubtitle', 'teeTitleFont', 'teeSubtitleFont', 'teeTitleColor', 'teeSubtitleColor', 'teeTitleItalic', 'teeSubtitleItalic', 'teeTitleWeight', 'teeSubtitleWeight', 'teeTitleSize', 'teeSubtitleSize', 'teeHeight', 'teeOverlayOpacity', 'teeBannerFit',
                     'teamTitle', 'teamSubtitle', 'teamTitleFont', 'teamSubtitleFont', 'teamTitleColor', 'teamSubtitleColor', 'teamTitleItalic', 'teamSubtitleItalic', 'teamTitleWeight', 'teamSubtitleWeight', 'teamTitleSize', 'teamSubtitleSize', 'teamHeight', 'teamOverlayOpacity', 'teamBannerFit',
                     'heroBannerFit', 'aboutBannerFit', 'newsBannerFit', 'ministryBannerFit', 'resourcesBannerFit'
