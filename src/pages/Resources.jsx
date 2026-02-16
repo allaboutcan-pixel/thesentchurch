@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Download, Calendar, Image as ImageIcon, FileText, Play, X, ChevronRight, BookOpen, Quote, Music } from 'lucide-react';
+import { Download, Calendar, Image as ImageIcon, FileText, Play, X, ChevronRight, ChevronLeft, BookOpen, Quote, Music, Maximize } from 'lucide-react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import bulletinsInitialData from '../data/bulletins.json';
@@ -38,6 +38,7 @@ const Resources = () => {
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [selectedArchiveBulletin, setSelectedArchiveBulletin] = useState(null);
     const [activeArchivePage, setActiveArchivePage] = useState(1);
+    const [isBulletinFullScreen, setIsBulletinFullScreen] = useState(false);
     const [playingSermonId, setPlayingSermonId] = useState(null);
     const [showSermonModal, setShowSermonModal] = useState(false);
     const [isConfigLoaded, setIsConfigLoaded] = useState(false);
@@ -594,15 +595,16 @@ const Resources = () => {
                                             {latestBulletin.date || ""}
                                         </div>
                                         <div className="flex flex-wrap gap-2 pt-2">
-                                            <a
-                                                href={dbService.formatDriveLink(latestBulletin.fileUrl)}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedArchiveBulletin(latestBulletin);
+                                                    setActiveArchivePage(activePage);
+                                                }}
                                                 className="px-6 py-3 bg-white text-slate-900 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-100 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-white/5 text-sm"
                                             >
                                                 <BookOpen size={16} />
                                                 {t('resources.view_larger')}
-                                            </a>
+                                            </button>
                                             <a
                                                 href={dbService.formatDriveDownloadLink(latestBulletin.fileUrl)}
                                                 download
@@ -1266,15 +1268,13 @@ const Resources = () => {
                                 </div>
 
                                 <div className="flex flex-col gap-3 pt-4">
-                                    <a
-                                        href={dbService.formatDriveLink(selectedArchiveBulletin.fileUrl)}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-full py-4 bg-white text-slate-900 rounded-2xl font-black text-sm flex items-center justify-center gap-3 hover:bg-slate-100 transition-all"
+                                    <button
+                                        onClick={() => setIsBulletinFullScreen(true)}
+                                        className="w-full py-4 bg-white text-slate-900 rounded-2xl font-black text-sm flex items-center justify-center gap-3 hover:bg-slate-100 transition-all shadow-lg active:scale-[0.98]"
                                     >
-                                        <BookOpen size={18} />
+                                        <Maximize size={18} />
                                         전체 화면으로 보기
-                                    </a>
+                                    </button>
                                     <a
                                         href={dbService.formatDriveDownloadLink(selectedArchiveBulletin.fileUrl)}
                                         download
@@ -1297,26 +1297,40 @@ const Resources = () => {
 
 
                                 {selectedArchiveBulletin.fileUrl2 && (
-                                    <div className="absolute top-6 left-1/2 -translate-x-1/2 z-20 flex bg-black/50 p-1 rounded-2xl border border-white/10 backdrop-blur-md">
-                                        <button
-                                            onClick={() => setActiveArchivePage(1)}
-                                            className={clsx(
-                                                "px-6 py-2 rounded-xl text-xs font-black transition-all",
-                                                activeArchivePage === 1 ? "bg-white text-primary shadow-lg" : "text-white/40 hover:text-white"
-                                            )}
-                                        >
-                                            PAGE 01
-                                        </button>
-                                        <button
-                                            onClick={() => setActiveArchivePage(2)}
-                                            className={clsx(
-                                                "px-6 py-2 rounded-xl text-xs font-black transition-all",
-                                                activeArchivePage === 2 ? "bg-white text-primary shadow-lg" : "text-white/40 hover:text-white"
-                                            )}
-                                        >
-                                            PAGE 02
-                                        </button>
-                                    </div>
+                                    <>
+                                        {/* Side Navigation Arrows */}
+                                        <div className="absolute inset-y-0 left-0 flex items-center p-4 z-30">
+                                            <button
+                                                onClick={() => setActiveArchivePage(1)}
+                                                disabled={activeArchivePage === 1}
+                                                className={clsx(
+                                                    "w-12 h-12 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-all border border-white/10 shadow-xl",
+                                                    activeArchivePage === 1 ? "opacity-0 invisible pointer-events-none" : "opacity-100 visible hover:bg-white hover:text-slate-900 active:scale-95"
+                                                )}
+                                                aria-label="Previous Page"
+                                            >
+                                                <ChevronLeft size={24} />
+                                            </button>
+                                        </div>
+                                        <div className="absolute inset-y-0 right-0 flex items-center p-4 z-30">
+                                            <button
+                                                onClick={() => setActiveArchivePage(2)}
+                                                disabled={activeArchivePage === 2}
+                                                className={clsx(
+                                                    "w-12 h-12 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-all border border-white/10 shadow-xl",
+                                                    activeArchivePage === 2 ? "opacity-0 invisible pointer-events-none" : "opacity-100 visible hover:bg-white hover:text-slate-900 active:scale-95"
+                                                )}
+                                                aria-label="Next Page"
+                                            >
+                                                <ChevronRight size={24} />
+                                            </button>
+                                        </div>
+
+                                        {/* Page Indicator */}
+                                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 px-4 py-2 bg-black/50 backdrop-blur-md border border-white/10 rounded-full text-white/80 text-[10px] font-black tracking-[0.2em] shadow-lg">
+                                            {activeArchivePage.toString().padStart(2, '0')} / 02
+                                        </div>
+                                    </>
                                 )}
 
                                 <iframe
@@ -1374,6 +1388,69 @@ const Resources = () => {
                                 {selectedVideo.title}
                             </h3>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Full-Screen Bulletin Viewer */}
+            {isBulletinFullScreen && selectedArchiveBulletin && (
+                <div className="fixed inset-0 z-[200] bg-slate-950 animate-fade-in flex flex-col">
+                    {/* Header bar with close button */}
+                    <div className="flex items-center justify-between px-6 py-4 bg-slate-900/50 backdrop-blur-md border-b border-white/10 z-30">
+                        <div className="flex items-center gap-3">
+                            <h3 className="text-white font-black">{selectedArchiveBulletin.title}</h3>
+                            <span className="text-white/40 text-xs font-bold uppercase tracking-widest">{selectedArchiveBulletin.date}</span>
+                        </div>
+                        <button
+                            onClick={() => setIsBulletinFullScreen(false)}
+                            className="bg-white/10 hover:bg-red-500 text-white p-2 md:p-3 rounded-full transition-all group active:scale-95"
+                            title="전체 화면 닫기"
+                        >
+                            <X size={24} className="group-hover:rotate-90 transition-transform duration-300" />
+                        </button>
+                    </div>
+
+                    <div className="flex-grow relative flex items-center justify-center bg-black overflow-hidden group/fs">
+                        {/* Side Navigation Arrows (Full Screen) */}
+                        {selectedArchiveBulletin.fileUrl2 && (
+                            <>
+                                <div className="absolute inset-y-0 left-0 flex items-center p-4 md:p-8 z-30 pointer-events-none">
+                                    <button
+                                        onClick={() => setActiveArchivePage(1)}
+                                        disabled={activeArchivePage === 1}
+                                        className={clsx(
+                                            "w-16 h-16 md:w-20 md:h-20 bg-black/60 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-all border border-white/20 shadow-2xl pointer-events-auto",
+                                            activeArchivePage === 1 ? "opacity-0 invisible pointer-events-none" : "opacity-100 visible hover:bg-white hover:text-slate-900 active:scale-95 transition-opacity"
+                                        )}
+                                    >
+                                        <ChevronLeft size={32} />
+                                    </button>
+                                </div>
+                                <div className="absolute inset-y-0 right-0 flex items-center p-4 md:p-8 z-30 pointer-events-none">
+                                    <button
+                                        onClick={() => setActiveArchivePage(2)}
+                                        disabled={activeArchivePage === 2}
+                                        className={clsx(
+                                            "w-16 h-16 md:w-20 md:h-20 bg-black/60 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-all border border-white/20 shadow-2xl pointer-events-auto",
+                                            activeArchivePage === 2 ? "opacity-0 invisible pointer-events-none" : "opacity-100 visible hover:bg-white hover:text-slate-900 active:scale-95 transition-opacity"
+                                        )}
+                                    >
+                                        <ChevronRight size={32} />
+                                    </button>
+                                </div>
+
+                                {/* Page Indicator (Full Screen) */}
+                                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 px-6 py-3 bg-black/60 backdrop-blur-md border border-white/20 rounded-full text-white font-black tracking-[0.3em] shadow-2xl text-sm transition-opacity">
+                                    {activeArchivePage.toString().padStart(2, '0')} / 02
+                                </div>
+                            </>
+                        )}
+
+                        <iframe
+                            src={dbService.formatDriveLink(activeArchivePage === 1 ? selectedArchiveBulletin.fileUrl : selectedArchiveBulletin.fileUrl2)}
+                            className="w-full h-full border-none"
+                            title="Full Screen Bulletin Viewer"
+                        ></iframe>
                     </div>
                 </div>
             )}
