@@ -402,12 +402,12 @@ const Prayer = () => {
 
                 {/* 4. CTA Section / Contact Form */}
                 <div className="text-center pb-20">
-                    <div className="relative max-w-4xl mx-auto rounded-[2.5rem] shadow-2xl overflow-hidden bg-white">
+                    <div className="relative max-w-sm mx-auto shadow-2xl overflow-hidden bg-white">
                         {/* Background Image */}
-                        {siteConfig.prayerRequestImage && (
+                        {siteConfig?.prayerRequestImage && (
                             <div className="absolute inset-0">
                                 <img
-                                    src={siteConfig.prayerRequestImage}
+                                    src={siteConfig?.prayerRequestImage}
                                     alt="Prayer Request Background"
                                     className="w-full h-full object-cover"
                                 />
@@ -415,50 +415,50 @@ const Prayer = () => {
                             </div>
                         )}
 
-                        <div className="relative p-8 md:p-12 lg:p-16 text-white">
-                            <div className="p-4 bg-white/10 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
-                                <Send size={32} className="text-white" />
+                        <div className="relative p-8 text-white">
+                            <div className="p-3 bg-white/10 rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
+                                <Send size={24} className="text-white" />
                             </div>
 
-                            <h2 className="text-2xl md:text-4xl font-black mb-6 tracking-tight">
+                            <h2 className="text-xl font-black mb-4 tracking-tight">
                                 함께 기도해요
                             </h2>
 
-                            <p className="text-lg md:text-xl opacity-90 mb-10 font-medium leading-relaxed max-w-2xl mx-auto">
-                                기도의 힘을 믿으시나요?<br className="hidden md:block" />
-                                여러분의 기도 제목을 나눠주세요. 함께 기도하겠습니다.
+                            <p className="text-sm opacity-90 mb-6 font-medium leading-relaxed">
+                                여러분의 기도 제목을 나눠주세요.<br />
+                                함께 기도하겠습니다.
                             </p>
 
-                            <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4 text-left">
+                            <form onSubmit={handleSubmit} className="space-y-3 text-left">
                                 <div>
-                                    <label className="block text-sm font-bold opacity-80 mb-2 ml-1">성함 (Name)</label>
+                                    <label className="block text-xs font-bold opacity-80 mb-1 ml-1">성함</label>
                                     <input
                                         type="text"
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className="w-full px-6 py-4 rounded-2xl bg-white/10 border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all placeholder:text-white/30"
-                                        placeholder="성함을 입력해 주세요"
+                                        className="w-full px-4 py-3 text-sm bg-white/10 border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all placeholder:text-white/30"
+                                        placeholder="성함"
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-bold opacity-80 mb-2 ml-1">연락처/이메일 (Contact)</label>
+                                    <label className="block text-xs font-bold opacity-80 mb-1 ml-1">연락처</label>
                                     <input
                                         type="text"
                                         value={formData.contact}
                                         onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                                        className="w-full px-6 py-4 rounded-2xl bg-white/10 border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all placeholder:text-white/30"
-                                        placeholder="연락받으실 연락처나 이메일을 입력해 주세요"
+                                        className="w-full px-4 py-3 text-sm bg-white/10 border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all placeholder:text-white/30"
+                                        placeholder="연락처/이메일"
                                         required
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-bold opacity-80 mb-2 ml-1">기도제목 (Prayer Request)</label>
+                                    <label className="block text-xs font-bold opacity-80 mb-1 ml-1">기도제목</label>
                                     <textarea
                                         value={formData.request}
                                         onChange={(e) => setFormData({ ...formData, request: e.target.value })}
-                                        className="w-full px-6 py-4 rounded-2xl bg-white/10 border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all placeholder:text-white/30 h-40 resize-none"
-                                        placeholder="나누고 싶은 기도제목을 자유롭게 적어주세요"
+                                        className="w-full px-4 py-3 text-sm bg-white/10 border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all placeholder:text-white/30 h-32 resize-none"
+                                        placeholder="기도제목을 입력하세요"
                                         required
                                     ></textarea>
                                 </div>
@@ -466,7 +466,7 @@ const Prayer = () => {
                                 <button
                                     type="submit"
                                     disabled={formStatus === 'sending'}
-                                    className="w-full py-5 bg-white text-blue-900 rounded-2xl font-black text-lg hover:bg-blue-50 transition-all shadow-lg active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3 mt-4"
+                                    className="w-full py-3 bg-white text-blue-900 rounded-2xl font-bold text-sm hover:bg-blue-50 transition-all shadow-md active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
                                 >
                                     {formStatus === 'sending' ? (
                                         <>
