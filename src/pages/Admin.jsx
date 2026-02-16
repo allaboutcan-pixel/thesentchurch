@@ -3070,54 +3070,256 @@ const Admin = () => {
                                     </div>
                                 </div>
 
-                            </div>
+                                {/* Team Ministry Management */}
+                                <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-8">
+                                    <h3 className="text-xl font-black text-primary flex items-center gap-3">
+                                        <Users size={24} className="text-accent" />
+                                        팀사역 관리 (Team Ministry Management)
+                                    </h3>
+                                    <p className="text-sm text-gray-500 font-medium">
+                                        홈페이지의 [팀사역] 페이지에 표시될 팀들을 관리합니다.
+                                    </p>
 
-                            {/* Reset to Defaults Section */}
-                            <div className="bg-red-50/30 rounded-[2rem] p-8 border border-red-100/50 mt-12 mb-12">
-                                <div className="flex items-center gap-3 mb-6">
-                                    <div className="p-3 bg-red-500 text-white rounded-2xl shadow-lg shadow-red-200">
-                                        <AlertTriangle size={24} />
-                                    </div>
-                                    <div>
-                                        <h3 className="text-xl font-black text-red-600">데이터 초기화 (Danger Zone)</h3>
-                                        <p className="text-red-400 text-sm font-medium">실행 시 현재 라이브 데이터가 삭제되고 코드 내의 초기 데이터로 대체됩니다.</p>
+                                    <div className="space-y-8">
+                                        {formData.teamMinistryItems.map((team, idx) => (
+                                            <div key={team.id || idx} className="p-6 bg-gray-50 rounded-3xl border border-gray-100 space-y-6 relative group">
+                                                <div className="absolute top-6 right-6 z-10">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            if (window.confirm(`'${team.name}' 팀을 정말 삭제하시겠습니까?`)) {
+                                                                const newItems = formData.teamMinistryItems.filter((_, i) => i !== idx);
+                                                                setFormData({ ...formData, teamMinistryItems: newItems });
+                                                            }
+                                                        }}
+                                                        className="p-2 bg-white text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-full transition-all shadow-sm"
+                                                        title="삭제"
+                                                    >
+                                                        <Trash2 size={18} />
+                                                    </button>
+                                                </div>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">팀 이름 (Name)</label>
+                                                        <input
+                                                            type="text"
+                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
+                                                            value={team.name}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.teamMinistryItems];
+                                                                newItems[idx] = { ...newItems[idx], name: e.target.value };
+                                                                setFormData({ ...formData, teamMinistryItems: newItems });
+                                                            }}
+                                                            placeholder="예: 찬양팀"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이디 (ID - 영문 소문자)</label>
+                                                        <input
+                                                            type="text"
+                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium font-sans"
+                                                            value={team.id}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.teamMinistryItems];
+                                                                newItems[idx] = { ...newItems[idx], id: e.target.value };
+                                                                setFormData({ ...formData, teamMinistryItems: newItems });
+                                                            }}
+                                                            placeholder="예: praise"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이콘 (Icon)</label>
+                                                        <select
+                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm appearance-none cursor-pointer"
+                                                            value={team.icon || 'HandHeart'}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.teamMinistryItems];
+                                                                newItems[idx] = { ...newItems[idx], icon: e.target.value };
+                                                                setFormData({ ...formData, teamMinistryItems: newItems });
+                                                            }}
+                                                        >
+                                                            <option value="Users">Users (사람들)</option>
+                                                            <option value="Video">Video (미디어)</option>
+                                                            <option value="Heart">Heart (예배/사랑)</option>
+                                                            <option value="Settings">Settings (운영/설정)</option>
+                                                            <option value="PieChart">PieChart (재정)</option>
+                                                            <option value="Music">Music (찬양)</option>
+                                                            <option value="Coffee">Coffee (친교)</option>
+                                                            <option value="HandHeart">HandHeart (봉사)</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">팀 설명 (Description)</label>
+                                                    <textarea
+                                                        className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[100px]"
+                                                        value={team.description}
+                                                        onChange={(e) => {
+                                                            const newItems = [...formData.teamMinistryItems];
+                                                            newItems[idx] = { ...newItems[idx], description: e.target.value };
+                                                            setFormData({ ...formData, teamMinistryItems: newItems });
+                                                        }}
+                                                        placeholder="팀의 사역을 설명해 주세요."
+                                                    />
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">대표 이미지 (Image URL)</label>
+                                                    <div className="flex flex-col gap-2">
+                                                        <input
+                                                            type="text"
+                                                            className="flex-grow p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-xs font-sans"
+                                                            value={team.image}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.teamMinistryItems];
+                                                                newItems[idx] = { ...newItems[idx], image: e.target.value };
+                                                                setFormData({ ...formData, teamMinistryItems: newItems });
+                                                            }}
+                                                            placeholder="이미지 주소 또는 구글 드라이브 링크"
+                                                        />
+                                                        <div className="flex gap-2">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    const input = team.image;
+                                                                    if (input && input.includes('drive.google.com')) {
+                                                                        const formatted = dbService.formatDriveImage(input);
+                                                                        const newItems = [...formData.teamMinistryItems];
+                                                                        newItems[idx] = { ...newItems[idx], image: formatted };
+                                                                        setFormData({ ...formData, teamMinistryItems: newItems });
+                                                                        alert('✅ 드라이브 이미지가 변환되었습니다!');
+                                                                    } else {
+                                                                        alert('구글 드라이브 링크를 입력해주세요.');
+                                                                    }
+                                                                }}
+                                                                className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-1.5"
+                                                            >
+                                                                🖼️ 변환
+                                                            </button>
+                                                            <div className="relative overflow-hidden">
+                                                                <button
+                                                                    type="button"
+                                                                    className="px-4 py-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-xl text-[10px] font-black transition-all flex items-center gap-1.5"
+                                                                >
+                                                                    <Upload size={14} /> 업로드
+                                                                </button>
+                                                                <input
+                                                                    type="file"
+                                                                    accept="image/*"
+                                                                    className="absolute inset-0 opacity-0 cursor-pointer"
+                                                                    onChange={async (e) => {
+                                                                        const file = e.target.files[0];
+                                                                        if (file) {
+                                                                            if (window.confirm(`${file.name} 파일을 업로드하시겠습니까?`)) {
+                                                                                try {
+                                                                                    const downloadUrl = await dbService.uploadFile(file, `team_ministry/${team.id || 'temp'}_${Date.now()}`);
+                                                                                    const newItems = [...formData.teamMinistryItems];
+                                                                                    newItems[idx] = { ...newItems[idx], image: downloadUrl };
+                                                                                    setFormData({ ...formData, teamMinistryItems: newItems });
+                                                                                    alert('✅ 업로드가 완료되었습니다!');
+                                                                                } catch (err) {
+                                                                                    console.error("Upload failed", err);
+                                                                                    alert('업로드 실패: ' + err.message);
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        {team.image && (
+                                                            <div className="mt-2 w-full h-64 bg-gray-100 rounded-xl overflow-hidden border border-gray-100 relative group text-center flex items-center justify-center">
+                                                                <img
+                                                                    src={team.image}
+                                                                    alt="Preview"
+                                                                    className="w-full h-full object-cover"
+                                                                    referrerPolicy="no-referrer"
+                                                                    onError={(e) => {
+                                                                        e.target.style.display = 'none';
+                                                                        e.target.parentElement.innerText = '이미지를 불러올 수 없음';
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setFormData({
+                                                    ...formData,
+                                                    teamMinistryItems: [
+                                                        ...formData.teamMinistryItems,
+                                                        {
+                                                            id: "new_team",
+                                                            name: "새 팀",
+                                                            englishName: "",
+                                                            description: "",
+                                                            englishDescription: "",
+                                                            icon: "HandHeart",
+                                                            image: ""
+                                                        }
+                                                    ]
+                                                });
+                                            }}
+                                            className="w-full py-6 border-2 border-dashed border-gray-200 rounded-[2rem] text-gray-400 font-bold hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
+                                        >
+                                            <Plus size={24} />
+                                        </button>
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                    <ResetButton type="sermons" label="설교 영상" />
-                                    <ResetButton type="bulletins" label="주보 파일" />
+                                {/* Reset to Defaults Section */}
+                                <div className="bg-red-50/30 rounded-[2rem] p-8 border border-red-100/50 mt-12 mb-12">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="p-3 bg-red-500 text-white rounded-2xl shadow-lg shadow-red-200">
+                                            <AlertTriangle size={24} />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-black text-red-600">데이터 초기화 (Danger Zone)</h3>
+                                            <p className="text-red-400 text-sm font-medium">실행 시 현재 라이브 데이터가 삭제되고 코드 내의 초기 데이터로 대체됩니다.</p>
+                                        </div>
+                                    </div>
 
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <ResetButton type="sermons" label="설교 영상" />
+                                        <ResetButton type="bulletins" label="주보 파일" />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="flex justify-center md:justify-end sticky bottom-8 z-30">
-                                <button
-                                    type="button"
-                                    onClick={handleFormSubmit}
-                                    disabled={isLoading}
-                                    className="px-12 py-6 bg-primary text-white rounded-[2rem] font-black text-xl hover:bg-primary-dark transition-all shadow-2xl shadow-primary/40 disabled:opacity-50 flex items-center gap-4 hover:scale-105 active:scale-95"
-                                >
-                                    {isLoading ? (
-                                        <>
-                                            <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
-                                            저장 중...
-                                        </>
-                                    ) : (
-                                        <>
-                                            전체 설정 저장하기
-                                            <Check size={28} />
-                                        </>
-                                    )}
-                                </button>
+                                <div className="flex justify-center md:justify-end sticky bottom-8 z-30">
+                                    <button
+                                        type="button"
+                                        onClick={handleFormSubmit}
+                                        disabled={isLoading}
+                                        className="px-12 py-6 bg-primary text-white rounded-[2rem] font-black text-xl hover:bg-primary-dark transition-all shadow-2xl shadow-primary/40 disabled:opacity-50 flex items-center gap-4 hover:scale-105 active:scale-95"
+                                    >
+                                        {isLoading ? (
+                                            <>
+                                                <div className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                                                저장 중...
+                                            </>
+                                        ) : (
+                                            <>
+                                                전체 설정 저장하기
+                                                <Check size={28} />
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     )
                 }
 
-
                 {
                     activeTab === 'intro' && (
+
                         <div className="space-y-6 md:col-span-2">
                             <div className="bg-amber-50/50 p-6 rounded-2xl border border-amber-100 flex gap-4">
                                 <div className="text-amber-500 shrink-0">
@@ -3454,111 +3656,113 @@ const Admin = () => {
                 }
 
                 {/* Daily Word List (Custom Grid View) */}
-                {activeTab === 'dailyWord' && !showAddForm && (
-                    <div className="animate-fade-in-up">
-                        {dailyWords.length > 0 && (
-                            <div className="flex justify-between items-center mb-6 px-2">
-                                <h2 className="font-black text-primary text-xl flex items-center gap-2">
-                                    <BookOpen size={22} className="text-accent" />
-                                    DAILY WORD DATABASE
-                                    <span className="text-sm font-bold text-gray-300 ml-2">{dailyWords.length} Items</span>
-                                </h2>
-                                <span className="text-xs text-slate-400 font-bold bg-slate-100 px-3 py-1 rounded-full animate-pulse">
-                                    * 순서 변경 시 즉시 자동 저장됩니다 (모바일 앱 연동)
-                                </span>
-                            </div>
-                        )}
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4">
-                            {dailyWords.length === 0 ? (
-                                <div className="col-span-full py-20 text-center bg-white rounded-[2rem] border border-gray-100 shadow-sm">
-                                    <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
-                                        <BookOpen size={40} />
-                                    </div>
-                                    <p className="text-gray-400 font-bold mb-2">등록된 오늘의 말씀이 없습니다.</p>
-                                    <p className="text-gray-300 text-sm">새 항목 등록하기 버튼을 눌러 추가해주세요.</p>
+                {
+                    activeTab === 'dailyWord' && !showAddForm && (
+                        <div className="animate-fade-in-up">
+                            {dailyWords.length > 0 && (
+                                <div className="flex justify-between items-center mb-6 px-2">
+                                    <h2 className="font-black text-primary text-xl flex items-center gap-2">
+                                        <BookOpen size={22} className="text-accent" />
+                                        DAILY WORD DATABASE
+                                        <span className="text-sm font-bold text-gray-300 ml-2">{dailyWords.length} Items</span>
+                                    </h2>
+                                    <span className="text-xs text-slate-400 font-bold bg-slate-100 px-3 py-1 rounded-full animate-pulse">
+                                        * 순서 변경 시 즉시 자동 저장됩니다 (모바일 앱 연동)
+                                    </span>
                                 </div>
-                            ) : (
-                                dailyWords.map((word, idx) => (
-                                    <div key={word.id} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group transition-all hover:shadow-lg flex flex-col relative">
-                                        <div className="aspect-video relative overflow-hidden bg-slate-100">
-                                            <img
-                                                src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
-                                                alt="Preview"
-                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                            />
-                                            <div className="absolute top-2 left-2 flex gap-1">
-                                                <span className="bg-black/60 backdrop-blur-sm text-white px-2 py-0.5 rounded text-[10px] font-bold border border-white/10">
-                                                    {word.date}
-                                                </span>
-                                            </div>
-                                            <div className="absolute top-2 right-2 flex gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        handleMoveDailyWord(idx, -1);
-                                                    }}
-                                                    disabled={idx === 0}
-                                                    className="p-1 bg-black/60 backdrop-blur-sm text-white rounded hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30"
-                                                    title="Move Up"
-                                                >
-                                                    <ArrowUp size={12} />
-                                                </button>
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        handleMoveDailyWord(idx, 1);
-                                                    }}
-                                                    disabled={idx === dailyWords.length - 1}
-                                                    className="p-1 bg-black/60 backdrop-blur-sm text-white rounded hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30"
-                                                    title="Move Down"
-                                                >
-                                                    <ArrowDown size={12} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div className="p-2.5 flex-grow flex flex-col">
-                                            <h3 className="font-bold text-primary text-[11px] mb-0.5 truncate">
-                                                {word.verse || word.title}
-                                            </h3>
-                                            <p className="text-gray-400 text-[10px] leading-tight break-keep line-clamp-2 mb-2">
-                                                "{word.content}"
-                                            </p>
-                                            <div className="mt-auto flex gap-1 pt-1.5 border-t border-gray-50">
-                                                <button
-                                                    onClick={() => {
-                                                        setEditingId(word.id);
-                                                        setFormData({
-                                                            ...formData,
-                                                            title: word.verse || word.title || '',
-                                                            content: word.content || '',
-                                                            date: word.date || '',
-                                                            fileUrl: word.image || ''
-                                                        });
-                                                        setShowAddForm(true);
-                                                    }}
-                                                    className="flex-grow py-1.5 bg-gray-50 text-gray-500 rounded-lg text-[10px] font-bold hover:bg-primary/10 hover:text-primary transition-all"
-                                                >
-                                                    수정
-                                                </button>
-                                                <button
-                                                    onClick={async () => {
-                                                        if (window.confirm('정말 삭제하시겠습니까?')) {
-                                                            await dbService.deleteDailyWord(word.id);
-                                                            setDailyWords(dailyWords.filter(dw => dw.id !== word.id));
-                                                        }
-                                                    }}
-                                                    className="p-1.5 bg-red-50 text-red-400 rounded-lg hover:bg-red-500 hover:text-white transition-all shadow-sm"
-                                                >
-                                                    <Trash2 size={12} />
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))
                             )}
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4">
+                                {dailyWords.length === 0 ? (
+                                    <div className="col-span-full py-20 text-center bg-white rounded-[2rem] border border-gray-100 shadow-sm">
+                                        <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
+                                            <BookOpen size={40} />
+                                        </div>
+                                        <p className="text-gray-400 font-bold mb-2">등록된 오늘의 말씀이 없습니다.</p>
+                                        <p className="text-gray-300 text-sm">새 항목 등록하기 버튼을 눌러 추가해주세요.</p>
+                                    </div>
+                                ) : (
+                                    dailyWords.map((word, idx) => (
+                                        <div key={word.id} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group transition-all hover:shadow-lg flex flex-col relative">
+                                            <div className="aspect-video relative overflow-hidden bg-slate-100">
+                                                <img
+                                                    src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
+                                                    alt="Preview"
+                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                />
+                                                <div className="absolute top-2 left-2 flex gap-1">
+                                                    <span className="bg-black/60 backdrop-blur-sm text-white px-2 py-0.5 rounded text-[10px] font-bold border border-white/10">
+                                                        {word.date}
+                                                    </span>
+                                                </div>
+                                                <div className="absolute top-2 right-2 flex gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleMoveDailyWord(idx, -1);
+                                                        }}
+                                                        disabled={idx === 0}
+                                                        className="p-1 bg-black/60 backdrop-blur-sm text-white rounded hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30"
+                                                        title="Move Up"
+                                                    >
+                                                        <ArrowUp size={12} />
+                                                    </button>
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleMoveDailyWord(idx, 1);
+                                                        }}
+                                                        disabled={idx === dailyWords.length - 1}
+                                                        className="p-1 bg-black/60 backdrop-blur-sm text-white rounded hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30"
+                                                        title="Move Down"
+                                                    >
+                                                        <ArrowDown size={12} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div className="p-2.5 flex-grow flex flex-col">
+                                                <h3 className="font-bold text-primary text-[11px] mb-0.5 truncate">
+                                                    {word.verse || word.title}
+                                                </h3>
+                                                <p className="text-gray-400 text-[10px] leading-tight break-keep line-clamp-2 mb-2">
+                                                    "{word.content}"
+                                                </p>
+                                                <div className="mt-auto flex gap-1 pt-1.5 border-t border-gray-50">
+                                                    <button
+                                                        onClick={() => {
+                                                            setEditingId(word.id);
+                                                            setFormData({
+                                                                ...formData,
+                                                                title: word.verse || word.title || '',
+                                                                content: word.content || '',
+                                                                date: word.date || '',
+                                                                fileUrl: word.image || ''
+                                                            });
+                                                            setShowAddForm(true);
+                                                        }}
+                                                        className="flex-grow py-1.5 bg-gray-50 text-gray-500 rounded-lg text-[10px] font-bold hover:bg-primary/10 hover:text-primary transition-all"
+                                                    >
+                                                        수정
+                                                    </button>
+                                                    <button
+                                                        onClick={async () => {
+                                                            if (window.confirm('정말 삭제하시겠습니까?')) {
+                                                                await dbService.deleteDailyWord(word.id);
+                                                                setDailyWords(dailyWords.filter(dw => dw.id !== word.id));
+                                                            }
+                                                        }}
+                                                        className="p-1.5 bg-red-50 text-red-400 rounded-lg hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                                                    >
+                                                        <Trash2 size={12} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )
+                }
                 {
                     !isFirebaseConfigured && (
                         <div className="mt-10 p-10 bg-amber-50 rounded-[2.5rem] border border-amber-100 flex flex-col md:flex-row gap-8 items-start relative overflow-hidden">

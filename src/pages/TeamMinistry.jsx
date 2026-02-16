@@ -148,10 +148,10 @@ const TeamMinistry = () => {
                                 <div className="p-8">
                                     <div className="mb-4">
                                         <h3 className="text-2xl font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors">
-                                            {isEnglish ? (team.englishName || team.name) : team.name}
+                                            {team.name}
                                         </h3>
                                         <p className="text-sm font-bold text-accent uppercase tracking-wider">
-                                            {isEnglish ? team.name : team.englishName}
+                                            {team.englishName}
                                         </p>
                                     </div>
                                     <p className="text-gray-600 leading-loose text-sm md:text-base">

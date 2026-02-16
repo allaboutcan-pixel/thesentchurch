@@ -202,7 +202,7 @@ const resources = {
                 "prayer": {
                     "title": "중보기도",
                     "subtitle": "하나님께서 우리의 기도를 통해 일하실 것을 믿습니다.",
-                    "intro_title": "About Intercessory",
+                    "intro_title": "About Intercessory Prayer",
                     "intro_subtitle": "중보기도 소개",
                     "intro_content": "중보기도 신청은 교회 홈페이지에서 온라인 신청을 통해,\n교회예배당 입구에 비치한 중보기도함을 통해 신청할 수 있습니다.",
                     "intro_desc": "우리 교회는 서로를 위해 기도하는 공동체입니다.<br/>아래 기도제목을 함께 나누고, 각자의 자리에서<br/>중보기도로 동참해 주십시오.<br/><br/><span class='text-blue-800'>하나님께서 우리의 기도를 통해 일하실 것을 믿습니다.</span>",
@@ -457,7 +457,7 @@ const resources = {
                 "prayer": {
                     "title": "Intercessory Prayer",
                     "subtitle": "We believe God will work through our prayers.",
-                    "intro_title": "About Intercessory",
+                    "intro_title": "About Intercessory Prayer",
                     "intro_subtitle": "Introduction to Intercessory Prayer",
                     "intro_content": "Requests for intercessory prayer can be made online via the church website or through the prayer box located at the entrance of the church sanctuary.",
                     "intro_desc": "Our church is a community that prays for one another.\nPlease share the prayer topics below and join us in intercessory prayer from your own place.\n\n<span class='text-blue-800'>We believe God will work through our prayers.</span>",
