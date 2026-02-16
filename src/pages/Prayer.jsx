@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { motion } from 'framer-motion';
 import { Heart, Target, Clock, Send, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +11,58 @@ const Prayer = () => {
     const { t } = useTranslation();
     const { config: siteConfig } = useSiteConfig();
     const type = 'prayer';
+
+    // Form State
+    const [formStatus, setFormStatus] = useState('idle');
+    const [formData, setFormData] = useState({
+        name: '',
+        contact: '',
+        request: ''
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        // Basic validation
+        if (!formData.name || !formData.contact || !formData.request) {
+            alert(t('ministry.prayer.form_validation_error') || '모든 항목을 입력해 주세요.');
+            return;
+        }
+
+        setFormStatus('sending');
+
+        // EmailJS Configuration - PLACEHOLDERS
+        // User needs to fill these: SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY
+        const SERVICE_ID = 'YOUR_SERVICE_ID';
+        const TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+        const PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
+
+        if (SERVICE_ID === 'YOUR_SERVICE_ID') {
+            alert('관리자 설정이 필요합니다. (EmailJS Keys Missing)');
+            setFormStatus('idle');
+            return;
+        }
+
+        const templateParams = {
+            from_name: formData.name,
+            from_contact: formData.contact,
+            message: formData.request,
+            to_email: 'thesentnamgyu@gmail.com, thesentheejoung@gmail.com, leahkang22@gmail.com'
+        };
+
+        emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
+            .then(() => {
+                setFormStatus('success');
+                alert(t('ministry.prayer.form_success') || '기도제목이 성공적으로 전달되었습니다.');
+                setFormData({ name: '', contact: '', request: '' });
+                setFormStatus('idle');
+            }, (error) => {
+                console.error('FAILED...', error);
+                setFormStatus('error');
+                alert(t('ministry.prayer.form_error') || '전송에 실패했습니다. 잠시 후 다시 시도해주세요.');
+                setFormStatus('idle');
+            });
+    };
 
     const banner = siteConfig?.prayerBanner || "/images/ministry_banner.jpg";
     const bannerTitle = siteConfig?.prayerTitle || t('nav.prayer');
@@ -347,33 +400,91 @@ const Prayer = () => {
                     </div>
                 </div>
 
-                {/* 4. CTA Section */}
-                <div className="text-center">
-                    <div className="inline-flex flex-col items-center p-12 bg-white rounded-[2.5rem] shadow-xl max-w-2xl mx-auto border border-white/50 relative overflow-hidden">
-                        <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 opacity-20" />
+                {/* 4. CTA Section / Contact Form */}
+                <div className="text-center pb-20">
+                    <div className="relative max-w-4xl mx-auto rounded-[2.5rem] shadow-2xl overflow-hidden bg-white">
+                        {/* Background Image */}
+                        {siteConfig.prayerRequestImage && (
+                            <div className="absolute inset-0">
+                                <img
+                                    src={siteConfig.prayerRequestImage}
+                                    alt="Prayer Request Background"
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-blue-900/80 backdrop-blur-[2px]"></div>
+                            </div>
+                        )}
 
-                        <div className="p-4 bg-blue-50 text-blue-600 rounded-full mb-6">
-                            <Send size={32} />
+                        <div className="relative p-8 md:p-12 lg:p-16 text-white">
+                            <div className="p-4 bg-white/10 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 backdrop-blur-sm">
+                                <Send size={32} className="text-white" />
+                            </div>
+
+                            <h2 className="text-2xl md:text-4xl font-black mb-6 tracking-tight">
+                                함께 기도해요
+                            </h2>
+
+                            <p className="text-lg md:text-xl opacity-90 mb-10 font-medium leading-relaxed max-w-2xl mx-auto">
+                                기도의 힘을 믿으시나요?<br className="hidden md:block" />
+                                여러분의 기도 제목을 나눠주세요. 함께 기도하겠습니다.
+                            </p>
+
+                            <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-4 text-left">
+                                <div>
+                                    <label className="block text-sm font-bold opacity-80 mb-2 ml-1">성함 (Name)</label>
+                                    <input
+                                        type="text"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                        className="w-full px-6 py-4 rounded-2xl bg-white/10 border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all placeholder:text-white/30"
+                                        placeholder="성함을 입력해 주세요"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-bold opacity-80 mb-2 ml-1">연락처/이메일 (Contact)</label>
+                                    <input
+                                        type="text"
+                                        value={formData.contact}
+                                        onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                                        className="w-full px-6 py-4 rounded-2xl bg-white/10 border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all placeholder:text-white/30"
+                                        placeholder="연락받으실 연락처나 이메일을 입력해 주세요"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-bold opacity-80 mb-2 ml-1">기도제목 (Prayer Request)</label>
+                                    <textarea
+                                        value={formData.request}
+                                        onChange={(e) => setFormData({ ...formData, request: e.target.value })}
+                                        className="w-full px-6 py-4 rounded-2xl bg-white/10 border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all placeholder:text-white/30 h-40 resize-none"
+                                        placeholder="나누고 싶은 기도제목을 자유롭게 적어주세요"
+                                        required
+                                    ></textarea>
+                                </div>
+
+                                <button
+                                    type="submit"
+                                    disabled={formStatus === 'sending'}
+                                    className="w-full py-5 bg-white text-blue-900 rounded-2xl font-black text-lg hover:bg-blue-50 transition-all shadow-lg active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3 mt-4"
+                                >
+                                    {formStatus === 'sending' ? (
+                                        <>
+                                            <div className="w-5 h-5 border-2 border-blue-900 border-t-transparent rounded-full animate-spin" />
+                                            전송 중...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Send size={20} />
+                                            기도제목 보내기
+                                        </>
+                                    )}
+                                </button>
+                                <p className="text-center text-xs opacity-60 mt-4">
+                                    * 보내주신 기도제목은 교역자들에게만 전달되며 소중히 기도하겠습니다.
+                                </p>
+                            </form>
                         </div>
-
-                        <h2 className="text-2xl md:text-4xl font-black text-blue-900 mb-6 tracking-tight">
-                            함께 기도해요
-                        </h2>
-
-                        <p className="text-lg text-stone-600 mb-10 font-medium">
-                            기도의 힘을 믿으시나요?<br className="hidden md:block" />
-                            여러분의 기도 제목을 나눠주세요. 함께 기도하겠습니다.
-                        </p>
-
-                        <a
-                            href="https://forms.gle/your-form-id"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-3 bg-blue-900 text-white px-10 py-4 rounded-full font-bold shadow-lg shadow-blue-900/20 hover:bg-blue-800 hover:scale-105 transition-all active:scale-95"
-                        >
-                            <span>{t('ministry.prayer.request_button')}</span>
-                            <Send size={18} />
-                        </a>
                     </div>
                 </div>
             </main>

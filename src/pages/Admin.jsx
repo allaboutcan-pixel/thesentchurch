@@ -1005,7 +1005,7 @@ const Admin = () => {
                 // Process ONLY media fields that might need upload or drive formatting
                 const mediaFields = [
                     'heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner',
-                    'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage'
+                    'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage'
                 ];
                 for (const field of mediaFields) {
                     await processField(field);
@@ -2441,6 +2441,30 @@ const Admin = () => {
                                                 * 여러 줄로 입력하면 자동으로 목록으로 변환되어 표시됩니다.
                                             </p>
                                         </div>
+                                    </div>
+                                </div>
+
+                                {/* Prayer Request Image Section */}
+                                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                        <div className="p-2 bg-primary/10 rounded-xl text-primary"><Send size={20} /></div>
+                                        중보기도 요청 섹션 이미지 (Prayer Request Section Image)
+                                    </h3>
+                                    <div className="p-6 bg-gray-50 rounded-2xl border border-gray-100">
+                                        <div className="max-w-2xl">
+                                            <BannerManager
+                                                label="중보기도 요청 배경 이미지"
+                                                value={formData.prayerRequestImage}
+                                                fieldName="prayerRequestImage"
+                                                bannerFiles={bannerFiles}
+                                                setBannerFiles={setBannerFiles}
+                                                onChange={(val) => setFormData(prev => ({ ...prev, prayerRequestImage: val }))}
+                                                aspectRatio="aspect-video"
+                                            />
+                                        </div>
+                                        <p className="text-xs text-gray-400 mt-4 ml-1">
+                                            * '함께 기도해요' 섹션의 배경 이미지입니다.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
