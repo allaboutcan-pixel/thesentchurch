@@ -301,8 +301,19 @@ const Prayer = () => {
                                     {t('ministry.prayer.section3_title')}
                                 </h3>
                             </div>
-                            <div className="text-base md:text-lg text-stone-600 leading-[1.8] whitespace-pre-line font-medium break-keep pl-4">
-                                {siteConfig?.prayerGoals !== undefined ? siteConfig.prayerGoals : t('ministry.prayer.goals_default')}
+                            <div className="text-base md:text-lg text-stone-600 leading-[1.8] font-medium break-keep pl-4">
+                                {(() => {
+                                    const rawText = siteConfig?.prayerGoals !== undefined ? siteConfig.prayerGoals : t('ministry.prayer.goals_default');
+                                    // Replace specific points with mobile-only breaks
+                                    const formatted = rawText
+                                        .replace(/뜻 안에서/g, '뜻 안에서<br class="md:hidden" />')
+                                        .replace(/이루어지도록 중보하며,/g, '이루어지도록 중보하며,<br class="md:hidden" />')
+                                        .replace(/성도들이 함께 기도의 자리로/g, '성도들이 함께 기도의 자리로<br class="md:hidden" />')
+                                        .replace(/나아가도록 돕는 영적 기도 공동체가/g, '나아가도록 돕는 영적 기도 공동체가<br class="md:hidden" />')
+                                        .replace(/\n/g, '<br/>');
+
+                                    return <div dangerouslySetInnerHTML={{ __html: formatted }} />;
+                                })()}
                             </div>
                         </motion.div>
                     </div>
