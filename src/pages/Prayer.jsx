@@ -306,7 +306,9 @@ const Prayer = () => {
                                     const rawText = siteConfig?.prayerGoals !== undefined ? siteConfig.prayerGoals : t('ministry.prayer.goals_default');
                                     // Replace specific points with mobile-only breaks
                                     const formatted = rawText
-                                        .replace(/뜻 안에서/g, '뜻 안에서<br class="md:hidden" />')
+                                        .replace(/중보기도부는 기도로 교회를 세우고,/g, '중보기도부는 기도로 교회를 세우고,<br class="md:hidden" />')
+                                        .replace(/성도들의 삶과 교회의 모든 사역이/g, '성도들의 삶과 교회의 모든 사역이<br class="md:hidden" />')
+                                        .replace(/하나님의 뜻 안에서/g, '하나님의 뜻 안에서<br class="md:hidden" />')
                                         .replace(/이루어지도록 중보하며,/g, '이루어지도록 중보하며,<br class="md:hidden" />')
                                         .replace(/성도들이 함께 기도의 자리로/g, '성도들이 함께 기도의 자리로<br class="md:hidden" />')
                                         .replace(/나아가도록 돕는 영적 기도 공동체가/g, '나아가도록 돕는 영적 기도 공동체가<br class="md:hidden" />')
