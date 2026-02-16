@@ -330,24 +330,26 @@ const Prayer = () => {
                 </div>
 
                 {/* Operating Hours Box */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                    className="mb-24 bg-blue-900/5 border border-blue-900/10 p-8 rounded-3xl flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 text-center md:text-left"
-                >
-                    <div className="flex items-center gap-4">
-                        <div className="p-2 bg-blue-100 rounded-full text-blue-700">
-                            <Clock className="w-6 h-6" />
+                <div className="max-w-5xl mx-auto px-4">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="mb-24 bg-blue-900/5 border border-blue-900/10 p-8 rounded-3xl flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 text-center md:text-left shadow-sm"
+                    >
+                        <div className="flex items-center gap-4">
+                            <div className="p-2 bg-blue-100 rounded-full text-blue-700 font-bold">
+                                <Clock className="w-6 h-6" />
+                            </div>
+                            <span className="text-xl font-bold text-blue-900 uppercase tracking-widest">{t('ministry.prayer.section4_title')}</span>
                         </div>
-                        <span className="text-xl font-bold text-blue-900 uppercase tracking-widest">{t('ministry.prayer.section4_title')}</span>
-                    </div>
-                    <div className="h-px w-full md:w-px md:h-12 bg-blue-900/20" />
-                    <div className="text-xl md:text-2xl font-sans font-bold text-blue-800">
-                        {siteConfig?.prayerHours !== undefined ? siteConfig.prayerHours : "매주 주일 낮 12:30 | 2층 자모실"}
-                    </div>
-                </motion.div>
+                        <div className="h-px w-full md:w-px md:h-12 bg-blue-900/20" />
+                        <div className="text-xl md:text-2xl font-sans font-bold text-blue-800">
+                            {siteConfig?.prayerHours !== undefined ? siteConfig.prayerHours : "매주 주일 낮 12:30 | 2층 자모실"}
+                        </div>
+                    </motion.div>
+                </div>
 
                 {/* 3. Prayer Topics Section */}
                 <div className="max-w-5xl mx-auto px-4 pb-32">
@@ -482,89 +484,91 @@ const Prayer = () => {
                 </div>
 
                 {/* Prayer Request Modal */}
-                {isModalOpen && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center px-6">
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            onClick={() => setIsModalOpen(false)}
-                            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
-                        />
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            className="relative w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl overflow-hidden"
-                        >
-                            <div className="p-8 pb-4 flex items-center justify-between">
-                                <h3 className="text-xl font-black text-blue-900">기도제목 보내기</h3>
-                                <button
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400"
-                                >
-                                    <X size={20} />
-                                </button>
-                            </div>
-
-                            <form onSubmit={handleSubmit} className="p-8 pt-4 space-y-4">
-                                <div className="space-y-1">
-                                    <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">성함</label>
-                                    <input
-                                        type="text"
-                                        value={formData.name}
-                                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-bold placeholder:text-slate-300"
-                                        placeholder="이름을 입력하세요"
-                                        required
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">연락처</label>
-                                    <input
-                                        type="text"
-                                        value={formData.contact}
-                                        onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-bold placeholder:text-slate-300"
-                                        placeholder="연락처 또는 이메일"
-                                        required
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">기도제목</label>
-                                    <textarea
-                                        value={formData.request}
-                                        onChange={(e) => setFormData({ ...formData, request: e.target.value })}
-                                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-medium h-40 resize-none placeholder:text-slate-300"
-                                        placeholder="나누고 싶은 기도제목을 적어주세요"
-                                        required
-                                    ></textarea>
+                {
+                    isModalOpen && (
+                        <div className="fixed inset-0 z-[100] flex items-center justify-center px-6">
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                onClick={() => setIsModalOpen(false)}
+                                className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+                            />
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                className="relative w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl overflow-hidden"
+                            >
+                                <div className="p-8 pb-4 flex items-center justify-between">
+                                    <h3 className="text-xl font-black text-blue-900">기도제목 보내기</h3>
+                                    <button
+                                        onClick={() => setIsModalOpen(false)}
+                                        className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400"
+                                    >
+                                        <X size={20} />
+                                    </button>
                                 </div>
 
-                                <button
-                                    type="submit"
-                                    disabled={formStatus === 'sending'}
-                                    className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold text-base hover:bg-blue-700 transition-all shadow-lg active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 mt-4"
-                                >
-                                    {formStatus === 'sending' ? (
-                                        <>
-                                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                            전송 중...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Send size={20} />
-                                            기도제목 보내기
-                                        </>
-                                    )}
-                                </button>
-                                <p className="text-center text-[10px] text-slate-400 font-medium">
-                                    * 전송하신 내용은 교역자분들께 전달되어 소중히 기도하겠습니다.
-                                </p>
-                            </form>
-                        </motion.div>
-                    </div>
-                )}
-            </main>
-        </div>
+                                <form onSubmit={handleSubmit} className="p-8 pt-4 space-y-4">
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">성함</label>
+                                        <input
+                                            type="text"
+                                            value={formData.name}
+                                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                            className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-bold placeholder:text-slate-300"
+                                            placeholder="이름을 입력하세요"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">연락처</label>
+                                        <input
+                                            type="text"
+                                            value={formData.contact}
+                                            onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
+                                            className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-bold placeholder:text-slate-300"
+                                            placeholder="연락처 또는 이메일"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">기도제목</label>
+                                        <textarea
+                                            value={formData.request}
+                                            onChange={(e) => setFormData({ ...formData, request: e.target.value })}
+                                            className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-medium h-40 resize-none placeholder:text-slate-300"
+                                            placeholder="나누고 싶은 기도제목을 적어주세요"
+                                            required
+                                        ></textarea>
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        disabled={formStatus === 'sending'}
+                                        className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold text-base hover:bg-blue-700 transition-all shadow-lg active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 mt-4"
+                                    >
+                                        {formStatus === 'sending' ? (
+                                            <>
+                                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                전송 중...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Send size={20} />
+                                                기도제목 보내기
+                                            </>
+                                        )}
+                                    </button>
+                                    <p className="text-center text-[10px] text-slate-400 font-medium">
+                                        * 전송하신 내용은 교역자분들께 전달되어 소중히 기도하겠습니다.
+                                    </p>
+                                </form>
+                            </motion.div>
+                        </div>
+                    )
+                }
+            </main >
+        </div >
     );
 };
 
