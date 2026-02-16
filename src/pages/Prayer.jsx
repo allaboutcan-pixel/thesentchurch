@@ -407,7 +407,7 @@ const Prayer = () => {
                     {/* Banner Header */}
                     <div className="mb-16 max-w-2xl mx-auto px-4">
                         <h2 className="text-2xl md:text-3xl font-black text-blue-900 mb-6 tracking-tight">
-                            함께 기도해요
+                            "함께 기도해요"
                         </h2>
                         <div className="space-y-3">
                             <p className="text-lg md:text-xl text-stone-700 font-bold leading-relaxed">
