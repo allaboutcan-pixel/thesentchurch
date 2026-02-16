@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { motion } from 'framer-motion';
-import { Heart, Target, Clock, Send, Sparkles } from 'lucide-react';
+import { Heart, Target, Clock, Send, Sparkles, X, Image as ImageIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import MinistryNav from '../components/MinistryNav';
 import { useSiteConfig } from '../hooks/useSiteConfig';
@@ -13,6 +13,7 @@ const Prayer = () => {
     const type = 'prayer';
 
     // Form State
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [formStatus, setFormStatus] = useState('idle');
     const [formData, setFormData] = useState({
         name: '',
@@ -56,6 +57,7 @@ const Prayer = () => {
                 alert(t('ministry.prayer.form_success') || '기도제목이 성공적으로 전달되었습니다.');
                 setFormData({ name: '', contact: '', request: '' });
                 setFormStatus('idle');
+                setIsModalOpen(false);
             }, (error) => {
                 console.error('FAILED...', error);
                 setFormStatus('error');
@@ -400,65 +402,99 @@ const Prayer = () => {
                     </div>
                 </div>
 
-                {/* 4. CTA Section / Contact Form */}
+                {/* 4. CTA Section / Banner Flow */}
                 <div className="text-center pb-20">
-                    <div className="relative max-w-sm mx-auto shadow-2xl overflow-hidden bg-white">
+                    <div className="relative max-w-sm mx-auto shadow-2xl overflow-hidden bg-white group cursor-pointer aspect-[3/4] rounded-3xl"
+                        onClick={() => setIsModalOpen(true)}
+                    >
                         {/* Background Image */}
                         {siteConfig?.prayerRequestImage && (
                             <div className="absolute inset-0">
                                 <img
                                     src={siteConfig?.prayerRequestImage}
                                     alt="Prayer Request Background"
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                 />
-                                <div className="absolute inset-0 bg-blue-900/80 backdrop-blur-[2px]"></div>
+                                {/* Bottom vignette only to help button visibility if needed */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
                             </div>
                         )}
 
-                        <div className="relative p-8 text-white">
-                            <div className="p-3 bg-white/10 rounded-full w-14 h-14 flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
-                                <Send size={24} className="text-white" />
+                        {!siteConfig?.prayerRequestImage && (
+                            <div className="absolute inset-0 bg-slate-100 flex items-center justify-center">
+                                <ImageIcon size={48} className="text-slate-300" />
+                            </div>
+                        )}
+
+                        <div className="relative h-full flex flex-col items-center justify-end pb-12">
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setIsModalOpen(true);
+                                }}
+                                className="px-10 py-4 bg-white text-blue-900 rounded-2xl font-black text-base hover:bg-blue-50 transition-all shadow-2xl active:scale-95 flex items-center gap-2 border border-slate-100"
+                            >
+                                <Send size={20} className="text-blue-600" />
+                                기도제목 보내기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Prayer Request Modal */}
+                {isModalOpen && (
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center px-6">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            onClick={() => setIsModalOpen(false)}
+                            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+                        />
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            className="relative w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl overflow-hidden"
+                        >
+                            <div className="p-8 pb-4 flex items-center justify-between">
+                                <h3 className="text-xl font-black text-blue-900">기도제목 보내기</h3>
+                                <button
+                                    onClick={() => setIsModalOpen(false)}
+                                    className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400"
+                                >
+                                    <X size={20} />
+                                </button>
                             </div>
 
-                            <h2 className="text-xl font-black mb-4 tracking-tight">
-                                함께 기도해요
-                            </h2>
-
-                            <p className="text-sm opacity-90 mb-6 font-medium leading-relaxed">
-                                여러분의 기도 제목을 나눠주세요.<br />
-                                함께 기도하겠습니다.
-                            </p>
-
-                            <form onSubmit={handleSubmit} className="space-y-3 text-left">
-                                <div>
-                                    <label className="block text-xs font-bold opacity-80 mb-1 ml-1">성함</label>
+                            <form onSubmit={handleSubmit} className="p-8 pt-4 space-y-4">
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">성함</label>
                                     <input
                                         type="text"
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        className="w-full px-4 py-3 text-sm bg-white/10 border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all placeholder:text-white/30"
-                                        placeholder="성함"
+                                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-bold placeholder:text-slate-300"
+                                        placeholder="이름을 입력하세요"
                                         required
                                     />
                                 </div>
-                                <div>
-                                    <label className="block text-xs font-bold opacity-80 mb-1 ml-1">연락처</label>
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">연락처</label>
                                     <input
                                         type="text"
                                         value={formData.contact}
                                         onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
-                                        className="w-full px-4 py-3 text-sm bg-white/10 border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all placeholder:text-white/30"
-                                        placeholder="연락처/이메일"
+                                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-bold placeholder:text-slate-300"
+                                        placeholder="연락처 또는 이메일"
                                         required
                                     />
                                 </div>
-                                <div>
-                                    <label className="block text-xs font-bold opacity-80 mb-1 ml-1">기도제목</label>
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">기도제목</label>
                                     <textarea
                                         value={formData.request}
                                         onChange={(e) => setFormData({ ...formData, request: e.target.value })}
-                                        className="w-full px-4 py-3 text-sm bg-white/10 border border-white/20 focus:bg-white/20 focus:outline-none focus:ring-1 focus:ring-white/30 transition-all placeholder:text-white/30 h-32 resize-none"
-                                        placeholder="기도제목을 입력하세요"
+                                        className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-medium h-40 resize-none placeholder:text-slate-300"
+                                        placeholder="나누고 싶은 기도제목을 적어주세요"
                                         required
                                     ></textarea>
                                 </div>
@@ -466,11 +502,11 @@ const Prayer = () => {
                                 <button
                                     type="submit"
                                     disabled={formStatus === 'sending'}
-                                    className="w-full py-3 bg-white text-blue-900 rounded-2xl font-bold text-sm hover:bg-blue-50 transition-all shadow-md active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
+                                    className="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold text-base hover:bg-blue-700 transition-all shadow-lg active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-2 mt-4"
                                 >
                                     {formStatus === 'sending' ? (
                                         <>
-                                            <div className="w-5 h-5 border-2 border-blue-900 border-t-transparent rounded-full animate-spin" />
+                                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                                             전송 중...
                                         </>
                                     ) : (
@@ -480,13 +516,13 @@ const Prayer = () => {
                                         </>
                                     )}
                                 </button>
-                                <p className="text-center text-xs opacity-60 mt-4">
-                                    * 보내주신 기도제목은 교역자들에게만 전달되며 소중히 기도하겠습니다.
+                                <p className="text-center text-[10px] text-slate-400 font-medium">
+                                    * 전송하신 내용은 교역자분들께 전달되어 소중히 기도하겠습니다.
                                 </p>
                             </form>
-                        </div>
+                        </motion.div>
                     </div>
-                </div>
+                )}
             </main>
         </div>
     );
