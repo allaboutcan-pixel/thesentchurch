@@ -142,7 +142,7 @@ const CalendarWidget = () => {
 
                 <div className="flex-grow flex flex-col gap-1">
                     {rows.map((row, rowIndex) => (
-                        <div key={rowIndex} className="grid grid-cols-7 gap-1 min-h-[4.5rem] group/row">
+                        <div key={rowIndex} className="grid grid-cols-7 gap-1 min-h-[7rem] group/row">
                             {row.map((day, dayIndex) => {
                                 const dayEvents = events.filter(e => isDateInEventRange(day.date, e));
                                 const isSelected = isSameDay(day.date, selectedDate);

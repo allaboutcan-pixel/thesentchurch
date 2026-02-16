@@ -210,45 +210,47 @@ const Prayer = () => {
                 </div>
 
                 {/* 2. Values & Goals Section */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20 mt-64">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="bg-white p-10 rounded-[2.5rem] shadow-xl border border-white/50"
-                    >
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
-                                <Heart size={32} strokeWidth={1.5} />
+                <div className="max-w-5xl mx-auto px-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20 mt-32">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="bg-white p-8 rounded-[2rem] shadow-xl border border-white/50"
+                        >
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
+                                    <Heart size={28} strokeWidth={1.5} />
+                                </div>
+                                <h3 className="text-xl font-black text-blue-900 tracking-tight">
+                                    {t('ministry.prayer.section2_title')}
+                                </h3>
                             </div>
-                            <h3 className="text-2xl font-black text-blue-900 tracking-tight">
-                                {t('ministry.prayer.section2_title')}
-                            </h3>
-                        </div>
-                        <div className="text-lg text-stone-600 leading-loose whitespace-pre-line font-medium break-keep pl-12">
-                            {siteConfig?.prayerCoreValues !== undefined ? siteConfig.prayerCoreValues : t('ministry.prayer.values_default')}
-                        </div>
-                    </motion.div>
+                            <div className="text-base md:text-lg text-stone-600 leading-[1.8] whitespace-pre-line font-medium break-keep pl-4">
+                                {siteConfig?.prayerCoreValues !== undefined ? siteConfig.prayerCoreValues : t('ministry.prayer.values_default')}
+                            </div>
+                        </motion.div>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="bg-white p-10 rounded-[2.5rem] shadow-xl border border-white/50"
-                    >
-                        <div className="flex items-center gap-4 mb-8">
-                            <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
-                                <Target size={32} strokeWidth={1.5} />
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                            className="bg-white p-8 rounded-[2rem] shadow-xl border border-white/50"
+                        >
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
+                                    <Target size={28} strokeWidth={1.5} />
+                                </div>
+                                <h3 className="text-xl font-black text-blue-900 tracking-tight">
+                                    {t('ministry.prayer.section3_title')}
+                                </h3>
                             </div>
-                            <h3 className="text-2xl font-black text-blue-900 tracking-tight">
-                                {t('ministry.prayer.section3_title')}
-                            </h3>
-                        </div>
-                        <div className="text-lg text-stone-600 leading-[2.2] whitespace-pre-line font-medium break-keep mt-16 pl-12">
-                            {siteConfig?.prayerGoals !== undefined ? siteConfig.prayerGoals : t('ministry.prayer.goals_default')}
-                        </div>
-                    </motion.div>
+                            <div className="text-base md:text-lg text-stone-600 leading-[1.8] whitespace-pre-line font-medium break-keep pl-4">
+                                {siteConfig?.prayerGoals !== undefined ? siteConfig.prayerGoals : t('ministry.prayer.goals_default')}
+                            </div>
+                        </motion.div>
+                    </div>
                 </div>
 
                 {/* Operating Hours Box */}

@@ -1066,7 +1066,7 @@ const Resources = () => {
 
 
                 {activeTab === 'calendar' && (
-                    <div className="animate-fade-in max-w-[68rem] mx-auto py-32">
+                    <div className="animate-fade-in max-w-[80rem] mx-auto py-32">
                         <CalendarWidget />
                     </div>
                 )}
