@@ -599,6 +599,7 @@ const Resources = () => {
                                                 onClick={() => {
                                                     setSelectedArchiveBulletin(latestBulletin);
                                                     setActiveArchivePage(activePage);
+                                                    setIsBulletinFullScreen(true);
                                                 }}
                                                 className="px-6 py-3 bg-white text-slate-900 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-100 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-white/5 text-sm"
                                             >
@@ -640,13 +641,16 @@ const Resources = () => {
                                                 </button>
                                             </div>
                                         )}
-                                        <div className="aspect-[16/10] bg-white/5 rounded-[2rem] overflow-hidden border border-white/10 relative shadow-2xl">
-                                            <iframe
-                                                src={dbService.formatDriveLink(activePage === 1 ? latestBulletin.fileUrl : latestBulletin.fileUrl2)}
-                                                className="w-full h-full border-none opacity-80 hover:opacity-100 transition-opacity"
-                                                title="Latest Bulletin Preview"
-                                                loading="lazy"
-                                            ></iframe>
+                                        <div className="aspect-[16/10] rounded-[2rem] overflow-hidden border border-white/10 relative shadow-2xl bg-white">
+                                            <div className="w-full h-full overflow-hidden">
+                                                <iframe
+                                                    src={dbService.formatDriveLink(activePage === 1 ? latestBulletin.fileUrl : latestBulletin.fileUrl2)}
+                                                    className="w-full transition-opacity"
+                                                    style={{ height: 'calc(100% + 25px)', marginTop: '-25px' }}
+                                                    title="Latest Bulletin Preview"
+                                                    loading="lazy"
+                                                ></iframe>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -713,6 +717,7 @@ const Resources = () => {
                                             onClick={() => {
                                                 setSelectedArchiveBulletin(item);
                                                 setActiveArchivePage(1);
+                                                setIsBulletinFullScreen(true);
                                             }}
                                             className="group bg-white border border-slate-100 rounded-lg py-2 px-3 flex items-center justify-between hover:border-primary/30 hover:shadow-sm transition-all cursor-pointer"
                                         >
@@ -1333,11 +1338,14 @@ const Resources = () => {
                                     </>
                                 )}
 
-                                <iframe
-                                    src={dbService.formatDriveLink(activeArchivePage === 1 ? selectedArchiveBulletin.fileUrl : selectedArchiveBulletin.fileUrl2)}
-                                    className="w-full h-full border-none"
-                                    title="Bulletin Modal Preview"
-                                ></iframe>
+                                <div className="w-full h-full overflow-hidden bg-white">
+                                    <iframe
+                                        src={dbService.formatDriveLink(activeArchivePage === 1 ? selectedArchiveBulletin.fileUrl : selectedArchiveBulletin.fileUrl2)}
+                                        className="w-full"
+                                        style={{ height: 'calc(100% + 25px)', marginTop: '-25px' }}
+                                        title="Bulletin Modal Preview"
+                                    ></iframe>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1397,12 +1405,24 @@ const Resources = () => {
                 <div className="fixed inset-0 z-[200] bg-slate-950 animate-fade-in flex flex-col">
                     {/* Header bar with close button */}
                     <div className="flex items-center justify-between px-6 py-4 bg-slate-900/50 backdrop-blur-md border-b border-white/10 z-30">
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-4">
                             <h3 className="text-white font-black">{selectedArchiveBulletin.title}</h3>
                             <span className="text-white/40 text-xs font-bold uppercase tracking-widest">{selectedArchiveBulletin.date}</span>
+                            <div className="h-4 w-px bg-white/10 mx-2" />
+                            <a
+                                href={dbService.formatDriveDownloadLink(selectedArchiveBulletin.fileUrl)}
+                                download
+                                className="flex items-center gap-2 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white/80 hover:text-white rounded-lg text-[10px] font-black tracking-widest uppercase transition-all"
+                            >
+                                <Download size={14} />
+                                파일 다운로드
+                            </a>
                         </div>
                         <button
-                            onClick={() => setIsBulletinFullScreen(false)}
+                            onClick={() => {
+                                setIsBulletinFullScreen(false);
+                                setSelectedArchiveBulletin(null);
+                            }}
                             className="bg-white/10 hover:bg-red-500 text-white p-2 md:p-3 rounded-full transition-all group active:scale-95"
                             title="전체 화면 닫기"
                         >
@@ -1446,11 +1466,14 @@ const Resources = () => {
                             </>
                         )}
 
-                        <iframe
-                            src={dbService.formatDriveLink(activeArchivePage === 1 ? selectedArchiveBulletin.fileUrl : selectedArchiveBulletin.fileUrl2)}
-                            className="w-full h-full border-none"
-                            title="Full Screen Bulletin Viewer"
-                        ></iframe>
+                        <div className="w-full h-full overflow-hidden bg-white">
+                            <iframe
+                                src={dbService.formatDriveLink(activeArchivePage === 1 ? selectedArchiveBulletin.fileUrl : selectedArchiveBulletin.fileUrl2)}
+                                className="w-full"
+                                style={{ height: 'calc(100% + 25px)', marginTop: '-25px' }}
+                                title="Full Screen Bulletin Viewer"
+                            ></iframe>
+                        </div>
                     </div>
                 </div>
             )}
