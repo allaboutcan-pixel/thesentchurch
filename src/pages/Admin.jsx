@@ -575,6 +575,7 @@ const Admin = () => {
 
                     // Prayer Items
                     prayerIntroImage: fbConfig.prayerIntroImage || '',
+                    prayerRequestImage: fbConfig.prayerRequestImage || '',
                     prayerCommonTopics: fbConfig.prayerCommonTopics || '',
                     prayerPastorTopics: fbConfig.prayerPastorTopics || '',
                     prayerChurchTopics: fbConfig.prayerChurchTopics || '',
