@@ -44,7 +44,7 @@ function App() {
                 <Route path="ministry/tee" element={<TEE />} />
                 <Route path="ministry/mission" element={<ComingSoon type="mission" />} />
                 <Route path="ministry/team" element={<TeamMinistry />} />
-                <Route path="ministry/prayer" element={<ComingSoon type="prayer" />} />
+                <Route path="ministry/prayer" element={<Prayer />} />
                 <Route path="ministry/*" element={<Ministry />} />
 
                 <Route path="news" element={<Resources />} />

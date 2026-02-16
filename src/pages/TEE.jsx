@@ -7,13 +7,14 @@ import { useSiteConfig } from '../hooks/useSiteConfig';
 import clsx from 'clsx';
 
 const TEE = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { config: siteConfig } = useSiteConfig();
     const type = 'tee';
 
     const banner = siteConfig?.[`${type}Banner`] || siteConfig?.ministryBanner;
-    const bannerTitle = siteConfig?.[`${type}Title`] || t('tee.banner_title');
-    const bannerSubtitle = siteConfig?.[`${type}Subtitle`] || t('tee.banner_subtitle');
+    const isEnglish = i18n.language.startsWith('en');
+    const bannerTitle = isEnglish ? t('tee.banner_title') : (siteConfig?.[`${type}Title`] || t('tee.banner_title'));
+    const bannerSubtitle = isEnglish ? t('tee.banner_subtitle') : (siteConfig?.[`${type}Subtitle`] || t('tee.banner_subtitle'));
 
     const bannerFit = siteConfig?.[`${type}BannerFit`] || 'cover';
     const overlayOpacity = siteConfig?.[`${type}OverlayOpacity`] || 40;

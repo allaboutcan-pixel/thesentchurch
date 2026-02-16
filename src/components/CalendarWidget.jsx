@@ -132,7 +132,7 @@ const CalendarWidget = () => {
                 <div className="grid grid-cols-7 border-b border-gray-100 mb-4 pb-4">
                     {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d, i) => (
                         <div key={i} className={clsx(
-                            "text-[10px] font-black uppercase tracking-widest text-center",
+                            "text-xs font-black uppercase tracking-widest text-center",
                             i === 0 ? "text-red-400" : "text-gray-400"
                         )}>
                             {d}
@@ -142,7 +142,7 @@ const CalendarWidget = () => {
 
                 <div className="flex-grow flex flex-col gap-1">
                     {rows.map((row, rowIndex) => (
-                        <div key={rowIndex} className="grid grid-cols-7 gap-1 h-14 group/row">
+                        <div key={rowIndex} className="grid grid-cols-7 gap-1 min-h-[4.5rem] group/row">
                             {row.map((day, dayIndex) => {
                                 const dayEvents = events.filter(e => isDateInEventRange(day.date, e));
                                 const isSelected = isSameDay(day.date, selectedDate);
@@ -159,7 +159,7 @@ const CalendarWidget = () => {
                                         )}
                                     >
                                         <span className={clsx(
-                                            "text-xs font-bold self-start mt-0.5 ml-1",
+                                            "text-sm font-bold self-start mt-0.5 ml-1",
                                             isToday ? "text-accent" : day.date.getDay() === 0 ? "text-red-400" : "text-gray-400",
                                             isSelected && "text-primary scale-110"
                                         )}>
@@ -171,7 +171,7 @@ const CalendarWidget = () => {
                                                 <div
                                                     key={event.id}
                                                     className={clsx(
-                                                        "px-2 py-0.5 rounded-md text-[9px] font-bold truncate transition-colors",
+                                                        "px-2 py-0.5 rounded-md text-[10px] font-bold truncate transition-colors",
                                                         event.type === 'special' ? "bg-accent/10 text-accent" : "bg-primary/10 text-primary",
                                                         isSelected ? "bg-white/50" : ""
                                                     )}

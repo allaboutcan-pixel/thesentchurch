@@ -2367,16 +2367,6 @@ const Admin = () => {
 
                                     <div className="space-y-8">
                                         <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">2026년 교회 기도제목 (2026 Church Prayer Topics)</label>
-                                            <textarea
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-48 resize-none leading-relaxed"
-                                                placeholder="예: 1. 2026년 표어...&#13;&#10;2. 비전..."
-                                                value={formData.prayerChurchTopics2026}
-                                                onChange={(e) => setFormData({ ...formData, prayerChurchTopics2026: e.target.value })}
-                                            />
-                                        </div>
-
-                                        <div className="space-y-2">
                                             <label className="text-sm font-bold text-gray-600 ml-1">사역의 핵심 가치 (Core Values)</label>
                                             <textarea
                                                 className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
@@ -2400,17 +2390,50 @@ const Admin = () => {
                                             <label className="text-sm font-bold text-gray-600 ml-1">운영시간 (Operating Hours)</label>
                                             <textarea
                                                 className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
-                                                placeholder="예: 매주 수요일 오후 7시..."
+                                                placeholder="예: 매주 금요일 오후 8시..."
                                                 value={formData.prayerHours}
                                                 onChange={(e) => setFormData({ ...formData, prayerHours: e.target.value })}
                                             />
                                         </div>
 
+                                        <div className="space-y-4 mb-8 p-4 bg-blue-50/50 rounded-2xl border border-blue-100">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">기도제목 섹션 타이틀 (Prayer Topics Title)</label>
+                                                <input
+                                                    type="text"
+                                                    className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold text-lg"
+                                                    placeholder="예: 생명의 소리 교회 중보기도 내용"
+                                                    value={formData.prayerTopicsTitle || ''}
+                                                    onChange={(e) => setFormData({ ...formData, prayerTopicsTitle: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">기도제목 섹션 서브타이틀 (Prayer Topics Subtitle)</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-24 resize-none leading-relaxed"
+                                                    placeholder="예: 우리 교회는 서로를 위해 기도하는 공동체입니다..."
+                                                    value={formData.prayerTopicsSubtitle || ''}
+                                                    onChange={(e) => setFormData({ ...formData, prayerTopicsSubtitle: e.target.value })}
+                                                />
+                                                <p className="text-xs text-gray-400 ml-1">* 줄바꿈을 하려면 Enter를 누르거나 &lt;br/&gt; 태그를 사용하세요.</p>
+                                            </div>
+                                        </div>
+
                                         <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">이번주 우리교회 기도내용 (Weekly Church Prayer)</label>
+                                            <label className="text-sm font-bold text-gray-600 ml-1">교회를 위한 기도 (Prayer for the Church)</label>
+                                            <textarea
+                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-48 resize-none leading-relaxed"
+                                                placeholder="예: 1. 2026년 표어...&#13;&#10;2. 비전..."
+                                                value={formData.prayerChurchTopics2026}
+                                                onChange={(e) => setFormData({ ...formData, prayerChurchTopics2026: e.target.value })}
+                                            />
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-gray-600 ml-1">공동기도제목 (Common Prayer Topics)</label>
                                             <textarea
                                                 className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-96 resize-none leading-relaxed"
-                                                placeholder="예: 1. 나라와 민족을 위해...&#13;&#10;2. 교회의 부흥을 위해..."
+                                                placeholder="예: 1. 나라와 민족을 위해...&#13;&#10;2. 한국교회를 위해..."
                                                 value={formData.prayerCommonTopics}
                                                 onChange={(e) => setFormData({ ...formData, prayerCommonTopics: e.target.value })}
                                             />

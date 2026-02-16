@@ -205,9 +205,12 @@ const resources = {
                     "intro_title": "About Intercessory",
                     "intro_subtitle": "중보기도 소개",
                     "intro_content": "중보기도 신청은 교회 홈페이지에서 온라인 신청을 통해,\n교회예배당 입구에 비치한 중보기도함을 통해 신청할 수 있습니다.",
+                    "intro_desc": "우리 교회는 서로를 위해 기도하는 공동체입니다.<br/>아래 기도제목을 함께 나누고, 각자의 자리에서<br/>중보기도로 동참해 주십시오.<br/><br/><span class='text-blue-800'>하나님께서 우리의 기도를 통해 일하실 것을 믿습니다.</span>",
+                    "instructions_desc": "중보기도 신청은 교회 홈페이지에서 온라인 신청을 통해,<br />교회예배당 입구에 비치한 중보기도함을 통해 신청할 수 있습니다.",
                     "privacy_notice": "기도제목은 중보기도 사역자들만 열람가능하며, 철저하게 비밀로 지킵니다.",
+                    "privacy_notice_full": "기도제목은 중보기도 사역자들만 열람가능하며, 철저하게 비밀로 지킵니다.",
                     "section1_title": "생명의 소리 교회 중보기도 내용",
-                    "section1_desc": "우리 교회는 서로를 위해 기도하는 공동체입니다.\n아래 기도제목을 함께 나누고, 각자의 자리에서 중보기도로 동참해 주십시오.",
+                    "section1_desc": "우리 교회는 서로를 위해 기도하는 공동체입니다.<br/>아래 기도제목을 함께 나누고, 각자의 자리에서 중보기도로 동참해 주십시오.",
                     "common_prayer_title": "공동기도제목",
                     "pastor_prayer_title": "담임목사님 사역을 위한 기도",
                     "church_prayer_title": "교회를 위한 기도",
@@ -219,7 +222,9 @@ const resources = {
                     "church_topics": ["예배의 은혜", "어린이 사역", "다음 세대 비전"],
                     "request_button": "온라인 중보기도 요청",
                     "anonymous": "익명 가능",
-                    "real_name": "실명 가능"
+                    "real_name": "실명 가능",
+                    "values_default": "기도는 하나님과의 거룩한 대화이며,\n모든 사역의 시작이자 마침입니다.",
+                    "goals_default": "중보기도부는 기도로 교회를 세우고,\n성도들의 삶과 교회의 모든 사역이 하나님의\n뜻 안에서 이루어지도록 중보하며,\n성도들이 함께 기도의 자리로 나아가도록 돕는\n영적 기도 공동체가 되는 것을 목표로 합니다."
                 }
             },
             "location": {
@@ -277,6 +282,16 @@ const resources = {
                 "fruits_title": "우리가 기대하는 열매",
                 "fruits_desc": "TEE를 통해 성도 한 사람 한 사람이 말씀으로 세워지고,<br/>소그룹 공동체 안에서 서로를 세우며,<br/>또 다른 제자를 세우는 건강한 교회로 성장해 가기를 기대합니다.",
                 "fruits_desc_mobile": "TEE를 통해 성도 한 사람 한 사람이<br/>말씀으로 세워지고,<br/>소그룹 공동체 안에서 서로를 세우며,<br/>또 다른 제자를 세우는 건강한 교회로<br/>성장해 가기를 기대합니다."
+            },
+            "team_ministry": {
+                "title": "팀사역",
+                "subtitle": "함께 섬기는 기쁨",
+                "intro_title": "함께 섬기는 기쁨",
+                "intro_desc": "각자의 은사를 통해 그리스도의 몸 된 교회를 세워갑니다.<br class='hidden md:block' />작은 헌신이 모여 아름다운 열매를 맺는 사역의 현장으로 여러분을 초대합니다.",
+                "intro_badge": "Team Ministry",
+                "cta_title": "섬김의 자리에 초대합니다",
+                "cta_desc": "하나님께서 주신 달란트로 교회를 섬기기 원하시는 분들은<br />언제든지 각 팀의 문을 두드려주세요.",
+                "cta_button": "사역 신청하기"
             }
         }
     },
@@ -445,7 +460,10 @@ const resources = {
                     "intro_title": "About Intercessory",
                     "intro_subtitle": "Introduction to Intercessory Prayer",
                     "intro_content": "Requests for intercessory prayer can be made online via the church website or through the prayer box located at the entrance of the church sanctuary.",
+                    "intro_desc": "Our church is a community that prays for one another.\nPlease share the prayer topics below and join us in intercessory prayer from your own place.\n\n<span class='text-blue-800'>We believe God will work through our prayers.</span>",
+                    "instructions_desc": "Requests for intercessory prayer can be made online via the church website or through the prayer box located at the entrance of the church sanctuary.",
                     "privacy_notice": "Topics for prayer are only accessible to intercessory prayer ministers and are kept strictly confidential.",
+                    "privacy_notice_full": "Topics for prayer are only accessible to intercessory prayer ministers and are kept strictly confidential.",
                     "section1_title": "Intercessory Prayer Topics of The Church of the Sent",
                     "section1_desc": "Our church is a community that prays for one another.\nPlease share the prayer topics below and join us in intercessory prayer from your own place.",
                     "common_prayer_title": "General Prayer Topics",
@@ -459,7 +477,9 @@ const resources = {
                     "church_topics": ["Worship excellence", "Children's ministry", "Next Gen vision"],
                     "request_button": "Online Prayer Request",
                     "anonymous": "Anonymous available",
-                    "real_name": "Real name available"
+                    "real_name": "Real name available",
+                    "values_default": "Prayer is a holy conversation with God, and the beginning and end of all ministry.",
+                    "goals_default": "To help all members become prayer warriors and build a community that ceaselessly prays for the church and neighbors."
                 }
             },
             "resources": {
@@ -528,7 +548,61 @@ const resources = {
             "매달 첫째,둘째주 화-토요일 6AM": "1st & 2nd Week Tue-Sat 6AM",
             "본당": "Main Chapel",
             "지하 1층": "B1 Floor",
-            "pastor_message_full": "Welcome.\n\nWe hope that our church becomes a space where you can experience the warm love of Jesus, who was love and compassion itself.\n\nWe hope that you can feel the warmth of God here, who cherishes and values every person.\n\nWe hope that you discover God's will, who plans and accomplishes great things in heaven for each person's life.\n\nWe hope that your heart will be filled with hope through the dreams God gives, that the wandering of life will end, and that there will be grace to rise up powerfully towards your vision."
+            "pastor_message_full": "Welcome.\n\nWe hope that our church becomes a space where you can experience the warm love of Jesus, who was love and compassion itself.\n\nWe hope that you can feel the warmth of God here, who cherishes and values every person.\n\nWe hope that you discover God's will, who plans and accomplishes great things in heaven for each person's life.\n\nWe hope that your heart will be filled with hope through the dreams God gives, that the wandering of life will end, and that there will be grace to rise up powerfully towards your vision.",
+            "tee": {
+                "banner_title": "TEE",
+                "banner_subtitle": "Theological Education by Extension",
+                "intro_title": "What is TEE?",
+                "intro_desc": "TEE stands for <span class='text-blue-600 font-bold'>Theological Education by Extension</span>,<br/>based on 2 Timothy 2:2.<br/><br/>It is a proven training method helping faith pass on to the next generation through Bible study and discipleship.",
+                "intro_subdesc": "Currently, TEE is used in over 110 countries and 70 languages,<br/>utilized by numerous churches for lay leadership training.",
+                "bible_verse": "And the things you have heard me say in the presence of many witnesses entrust to reliable people who will also be qualified to teach others.",
+                "bible_ref": "2 Timothy 2:2",
+
+                "ministry_goal_title": "Ministry Goal",
+                "ministry_goal_subtitle": "Reproduction through Discipleship",
+                "ministry_goal_eng": "Reproduction through Discipleship",
+                "ministry_goal_quote": "“The Goal of TEE is Reproduce!”",
+
+                "core_goal_title": "Core Goal",
+                "core_goal_desc": "It is <strong>Spiritual Reproduction</strong> where one disciple raises another.<br/>Through small group training, we build up saints spiritually and help them grow into future church leaders.<br/><br/>It starts slow and small, but when the gospel and disciples spread together, it bears amazing influence and fruit.",
+
+                "core_value_title": "Core Value",
+                "core_value_subtitle": "Application",
+                "core_value_desc": "The most important value of TEE is the practical application of the Word.<br/>It aims for discipleship that appears in life, not just faith remaining in knowledge.<br/>\"Faith without deeds is dead.\"",
+                "core_value_box": "Learning the Word, applying it to life,\nand becoming like Christ through practice",
+                "core_value_sub": "",
+
+                "features_title": "Features of TEE",
+                "features_desc": "TEE does not force practice.\nAs you study following the textbook and guidelines,\nit naturally helps you apply and practice in life.\nIt is a journey of accompanying students to obey and grow voluntarily.",
+                "features_desc_mobile": "TEE does not force practice.\nAs you study following the textbook and guidelines,\nit naturally helps you apply and practice in life.\nIt is a journey of accompanying students to obey and grow voluntarily.",
+
+                "method_title": "Education Method of TEE",
+                "method_desc": "Follows these principles:",
+                "smart_s_title": "S – Specific",
+                "smart_s_desc": "Specific",
+                "smart_m_title": "M – Measurable",
+                "smart_m_desc": "Measurable",
+                "smart_a_title": "A – Attainable",
+                "smart_a_desc": "Attainable",
+                "smart_r_title": "R – Realistic",
+                "smart_r_desc": "Realistic",
+                "smart_t_title": "T – Tangible",
+                "smart_t_desc": "Tangible Training",
+
+                "fruits_title": "Fruits We Expect",
+                "fruits_desc": "We hope that through TEE, each saint will be built up by the Word,<br/>build each other up in small group communities,<br/>and grow into a healthy church that raises other disciples.",
+                "fruits_desc_mobile": "We hope that through TEE, each saint will be built up by the Word,<br/>build each other up in small group communities,<br/>and grow into a healthy church that raises other disciples."
+            },
+            "team_ministry": {
+                "title": "Team Ministry",
+                "subtitle": "Joy of Serving Together",
+                "intro_title": "Joy of Serving Together",
+                "intro_desc": "We build up the body of Christ, the church, through each person's gifts.<br class='hidden md:block' />We invite you to the ministry field where small commitments gather to bear beautiful fruit.",
+                "intro_badge": "Team Ministry",
+                "cta_title": "Invitation to Serve",
+                "cta_desc": "If you wish to serve the church with the talents God has given you,<br />please knock on the door of any team at any time.",
+                "cta_button": "Apply for Ministry"
+            }
         }
     }
 };
