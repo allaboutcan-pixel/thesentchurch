@@ -275,21 +275,21 @@ const Prayer = () => {
 
                 {/* 3. Prayer Topics Section */}
                 <div className="max-w-5xl mx-auto px-4 pb-32">
-                    <div className="mb-12">
-                        <div className="flex items-center gap-3 mb-2">
+                    <div className="mb-20 text-center">
+                        <div className="flex items-center justify-center gap-3 mb-4">
                             <Sparkles className="text-blue-500 w-5 h-5" />
                             <span className="text-blue-600 font-bold tracking-widest text-sm uppercase">Intercessory Ministry</span>
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-black text-blue-900 mb-4 tracking-tight">
+                        <h2 className="text-2xl md:text-3xl font-black text-blue-900 mb-6 tracking-tight">
                             {siteConfig?.prayerTopicsTitle || t('ministry.prayer.section1_title')}
                         </h2>
                         <div
-                            className="text-lg text-stone-500 font-medium leading-relaxed max-w-2xl"
+                            className="text-lg text-stone-500 font-medium leading-relaxed max-w-2xl mx-auto break-keep"
                             dangerouslySetInnerHTML={{ __html: (siteConfig?.prayerTopicsSubtitle || t('ministry.prayer.section1_desc')).replace(/\n/g, '<br/>') }}
                         />
                     </div>
 
-                    <div className="space-y-8">
+                    <div className="space-y-16">
                         {prayerSections.map((section) => (
                             <motion.div
                                 key={section.id}
