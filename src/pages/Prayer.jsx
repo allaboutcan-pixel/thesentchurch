@@ -403,7 +403,26 @@ const Prayer = () => {
                 </div>
 
                 {/* 4. CTA Section / Banner Flow */}
-                <div className="text-center pb-20">
+                <div className="text-center pb-24">
+                    {/* Banner Header */}
+                    <div className="mb-16 max-w-2xl mx-auto px-4">
+                        <h2 className="text-2xl md:text-3xl font-black text-blue-900 mb-6 tracking-tight">
+                            함께 기도해요
+                        </h2>
+                        <div className="space-y-3">
+                            <p className="text-lg md:text-xl text-stone-700 font-bold leading-relaxed">
+                                기도제목을 남겨주세요.
+                            </p>
+                            <p className="text-lg md:text-xl text-stone-700 font-bold leading-relaxed">
+                                교회가 함께 마음 모아 기도하겠습니다.
+                            </p>
+                            <p className="text-base text-stone-500 font-medium leading-relaxed pt-2">
+                                기도제목은 중보기도 사역자들만 열람가능하며, 철저하게 비밀로 지킵니다.
+                            </p>
+                        </div>
+                        <div className="mt-10 w-16 h-1 bg-blue-200 mx-auto rounded-full" />
+                    </div>
+
                     <div className="relative max-w-sm mx-auto shadow-2xl overflow-hidden bg-white group cursor-pointer aspect-[3/4] rounded-3xl"
                         onClick={() => setIsModalOpen(true)}
                     >
