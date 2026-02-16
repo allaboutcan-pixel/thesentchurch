@@ -255,7 +255,19 @@ const Admin = () => {
     const [columns, setColumns] = useState([]);
     const [dailyWords, setDailyWords] = useState([]);
     const [calendarEvents, setCalendarEvents] = useState([]);
-    const [bannerFiles, setBannerFiles] = useState({});
+    const [bannerFiles, setBannerFiles] = useState({
+        heroImage: null,
+        aboutBanner: null,
+        newsBanner: null,
+        ministryBanner: null,
+        resourcesBanner: null,
+        missionBanner: null,
+        prayerBanner: null,
+        teeBanner: null,
+        teamBanner: null,
+        prayerIntroImage: null,
+        prayerRequestImage: null
+    });
 
     // Form States
     const [formData, setFormData] = useState({
