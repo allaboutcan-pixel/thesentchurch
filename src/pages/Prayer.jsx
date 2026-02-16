@@ -209,7 +209,7 @@ const Prayer = () => {
                         <span className="inline-block px-4 py-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-sm font-bold tracking-widest uppercase rounded-full mb-6 backdrop-blur-sm shadow-sm">
                             {t('ministry.prayer.intro_title')}
                         </span>
-                        <h2 className="text-2xl md:text-4xl font-black text-blue-900 leading-tight">
+                        <h2 className="text-2xl md:text-4xl font-black text-blue-900 leading-loose">
                             {t('ministry.prayer.intro_subtitle')}
                         </h2>
                     </div>
@@ -242,7 +242,7 @@ const Prayer = () => {
 
                         {/* Right Column: Invitation Text */}
                         <div className="text-left space-y-8">
-                            <div className="text-lg md:text-xl text-stone-700 leading-relaxed font-bold break-keep"
+                            <div className="text-lg md:text-xl text-stone-700 leading-loose font-bold break-keep"
                                 dangerouslySetInnerHTML={{ __html: t('ministry.prayer.intro_desc') }}
                             />
                             <div className="w-20 h-1.5 bg-blue-400/30 rounded-full" />
