@@ -376,7 +376,7 @@ const Home = () => {
 
                     <div className="flex flex-col gap-16">
                         {/* Church Calendar Section (Full Width) */}
-                        <div id="calendar" className="w-full scroll-mt-24">
+                        <div id="calendar" className="w-full scroll-mt-24 max-w-6xl mx-auto">
                             <div className="text-center mb-12">
                                 <h3 className="text-3xl md:text-4xl font-bold text-primary">{t('home.calendar_title')}</h3>
                                 <div className="w-16 h-1 bg-accent mx-auto mt-6" />
