@@ -105,7 +105,7 @@ const CalendarWidget = () => {
     }
 
     return (
-        <div className="bg-white rounded-[32px] p-6 lg:p-8 shadow-2xl shadow-primary/5 border border-gray-50">
+        <div className="bg-white rounded-[32px] p-4 lg:p-6 shadow-2xl shadow-primary/5 border border-gray-50">
             <div className="flex flex-col">
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-4">
@@ -142,7 +142,7 @@ const CalendarWidget = () => {
 
                 <div className="flex-grow flex flex-col gap-1">
                     {rows.map((row, rowIndex) => (
-                        <div key={rowIndex} className="grid grid-cols-7 gap-1 min-h-[7rem] group/row">
+                        <div key={rowIndex} className="grid grid-cols-7 gap-1 min-h-[5rem] group/row">
                             {row.map((day, dayIndex) => {
                                 const dayEvents = events.filter(e => isDateInEventRange(day.date, e));
                                 const isSelected = isSameDay(day.date, selectedDate);
