@@ -345,7 +345,7 @@ const Prayer = () => {
                             <span className="text-xl font-bold text-blue-900 uppercase tracking-widest">{t('ministry.prayer.section4_title')}</span>
                         </div>
                         <div className="h-px w-full md:w-px md:h-12 bg-blue-900/20" />
-                        <div className="text-xl md:text-2xl font-sans font-bold text-blue-800">
+                        <div className="text-xl md:text-2xl font-sans font-bold text-blue-800 whitespace-pre-line leading-relaxed">
                             {siteConfig?.prayerHours !== undefined ? siteConfig.prayerHours : "매주 주일 낮 12:30 | 2층 자모실"}
                         </div>
                     </motion.div>
