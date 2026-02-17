@@ -127,7 +127,7 @@ const ComingSoon = ({ type = 'mission' }) => {
                             페이지 준비중입니다
                         </h2>
                         <p className="text-slate-500 font-medium text-lg md:text-xl">
-                            더 나은 서비스를 위해 내용을 준비하고 있습니다.
+                            We’re preparing this page.
                         </p>
                     </motion.div>
 
