@@ -22,6 +22,7 @@ const ComingSoon = ({ type = 'mission' }) => {
     const bannerFit = siteConfig?.[`${type}BannerFit`] || 'cover';
     const overlayOpacity = siteConfig?.[`${type}OverlayOpacity`] || 40;
     const height = siteConfig?.[`${type}Height`] || 'medium';
+    const bannerPosition = siteConfig?.[`${type}BannerPosition`] || 50;
 
     // Dynamic Style Settings
     const titleFont = siteConfig?.[`${type}TitleFont`] || 'font-sans';
@@ -55,7 +56,10 @@ const ComingSoon = ({ type = 'mission' }) => {
                                     "absolute inset-0 bg-no-repeat bg-center transform scale-105 transition-all duration-700",
                                     bannerFit === 'contain' ? "bg-contain" : "bg-cover"
                                 )}
-                                style={{ backgroundImage: `url(${banner})` }}
+                                style={{
+                                    backgroundImage: `url(${banner})`,
+                                    backgroundPosition: `center ${bannerPosition}%`
+                                }}
                             />
                             <div
                                 className="absolute inset-0 bg-black/40"
@@ -150,7 +154,7 @@ const ComingSoon = ({ type = 'mission' }) => {
             </div>
 
             {/* 3. Ministry Navigation at Bottom */}
-            {['mission', 'prayer', 'team', 'tee'].includes(type) && (
+            {['mission', 'prayer', 'team', 'tee', 'bible'].includes(type) && (
                 <div className="w-full py-16 border-t border-slate-100 bg-white">
                     <div className="container mx-auto px-4">
                         <MinistryNav

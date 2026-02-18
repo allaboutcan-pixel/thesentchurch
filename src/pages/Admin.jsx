@@ -300,7 +300,27 @@ const Admin = () => {
         newsTitleItalic: false, newsSubtitleItalic: false,
         newsTitleSize: 40, newsSubtitleSize: 18,
         newsHeight: 'medium', newsOverlayOpacity: 40,
-        newsBannerFit: 'cover',
+        newsBannerFit: 'cover', newsBannerPosition: 50,
+
+        // TEE
+        teeBanner: '', teeTitle: '', teeSubtitle: '',
+        teeTitleFont: 'font-sans', teeSubtitleFont: 'font-sans',
+        teeTitleColor: '#ffffff', teeSubtitleColor: '#f8fafc',
+        teeTitleItalic: false, teeSubtitleItalic: false,
+        teeTitleWeight: 'font-bold', teeSubtitleWeight: 'font-medium',
+        teeTitleSize: 40, teeSubtitleSize: 18,
+        teeHeight: 'medium', teeOverlayOpacity: 40,
+        teeBannerFit: 'cover',
+
+        // Bible Study
+        bibleBanner: '', bibleTitle: '', bibleSubtitle: '',
+        bibleTitleFont: 'font-sans', bibleSubtitleFont: 'font-sans',
+        bibleTitleColor: '#ffffff', bibleSubtitleColor: '#f8fafc',
+        bibleTitleItalic: false, bibleSubtitleItalic: false,
+        bibleTitleWeight: 'font-bold', bibleSubtitleWeight: 'font-medium',
+        bibleTitleSize: 40, bibleSubtitleSize: 18,
+        bibleHeight: 'medium', bibleOverlayOpacity: 40,
+        bibleBannerFit: 'cover', bibleBannerPosition: 50,
 
         // Ministry
         ministryBanner: '', ministryTitle: '', ministrySubtitle: '',
@@ -309,7 +329,7 @@ const Admin = () => {
         ministryTitleItalic: false, ministrySubtitleItalic: false,
         ministryTitleSize: 40, ministrySubtitleSize: 18,
         ministryHeight: 'medium', ministryOverlayOpacity: 40,
-        ministryBannerFit: 'cover',
+        ministryBannerFit: 'cover', ministryBannerPosition: 50,
 
         // Resources
         resourcesBanner: '', resourcesTitle: '', resourcesSubtitle: '',
@@ -318,7 +338,7 @@ const Admin = () => {
         resourcesTitleItalic: false, resourcesSubtitleItalic: false,
         resourcesTitleSize: 40, resourcesSubtitleSize: 18,
         resourcesHeight: 'medium', resourcesOverlayOpacity: 40,
-        resourcesBannerFit: 'cover',
+        resourcesBannerFit: 'cover', resourcesBannerPosition: 50,
 
         // Mission
         missionBanner: '', missionTitle: '', missionSubtitle: '',
@@ -328,7 +348,7 @@ const Admin = () => {
         missionTitleWeight: 'font-bold', missionSubtitleWeight: 'font-medium',
         missionTitleSize: 40, missionSubtitleSize: 18,
         missionHeight: 'medium', missionOverlayOpacity: 40,
-        missionBannerFit: 'cover',
+        missionBannerFit: 'cover', missionBannerPosition: 50,
 
         // Prayer
         prayerBanner: '', prayerTitle: '', prayerSubtitle: '',
@@ -338,7 +358,7 @@ const Admin = () => {
         prayerTitleWeight: 'font-bold', prayerSubtitleWeight: 'font-medium',
         prayerTitleSize: 40, prayerSubtitleSize: 18,
         prayerHeight: 'medium', prayerOverlayOpacity: 40,
-        prayerBannerFit: 'cover',
+        prayerBannerFit: 'cover', prayerBannerPosition: 50,
 
         // TEE
         teeBanner: '', teeTitle: '', teeSubtitle: '',
@@ -358,7 +378,7 @@ const Admin = () => {
         teamTitleWeight: 'font-bold', teamSubtitleWeight: 'font-medium',
         teamTitleSize: 40, teamSubtitleSize: 18,
         teamHeight: 'medium', teamOverlayOpacity: 40,
-        teamBannerFit: 'cover',
+        teamBannerFit: 'cover', teamBannerPosition: 50,
 
         // Individual Ministry Items
         ministryItems: [],
@@ -443,6 +463,7 @@ const Admin = () => {
                     heroHeight: fbConfig.heroHeight || 'full',
                     heroOverlayOpacity: fbConfig.heroOverlayOpacity || fbConfig.overlayOpacity || 50,
                     heroBannerFit: fbConfig.heroBannerFit || 'cover',
+                    heroBannerPosition: fbConfig.heroBannerPosition || 50,
 
                     aboutBanner: fbConfig.aboutBanner || '',
                     aboutTitle: fbConfig.aboutTitle || '',
@@ -460,6 +481,7 @@ const Admin = () => {
                     aboutHeight: fbConfig.aboutHeight || 'medium',
                     aboutOverlayOpacity: fbConfig.aboutOverlayOpacity || 40,
                     aboutBannerFit: fbConfig.aboutBannerFit || 'cover',
+                    aboutBannerPosition: fbConfig.aboutBannerPosition || 50,
 
                     newsBanner: fbConfig.newsBanner || fbConfig.worshipBanner || '',
                     newsTitle: fbConfig.newsTitle || fbConfig.worshipTitle || '',
@@ -477,6 +499,7 @@ const Admin = () => {
                     newsHeight: fbConfig.newsHeight || fbConfig.worshipHeight || 'medium',
                     newsOverlayOpacity: fbConfig.newsOverlayOpacity !== undefined ? fbConfig.newsOverlayOpacity : (fbConfig.worshipOverlayOpacity || 40),
                     newsBannerFit: fbConfig.newsBannerFit || 'cover',
+                    newsBannerPosition: fbConfig.newsBannerPosition || 50,
 
                     ministryBanner: fbConfig.ministryBanner || '',
                     ministryTitle: fbConfig.ministryTitle || '',
@@ -494,6 +517,7 @@ const Admin = () => {
                     ministryHeight: fbConfig.ministryHeight || 'medium',
                     ministryOverlayOpacity: fbConfig.ministryOverlayOpacity || 40,
                     ministryBannerFit: fbConfig.ministryBannerFit || 'cover',
+                    ministryBannerPosition: fbConfig.ministryBannerPosition || 50,
 
                     resourcesBanner: fbConfig.resourcesBanner || '',
                     resourcesTitle: fbConfig.resourcesTitle || '',
@@ -511,6 +535,7 @@ const Admin = () => {
                     resourcesHeight: fbConfig.resourcesHeight || 'medium',
                     resourcesOverlayOpacity: fbConfig.resourcesOverlayOpacity || 40,
                     resourcesBannerFit: fbConfig.resourcesBannerFit || 'cover',
+                    resourcesBannerPosition: fbConfig.resourcesBannerPosition || 50,
 
                     missionBanner: fbConfig.missionBanner || '',
                     missionTitle: fbConfig.missionTitle || '',
@@ -528,6 +553,7 @@ const Admin = () => {
                     missionHeight: fbConfig.missionHeight || 'medium',
                     missionOverlayOpacity: fbConfig.missionOverlayOpacity || 40,
                     missionBannerFit: fbConfig.missionBannerFit || 'cover',
+                    missionBannerPosition: fbConfig.missionBannerPosition || 50,
 
                     prayerBanner: fbConfig.prayerBanner || '',
                     prayerTitle: fbConfig.prayerTitle || '',
@@ -545,6 +571,7 @@ const Admin = () => {
                     prayerHeight: fbConfig.prayerHeight || 'medium',
                     prayerOverlayOpacity: fbConfig.prayerOverlayOpacity || 40,
                     prayerBannerFit: fbConfig.prayerBannerFit || 'cover',
+                    prayerBannerPosition: fbConfig.prayerBannerPosition || 50,
 
                     teeBanner: fbConfig.teeBanner || '',
                     teeTitle: fbConfig.teeTitle || '',
@@ -562,6 +589,7 @@ const Admin = () => {
                     teeHeight: fbConfig.teeHeight || 'medium',
                     teeOverlayOpacity: fbConfig.teeOverlayOpacity || 40,
                     teeBannerFit: fbConfig.teeBannerFit || 'cover',
+                    teeBannerPosition: fbConfig.teeBannerPosition || 50,
 
                     teamBanner: fbConfig.teamBanner || '',
                     teamTitle: fbConfig.teamTitle || '',
@@ -578,7 +606,28 @@ const Admin = () => {
                     teamSubtitleSize: fbConfig.teamSubtitleSize || 18,
                     teamHeight: fbConfig.teamHeight || 'medium',
                     teamOverlayOpacity: fbConfig.teamOverlayOpacity || 40,
+                    teamHeight: fbConfig.teamHeight || 'medium',
+                    teamOverlayOpacity: fbConfig.teamOverlayOpacity || 40,
                     teamBannerFit: fbConfig.teamBannerFit || 'cover',
+                    teamBannerPosition: fbConfig.teamBannerPosition || 50,
+
+                    bibleBanner: fbConfig.bibleBanner || '',
+                    bibleTitle: fbConfig.bibleTitle || '',
+                    bibleSubtitle: fbConfig.bibleSubtitle || '',
+                    bibleTitleFont: fbConfig.bibleTitleFont || 'font-sans',
+                    bibleSubtitleFont: fbConfig.bibleSubtitleFont || 'font-sans',
+                    bibleTitleColor: fbConfig.bibleTitleColor || '#ffffff',
+                    bibleSubtitleColor: fbConfig.bibleSubtitleColor || '#f8fafc',
+                    bibleTitleItalic: fbConfig.bibleTitleItalic || false,
+                    bibleSubtitleItalic: fbConfig.bibleSubtitleItalic || false,
+                    bibleTitleWeight: fbConfig.bibleTitleWeight || 'font-bold',
+                    bibleSubtitleWeight: fbConfig.bibleSubtitleWeight || 'font-medium',
+                    bibleTitleSize: fbConfig.bibleTitleSize || 40,
+                    bibleSubtitleSize: fbConfig.bibleSubtitleSize || 18,
+                    bibleHeight: fbConfig.bibleHeight || 'medium',
+                    bibleOverlayOpacity: fbConfig.bibleOverlayOpacity || 40,
+                    bibleBannerFit: fbConfig.bibleBannerFit || 'cover',
+                    bibleBannerPosition: fbConfig.bibleBannerPosition || 50,
 
                     ministryItems: fbConfig.ministryItems || churchData.ministries.map(m => ({
                         ...m,
@@ -1023,7 +1072,7 @@ const Admin = () => {
                 // Process ONLY media fields that might need upload or drive formatting
                 const mediaFields = [
                     'heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner',
-                    'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage'
+                    'missionBanner', 'prayerBanner', 'teeBanner', 'bibleBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage'
                 ];
                 for (const field of mediaFields) {
                     await processField(field);
@@ -1038,11 +1087,13 @@ const Admin = () => {
                     'resourcesTitle', 'resourcesSubtitle', 'resourcesTitleFont', 'resourcesSubtitleFont', 'resourcesTitleColor', 'resourcesSubtitleColor', 'resourcesTitleItalic', 'resourcesSubtitleItalic', 'resourcesTitleSize', 'resourcesSubtitleSize', 'resourcesHeight', 'resourcesOverlayOpacity',
                     'ministryItems',
                     'teamMinistryItems',
-                    'missionTitle', 'missionSubtitle', 'missionTitleFont', 'missionSubtitleFont', 'missionTitleColor', 'missionSubtitleColor', 'missionTitleItalic', 'missionSubtitleItalic', 'missionTitleWeight', 'missionSubtitleWeight', 'missionTitleSize', 'missionSubtitleSize', 'missionHeight', 'missionOverlayOpacity', 'missionBannerFit',
+                    'missionTitle', 'missionSubtitle', 'missionTitleFont', 'missionSubtitleFont', 'missionTitleColor', 'missionSubtitleColor', 'missionTitleItalic', 'missionSubtitleItalic', 'missionTitleWeight', 'missionSubtitleWeight', 'missionTitleSize', 'missionSubtitleSize', 'missionHeight', 'missionOverlayOpacity', 'missionBannerFit', 'missionBannerPosition',
                     'prayerCommonTopics', 'prayerPastorTopics', 'prayerChurchTopics', 'prayerChurchTopics2026', 'prayerTopicsTitle', 'prayerTopicsSubtitle', 'prayerCoreValues', 'prayerGoals', 'prayerHours',
-                    'teeTitle', 'teeSubtitle', 'teeTitleFont', 'teeSubtitleFont', 'teeTitleColor', 'teeSubtitleColor', 'teeTitleItalic', 'teeSubtitleItalic', 'teeTitleWeight', 'teeSubtitleWeight', 'teeTitleSize', 'teeSubtitleSize', 'teeHeight', 'teeOverlayOpacity', 'teeBannerFit',
-                    'teamTitle', 'teamSubtitle', 'teamTitleFont', 'teamSubtitleFont', 'teamTitleColor', 'teamSubtitleColor', 'teamTitleItalic', 'teamSubtitleItalic', 'teamTitleWeight', 'teamSubtitleWeight', 'teamTitleSize', 'teamSubtitleSize', 'teamHeight', 'teamOverlayOpacity', 'teamBannerFit',
-                    'heroBannerFit', 'aboutBannerFit', 'newsBannerFit', 'ministryBannerFit', 'resourcesBannerFit'
+                    'teeTitle', 'teeSubtitle', 'teeTitleFont', 'teeSubtitleFont', 'teeTitleColor', 'teeSubtitleColor', 'teeTitleItalic', 'teeSubtitleItalic', 'teeTitleWeight', 'teeSubtitleWeight', 'teeTitleSize', 'teeSubtitleSize', 'teeHeight', 'teeOverlayOpacity', 'teeBannerFit', 'teeBannerPosition',
+                    'bibleTitle', 'bibleSubtitle', 'bibleTitleFont', 'bibleSubtitleFont', 'bibleTitleColor', 'bibleSubtitleColor', 'bibleTitleItalic', 'bibleSubtitleItalic', 'bibleTitleWeight', 'bibleSubtitleWeight', 'bibleTitleSize', 'bibleSubtitleSize', 'bibleHeight', 'bibleOverlayOpacity', 'bibleBannerFit', 'bibleBannerPosition',
+                    'teamTitle', 'teamSubtitle', 'teamTitleFont', 'teamSubtitleFont', 'teamTitleColor', 'teamSubtitleColor', 'teamTitleItalic', 'teamSubtitleItalic', 'teamTitleWeight', 'teamSubtitleWeight', 'teamTitleSize', 'teamSubtitleSize', 'teamHeight', 'teamOverlayOpacity', 'teamBannerFit', 'teamBannerPosition',
+                    'heroBannerFit', 'aboutBannerFit', 'newsBannerFit', 'ministryBannerFit', 'resourcesBannerFit', 'bibleBannerFit',
+                    'heroBannerPosition', 'aboutBannerPosition', 'newsBannerPosition', 'ministryBannerPosition', 'resourcesBannerPosition', 'prayerBannerPosition'
                 ];
                 for (const field of otherFields) {
                     currentConfig[field] = formData[field];
@@ -1318,6 +1369,26 @@ const Admin = () => {
                                     </button>
                                 ))}
                             </div>
+                            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 mt-4">
+                                <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 flex justify-between mb-4">
+                                    <span>배경 위치 (Y축)</span>
+                                    <span className="text-primary font-black">{formData[`${pageKey}BannerPosition`]}%</span>
+                                </label>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                                    value={formData[`${pageKey}BannerPosition`]}
+                                    onChange={(e) => setFormData({ ...formData, [`${pageKey}BannerPosition`]: e.target.value })}
+                                />
+                                <div className="flex justify-between text-[10px] text-gray-400 mt-1 px-1">
+                                    <span>Top (0%)</span>
+                                    <span>Center (50%)</span>
+                                    <span>Bottom (100%)</span>
+                                </div>
+                            </div>
+
                             <p className="text-[10px] text-gray-400 px-1 mt-1 font-medium italic">
                                 * '전체 보기' 선택 시 이미지가 잘리지 않고 전체가 보입니다.
                             </p>
@@ -2852,6 +2923,7 @@ const Admin = () => {
                                 {renderBannerSettings('resources', '⛪ 설교와 말씀 (Sermons)', 'resourcesBanner')}
                                 {renderBannerSettings('ministry', '🎓 교육 (Education)', 'ministryBanner')}
                                 {renderBannerSettings('tee', '📖 TEE 교육 (TEE)', 'teeBanner')}
+                                {renderBannerSettings('bible', '📖 성경 공부 (Bible Study)', 'bibleBanner')}
                                 {renderBannerSettings('mission', '🌏 선교사역 (Mission)', 'missionBanner')}
                                 {renderBannerSettings('team', '👥 팀사역 (Team Ministry)', 'teamBanner')}
                                 {renderBannerSettings('prayer', '🙏 중보기도 (Intercessory Prayer)', 'prayerBanner')}

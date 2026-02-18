@@ -238,6 +238,11 @@
                     "id": "tee",
                     "label": "TEE",
                     "path": "/ministry/tee"
+                },
+                {
+                    "id": "bible",
+                    "label": "Bible Study",
+                    "path": "/ministry/bible"
                 }
             ]
         },

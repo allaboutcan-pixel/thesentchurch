@@ -24,7 +24,8 @@ const MinistryNav = ({ active, category = 'education' }) => {
 
     const educationItems = [
         { id: 'nextgen', to: '/ministry', icon: <Users size={18} /> },
-        { id: 'tee', to: '/ministry/tee', icon: <BookOpen size={18} /> }
+        { id: 'tee', to: '/ministry/tee', icon: <BookOpen size={18} /> },
+        { id: 'bible', to: '/ministry/bible', icon: <BookOpen size={18} /> }
     ];
 
     const ministryItems = [
