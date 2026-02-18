@@ -159,7 +159,7 @@ const ComingSoon = ({ type = 'mission' }) => {
                     <div className="container mx-auto px-4">
                         <MinistryNav
                             active={type === 'mission' ? 'mission_evangelism' : (type === 'team' ? 'team_ministry' : type)}
-                            category={['tee'].includes(type) ? 'education' : 'ministry'}
+                            category={['tee', 'bible'].includes(type) ? 'education' : 'ministry'}
                         />
                     </div>
                 </div>
