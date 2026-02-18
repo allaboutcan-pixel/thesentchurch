@@ -32,14 +32,13 @@ const Prayer = () => {
 
         setFormStatus('sending');
 
-        // EmailJS Configuration - PLACEHOLDERS
-        // User needs to fill these: SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY
-        const SERVICE_ID = 'YOUR_SERVICE_ID';
-        const TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-        const PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
+        // EmailJS Configuration from Site Config
+        const SERVICE_ID = siteConfig?.emailjsServiceId;
+        const TEMPLATE_ID = siteConfig?.emailjsTemplateId;
+        const PUBLIC_KEY = siteConfig?.emailjsPublicKey;
 
-        if (SERVICE_ID === 'YOUR_SERVICE_ID') {
-            alert('관리자 설정이 필요합니다. (EmailJS Keys Missing)');
+        if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+            alert(t('ministry.prayer.emailjs_missing') || '관리자 설정에서 EmailJS 키를 설정해주세요.');
             setFormStatus('idle');
             return;
         }
@@ -48,7 +47,7 @@ const Prayer = () => {
             from_name: formData.name,
             from_contact: formData.contact,
             message: formData.request,
-            to_email: 'thesentnamgyu@gmail.com, thesentheejoung@gmail.com, leahkang22@gmail.com'
+            to_email: siteConfig?.emailjsReceivers || 'thesentnamgyu@gmail.com, thesentheejoung@gmail.com, leahkang22@gmail.com'
         };
 
         emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)

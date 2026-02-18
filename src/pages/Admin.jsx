@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Upload, FileText, Check, X, Play, LayoutDashboard, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, Shield, AlertTriangle, Type, ArrowUp, ArrowDown, Heart, Send } from 'lucide-react';
+import { Upload, FileText, Check, X, Play, LayoutDashboard, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, Shield, AlertTriangle, Type, ArrowUp, ArrowDown, Heart, Send, Mail } from 'lucide-react';
 import sermonsInitialData from '../data/sermons.json';
 import bulletinsInitialData from '../data/bulletins.json';
 import noticesInitialData from '../data/notices.json';
@@ -400,7 +400,10 @@ const Admin = () => {
 
         author: '', fileType: 'pdf',
         note: '', eventType: 'default',
-        startDate: '', endDate: ''
+        startDate: '', endDate: '',
+
+        // EmailJS Configuration
+        emailjsServiceId: '', emailjsTemplateId: '', emailjsPublicKey: '', emailjsReceivers: ''
     });
 
     const [pastorFile, setPastorFile] = useState(null);
@@ -649,6 +652,12 @@ const Admin = () => {
                     prayerCoreValues: fbConfig.prayerCoreValues || '',
                     prayerGoals: fbConfig.prayerGoals || '',
                     prayerHours: fbConfig.prayerHours || '',
+
+                    // EmailJS Config
+                    emailjsServiceId: fbConfig.emailjsServiceId || '',
+                    emailjsTemplateId: fbConfig.emailjsTemplateId || '',
+                    emailjsPublicKey: fbConfig.emailjsPublicKey || '',
+                    emailjsReceivers: fbConfig.emailjsReceivers || '',
                 }));
                 setColumns(fbColumns || []);
                 if (fbConfig.staff) {
@@ -1093,7 +1102,8 @@ const Admin = () => {
                     'bibleTitle', 'bibleSubtitle', 'bibleTitleFont', 'bibleSubtitleFont', 'bibleTitleColor', 'bibleSubtitleColor', 'bibleTitleItalic', 'bibleSubtitleItalic', 'bibleTitleWeight', 'bibleSubtitleWeight', 'bibleTitleSize', 'bibleSubtitleSize', 'bibleHeight', 'bibleOverlayOpacity', 'bibleBannerFit', 'bibleBannerPosition',
                     'teamTitle', 'teamSubtitle', 'teamTitleFont', 'teamSubtitleFont', 'teamTitleColor', 'teamSubtitleColor', 'teamTitleItalic', 'teamSubtitleItalic', 'teamTitleWeight', 'teamSubtitleWeight', 'teamTitleSize', 'teamSubtitleSize', 'teamHeight', 'teamOverlayOpacity', 'teamBannerFit', 'teamBannerPosition',
                     'heroBannerFit', 'aboutBannerFit', 'newsBannerFit', 'ministryBannerFit', 'resourcesBannerFit', 'bibleBannerFit',
-                    'heroBannerPosition', 'aboutBannerPosition', 'newsBannerPosition', 'ministryBannerPosition', 'resourcesBannerPosition', 'prayerBannerPosition'
+                    'heroBannerPosition', 'aboutBannerPosition', 'newsBannerPosition', 'ministryBannerPosition', 'resourcesBannerPosition', 'prayerBannerPosition',
+                    'emailjsServiceId', 'emailjsTemplateId', 'emailjsPublicKey', 'emailjsReceivers'
                 ];
                 for (const field of otherFields) {
                     currentConfig[field] = formData[field];
@@ -2423,6 +2433,59 @@ const Admin = () => {
                             </div>
 
                             <div className="space-y-8">
+                                {/* EmailJS Configuration Section */}
+                                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                        <div className="p-2 bg-indigo-50 rounded-xl text-indigo-600"><Mail size={20} /></div>
+                                        이메일 발송 설정 (EmailJS Configuration)
+                                    </h3>
+                                    <p className="text-sm text-gray-500 font-medium">
+                                        중보기도 요청을 이메일로 받기 위한 EmailJS 설정입니다. (발급받은 키 값을 입력해 주세요)
+                                    </p>
+                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-gray-600 ml-1">Service ID</label>
+                                            <input
+                                                type="text"
+                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-indigo-500/10 outline-none font-mono text-sm"
+                                                placeholder="예: service_xxxxxx"
+                                                value={formData.emailjsServiceId}
+                                                onChange={(e) => setFormData({ ...formData, emailjsServiceId: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-gray-600 ml-1">Template ID</label>
+                                            <input
+                                                type="text"
+                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-indigo-500/10 outline-none font-mono text-sm"
+                                                placeholder="예: template_xxxxxx"
+                                                value={formData.emailjsTemplateId}
+                                                onChange={(e) => setFormData({ ...formData, emailjsTemplateId: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-gray-600 ml-1">Public Key</label>
+                                            <input
+                                                type="text"
+                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-indigo-500/10 outline-none font-mono text-sm"
+                                                placeholder="예: xxxxxxxx-xxxx-xxxx"
+                                                value={formData.emailjsPublicKey}
+                                                onChange={(e) => setFormData({ ...formData, emailjsPublicKey: e.target.value })}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mt-6 space-y-2">
+                                        <label className="text-sm font-bold text-gray-600 ml-1">수신자 이메일 목록 (Receivers)</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-indigo-500/10 outline-none font-medium text-sm"
+                                            placeholder="예: email1@example.com, email2@example.com, email3@example.com (쉼표로 구분)"
+                                            value={formData.emailjsReceivers}
+                                            onChange={(e) => setFormData({ ...formData, emailjsReceivers: e.target.value })}
+                                        />
+                                        <p className="text-xs text-gray-400 ml-1">* 최대 3개의 이메일까지 입력 가능하며, 쉼표(,)로 구분해 주세요.</p>
+                                    </div>
+                                </div>
                                 {/* Intro Photo Banner Section */}
                                 <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
                                     <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
