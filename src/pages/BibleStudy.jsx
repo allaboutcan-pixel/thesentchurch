@@ -434,34 +434,6 @@ const BibleStudy = () => {
             {/* Section 5: Our Prayer */}
             <section className="py-24 bg-white">
                 <div className="container mx-auto px-6 max-w-5xl">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-black text-slate-900 mb-4">{t('bible.prayer_title')}</h2>
-                        <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full" />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {[
-                            { title: t('bible.prayer_1_title'), desc: t('bible.prayer_1_desc'), icon: <Heart className="w-8 h-8" /> },
-                            { title: t('bible.prayer_2_title'), desc: t('bible.prayer_2_desc'), icon: <Sprout className="w-8 h-8" /> }
-                        ].map((prayer, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, x: idx === 0 ? -20 : 20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                className="p-10 bg-[#fdfbf7] rounded-3xl border border-stone-100 flex flex-col gap-6 hover:shadow-lg transition-all"
-                            >
-                                <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-blue-600 shadow-sm border border-stone-50">
-                                    {prayer.icon}
-                                </div>
-                                <div>
-                                    <h4 className="text-2xl font-black text-slate-900 mb-3">{prayer.title}</h4>
-                                    <p className="text-lg text-slate-600 leading-relaxed break-keep font-medium">
-                                        {prayer.desc}
-                                    </p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
 
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
