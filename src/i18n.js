@@ -308,7 +308,7 @@ const resources = {
                 "feature_3_title": "For Everyone",
                 "feature_3_desc": "성경을 처음 펴는 분부터 깊은 복음을 갈망하는 분까지 모두 가능합니다.",
                 "curriculum_title": "학습 여정 (Curriculum)",
-                "curriculum_subtitle": "요한복음의 핵심 구조를 따라 4가지 테마로 진행됩니다.",
+                "curriculum_subtitle": "",
                 "theme1_title": "Theme 1. [성육신] 빛으로 찾아오시는 하나님",
                 "theme1_desc": "1장~4장: 탄생과 거듭남",
                 "theme1_events": "태초의 말씀, 빛과 어둠의 대비, 니고데모와 사마리아 여인",
