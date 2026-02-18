@@ -138,7 +138,7 @@ const BibleStudy = () => {
                         initial={{ opacity: 0, width: 0 }}
                         animate={{ opacity: 1, width: "3rem" }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="h-1 bg-blue-500 mb-6 rounded-full mx-auto"
+                        className="h-1 bg-green-500 mb-6 rounded-full mx-auto"
                     />
 
                     <motion.p
@@ -223,7 +223,7 @@ const BibleStudy = () => {
             </section>
 
             {/* Section 2: Curriculum */}
-            <section className="py-12 bg-white">
+            <section className="py-20 bg-white">
                 <div className="container mx-auto px-6 max-w-5xl">
                     <div className="text-center mb-10 px-4">
                         <h2 className="text-2xl font-black text-slate-900 mb-3">{t('bible.curriculum_title')}</h2>

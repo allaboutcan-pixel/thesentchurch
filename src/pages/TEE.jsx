@@ -87,7 +87,7 @@ const TEE = () => {
                         initial={{ opacity: 0, width: 0 }}
                         animate={{ opacity: 1, width: "3rem" }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="h-1 bg-blue-600 mb-6 rounded-full mx-auto"
+                        className="h-1 bg-green-600 mb-6 rounded-full mx-auto"
                     />
 
                     <motion.p
