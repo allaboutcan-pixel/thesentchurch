@@ -90,6 +90,24 @@ export const dbService = {
         return url;
     },
 
+    // Alternative format for Google Drive image (using direct view fallback)
+    formatDriveImageAlternative: (url) => {
+        if (!url) return "";
+        if (typeof url !== 'string') return url;
+
+        if (url.includes('drive.google.com')) {
+            const fileMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
+                url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
+                url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+
+            if (fileMatch && fileMatch[1]) {
+                // Alternative method: Direct user content view
+                return `https://drive.google.com/uc?export=view&id=${fileMatch[1]}`;
+            }
+        }
+        return url;
+    },
+
     // Format Google Drive link to direct video stream (for video src)
     formatDriveVideo: (url) => {
         if (!url) return "";

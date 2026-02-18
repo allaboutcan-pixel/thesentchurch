@@ -87,7 +87,7 @@ const TEE = () => {
                         initial={{ opacity: 0, width: 0 }}
                         animate={{ opacity: 1, width: "3rem" }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="h-1 bg-[#8d6e63] mb-6 rounded-full mx-auto"
+                        className="h-1 bg-blue-600 mb-6 rounded-full mx-auto"
                     />
 
                     <motion.p
@@ -117,8 +117,8 @@ const TEE = () => {
                 </div>
             </div>
 
-            {/* 1. Intro Section (White Background) */}
-            <section className="py-24 bg-white relative overflow-hidden">
+            {/* 1. Intro Section (Brown Background) */}
+            <section className="py-32 bg-[#fdfbf7] relative overflow-hidden">
                 <div className="container mx-auto px-6 max-w-4xl relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -133,7 +133,7 @@ const TEE = () => {
                         <h2 className="text-3xl md:text-4xl font-sans font-bold text-slate-900">
                             {t('tee.intro_title')}
                         </h2>
-                        <div className="space-y-6 text-lg text-slate-600 leading-relaxed word-keep break-keep">
+                        <div className="space-y-6 text-lg text-slate-600 leading-loose word-keep break-keep">
                             <p dangerouslySetInnerHTML={{ __html: t('tee.intro_desc') }} />
                             <p dangerouslySetInnerHTML={{ __html: t('tee.intro_subdesc') }} />
                         </div>
@@ -142,7 +142,7 @@ const TEE = () => {
                         <div className="mt-12 p-8 md:p-10 bg-white rounded-xl border-l-4 border-blue-600 shadow-md max-w-3xl mx-auto">
                             <Quote className="w-8 h-8 text-blue-400 mb-4 mx-auto opacity-50" />
                             <p
-                                className="text-lg md:text-xl font-sans italic text-slate-700 mb-4 leading-relaxed break-keep"
+                                className="text-lg md:text-xl font-sans italic text-slate-700 mb-4 leading-loose break-keep"
                                 dangerouslySetInnerHTML={{ __html: `"${t('tee.bible_verse')}"` }}
                             />
                             <p className="text-sm font-bold text-blue-600 uppercase tracking-wide">
@@ -157,7 +157,7 @@ const TEE = () => {
             </section>
 
             {/* 2. Goals Section (Warm Grey/Beige Background) */}
-            <section className="py-24 bg-[#efebe9]">
+            <section className="py-32 bg-[#efebe9]">
                 <div className="container mx-auto px-6 max-w-6xl">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                         {/* Ministry Goal */}
@@ -176,13 +176,13 @@ const TEE = () => {
                             </div>
 
                             <div className="flex-1 flex items-center justify-center py-4">
-                                <h4 className="text-2xl md:text-3xl font-sans font-bold text-[#3e2723] text-center">
+                                <h4 className="text-2xl md:text-3xl font-sans font-bold text-blue-900 text-center leading-relaxed">
                                     {t('tee.ministry_goal_subtitle')}
                                 </h4>
                             </div>
 
                             <div className="h-px bg-slate-200 w-full mb-6 mt-auto" />
-                            <p className="text-lg font-black text-center text-slate-700 italic font-sans">
+                            <p className="text-lg font-black text-center text-slate-700 italic font-sans leading-relaxed">
                                 {t('tee.ministry_goal_quote')}
                             </p>
                         </motion.div>
@@ -201,7 +201,7 @@ const TEE = () => {
                                 </div>
                                 <h3 className="text-xl font-bold text-slate-800">{t('tee.core_goal_title')}</h3>
                             </div>
-                            <div className="text-slate-700 leading-relaxed text-lg space-y-4">
+                            <div className="text-slate-700 leading-loose text-lg space-y-4">
                                 <p dangerouslySetInnerHTML={{ __html: t('tee.core_goal_desc') }} />
                             </div>
                         </motion.div>
@@ -210,7 +210,7 @@ const TEE = () => {
             </section>
 
             {/* 3. Core Values & Features (White) */}
-            <section className="py-24 bg-white">
+            <section className="py-32 bg-white">
                 <div className="container mx-auto px-6 max-w-6xl">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
                         {/* Value: Application */}
@@ -228,7 +228,7 @@ const TEE = () => {
                                 <h2 className="text-xl font-sans font-bold text-slate-900 mb-4">
                                     {t('tee.core_value_subtitle')}
                                 </h2>
-                                <p className="text-base text-slate-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: t('tee.core_value_desc') }} />
+                                <p className="text-base text-slate-700 leading-loose" dangerouslySetInnerHTML={{ __html: t('tee.core_value_desc') }} />
                             </div>
 
                             <div className="bg-slate-50 p-6 rounded-xl border border-blue-100 mt-auto">
@@ -256,7 +256,7 @@ const TEE = () => {
                                     <Award className="text-white" />
                                     <span className="text-white">{t('tee.features_title')}</span>
                                 </h3>
-                                <div className="space-y-6 text-blue-50 text-xl leading-relaxed whitespace-pre-line font-light text-center">
+                                <div className="space-y-6 text-blue-50 text-xl leading-loose whitespace-pre-line font-light text-center">
                                     <span className="md:hidden">{t('tee.features_desc_mobile')}</span>
                                     <span className="hidden md:block">{t('tee.features_desc')}</span>
                                 </div>
@@ -267,7 +267,7 @@ const TEE = () => {
             </section>
 
             {/* 4. Methods (SMART) - Stone/Light Brown Bg */}
-            < section className="py-20 bg-[#faf8f5]" >
+            < section className="py-32 bg-[#faf8f5]" >
                 <div className="container mx-auto px-6">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-sans font-bold text-slate-900 mb-8">
@@ -288,7 +288,7 @@ const TEE = () => {
                             >
                                 <div className="text-4xl font-black text-blue-200 mb-3">{item.letter}</div>
                                 <h4 className="text-lg font-bold text-slate-700 mb-2">{item.title.split('–')[1].trim()}</h4>
-                                <p className="text-sm text-slate-500 break-keep">{item.desc}</p>
+                                <p className="text-sm text-slate-500 break-keep leading-relaxed">{item.desc}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -296,7 +296,7 @@ const TEE = () => {
             </section >
 
             {/* 5. Fruits (Conclusion) - Simple Clean White */}
-            < section className="py-24 bg-white text-center" >
+            < section className="py-32 bg-white text-center" >
                 <div className="container mx-auto px-6 max-w-3xl">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}

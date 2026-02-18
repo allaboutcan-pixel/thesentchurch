@@ -6,7 +6,7 @@ import noticesInitialData from '../data/notices.json';
 
 import churchData from '../data/church_data.json';
 import { dbService } from '../services/dbService';
-import { isVideo, getYoutubeId } from '../utils/mediaUtils';
+import { isVideo, getYoutubeId, getDriveId } from '../utils/mediaUtils';
 import clsx from 'clsx';
 
 const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBannerFiles, aspectRatio = "aspect-video" }) => {
@@ -27,12 +27,17 @@ const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBann
     const potentialIsVideo = currentFile ? isVideo(currentFile) : isVideo(previewUrl);
 
     // Format Drive links based on their type to ensure they preview correctly
-    // If it's a Drive link and we haven't already determined it's a video, default to image formatting
-    const mediaUrl = (typeof previewUrl === 'string' && previewUrl.includes('drive.google.com'))
-        ? (potentialIsVideo || isDriveVideo)
+    const mediaUrl = useMemo(() => {
+        if (typeof previewUrl !== 'string' || !previewUrl.includes('drive.google.com')) return previewUrl;
+
+        // If it's already a processed thumbnail or media link, keep it as is
+        if (previewUrl.includes('/thumbnail') || previewUrl.includes('export=media') || previewUrl.includes('export=view')) return previewUrl;
+
+        // Decide format based on detected type
+        return (potentialIsVideo || isDriveVideo)
             ? dbService.formatDriveVideo(previewUrl)
-            : dbService.formatDriveImage(previewUrl)
-        : previewUrl;
+            : dbService.formatDriveImage(previewUrl);
+    }, [previewUrl, potentialIsVideo, isDriveVideo]);
 
     const isMediaVideo = currentFile ? isVideo(currentFile) : isVideo(mediaUrl);
 
@@ -184,6 +189,38 @@ const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBann
                                     🎬 비디오로 변환
                                 </button>
                             </div>
+                            <div className="flex gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        const inputElement = document.getElementById(`drive-input-${fieldName}`);
+                                        const input = inputElement?.value;
+                                        if (input && typeof input === 'string' && input.includes('drive.google.com')) {
+                                            const formatted = dbService.formatDriveImageAlternative(input);
+                                            onChange(formatted);
+                                            if (inputElement) inputElement.value = '';
+                                            alert('✅ 드라이브 [대체 이미지] 방식으로 변환되었습니다!');
+                                        } else {
+                                            alert('구글 드라이브 링크를 먼저 입력해주세요.');
+                                        }
+                                    }}
+                                    className="flex-grow py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-[9px] font-black transition-all border border-slate-200/50"
+                                >
+                                    🔄 다른 방식으로 로드
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        if (window.confirm('삭제하시겠습니까?')) {
+                                            onChange('');
+                                            setFile(null);
+                                        }
+                                    }}
+                                    className="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-500 rounded-xl text-[9px] font-black transition-all border border-red-100"
+                                >
+                                    🗑️ 지우기
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -197,10 +234,18 @@ const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBann
                         getYoutubeId(mediaUrl) ? (
                             <iframe
                                 key={mediaUrl}
-                                className={`w-full h-[150%] ${aspectRatio} pointer-events-none`}
+                                className={`w-full h-full ${aspectRatio} pointer-events-none`}
                                 src={`https://www.youtube.com/embed/${getYoutubeId(mediaUrl)}?autoplay=1&mute=1&loop=1&playlist=${getYoutubeId(mediaUrl)}&controls=0&showinfo=0&rel=0&iv_load_policy=3`}
                                 frameBorder="0"
                                 allow="autoplay; encrypted-media"
+                            ></iframe>
+                        ) : getDriveId(mediaUrl) ? (
+                            <iframe
+                                key={mediaUrl}
+                                className={`w-full h-full ${aspectRatio} border-none`}
+                                src={`https://drive.google.com/file/d/${getDriveId(mediaUrl)}/preview`}
+                                allow="autoplay"
+                                frameBorder="0"
                             ></iframe>
                         ) : (
                             <video
@@ -214,13 +259,36 @@ const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBann
                             />
                         )
                     ) : (
-                        <img
-                            src={mediaUrl}
-                            alt="Preview"
-                            className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
-                        />
+                        <div className="w-full h-full flex items-center justify-center bg-slate-50">
+                            <img
+                                src={mediaUrl}
+                                alt="Preview"
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                onError={(e) => {
+                                    e.target.style.display = 'none';
+                                    e.target.parentElement.innerHTML = '<div class="flex flex-col items-center gap-2 text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg><span class="text-[9px] font-bold uppercase">이미지를 불러올 수 없습니다</span></div>';
+                                }}
+                            />
+                        </div>
                     )}
                 </div>
+
+                {/* Drive Link Validation Info */}
+                {typeof value === 'string' && value.includes('drive.google.com') && (
+                    <div className="mt-2 space-y-1">
+                        {getDriveId(value) && getDriveId(value).length < 25 && (
+                            <p className="text-[9px] text-red-500 font-bold bg-red-50 p-2 rounded-lg border border-red-100 italic">
+                                ⚠️ 주의: 구글 드라이브 파일 ID가 너무 짧습니다 (현재 {getDriveId(value).length}자). <br />
+                                전체 링크를 다시 복사해서 붙여넣어주세요. (보통 33자 내외)
+                            </p>
+                        )}
+                        {!value.includes('thumbnail') && !value.includes('uc?id=') && (
+                            <p className="text-[10px] text-amber-600 font-bold bg-amber-50 p-2 rounded-lg border border-amber-100">
+                                ⚠️ 구글 드라이브 링크가 변환되지 않았습니다. 아래 [이미지로 변환] 또는 [비디오로 변환] 버튼을 눌러주세요.
+                            </p>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -266,7 +334,11 @@ const Admin = () => {
         teeBanner: null,
         teamBanner: null,
         prayerIntroImage: null,
-        prayerRequestImage: null
+        prayerRequestImage: null,
+        bibleStep1Image: null,
+        bibleStep2Image: null,
+        bibleStep3Image: null,
+        bibleStep4Image: null
     });
 
     // Form States
@@ -632,13 +704,13 @@ const Admin = () => {
                     bibleBannerFit: fbConfig.bibleBannerFit || 'cover',
                     bibleBannerPosition: fbConfig.bibleBannerPosition || 50,
 
-                    ministryItems: fbConfig.ministryItems || churchData.ministries.map(m => ({
+                    ministryItems: (fbConfig.ministryItems && fbConfig.ministryItems.length > 0) ? fbConfig.ministryItems : churchData.ministries.map(m => ({
                         ...m,
                         detail: m.id === 'tsc' ?
                             "[교육 목표]\n하나님을 알고, 하나님을 사랑하며, 하나님을 닮아가는 어린이\n\n[주요 활동]\n- 통합 예배: 부모님과 함께 드리는 예배를 통해 경외감을 배웁니다.\n- 분반 공부: 연령별 맞춤 성경 공부로 말씀의 기초를 다집니다.\n- 절기 행사: 부활절, 추수감사절, 성탄절 등 기독교 문화를 체험합니다.\n\nTSC는 우리 아이들이 세상의 빛과 소금으로 자라나도록 기도와 사랑으로 양육합니다." :
                             "[교육 비전]\n복음으로 무장하여 세상을 변화시키는 차세대 리더\n\n[주요 활동]\n- 열린 예배: 청소년들의 눈높이에 맞춘 찬양과 말씀 선포\n- 소그룹 나눔: 고민을 나누고 서로 중보하며 믿음의 우정을 쌓습니다.\n- 비전 트립: 수련회와 탐방을 통해 더 넓은 세상을 경험하고 비전을 찾습니다.\n\nTSY는 혼자가 아닌 '함께'의 가치를 배우며 믿음의 여정을 걸어가는 공동체입니다."
                     })),
-                    teamMinistryItems: fbConfig.teamMinistryItems || churchData.team_ministries || [],
+                    teamMinistryItems: (fbConfig.teamMinistryItems && fbConfig.teamMinistryItems.length > 0) ? fbConfig.teamMinistryItems : churchData.team_ministries || [],
 
                     // Prayer Items
                     prayerIntroImage: fbConfig.prayerIntroImage || '',
@@ -658,6 +730,12 @@ const Admin = () => {
                     emailjsTemplateId: fbConfig.emailjsTemplateId || '',
                     emailjsPublicKey: fbConfig.emailjsPublicKey || '',
                     emailjsReceivers: fbConfig.emailjsReceivers || '',
+
+                    // Bible Study curriculum images
+                    bibleStep1Image: fbConfig.bibleStep1Image || '',
+                    bibleStep2Image: fbConfig.bibleStep2Image || '',
+                    bibleStep3Image: fbConfig.bibleStep3Image || '',
+                    bibleStep4Image: fbConfig.bibleStep4Image || '',
                 }));
                 setColumns(fbColumns || []);
                 if (fbConfig.staff) {
@@ -1049,7 +1127,7 @@ const Admin = () => {
                     savedItem = await Promise.race([dbService.addDailyWord(dailyWordData), timeout]);
                     setDailyWords([savedItem, ...dailyWords]);
                 }
-            } else if (activeTab === 'site' || activeTab === 'intro' || activeTab === 'prayer') {
+            } else if (activeTab === 'site' || activeTab === 'intro' || activeTab === 'prayer' || activeTab === 'education_ministry') {
                 let currentConfig = { ...siteConfig };
 
                 // Processing function that handles both files and URLs
@@ -1081,7 +1159,8 @@ const Admin = () => {
                 // Process ONLY media fields that might need upload or drive formatting
                 const mediaFields = [
                     'heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner',
-                    'missionBanner', 'prayerBanner', 'teeBanner', 'bibleBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage'
+                    'missionBanner', 'prayerBanner', 'teeBanner', 'bibleBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage',
+                    'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image'
                 ];
                 for (const field of mediaFields) {
                     await processField(field);
@@ -1690,6 +1769,12 @@ const Admin = () => {
                         onClick={() => { setActiveTab('prayer'); setShowAddForm(false); }}
                     />
                     <SidebarItem
+                        icon={<BookOpen size={20} />}
+                        label="교육/사역 (Education/Ministry)"
+                        active={activeTab === 'education_ministry'}
+                        onClick={() => { setActiveTab('education_ministry'); setShowAddForm(false); }}
+                    />
+                    <SidebarItem
                         icon={<Calendar size={20} />}
                         label="교회일정 관리"
                         active={activeTab === 'calendar'}
@@ -1741,6 +1826,7 @@ const Admin = () => {
                             {activeTab === 'staff' && '👥 섬기는 분들 관리'}
                             {activeTab === 'calendar' && '📅 교회일정 관리'}
                             {activeTab === 'location' && '📍 오시는길 관리'}
+                            {activeTab === 'education_ministry' && '🎓 교육 및 사역 관리'}
                         </h1>
                         <p className="flex items-center gap-2 text-sm mt-2 font-medium">
                             {isFirebaseConfigured ? (
@@ -2624,6 +2710,362 @@ const Admin = () => {
                     )
                 }
 
+                {/* Education & Ministry Management Section (Renamed from Bible Study) */}
+                {
+                    activeTab === 'education_ministry' && (
+                        <section className="space-y-12 animate-fade-in">
+                            <div className="flex items-center justify-between mb-8">
+                                <div>
+                                    <h2 className="text-3xl font-black text-primary">교육 및 사역 관리 (Education & Ministry)</h2>
+                                    <p className="text-gray-500 mt-2 font-medium">성경공부, 부서별 사역, 팀사역 등의 콘텐츠를 통합 관리합니다.</p>
+                                </div>
+                                <button
+                                    onClick={handleFormSubmit}
+                                    disabled={isLoading}
+                                    className="flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-2xl font-bold hover:bg-primary-dark transition-all shadow-lg hover:shadow-primary/20 disabled:opacity-50"
+                                >
+                                    {isLoading ? <span className="animate-pulse">저장 중...</span> : <><Check size={20} /> 설정 저장하기</>}
+                                </button>
+                            </div>
+
+                            <div className="space-y-8">
+                                {/* Curriculum Image Section */}
+                                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                        <div className="p-2 bg-blue-50 rounded-xl text-blue-600"><ImageIcon size={20} /></div>
+                                        커리큘럼 테마별 이미지 관리 (Curriculum Themes)
+                                    </h3>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {[1, 2, 3, 4].map((step) => (
+                                            <div key={step} className="p-6 bg-gray-50 rounded-2xl border border-gray-100">
+                                                <div className="mb-4">
+                                                    <span className="inline-block px-3 py-1 bg-white border border-gray-200 rounded-lg text-sm font-bold text-gray-600 mb-2">
+                                                        THEME {step}
+                                                    </span>
+                                                    <p className="text-xs text-gray-400">
+                                                        * Theme {step} 커리큘럼 카드 우측에 표시될 이미지입니다.
+                                                    </p>
+                                                </div>
+                                                <BannerManager
+                                                    label={`Theme ${step} 이미지`}
+                                                    value={formData[`bibleStep${step}Image`]}
+                                                    fieldName={`bibleStep${step}Image`}
+                                                    bannerFiles={bannerFiles}
+                                                    setBannerFiles={setBannerFiles}
+                                                    onChange={(val) => setFormData(prev => ({ ...prev, [`bibleStep${step}Image`]: val }))}
+                                                    aspectRatio="aspect-square"
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Link to TEE Admin */}
+                                <div className="bg-amber-50 p-6 rounded-3xl border border-amber-100 flex items-center justify-between">
+                                    <div className="flex items-center gap-4">
+                                        <div className="p-3 bg-white rounded-xl text-amber-500 shadow-sm border border-amber-100">
+                                            <BookOpen size={24} />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-bold text-amber-900">TEE 교육 관리</h4>
+                                            <p className="text-sm text-amber-700/80">TEE 페이지의 콘텐츠는 별도 탭이나 교회소개에서 관리됩니다.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Ministry List Management */}
+                                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                        <div className="p-2 bg-blue-50 rounded-xl text-blue-600"><Users size={20} /></div>
+                                        사역 리스트 관리 (Ministry List)
+                                    </h3>
+                                    <p className="text-sm text-gray-500 font-medium ml-1">
+                                        홈페이지의 [사역내용] 메뉴에 표시될 사역들을 관리합니다. (예: 주일학교, 선교사역 등)
+                                    </p>
+
+                                    <div className="space-y-8">
+                                        {formData.ministryItems.map((item, idx) => (
+                                            <div key={item.id || idx} className="p-6 bg-gray-50 rounded-2xl border border-gray-100 space-y-6 relative group">
+                                                <div className="absolute top-6 right-6 z-10">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            if (window.confirm(`'${item.name}' 사역을 정말 삭제하시겠습니까?`)) {
+                                                                const newItems = formData.ministryItems.filter((_, i) => i !== idx);
+                                                                setFormData({ ...formData, ministryItems: newItems });
+                                                            }
+                                                        }}
+                                                        className="p-2 bg-white text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-full transition-all shadow-sm border border-gray-100"
+                                                        title="삭제"
+                                                    >
+                                                        <Trash2 size={16} />
+                                                    </button>
+                                                </div>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">사역 이름 (Name)</label>
+                                                        <input
+                                                            type="text"
+                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
+                                                            value={item.name}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.ministryItems];
+                                                                newItems[idx] = { ...newItems[idx], name: e.target.value };
+                                                                setFormData({ ...formData, ministryItems: newItems });
+                                                            }}
+                                                            placeholder="예: The Sent Children"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이디 (ID)</label>
+                                                        <input
+                                                            type="text"
+                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium font-sans"
+                                                            value={item.id}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.ministryItems];
+                                                                newItems[idx] = { ...newItems[idx], id: e.target.value };
+                                                                setFormData({ ...formData, ministryItems: newItems });
+                                                            }}
+                                                            placeholder="예: tsc"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2 col-span-1 md:col-span-2">
+                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">대상 (Target)</label>
+                                                        <input
+                                                            type="text"
+                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm"
+                                                            value={item.target || ''}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.ministryItems];
+                                                                newItems[idx] = { ...newItems[idx], target: e.target.value };
+                                                                setFormData({ ...formData, ministryItems: newItems });
+                                                            }}
+                                                            placeholder="예: 영유아 및 초등부"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">요약 설명 (Short Description)</label>
+                                                    <textarea
+                                                        className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[80px] resize-none"
+                                                        value={item.description}
+                                                        onChange={(e) => {
+                                                            const newItems = [...formData.ministryItems];
+                                                            newItems[idx] = { ...newItems[idx], description: e.target.value };
+                                                            setFormData({ ...formData, ministryItems: newItems });
+                                                        }}
+                                                        placeholder="리스트에 표시될 간단한 설명입니다."
+                                                    />
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">상세 내용 (Detail Content)</label>
+                                                    <textarea
+                                                        className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[120px]"
+                                                        placeholder="상세 페이지에 표시될 내용입니다."
+                                                        value={item.detail || ''}
+                                                        onChange={(e) => {
+                                                            const newItems = [...formData.ministryItems];
+                                                            newItems[idx] = { ...newItems[idx], detail: e.target.value };
+                                                            setFormData({ ...formData, ministryItems: newItems });
+                                                        }}
+                                                    />
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">이미지 (Image)</label>
+                                                    <BannerManager
+                                                        label={`${item.name} 대표 이미지`}
+                                                        value={item.image}
+                                                        fieldName={`ministry-${idx}`}
+                                                        bannerFiles={bannerFiles}
+                                                        setBannerFiles={setBannerFiles}
+                                                        onChange={(val) => {
+                                                            const newItems = [...formData.ministryItems];
+                                                            newItems[idx] = { ...newItems[idx], image: val };
+                                                            setFormData({ ...formData, ministryItems: newItems });
+                                                        }}
+                                                        showPreview={true}
+                                                        aspectRatio="aspect-video"
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setFormData({
+                                                    ...formData,
+                                                    ministryItems: [
+                                                        ...formData.ministryItems,
+                                                        {
+                                                            id: "new_ministry",
+                                                            name: "새 사역",
+                                                            target: "",
+                                                            description: "",
+                                                            detail: "",
+                                                            image: ""
+                                                        }
+                                                    ]
+                                                });
+                                            }}
+                                            className="w-full py-5 border-2 border-dashed border-gray-200 rounded-2xl text-gray-400 font-bold hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
+                                        >
+                                            <Plus size={20} />
+                                            새 사역 추가하기
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Team Ministry Management */}
+                                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                        <div className="p-2 bg-blue-50 rounded-xl text-blue-600"><Users size={20} /></div>
+                                        팀사역 관리 (Team Ministry Management)
+                                    </h3>
+                                    <p className="text-sm text-gray-500 font-medium ml-1">
+                                        홈페이지의 [팀사역] 페이지에 표시될 팀들을 관리합니다.
+                                    </p>
+
+                                    <div className="space-y-8">
+                                        {formData.teamMinistryItems.map((team, idx) => (
+                                            <div key={team.id || idx} className="p-6 bg-gray-50 rounded-2xl border border-gray-100 space-y-6 relative group">
+                                                <div className="absolute top-6 right-6 z-10">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            if (window.confirm(`'${team.name}' 팀을 정말 삭제하시겠습니까?`)) {
+                                                                const newItems = formData.teamMinistryItems.filter((_, i) => i !== idx);
+                                                                setFormData({ ...formData, teamMinistryItems: newItems });
+                                                            }
+                                                        }}
+                                                        className="p-2 bg-white text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-full transition-all shadow-sm border border-gray-100"
+                                                        title="삭제"
+                                                    >
+                                                        <Trash2 size={16} />
+                                                    </button>
+                                                </div>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">팀 이름 (Name)</label>
+                                                        <input
+                                                            type="text"
+                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
+                                                            value={team.name}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.teamMinistryItems];
+                                                                newItems[idx] = { ...newItems[idx], name: e.target.value };
+                                                                setFormData({ ...formData, teamMinistryItems: newItems });
+                                                            }}
+                                                            placeholder="예: 찬양팀"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이디 (ID)</label>
+                                                        <input
+                                                            type="text"
+                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium font-sans"
+                                                            value={team.id}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.teamMinistryItems];
+                                                                newItems[idx] = { ...newItems[idx], id: e.target.value };
+                                                                setFormData({ ...formData, teamMinistryItems: newItems });
+                                                            }}
+                                                            placeholder="예: praise"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이콘 (Icon)</label>
+                                                        <select
+                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm appearance-none cursor-pointer"
+                                                            value={team.icon || 'HandHeart'}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.teamMinistryItems];
+                                                                newItems[idx] = { ...newItems[idx], icon: e.target.value };
+                                                                setFormData({ ...formData, teamMinistryItems: newItems });
+                                                            }}
+                                                        >
+                                                            <option value="Users">Users (사람들)</option>
+                                                            <option value="Video">Video (미디어)</option>
+                                                            <option value="Heart">Heart (예배/사랑)</option>
+                                                            <option value="Settings">Settings (운영/설정)</option>
+                                                            <option value="PieChart">PieChart (재정)</option>
+                                                            <option value="Music">Music (찬양)</option>
+                                                            <option value="Coffee">Coffee (친교)</option>
+                                                            <option value="HandHeart">HandHeart (봉사)</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">팀 설명 (Description)</label>
+                                                    <textarea
+                                                        className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[100px] resize-none"
+                                                        value={team.description}
+                                                        onChange={(e) => {
+                                                            const newItems = [...formData.teamMinistryItems];
+                                                            newItems[idx] = { ...newItems[idx], description: e.target.value };
+                                                            setFormData({ ...formData, teamMinistryItems: newItems });
+                                                        }}
+                                                        placeholder="팀의 사역을 설명해 주세요."
+                                                    />
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">이미지 (Image)</label>
+                                                    <BannerManager
+                                                        label={`${team.name} 대표 이미지`}
+                                                        value={team.image}
+                                                        fieldName={`team-${idx}`}
+                                                        bannerFiles={bannerFiles}
+                                                        setBannerFiles={setBannerFiles}
+                                                        onChange={(val) => {
+                                                            const newItems = [...formData.teamMinistryItems];
+                                                            newItems[idx] = { ...newItems[idx], image: val };
+                                                            setFormData({ ...formData, teamMinistryItems: newItems });
+                                                        }}
+                                                        showPreview={true}
+                                                        aspectRatio="aspect-video"
+                                                    />
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setFormData({
+                                                    ...formData,
+                                                    teamMinistryItems: [
+                                                        ...formData.teamMinistryItems,
+                                                        {
+                                                            name: "",
+                                                            id: "",
+                                                            icon: "HandHeart",
+                                                            description: "",
+                                                            image: ""
+                                                        }
+                                                    ]
+                                                });
+                                            }}
+                                            className="w-full py-5 border-2 border-dashed border-gray-200 rounded-2xl text-gray-400 font-bold hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
+                                        >
+                                            <Plus size={20} />
+                                            새 팀 사역 추가하기
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    )
+                }
+
                 {/* Worship Management Section */}
                 {
                     activeTab === 'worship' && (
@@ -2991,423 +3433,7 @@ const Admin = () => {
                                 {renderBannerSettings('team', '👥 팀사역 (Team Ministry)', 'teamBanner')}
                                 {renderBannerSettings('prayer', '🙏 중보기도 (Intercessory Prayer)', 'prayerBanner')}
 
-                                {/* Individual Ministry Management */}
-                                <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-8">
-                                    <h3 className="text-xl font-black text-primary flex items-center gap-3">
-                                        <Users size={24} className="text-accent" />
-                                        사역 리스트 관리 (Ministry List)
-                                    </h3>
-                                    <p className="text-sm text-gray-500 font-medium">
-                                        홈페이지의 [사역내용] 메뉴에 표시될 사역들을 관리합니다. (예: 주일학교, 선교사역 등)
-                                    </p>
 
-                                    <div className="space-y-8">
-                                        {formData.ministryItems.map((item, idx) => (
-                                            <div key={item.id || idx} className="p-6 bg-gray-50 rounded-3xl border border-gray-100 space-y-6 relative group">
-                                                <div className="absolute top-6 right-6 z-10">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            if (window.confirm(`'${item.name}' 사역을 정말 삭제하시겠습니까?`)) {
-                                                                const newItems = formData.ministryItems.filter((_, i) => i !== idx);
-                                                                setFormData({ ...formData, ministryItems: newItems });
-                                                            }
-                                                        }}
-                                                        className="p-2 bg-white text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-full transition-all shadow-sm"
-                                                        title="삭제"
-                                                    >
-                                                        <Trash2 size={18} />
-                                                    </button>
-                                                </div>
-
-                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                    <div className="space-y-2">
-                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">사역 이름 (Name)</label>
-                                                        <input
-                                                            type="text"
-                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
-                                                            value={item.name}
-                                                            onChange={(e) => {
-                                                                const newItems = [...formData.ministryItems];
-                                                                newItems[idx] = { ...newItems[idx], name: e.target.value };
-                                                                setFormData({ ...formData, ministryItems: newItems });
-                                                            }}
-                                                            placeholder="예: The Sent Children"
-                                                        />
-                                                    </div>
-                                                    <div className="space-y-2">
-                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이디 (ID - 영문 소문자)</label>
-                                                        <input
-                                                            type="text"
-                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium font-sans"
-                                                            value={item.id}
-                                                            onChange={(e) => {
-                                                                const newItems = [...formData.ministryItems];
-                                                                newItems[idx] = { ...newItems[idx], id: e.target.value };
-                                                                setFormData({ ...formData, ministryItems: newItems });
-                                                            }}
-                                                            placeholder="예: tsc"
-                                                        />
-                                                    </div>
-                                                    <div className="space-y-2">
-                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">대상 (Target Audience)</label>
-                                                        <input
-                                                            type="text"
-                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm"
-                                                            value={item.target || ''}
-                                                            onChange={(e) => {
-                                                                const newItems = [...formData.ministryItems];
-                                                                newItems[idx] = { ...newItems[idx], target: e.target.value };
-                                                                setFormData({ ...formData, ministryItems: newItems });
-                                                            }}
-                                                            placeholder="예: 영유아 및 초등부"
-                                                        />
-                                                    </div>
-                                                </div>
-
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">요약 설명 (Short Description)</label>
-                                                    <textarea
-                                                        className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[80px]"
-                                                        value={item.description}
-                                                        onChange={(e) => {
-                                                            const newItems = [...formData.ministryItems];
-                                                            newItems[idx] = { ...newItems[idx], description: e.target.value };
-                                                            setFormData({ ...formData, ministryItems: newItems });
-                                                        }}
-                                                        placeholder="리스트에 표시될 간단한 설명입니다."
-                                                    />
-                                                </div>
-
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">상세 내용 (Detail Content)</label>
-                                                    <textarea
-                                                        className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[150px]"
-                                                        placeholder="줄바꿈으로 구분해 주세요. 상세 페이지에 표시됩니다."
-                                                        value={item.detail || ''}
-                                                        onChange={(e) => {
-                                                            const newItems = [...formData.ministryItems];
-                                                            newItems[idx] = { ...newItems[idx], detail: e.target.value };
-                                                            setFormData({ ...formData, ministryItems: newItems });
-                                                            setFormData({ ...formData, ministryItems: newItems });
-                                                        }}
-                                                    />
-                                                </div>
-
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">대표 이미지 (Image URL)</label>
-                                                    <div className="flex flex-col gap-2">
-                                                        <input
-                                                            type="text"
-                                                            id={`ministry-img-${idx}`}
-                                                            className="flex-grow p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-xs font-sans"
-                                                            value={item.image}
-                                                            onChange={(e) => {
-                                                                const newItems = [...formData.ministryItems];
-                                                                newItems[idx] = { ...newItems[idx], image: e.target.value };
-                                                                setFormData({ ...formData, ministryItems: newItems });
-                                                            }}
-                                                            placeholder="이미지 주소 또는 구글 드라이브 링크"
-                                                        />
-                                                        <div className="flex gap-2">
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => {
-                                                                    const input = item.image;
-                                                                    if (input && input.includes('drive.google.com')) {
-                                                                        const formatted = dbService.formatDriveImage(input);
-                                                                        const newItems = [...formData.ministryItems];
-                                                                        newItems[idx] = { ...newItems[idx], image: formatted };
-                                                                        setFormData({ ...formData, ministryItems: newItems });
-                                                                        alert('✅ 드라이브 이미지가 변환되었습니다!');
-                                                                    } else {
-                                                                        alert('구글 드라이브 링크를 입력해주세요.');
-                                                                    }
-                                                                }}
-                                                                className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-1.5"
-                                                            >
-                                                                🖼️ 변환
-                                                            </button>
-                                                            <div className="relative overflow-hidden">
-                                                                <button
-                                                                    type="button"
-                                                                    className="px-4 py-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-xl text-[10px] font-black transition-all flex items-center gap-1.5"
-                                                                >
-                                                                    <Upload size={14} /> 업로드
-                                                                </button>
-                                                                <input
-                                                                    type="file"
-                                                                    accept="image/*"
-                                                                    className="absolute inset-0 opacity-0 cursor-pointer"
-                                                                    onChange={async (e) => {
-                                                                        const file = e.target.files[0];
-                                                                        if (file) {
-                                                                            if (window.confirm(`${file.name} 파일을 업로드하시겠습니까?`)) {
-                                                                                try {
-                                                                                    const downloadUrl = await dbService.uploadFile(file, `ministry/${item.id || 'temp'}_${Date.now()}`);
-                                                                                    const newItems = [...formData.ministryItems];
-                                                                                    newItems[idx] = { ...newItems[idx], image: downloadUrl };
-                                                                                    setFormData({ ...formData, ministryItems: newItems });
-                                                                                    alert('✅ 업로드가 완료되었습니다!');
-                                                                                } catch (err) {
-                                                                                    console.error("Upload failed", err);
-                                                                                    alert('업로드 실패: ' + err.message);
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        {item.image && (
-                                                            <div className="mt-2 w-full h-64 bg-gray-100 rounded-xl overflow-hidden border border-gray-100 relative group">
-                                                                <img
-                                                                    src={item.image}
-                                                                    alt="Preview"
-                                                                    className="w-full h-full object-cover"
-                                                                    referrerPolicy="no-referrer"
-                                                                    onError={(e) => {
-                                                                        e.target.style.display = 'none';
-                                                                        e.target.parentElement.classList.add('flex', 'items-center', 'justify-center');
-                                                                        e.target.parentElement.innerText = '이미지를 불러올 수 없음';
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                setFormData({
-                                                    ...formData,
-                                                    ministryItems: [
-                                                        ...formData.ministryItems,
-                                                        {
-                                                            id: "new_ministry",
-                                                            name: "새 사역",
-                                                            target: "",
-                                                            description: "",
-                                                            detail: "",
-                                                            image: ""
-                                                        }
-                                                    ]
-                                                });
-                                            }}
-                                            className="w-full py-6 border-2 border-dashed border-gray-200 rounded-[2rem] text-gray-400 font-bold hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
-                                        >
-                                            <Plus size={24} />
-                                            새 사역 추가하기
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Team Ministry Management */}
-                                <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-8">
-                                    <h3 className="text-xl font-black text-primary flex items-center gap-3">
-                                        <Users size={24} className="text-accent" />
-                                        팀사역 관리 (Team Ministry Management)
-                                    </h3>
-                                    <p className="text-sm text-gray-500 font-medium">
-                                        홈페이지의 [팀사역] 페이지에 표시될 팀들을 관리합니다.
-                                    </p>
-
-                                    <div className="space-y-8">
-                                        {formData.teamMinistryItems.map((team, idx) => (
-                                            <div key={team.id || idx} className="p-6 bg-gray-50 rounded-3xl border border-gray-100 space-y-6 relative group">
-                                                <div className="absolute top-6 right-6 z-10">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            if (window.confirm(`'${team.name}' 팀을 정말 삭제하시겠습니까?`)) {
-                                                                const newItems = formData.teamMinistryItems.filter((_, i) => i !== idx);
-                                                                setFormData({ ...formData, teamMinistryItems: newItems });
-                                                            }
-                                                        }}
-                                                        className="p-2 bg-white text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-full transition-all shadow-sm"
-                                                        title="삭제"
-                                                    >
-                                                        <Trash2 size={18} />
-                                                    </button>
-                                                </div>
-
-                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                                    <div className="space-y-2">
-                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">팀 이름 (Name)</label>
-                                                        <input
-                                                            type="text"
-                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
-                                                            value={team.name}
-                                                            onChange={(e) => {
-                                                                const newItems = [...formData.teamMinistryItems];
-                                                                newItems[idx] = { ...newItems[idx], name: e.target.value };
-                                                                setFormData({ ...formData, teamMinistryItems: newItems });
-                                                            }}
-                                                            placeholder="예: 찬양팀"
-                                                        />
-                                                    </div>
-                                                    <div className="space-y-2">
-                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이디 (ID - 영문 소문자)</label>
-                                                        <input
-                                                            type="text"
-                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium font-sans"
-                                                            value={team.id}
-                                                            onChange={(e) => {
-                                                                const newItems = [...formData.teamMinistryItems];
-                                                                newItems[idx] = { ...newItems[idx], id: e.target.value };
-                                                                setFormData({ ...formData, teamMinistryItems: newItems });
-                                                            }}
-                                                            placeholder="예: praise"
-                                                        />
-                                                    </div>
-                                                    <div className="space-y-2">
-                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이콘 (Icon)</label>
-                                                        <select
-                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm appearance-none cursor-pointer"
-                                                            value={team.icon || 'HandHeart'}
-                                                            onChange={(e) => {
-                                                                const newItems = [...formData.teamMinistryItems];
-                                                                newItems[idx] = { ...newItems[idx], icon: e.target.value };
-                                                                setFormData({ ...formData, teamMinistryItems: newItems });
-                                                            }}
-                                                        >
-                                                            <option value="Users">Users (사람들)</option>
-                                                            <option value="Video">Video (미디어)</option>
-                                                            <option value="Heart">Heart (예배/사랑)</option>
-                                                            <option value="Settings">Settings (운영/설정)</option>
-                                                            <option value="PieChart">PieChart (재정)</option>
-                                                            <option value="Music">Music (찬양)</option>
-                                                            <option value="Coffee">Coffee (친교)</option>
-                                                            <option value="HandHeart">HandHeart (봉사)</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">팀 설명 (Description)</label>
-                                                    <textarea
-                                                        className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[100px]"
-                                                        value={team.description}
-                                                        onChange={(e) => {
-                                                            const newItems = [...formData.teamMinistryItems];
-                                                            newItems[idx] = { ...newItems[idx], description: e.target.value };
-                                                            setFormData({ ...formData, teamMinistryItems: newItems });
-                                                        }}
-                                                        placeholder="팀의 사역을 설명해 주세요."
-                                                    />
-                                                </div>
-
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">대표 이미지 (Image URL)</label>
-                                                    <div className="flex flex-col gap-2">
-                                                        <input
-                                                            type="text"
-                                                            className="flex-grow p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-xs font-sans"
-                                                            value={team.image}
-                                                            onChange={(e) => {
-                                                                const newItems = [...formData.teamMinistryItems];
-                                                                newItems[idx] = { ...newItems[idx], image: e.target.value };
-                                                                setFormData({ ...formData, teamMinistryItems: newItems });
-                                                            }}
-                                                            placeholder="이미지 주소 또는 구글 드라이브 링크"
-                                                        />
-                                                        <div className="flex gap-2">
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => {
-                                                                    const input = team.image;
-                                                                    if (input && input.includes('drive.google.com')) {
-                                                                        const formatted = dbService.formatDriveImage(input);
-                                                                        const newItems = [...formData.teamMinistryItems];
-                                                                        newItems[idx] = { ...newItems[idx], image: formatted };
-                                                                        setFormData({ ...formData, teamMinistryItems: newItems });
-                                                                        alert('✅ 드라이브 이미지가 변환되었습니다!');
-                                                                    } else {
-                                                                        alert('구글 드라이브 링크를 입력해주세요.');
-                                                                    }
-                                                                }}
-                                                                className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-[10px] font-black transition-all flex items-center justify-center gap-1.5"
-                                                            >
-                                                                🖼️ 변환
-                                                            </button>
-                                                            <div className="relative overflow-hidden">
-                                                                <button
-                                                                    type="button"
-                                                                    className="px-4 py-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-xl text-[10px] font-black transition-all flex items-center gap-1.5"
-                                                                >
-                                                                    <Upload size={14} /> 업로드
-                                                                </button>
-                                                                <input
-                                                                    type="file"
-                                                                    accept="image/*"
-                                                                    className="absolute inset-0 opacity-0 cursor-pointer"
-                                                                    onChange={async (e) => {
-                                                                        const file = e.target.files[0];
-                                                                        if (file) {
-                                                                            if (window.confirm(`${file.name} 파일을 업로드하시겠습니까?`)) {
-                                                                                try {
-                                                                                    const downloadUrl = await dbService.uploadFile(file, `team_ministry/${team.id || 'temp'}_${Date.now()}`);
-                                                                                    const newItems = [...formData.teamMinistryItems];
-                                                                                    newItems[idx] = { ...newItems[idx], image: downloadUrl };
-                                                                                    setFormData({ ...formData, teamMinistryItems: newItems });
-                                                                                    alert('✅ 업로드가 완료되었습니다!');
-                                                                                } catch (err) {
-                                                                                    console.error("Upload failed", err);
-                                                                                    alert('업로드 실패: ' + err.message);
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        {team.image && (
-                                                            <div className="mt-2 w-full h-64 bg-gray-100 rounded-xl overflow-hidden border border-gray-100 relative group text-center flex items-center justify-center">
-                                                                <img
-                                                                    src={team.image}
-                                                                    alt="Preview"
-                                                                    className="w-full h-full object-cover"
-                                                                    referrerPolicy="no-referrer"
-                                                                    onError={(e) => {
-                                                                        e.target.style.display = 'none';
-                                                                        e.target.parentElement.innerText = '이미지를 불러올 수 없음';
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                setFormData({
-                                                    ...formData,
-                                                    teamMinistryItems: [
-                                                        ...formData.teamMinistryItems,
-                                                        {
-                                                            id: "new_team",
-                                                            name: "새 팀",
-                                                            englishName: "",
-                                                            description: "",
-                                                            englishDescription: "",
-                                                            icon: "HandHeart",
-                                                            image: ""
-                                                        }
-                                                    ]
-                                                });
-                                            }}
-                                            className="w-full py-6 border-2 border-dashed border-gray-200 rounded-[2rem] text-gray-400 font-bold hover:border-primary hover:text-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
-                                        >
-                                            <Plus size={24} />
-                                        </button>
-                                    </div>
-                                </div>
 
                                 {/* Reset to Defaults Section */}
                                 <div className="bg-red-50/30 rounded-[2rem] p-8 border border-red-100/50 mt-12 mb-12">
@@ -3447,8 +3473,8 @@ const Admin = () => {
                                         )}
                                     </button>
                                 </div>
-                            </div>
-                        </div>
+                            </div >
+                        </div >
                     )
                 }
 

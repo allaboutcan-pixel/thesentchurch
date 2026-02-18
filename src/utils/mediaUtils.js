@@ -19,6 +19,9 @@ export const isVideo = (source) => {
     if (typeof source === 'string') {
         const videoExtensions = /\.(mp4|webm|ogg|mov|m4v|mkv|avi)(\?.*)?$/i;
         const videoDataUri = /^data:video\//i;
+        // Ignore drive thumbnail links as they are strictly images
+        if (source.includes('drive.google.com/thumbnail')) return false;
+
         // Only treat Drive links as video if they are explicitly formatted for streaming/download
         const driveVideo = /drive\.google\.com.*(export=download|export=media)/i;
         // YouTube detection
