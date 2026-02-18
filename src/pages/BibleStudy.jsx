@@ -169,7 +169,7 @@ const BibleStudy = () => {
             </div>
 
             {/* Section 1: Introduction */}
-            <section className="py-12 bg-[#fdfbf7] relative overflow-hidden">
+            <section className="py-32 bg-[#fdfbf7] relative overflow-hidden">
                 <div className="container mx-auto px-6 max-w-2xl relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -187,7 +187,7 @@ const BibleStudy = () => {
                             </h2>
                         </div>
 
-                        <div className="text-sm md:text-base text-slate-500 leading-[2.5] word-keep break-keep font-medium max-w-2xl mx-auto">
+                        <div className="text-sm md:text-base text-slate-500 leading-[3.5] word-keep break-keep font-medium max-w-2xl mx-auto">
                             <p dangerouslySetInnerHTML={{ __html: t('bible.intro_desc') }} />
                         </div>
 
@@ -213,7 +213,7 @@ const BibleStudy = () => {
                                 <div className="absolute bottom-1 right-2 w-12 h-12 bg-blue-400/20 rounded-full border border-white/10 blur-xl" />
 
                                 <h3
-                                    className="relative z-10 text-sm md:text-base italic font-bold text-blue-50 leading-loose break-keep text-center tracking-wide"
+                                    className="relative z-10 text-sm md:text-base italic font-bold text-blue-50 leading-[3.0] break-keep text-center tracking-wide"
                                     dangerouslySetInnerHTML={{ __html: `"${t('bible.intro_card_desc')}"` }}
                                 />
                             </div>
@@ -223,9 +223,9 @@ const BibleStudy = () => {
             </section>
 
             {/* Section 2: Curriculum */}
-            <section className="py-20 bg-white">
+            <section className="py-32 bg-white">
                 <div className="container mx-auto px-6 max-w-5xl">
-                    <div className="text-center mb-20 px-4">
+                    <div className="text-center mb-32 px-4">
                         <h2 className="text-2xl font-black text-slate-900 mb-3">{t('bible.curriculum_title')}</h2>
                         <p className="text-sm text-slate-500 font-medium mb-5 break-keep">{t('bible.curriculum_subtitle')}</p>
                         <div className="w-12 h-1 bg-blue-600 mx-auto rounded-full" />
