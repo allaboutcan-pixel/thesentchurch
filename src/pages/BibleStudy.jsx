@@ -438,14 +438,14 @@ const BibleStudy = () => {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        className="mt-16 p-10 bg-stone-900 text-white rounded-[2.5rem] text-center relative overflow-hidden shadow-2xl"
+                        className="mt-8 p-6 md:p-8 bg-stone-900 text-white rounded-[2rem] text-center relative overflow-hidden shadow-2xl max-w-4xl mx-auto"
                     >
-                        <Quote className="w-12 h-12 text-stone-700 absolute top-8 left-8" />
-                        <div className="relative z-10 max-w-3xl mx-auto">
-                            <p className="text-xl md:text-2xl font-medium leading-relaxed mb-6 break-keep italic">
+                        <Quote className="w-8 h-8 text-stone-700 absolute top-6 left-6" />
+                        <div className="relative z-10 max-w-2xl mx-auto">
+                            <p className="text-lg md:text-xl font-medium leading-relaxed mb-4 break-keep italic">
                                 "{t('bible.verse')}"
                             </p>
-                            <p className="text-blue-400 font-black tracking-widest uppercase">{t('bible.verse_ref')}</p>
+                            <p className="text-blue-400 font-bold tracking-widest uppercase text-sm">{t('bible.verse_ref')}</p>
                         </div>
                     </motion.div>
 
