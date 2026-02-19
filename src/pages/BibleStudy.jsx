@@ -446,7 +446,7 @@ const BibleStudy = () => {
                                 <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-300">
                                     <ListChecks size={24} />
                                 </div>
-                                <p className="text-lg font-medium leading-relaxed break-keep">
+                                <p className="text-xl font-medium leading-relaxed break-keep">
                                     {item}
                                 </p>
                             </motion.div>
