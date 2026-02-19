@@ -222,8 +222,32 @@ const BibleStudy = () => {
                 </div>
             </section>
 
+            {/* Section 1.5: Theological Difference */}
+            <section className="py-20 bg-[#fdfbf7]">
+                <div className="container mx-auto px-6 max-w-3xl text-center">
+                    <h2 className="text-2xl md:text-3xl font-black text-slate-800 mb-10 break-keep flex items-center justify-center gap-3">
+                        <div className="p-2 bg-blue-600/10 text-blue-600 rounded-xl">
+                            <Sparkles size={24} />
+                        </div>
+                        {t('bible.theo_diff_title')}
+                    </h2>
+                    <div className="space-y-8 text-slate-600 leading-loose text-lg font-medium break-keep">
+                        <p>
+                            {t('bible.theo_diff_text1')}
+                        </p>
+                        <div className="w-full h-px bg-slate-200 my-8"></div>
+                        <p className="font-semibold text-slate-700">
+                            {t('bible.theo_diff_text2')}
+                        </p>
+                        <p>
+                            {t('bible.theo_diff_text3')}
+                        </p>
+                    </div>
+                </div>
+            </section>
+
             {/* Section 2: Curriculum */}
-            <section className="py-32 bg-white">
+            < section className="py-32 bg-white" >
                 <div className="container mx-auto px-6 max-w-5xl">
                     <div className="text-center mb-32 px-4">
                         <h2 className="text-2xl font-black text-slate-900 mb-3">{t('bible.curriculum_title')}</h2>
@@ -365,10 +389,10 @@ const BibleStudy = () => {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Section 3: Study Guide */}
-            <section className="py-12 bg-[#efebe9]">
+            < section className="py-12 bg-[#efebe9]" >
                 <div className="container mx-auto px-6 max-w-2xl">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
@@ -402,10 +426,10 @@ const BibleStudy = () => {
                         </div>
                     </motion.div>
                 </div>
-            </section>
+            </section >
 
             {/* Section 4: Recommendations */}
-            <section className="py-24 bg-blue-900 text-white relative overflow-hidden">
+            < section className="py-24 bg-blue-900 text-white relative overflow-hidden" >
                 <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                 <div className="container mx-auto px-6 max-w-4xl relative z-10 text-center">
                     <h3 className="text-3xl font-black mb-12 text-blue-300">{t('bible.recommend_title')}</h3>
@@ -429,28 +453,28 @@ const BibleStudy = () => {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Section 5: Our Prayer */}
-            <section className="py-24 bg-white">
+            < section className="py-24 bg-white" >
                 <div className="container mx-auto px-6 max-w-5xl">
 
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
-                        className="mt-8 p-6 md:p-8 bg-stone-900 text-white rounded-[2rem] text-center relative overflow-hidden shadow-2xl max-w-4xl mx-auto"
+                        className="mt-8 p-6 bg-stone-900 text-white rounded-[1.5rem] text-center relative overflow-hidden shadow-2xl max-w-2xl mx-auto"
                     >
-                        <Quote className="w-8 h-8 text-stone-700 absolute top-6 left-6" />
-                        <div className="relative z-10 max-w-2xl mx-auto">
-                            <p className="text-lg md:text-xl font-medium leading-relaxed mb-4 break-keep italic">
+                        <Quote className="w-6 h-6 text-stone-700 absolute top-5 left-5" />
+                        <div className="relative z-10 max-w-xl mx-auto">
+                            <p className="text-base md:text-lg font-medium leading-relaxed mb-3 break-keep italic">
                                 "{t('bible.verse')}"
                             </p>
-                            <p className="text-blue-400 font-bold tracking-widest uppercase text-sm">{t('bible.verse_ref')}</p>
+                            <p className="text-blue-400 font-bold tracking-widest uppercase text-xs">{t('bible.verse_ref')}</p>
                         </div>
                     </motion.div>
 
                     {/* Inquiry Button at the bottom */}
-                    <div className="mt-16 text-center">
+                    <div className="mt-40 text-center">
                         <motion.a
                             href="mailto:thesentheejoung@gmail.com"
                             whileHover={{ scale: 1.05 }}
@@ -462,8 +486,8 @@ const BibleStudy = () => {
                         </motion.a>
                     </div>
                 </div>
-            </section>
-        </div>
+            </section >
+        </div >
     );
 };
 
