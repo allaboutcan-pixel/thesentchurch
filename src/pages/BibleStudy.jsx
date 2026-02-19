@@ -178,11 +178,11 @@ const BibleStudy = () => {
                         transition={{ duration: 0.6 }}
                         className="text-center space-y-10"
                     >
-                        <div className="space-y-3">
-                            <span className="inline-block px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-bold tracking-widest uppercase mb-1">
+                        <div className="space-y-4">
+                            <span className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-bold tracking-widest uppercase mb-2">
                                 {t('bible.intro_badge')}
                             </span>
-                            <h2 className="text-xl md:text-2xl font-sans font-black text-slate-900 break-keep">
+                            <h2 className="text-3xl md:text-4xl font-sans font-black text-slate-900 break-keep">
                                 {t('bible.intro_title')}
                             </h2>
                         </div>
