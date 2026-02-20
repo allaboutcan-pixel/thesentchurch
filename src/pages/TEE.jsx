@@ -119,7 +119,7 @@ const TEE = () => {
 
             {/* 1. Intro Section (Brown Background) */}
             <section className="py-32 bg-[#fdfbf7] relative overflow-hidden">
-                <div className="container mx-auto px-6 max-w-4xl relative z-10">
+                <div className="container mx-auto px-6 max-w-7xl relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -138,16 +138,26 @@ const TEE = () => {
                             <p dangerouslySetInnerHTML={{ __html: t('tee.intro_subdesc') }} />
                         </div>
 
-                        {/* Bible Verse Box */}
-                        <div className="mt-12 p-8 md:p-10 bg-white rounded-xl border-l-4 border-blue-600 shadow-md max-w-3xl mx-auto">
-                            <Quote className="w-8 h-8 text-blue-400 mb-4 mx-auto opacity-50" />
-                            <p
-                                className="text-lg md:text-xl font-sans italic text-slate-700 mb-4 leading-loose break-keep"
-                                dangerouslySetInnerHTML={{ __html: `"${t('tee.bible_verse')}"` }}
-                            />
-                            <p className="text-sm font-bold text-blue-600 uppercase tracking-wide">
-                                {t('tee.bible_ref')}
-                            </p>
+                        {/* Bible Verse Box - Book Design */}
+                        <div className="mt-12 relative max-w-lg mx-auto">
+                            <div className="relative bg-[#1e40af] text-white p-2 rounded-r-xl rounded-l-md shadow-[12px_12px_24px_rgba(0,0,0,0.3)] transform transition-transform hover:-translate-y-1 duration-300">
+                                {/* Spine Effect */}
+                                <div className="absolute top-0 bottom-0 left-0 w-6 bg-gradient-to-r from-black/30 to-transparent rounded-l-md z-10 pointer-events-none" />
+                                <div className="relative bg-blue-700 p-8 md:p-10 rounded-r-lg rounded-l-sm border-l-4 border-blue-800 shadow-inner">
+                                    <Quote className="w-8 h-8 text-yellow-400/60 mb-6 mx-auto" />
+                                    <p
+                                        className="text-lg md:text-xl font-serif italic text-white mb-6 leading-loose break-keep"
+                                        dangerouslySetInnerHTML={{ __html: `"${t('tee.bible_verse')}"` }}
+                                    />
+                                    <div className="flex items-center justify-center gap-2">
+                                        <div className="h-px w-8 bg-yellow-400/40"></div>
+                                        <p className="text-sm font-bold text-yellow-400 uppercase tracking-wide">
+                                            {t('tee.bible_ref')}
+                                        </p>
+                                        <div className="h-px w-8 bg-yellow-400/40"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
                 </div>

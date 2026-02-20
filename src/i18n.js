@@ -246,7 +246,7 @@ const resources = {
                 "intro_title": "TEE는 무엇인가요?",
                 "intro_desc": "TEE는 <span class='text-blue-600 font-bold'>Theological Education by Extension</span>의 약자로,<br/>디모데후서 2장 2절 말씀에 기초한<br/>“확장에 의한 신학 교육”입니다.<br/><br/>성경 공부와 제자 양육을 통해<br/>신앙이 다음 세대로 이어지도록 돕는,<br/>검증된 훈련 방법입니다.",
                 "intro_subdesc": "현재 TEE는 전 세계 110여 개국에서<br/>70여 개 언어로 사용되며,<br/>수많은 교회가 평신도 양육과<br/>지도자 훈련을 위해 활용하고 있습니다.",
-                "bible_verse": "또 네가 많은 증인 앞에서 내게 들은 바를 충성된 사람들에게 부탁하라<br/>그들이 또 다른 사람들을 가르칠 수 있으리라",
+                "bible_verse": "또 네가 많은 증인 앞에서 내게 들은 바를<br/>충성된 사람들에게 부탁하라<br/>그들이 또 다른 사람들을 가르칠 수 있으리라",
                 "bible_ref": "디모데후서 2장 2절",
 
                 "ministry_goal_title": "사역 목표",
