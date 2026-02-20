@@ -1,0 +1,1 @@
+Copy-Item -Path "c:\Users\zizib\.gemini\antigravity\brain\d9ee967e-637e-49c8-962a-5d2ff0538e98\tee_intro_study_final_1771549217645.png" -Destination "c:\Users\zizib\OneDrive\바탕 화면\홈페이지\public\images\tee_intro_study.png" -Force

@@ -287,7 +287,7 @@ const BibleStudy = () => {
                                                     <h5 className="text-xs font-black text-blue-500 uppercase tracking-widest mb-2 flex items-center gap-2">
                                                         <Map size={14} /> 핵심 사건
                                                     </h5>
-                                                    <p className="text-slate-700 font-bold break-keep">{theme.events}</p>
+                                                    <p className="text-slate-700 font-bold break-keep whitespace-pre-wrap">{theme.events}</p>
                                                 </div>
 
                                                 {/* Learning Points */}
