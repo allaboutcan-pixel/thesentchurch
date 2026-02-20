@@ -9,7 +9,7 @@ import { dbService } from '../services/dbService';
 import { isVideo, getYoutubeId, getDriveId } from '../utils/mediaUtils';
 import clsx from 'clsx';
 
-const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBannerFiles, aspectRatio = "aspect-video" }) => {
+const BannerManager = React.memo(({ label, value, fieldName, onChange, bannerFiles, setBannerFiles, aspectRatio = "aspect-video" }) => {
     const currentFile = bannerFiles[fieldName];
     const setFile = (file) => setBannerFiles(prev => ({ ...prev, [fieldName]: file }));
 
@@ -292,7 +292,14 @@ const BannerManager = ({ label, value, fieldName, onChange, bannerFiles, setBann
             </div>
         </div>
     );
-};
+}, (prevProps, nextProps) => {
+    // Custom comparison to prevent re-renders when only onChange changes (which happens every render of Admin)
+    return prevProps.value === nextProps.value &&
+        prevProps.label === nextProps.label &&
+        prevProps.fieldName === nextProps.fieldName &&
+        prevProps.bannerFiles === nextProps.bannerFiles &&
+        prevProps.aspectRatio === nextProps.aspectRatio;
+});
 
 const Admin = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -4098,7 +4105,7 @@ const SidebarItem = ({ icon, label, active, onClick }) => (
     </button>
 );
 
-const AdminTableRow = ({ date, title, subText, tag, onEdit, onDelete, link, showView = true, onMoveUp, onMoveDown, isFirst, isLast }) => (
+const AdminTableRow = React.memo(({ date, title, subText, tag, onEdit, onDelete, link, showView = true, onMoveUp, onMoveDown, isFirst, isLast }) => (
     <tr className="hover:bg-gray-50/50 transition-all group">
         <td className="px-4 md:px-8 py-5 md:py-7 whitespace-nowrap text-xs md:text-sm text-gray-400 font-mono font-bold">{date || '-'}</td>
         <td className="px-4 md:px-8 py-5 md:py-7">
@@ -4150,9 +4157,11 @@ const AdminTableRow = ({ date, title, subText, tag, onEdit, onDelete, link, show
             </button>
         </td>
     </tr>
-);
+), (prev, next) => {
+    return prev.date === next.date && prev.title === next.title && prev.subText === next.subText && prev.tag === next.tag && prev.link === next.link && prev.isFirst === next.isFirst && prev.isLast === next.isLast;
+});
 
-const AdminMobileCard = ({ date, title, subText, tag, onEdit, onDelete, link, onMoveUp, onMoveDown, isFirst, isLast }) => (
+const AdminMobileCard = React.memo(({ date, title, subText, tag, onEdit, onDelete, link, onMoveUp, onMoveDown, isFirst, isLast }) => (
     <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm relative group">
         <div className="flex justify-between items-start mb-3">
             <span className="text-xs font-bold text-gray-400 font-mono bg-gray-50 px-2 py-1 rounded">{date || '-'}</span>
@@ -4195,6 +4204,8 @@ const AdminMobileCard = ({ date, title, subText, tag, onEdit, onDelete, link, on
             )}
         </div>
     </div>
-);
+), (prev, next) => {
+    return prev.date === next.date && prev.title === next.title && prev.subText === next.subText && prev.tag === next.tag && prev.link === next.link && prev.isFirst === next.isFirst && prev.isLast === next.isLast;
+});
 
 export default Admin;

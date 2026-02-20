@@ -359,6 +359,7 @@ const BibleStudy = () => {
                                                             src={theme.image}
                                                             alt={theme.title}
                                                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                            loading="lazy"
                                                             onError={(e) => {
                                                                 e.target.style.display = 'none';
                                                                 e.target.parentElement.classList.add('flex-col', 'gap-4', 'text-slate-300');
