@@ -74,14 +74,20 @@ const Header = () => {
                                 to={item.path}
                                 onClick={(e) => item.path === '/' && handleHomeClick(e)}
                                 className={clsx(
-                                    "flex items-center gap-1 text-sm font-medium transition-colors py-2",
+                                    "flex flex-col items-center gap-0.5 text-sm font-medium transition-colors py-1",
                                     isScrolled ? "text-text-main hover:text-primary" : "text-white hover:text-white/80"
                                 )}
                             >
-                                {t(`nav.${item.id}`)}
-                                {item.subItems && (
-                                    <ChevronDown size={14} className="group-hover/menu:rotate-180 transition-transform" />
-                                )}
+                                <span className="leading-tight">{t(`nav.${item.id}`)}</span>
+                                <span className={clsx(
+                                    "text-[10px] font-bold uppercase tracking-tighter leading-none flex items-center gap-1 transition-colors",
+                                    isScrolled ? "text-[#003B73]" : "text-white/80"
+                                )}>
+                                    {t(`nav.${item.id}`, { lng: 'en' })}
+                                    {item.subItems && (
+                                        <ChevronDown size={10} className="group-hover/menu:rotate-180 transition-transform" />
+                                    )}
+                                </span>
                             </Link>
 
                             {/* Dropdown */}
@@ -150,13 +156,16 @@ const Header = () => {
                                 >
                                     <Link
                                         to={item.path}
-                                        className="flex-1 py-4"
+                                        className="flex-1 py-3 flex flex-col"
                                         onClick={(e) => {
                                             setIsOpen(false);
                                             if (item.path === '/') handleHomeClick(e);
                                         }}
                                     >
-                                        {t(`nav.${item.id}`)}
+                                        <span className="text-base">{t(`nav.${item.id}`)}</span>
+                                        <span className="text-[10px] uppercase font-bold text-[#003B73] tracking-wider">
+                                            {t(`nav.${item.id}`, { lng: 'en' })}
+                                        </span>
                                     </Link>
 
                                     {item.subItems && (
@@ -174,20 +183,22 @@ const Header = () => {
                                     )}
                                 </div>
 
-                                {item.subItems && activeDropdown === item.id && (
-                                    <div className="bg-gray-50 py-2">
-                                        {item.subItems.map((sub, idx) => (
-                                            <Link
-                                                key={idx}
-                                                to={sub.path}
-                                                className="block px-10 py-3 text-sm text-gray-500 hover:text-primary"
-                                                onClick={() => setIsOpen(false)}
-                                            >
-                                                • {t(`nav.${sub.id || sub.path.split('/').pop()}`)}
-                                            </Link>
-                                        ))}
-                                    </div>
-                                )}
+                                {
+                                    item.subItems && activeDropdown === item.id && (
+                                        <div className="bg-gray-50 py-2">
+                                            {item.subItems.map((sub, idx) => (
+                                                <Link
+                                                    key={idx}
+                                                    to={sub.path}
+                                                    className="block px-10 py-3 text-sm text-gray-500 hover:text-primary"
+                                                    onClick={() => setIsOpen(false)}
+                                                >
+                                                    • {t(`nav.${sub.id || sub.path.split('/').pop()}`)}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    )
+                                }
                             </div>
                         ))}
                     </div>
@@ -206,10 +217,11 @@ const Header = () => {
                         </button>
                     </div>
                 </div>
-            )}
+            )
+            }
             {/* Contact Modal */}
             <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
-        </header>
+        </header >
     );
 };
 

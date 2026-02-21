@@ -380,7 +380,7 @@ const resources = {
                 "notices": "Notices",
                 "bulletin": "Bulletin",
                 "gallery": "Gallery",
-                "sermons_word": "Sermons & Word",
+                "sermons_word": "SERMONS",
                 "sunday_sermon": "Sunday",
                 "daily_word": "Daily Word",
                 "column": "Theological Column",
