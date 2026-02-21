@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import quickSunday from '../assets/images/quick_sunday.jpg';
 import quickMorning from '../assets/images/quick_early_morning_v3.jpg';
-import quickGallery from '../assets/images/quick_gallery.jpg';
+import quickGallery from '../assets/images/quick_gallery_v2.jpg';
 import quickBulletin from '../assets/images/quick_bulletin.jpg';
 
 const QuickLinks = () => {
