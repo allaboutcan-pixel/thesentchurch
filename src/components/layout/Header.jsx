@@ -17,9 +17,6 @@ const Header = () => {
     const { config } = useSiteConfig();
     const location = useLocation();
 
-    const changeLanguage = (lng) => {
-        i18n.changeLanguage(lng);
-    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -124,35 +121,6 @@ const Header = () => {
                     >
                         <span>{t('home.first_step')}</span>
                     </button>
-
-                    <div className={clsx(
-                        "hidden lg:flex items-center bg-black/5 rounded-full p-1 border",
-                        isScrolled ? "border-gray-100" : "border-white/10"
-                    )}>
-                        <button
-                            onClick={() => changeLanguage('ko')}
-                            className={clsx(
-                                "px-3 py-1 rounded-full text-[10px] font-black tracking-widest transition-all",
-                                i18n.language.startsWith('ko')
-                                    ? "bg-primary text-white shadow-sm"
-                                    : (isScrolled ? "text-gray-400 hover:text-gray-600" : "text-white/60 hover:text-white")
-                            )}
-                        >
-                            KOR
-                        </button>
-                        <button
-                            onClick={() => changeLanguage('en')}
-                            className={clsx(
-                                "px-3 py-1 rounded-full text-[10px] font-black tracking-widest transition-all",
-                                i18n.language.startsWith('en')
-                                    ? "bg-primary text-white shadow-sm"
-                                    : (isScrolled ? "text-gray-400 hover:text-gray-600" : "text-white/60 hover:text-white")
-                            )}
-                        >
-                            ENG
-                        </button>
-                    </div>
-
 
                     <button
                         className="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"

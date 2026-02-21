@@ -727,16 +727,11 @@ const resources = {
 };
 
 i18n
-    .use(LanguageDetector)
     .use(initReactI18next)
     .init({
         resources,
-        lng: 'ko', // Force start with Korean
-        fallbackLng: 'ko', // Fallback to Korean
-        detection: {
-            order: ['localStorage', 'htmlTag'],
-            caches: ['localStorage'],
-        },
+        lng: 'ko',
+        fallbackLng: 'ko',
         interpolation: {
             escapeValue: false
         }
