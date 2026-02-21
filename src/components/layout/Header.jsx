@@ -162,7 +162,7 @@ const Header = () => {
                                             if (item.path === '/') handleHomeClick(e);
                                         }}
                                     >
-                                        <span className="text-base">{t(`nav.${item.id}`)}</span>
+                                        <span className="text-sm">{t(`nav.${item.id}`)}</span>
                                         <span className="text-[10px] uppercase font-bold text-[#003B73] tracking-wider">
                                             {t(`nav.${item.id}`, { lng: 'en' })}
                                         </span>
