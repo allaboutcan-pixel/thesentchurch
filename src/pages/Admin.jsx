@@ -1180,8 +1180,6 @@ const Admin = () => {
                     'newsTitle', 'newsSubtitle', 'newsTitleFont', 'newsSubtitleFont', 'newsTitleColor', 'newsSubtitleColor', 'newsTitleItalic', 'newsSubtitleItalic', 'newsTitleSize', 'newsSubtitleSize', 'newsHeight', 'newsOverlayOpacity',
                     'ministryTitle', 'ministrySubtitle', 'ministryTitleFont', 'ministrySubtitleFont', 'ministryTitleColor', 'ministrySubtitleColor', 'ministryTitleItalic', 'ministrySubtitleItalic', 'ministryTitleSize', 'ministrySubtitleSize', 'ministryHeight', 'ministryOverlayOpacity',
                     'resourcesTitle', 'resourcesSubtitle', 'resourcesTitleFont', 'resourcesSubtitleFont', 'resourcesTitleColor', 'resourcesSubtitleColor', 'resourcesTitleItalic', 'resourcesSubtitleItalic', 'resourcesTitleSize', 'resourcesSubtitleSize', 'resourcesHeight', 'resourcesOverlayOpacity',
-                    'ministryItems',
-                    'teamMinistryItems',
                     'missionTitle', 'missionSubtitle', 'missionTitleFont', 'missionSubtitleFont', 'missionTitleColor', 'missionSubtitleColor', 'missionTitleItalic', 'missionSubtitleItalic', 'missionTitleWeight', 'missionSubtitleWeight', 'missionTitleSize', 'missionSubtitleSize', 'missionHeight', 'missionOverlayOpacity', 'missionBannerFit', 'missionBannerPosition',
                     'prayerCommonTopics', 'prayerPastorTopics', 'prayerChurchTopics', 'prayerChurchTopics2026', 'prayerTopicsTitle', 'prayerTopicsSubtitle', 'prayerCoreValues', 'prayerGoals', 'prayerHours',
                     'teeTitle', 'teeSubtitle', 'teeTitleFont', 'teeSubtitleFont', 'teeTitleColor', 'teeSubtitleColor', 'teeTitleItalic', 'teeSubtitleItalic', 'teeTitleWeight', 'teeSubtitleWeight', 'teeTitleSize', 'teeSubtitleSize', 'teeHeight', 'teeOverlayOpacity', 'teeBannerFit', 'teeBannerPosition',
@@ -1193,6 +1191,46 @@ const Admin = () => {
                 ];
                 for (const field of otherFields) {
                     currentConfig[field] = formData[field];
+                }
+
+                // Process ministryItems (TSC/TSY)
+                if (formData.ministryItems && formData.ministryItems.length > 0) {
+                    const updatedMinistryItems = [...formData.ministryItems];
+                    for (let i = 0; i < updatedMinistryItems.length; i++) {
+                        const fieldName = `ministry-${i}`;
+                        const localFile = bannerFiles[fieldName];
+                        if (localFile) {
+                            try {
+                                const uploadedUrl = await Promise.race([dbService.uploadFile(localFile, 'ministries'), timeout]);
+                                updatedMinistryItems[i] = { ...updatedMinistryItems[i], image: uploadedUrl };
+                            } catch (err) {
+                                console.error(`Error uploading ministry image ${fieldName}:`, err);
+                            }
+                        } else if (updatedMinistryItems[i].image && updatedMinistryItems[i].image.includes('drive.google.com')) {
+                            updatedMinistryItems[i] = { ...updatedMinistryItems[i], image: dbService.formatDriveImage(updatedMinistryItems[i].image) };
+                        }
+                    }
+                    currentConfig.ministryItems = updatedMinistryItems;
+                }
+
+                // Process teamMinistryItems
+                if (formData.teamMinistryItems && formData.teamMinistryItems.length > 0) {
+                    const updatedTeamItems = [...formData.teamMinistryItems];
+                    for (let i = 0; i < updatedTeamItems.length; i++) {
+                        const fieldName = `team-${i}`;
+                        const localFile = bannerFiles[fieldName];
+                        if (localFile) {
+                            try {
+                                const uploadedUrl = await Promise.race([dbService.uploadFile(localFile, 'teams'), timeout]);
+                                updatedTeamItems[i] = { ...updatedTeamItems[i], image: uploadedUrl };
+                            } catch (err) {
+                                console.error(`Error uploading team image ${fieldName}:`, err);
+                            }
+                        } else if (updatedTeamItems[i].image && updatedTeamItems[i].image.includes('drive.google.com')) {
+                            updatedTeamItems[i] = { ...updatedTeamItems[i], image: dbService.formatDriveImage(updatedTeamItems[i].image) };
+                        }
+                    }
+                    currentConfig.teamMinistryItems = updatedTeamItems;
                 }
 
                 // Removed redundant redundant assignments - all fields are now in mediaFields or otherFields
