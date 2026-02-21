@@ -147,8 +147,10 @@ const TEE = () => {
                                     <Quote className="w-8 h-8 text-yellow-400/60 mb-6 mx-auto" />
                                     <p
                                         className="text-lg md:text-xl font-serif italic text-white mb-6 leading-loose break-keep"
-                                        dangerouslySetInnerHTML={{ __html: `"${t('tee.bible_verse')}"` }}
-                                    />
+                                    >
+                                        <span className="md:hidden" dangerouslySetInnerHTML={{ __html: `"${t('tee.bible_verse_mobile')}"` }} />
+                                        <span className="hidden md:block" dangerouslySetInnerHTML={{ __html: `"${t('tee.bible_verse')}"` }} />
+                                    </p>
                                     <div className="flex items-center justify-center gap-2">
                                         <div className="h-px w-8 bg-yellow-400/40"></div>
                                         <p className="text-sm font-bold text-yellow-400 uppercase tracking-wide">
