@@ -358,7 +358,7 @@ const resources = {
         translation: {
             "nav": {
                 "home": "Home",
-                "guide": "Guide",
+                "guide": "About US",
                 "intro": "About Church",
                 "affiliated_orgs": "Church Affiliation",
                 "pastor": "Pastor's Message",
@@ -369,7 +369,7 @@ const resources = {
                 "worship_guide": "Worship Guide",
                 "worship_guide": "Worship Guide",
                 "nextgen": "Next Generations",
-                "ministry": "Ministry",
+                "ministry": "MINISTRIES",
                 "education": "Education",
                 "tee": "TEE",
                 "bible": "Bible Study",
