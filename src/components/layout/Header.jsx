@@ -74,7 +74,7 @@ const Header = () => {
                                 to={item.path}
                                 onClick={(e) => item.path === '/' && handleHomeClick(e)}
                                 className={clsx(
-                                    "flex flex-col items-center gap-0.5 text-sm font-medium transition-colors py-1",
+                                    "flex flex-col items-start gap-0.5 text-sm font-medium transition-colors py-1",
                                     isScrolled ? "text-text-main hover:text-primary" : "text-white hover:text-white/80"
                                 )}
                             >
