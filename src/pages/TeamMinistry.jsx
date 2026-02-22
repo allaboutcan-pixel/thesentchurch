@@ -133,7 +133,7 @@ const TeamMinistry = () => {
                                 className="group bg-white rounded-[2rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-white/50"
                             >
                                 {/* Image Overlay */}
-                                <div className="relative h-48 overflow-hidden">
+                                <div className="relative h-64 overflow-hidden">
                                     <div className="absolute inset-0 bg-stone-900/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
                                     <img
                                         src={team.image}
