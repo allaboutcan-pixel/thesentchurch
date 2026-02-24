@@ -77,8 +77,18 @@ const Resources = () => {
                 const prefix = location.pathname.startsWith('/news') ? 'news' : 'resources';
 
                 if (config[`${prefix}Banner`]) setHeaderBanner(config[`${prefix}Banner`]);
-                if (config[`${prefix}Title`]) setTitle(config[`${prefix}Title`]);
-                if (config[`${prefix}Subtitle`]) setSubtitle(config[`${prefix}Subtitle`]);
+
+                // Multi-language banner content
+                const titleVal = i18n.language === 'en' && config[`${prefix}TitleEn`]
+                    ? config[`${prefix}TitleEn`]
+                    : config[`${prefix}Title`];
+                const subtitleVal = i18n.language === 'en' && config[`${prefix}SubtitleEn`]
+                    ? config[`${prefix}SubtitleEn`]
+                    : config[`${prefix}Subtitle`];
+
+                if (titleVal) setTitle(titleVal);
+                if (subtitleVal) setSubtitle(subtitleVal);
+
                 if (config[`${prefix}TitleFont`]) setTitleFont(config[`${prefix}TitleFont`]);
                 if (config[`${prefix}SubtitleFont`]) setSubtitleFont(config[`${prefix}SubtitleFont`]);
                 if (config[`${prefix}TitleColor`]) setTitleColor(config[`${prefix}TitleColor`]);
@@ -96,7 +106,7 @@ const Resources = () => {
         };
         fetchBanner();
         return () => { isMounted = false; };
-    }, [location.pathname]);
+    }, [location.pathname, i18n.language]);
 
     const getPreviewSource = (url) => {
         if (!url) return null;
@@ -427,13 +437,13 @@ const Resources = () => {
                                                 <span className="text-white/40 text-sm font-medium">{latestSermon.date}</span>
                                             </div>
                                             <h2 className="text-2xl md:text-3xl font-black text-white mb-3 leading-tight">
-                                                {latestSermon.title}
+                                                {(i18n.language === 'en' && latestSermon.titleEn) ? latestSermon.titleEn : latestSermon.title}
                                             </h2>
                                             <div className="flex items-center gap-2 text-white/60">
                                                 <div className="w-6 h-6 bg-white/5 rounded-full flex items-center justify-center">
                                                     <Play size={10} className="text-accent" />
                                                 </div>
-                                                <span className="font-bold text-sm">{latestSermon.preacher || (i18n.language.startsWith('en') ? 'Pastor Nam-Gyu Lee' : '이남규 목사')}</span>
+                                                <span className="font-bold text-sm">{(i18n.language === 'en' && latestSermon.preacherEn) ? latestSermon.preacherEn : (latestSermon.preacher || (i18n.language.startsWith('en') ? 'Pastor Namgyu Lee' : '이남규 목사'))}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -479,7 +489,7 @@ const Resources = () => {
                                                     "text-sm font-black line-clamp-2 leading-snug mb-1",
                                                     latestSermon?.id === sermon.id ? "text-primary" : "text-slate-800"
                                                 )}>
-                                                    {sermon.title}
+                                                    {(i18n.language === 'en' && sermon.titleEn) ? sermon.titleEn : sermon.title}
                                                 </h4>
                                                 <span className="text-[10px] font-bold text-slate-400">{sermon.date}</span>
                                             </div>
@@ -553,7 +563,7 @@ const Resources = () => {
                                                 </div>
                                                 <div className="min-w-0">
                                                     <h4 className="text-xs font-bold text-slate-600 group-hover:text-primary transition-colors truncate">
-                                                        {item.title}
+                                                        {(i18n.language === 'en' && item.titleEn) ? item.titleEn : item.title}
                                                     </h4>
                                                 </div>
                                             </div>

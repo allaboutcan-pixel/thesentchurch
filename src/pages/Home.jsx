@@ -41,7 +41,7 @@ const Home = () => {
     const [heroHeight, setHeroHeight] = useState("full");
     const [heroBannerFit, setHeroBannerFit] = useState("cover");
     const { config, loading: configLoading } = useSiteConfig();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         let isMounted = true;
@@ -96,8 +96,14 @@ const Home = () => {
 
                 if (config) {
                     if (config.heroImage) setHeroImage(config.heroImage);
-                    if (config.heroTitle) setHeroTitle(config.heroTitle);
-                    if (config.heroSubtitle) setHeroSubtitle(config.heroSubtitle);
+
+                    // Multi-language support for Hero
+                    const title = i18n.language === 'en' && config.heroTitleEn ? config.heroTitleEn : config.heroTitle;
+                    const subtitle = i18n.language === 'en' && config.heroSubtitleEn ? config.heroSubtitleEn : config.heroSubtitle;
+
+                    if (title) setHeroTitle(title);
+                    if (subtitle) setHeroSubtitle(subtitle);
+
                     if (config.heroTitleColor) setHeroTitleColor(config.heroTitleColor);
                     if (config.heroSubtitleColor) setHeroSubtitleColor(config.heroSubtitleColor);
                     if (config.heroTitleItalic !== undefined) setHeroTitleItalic(config.heroTitleItalic);
@@ -123,7 +129,7 @@ const Home = () => {
         };
         fetchLiveContent();
         return () => { isMounted = false; };
-    }, [config]);
+    }, [config, i18n.language]);
 
     useEffect(() => {
         // Immediately reset video loaded state when image/video source changes
@@ -263,7 +269,7 @@ const Home = () => {
                                     fontSize: heroSubtitleSize ? `${heroSubtitleSize}px` : undefined
                                 }}
                             >
-                                {heroSubtitle || t('home.hero_subtitle')}
+                                {heroSubtitle || (i18n.language === 'en' ? 'Welcome to The Sent Church' : t('home.hero_subtitle'))}
                             </h2>
                             <h1
                                 className={clsx(
@@ -277,7 +283,7 @@ const Home = () => {
                                     fontSize: heroTitleSize ? `${heroTitleSize}px` : undefined
                                 }}
                             >
-                                {heroTitle || t('home.hero_title')}
+                                {heroTitle || (i18n.language === 'en' ? 'A Community of Faith and Love' : t('home.hero_title'))}
                             </h1>
                         </>
                     )}
@@ -328,10 +334,10 @@ const Home = () => {
                         <div className="mt-16 text-center flex flex-col md:flex-row md:items-center justify-between gap-4 px-4">
                             <div>
                                 <p className="text-accent font-black text-base mb-4 tracking-wide uppercase">
-                                    {latestSermon.date} • {latestSermon.preacher || '이남규 목사'}
+                                    {latestSermon.date} • {(i18n.language === 'en' && latestSermon.preacherEn) ? latestSermon.preacherEn : (latestSermon.preacher || (i18n.language === 'en' ? 'Pastor Namgyu Lee' : '이남규 목사'))}
                                 </p>
                                 <h3 className="text-primary text-lg md:text-2xl font-black leading-snug">
-                                    {latestSermon.title || t('home.latest_word')}
+                                    {(i18n.language === 'en' && latestSermon.titleEn) ? latestSermon.titleEn : (latestSermon.title || t('home.latest_word'))}
                                 </h3>
                             </div>
                             <a

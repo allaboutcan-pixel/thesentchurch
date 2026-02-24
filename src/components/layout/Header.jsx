@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Menu, X, ChevronDown, Mail } from 'lucide-react';
+import { Menu, X, ChevronDown, Mail, Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import churchData from '../../data/church_data.json';
 import { useSiteConfig } from '../../hooks/useSiteConfig';
@@ -78,12 +78,8 @@ const Header = () => {
                                     isScrolled ? "text-text-main hover:text-primary" : "text-white hover:text-white/80"
                                 )}
                             >
-                                <span className="leading-tight">{t(`nav.${item.id}`)}</span>
-                                <span className={clsx(
-                                    "text-[10px] font-bold uppercase tracking-tighter leading-none flex items-center gap-1 transition-colors",
-                                    isScrolled ? "text-[#003B73]" : "text-white/80"
-                                )}>
-                                    {t(`nav.${item.id}`, { lng: 'en' })}
+                                <span className="leading-tight flex items-center gap-1">
+                                    {t(`nav.${item.id}`)}
                                     {item.subItems && (
                                         <ChevronDown size={10} className="group-hover/menu:rotate-180 transition-transform" />
                                     )}
@@ -115,6 +111,21 @@ const Header = () => {
 
                 {/* Language Switcher & Mobile Menu Button */}
                 <div className="flex items-center gap-1 md:gap-4">
+                    {/* Language Switcher */}
+                    <button
+                        onClick={() => i18n.changeLanguage(i18n.language === 'ko' ? 'en' : 'ko')}
+                        className={clsx(
+                            "flex items-center gap-1.5 px-3 py-1.5 rounded-full font-black text-[10px] md:text-xs transition-all border shrink-0",
+                            isScrolled
+                                ? "bg-gray-50 text-gray-600 border-gray-100 hover:bg-gray-100"
+                                : "bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-sm"
+                        )}
+                        title={i18n.language === 'ko' ? 'Switch to English' : '한국어로 변경'}
+                    >
+                        <Globe size={14} className={clsx(i18n.language === 'en' ? "text-blue-400" : "text-amber-500")} />
+                        <span>{i18n.language === 'ko' ? 'EN' : 'KO'}</span>
+                    </button>
+
                     {/* Contact Button (Desktop) */}
                     <button
                         onClick={() => setIsContactOpen(true)}
@@ -163,9 +174,6 @@ const Header = () => {
                                         }}
                                     >
                                         <span className="text-sm">{t(`nav.${item.id}`)}</span>
-                                        <span className="text-[10px] uppercase font-bold text-[#003B73] tracking-wider">
-                                            {t(`nav.${item.id}`, { lng: 'en' })}
-                                        </span>
                                     </Link>
 
                                     {item.subItems && (

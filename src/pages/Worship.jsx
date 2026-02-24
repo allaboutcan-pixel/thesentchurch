@@ -39,8 +39,18 @@ const Worship = () => {
 
             if (config) {
                 if (config.newsBanner || config.worshipBanner) setHeaderBanner(config.newsBanner || config.worshipBanner);
-                if (config.newsTitle || config.worshipTitle) setTitle(config.newsTitle || config.worshipTitle);
-                if (config.newsSubtitle || config.worshipSubtitle) setSubtitle(config.newsSubtitle || config.worshipSubtitle);
+
+                // Multi-language banner content
+                const titleVal = i18n.language === 'en' && (config.newsTitleEn || config.worshipTitleEn)
+                    ? (config.newsTitleEn || config.worshipTitleEn)
+                    : (config.newsTitle || config.worshipTitle);
+                const subtitleVal = i18n.language === 'en' && (config.newsSubtitleEn || config.worshipSubtitleEn)
+                    ? (config.newsSubtitleEn || config.worshipSubtitleEn)
+                    : (config.newsSubtitle || config.worshipSubtitle);
+
+                if (titleVal) setTitle(titleVal);
+                if (subtitleVal) setSubtitle(subtitleVal);
+
                 if (config.newsTitleFont || config.worshipTitleFont) setTitleFont(config.newsTitleFont || config.worshipTitleFont);
                 if (config.newsSubtitleFont || config.worshipSubtitleFont) setSubtitleFont(config.newsSubtitleFont || config.worshipSubtitleFont);
                 if (config.newsTitleColor || config.worshipTitleColor) setTitleColor(config.newsTitleColor || config.worshipTitleColor);
@@ -60,10 +70,24 @@ const Worship = () => {
                 if (config.newsHeight || config.worshipHeight) setHeight(config.newsHeight || config.worshipHeight);
                 if (config.newsBannerFit || config.worshipBannerFit) setBannerFit(config.newsBannerFit || config.worshipBannerFit);
 
-                // Load Service Data from Config
-                if (config.services) setServices(config.services);
-                if (config.specialServices) setSpecialServices(config.specialServices);
-                if (config.otherMeetings) setOtherMeetings(config.otherMeetings);
+                // Load and Localize Service Data
+                if (config.services) {
+                    const localizedServices = config.services.map(s => ({
+                        ...s,
+                        name: i18n.language === 'en' && s.nameEn ? s.nameEn : s.name,
+                        description: i18n.language === 'en' && s.descriptionEn ? s.descriptionEn : s.description
+                    }));
+                    setServices(localizedServices);
+                }
+                if (config.specialServices) setSpecialServices(config.specialServices); // Dawn uses t() in JSX or specific logic
+                if (config.otherMeetings) {
+                    const localizedMeetings = config.otherMeetings.map(m => ({
+                        ...m,
+                        name: i18n.language === 'en' && m.nameEn ? m.nameEn : m.name,
+                        location: i18n.language === 'en' && m.locationEn ? m.locationEn : m.location
+                    }));
+                    setOtherMeetings(localizedMeetings);
+                }
             }
         };
         fetchConfig();

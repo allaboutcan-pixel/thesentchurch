@@ -123,6 +123,10 @@ const TeamMinistry = () => {
                         const Icon = iconMap[team.icon] || HandHeart;
                         const isEnglish = i18n.language.startsWith('en');
 
+                        const displayName = isEnglish && team.nameEn ? team.nameEn : team.name;
+                        const displayEnglishName = team.englishName; // This is a separate field often used for decorative purposes
+                        const displayDescription = isEnglish && team.descriptionEn ? team.descriptionEn : team.description;
+
                         return (
                             <motion.div
                                 key={team.id}
@@ -137,7 +141,7 @@ const TeamMinistry = () => {
                                     <div className="absolute inset-0 bg-stone-900/20 group-hover:bg-transparent transition-colors duration-500 z-10" />
                                     <img
                                         src={team.image}
-                                        alt={isEnglish ? (team.englishName || team.name) : team.name}
+                                        alt={displayName}
                                         className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                                     />
                                     <div className="absolute top-4 right-4 z-20 bg-white/90 backdrop-blur p-2.5 rounded-full shadow-lg text-primary">
@@ -148,14 +152,14 @@ const TeamMinistry = () => {
                                 <div className="p-8">
                                     <div className="mb-4">
                                         <h3 className="text-2xl font-bold text-gray-900 mb-1 group-hover:text-primary transition-colors">
-                                            {team.name}
+                                            {displayName}
                                         </h3>
                                         <p className="text-sm font-bold text-accent uppercase tracking-wider">
-                                            {team.englishName}
+                                            {displayEnglishName}
                                         </p>
                                     </div>
                                     <p className="text-gray-600 leading-loose text-sm md:text-base">
-                                        {team.description}
+                                        {displayDescription}
                                     </p>
                                 </div>
                             </motion.div>

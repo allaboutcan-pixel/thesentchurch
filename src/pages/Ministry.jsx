@@ -92,8 +92,14 @@ const Ministry = () => {
 
             if (config) {
                 if (config.ministryBanner) setHeaderBanner(config.ministryBanner);
-                if (config.ministryTitle) setTitle(config.ministryTitle);
-                if (config.ministrySubtitle) setSubtitle(config.ministrySubtitle);
+
+                // Multi-language banner content
+                const titleVal = i18n.language === 'en' && config.ministryTitleEn ? config.ministryTitleEn : config.ministryTitle;
+                const subtitleVal = i18n.language === 'en' && config.ministrySubtitleEn ? config.ministrySubtitleEn : config.ministrySubtitle;
+
+                if (titleVal) setTitle(titleVal);
+                if (subtitleVal) setSubtitle(subtitleVal);
+
                 if (config.ministryTitleFont) setTitleFont(config.ministryTitleFont);
                 if (config.ministrySubtitleFont) setSubtitleFont(config.ministrySubtitleFont);
                 if (config.ministryTitleColor) setTitleColor(config.ministryTitleColor);
@@ -107,7 +113,17 @@ const Ministry = () => {
                 if (config.ministryOverlayOpacity !== undefined) setOverlayOpacity(config.ministryOverlayOpacity);
                 if (config.ministryHeight) setHeight(config.ministryHeight);
                 if (config.ministryBannerFit) setBannerFit(config.ministryBannerFit);
-                if (config.ministryItems) setMinistryList(config.ministryItems);
+
+                if (config.ministryItems) {
+                    const localizedItems = config.ministryItems.map(m => ({
+                        ...m,
+                        name: i18n.language === 'en' && m.nameEn ? m.nameEn : m.name,
+                        target: i18n.language === 'en' && m.targetEn ? m.targetEn : m.target,
+                        description: i18n.language === 'en' && m.descriptionEn ? m.descriptionEn : m.description,
+                        detail: i18n.language === 'en' && m.detailEn ? m.detailEn : m.detail
+                    }));
+                    setMinistryList(localizedItems);
+                }
             }
         };
         fetchBanner();

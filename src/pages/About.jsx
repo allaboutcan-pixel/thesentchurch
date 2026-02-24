@@ -63,8 +63,14 @@ const About = () => {
     useEffect(() => {
         if (config) {
             if (config.aboutBanner) setHeaderBanner(config.aboutBanner);
-            if (config.aboutTitle !== undefined) setTitle(config.aboutTitle);
-            if (config.aboutSubtitle !== undefined) setSubtitle(config.aboutSubtitle);
+
+            // Multi-language for Header
+            const titleVal = i18n.language === 'en' && config.aboutTitleEn ? config.aboutTitleEn : config.aboutTitle;
+            const subtitleVal = i18n.language === 'en' && config.aboutSubtitleEn ? config.aboutSubtitleEn : config.aboutSubtitle;
+
+            if (titleVal !== undefined) setTitle(titleVal);
+            if (subtitleVal !== undefined) setSubtitle(subtitleVal);
+
             if (config.aboutTitleFont) setTitleFont(config.aboutTitleFont);
             if (config.aboutSubtitleFont) setSubtitleFont(config.aboutSubtitleFont);
             if (config.aboutTitleColor) setTitleColor(config.aboutTitleColor);
@@ -79,8 +85,25 @@ const About = () => {
             if (config.aboutHeight) setHeight(config.aboutHeight);
             if (config.aboutBannerFit) setBannerFit(config.aboutBannerFit);
 
-            if (config.staff) setStaffList(config.staff);
-            if (config.pastor) setPastorInfo(prev => ({ ...prev, ...config.pastor }));
+            if (config.staff) {
+                const localizedStaff = config.staff.map(s => ({
+                    ...s,
+                    name: i18n.language === 'en' && s.nameEn ? s.nameEn : s.name,
+                    role: i18n.language === 'en' && s.roleEn ? s.roleEn : s.role
+                }));
+                setStaffList(localizedStaff);
+            }
+
+            if (config.pastor) {
+                setPastorInfo(prev => ({
+                    ...prev,
+                    ...config.pastor,
+                    name: i18n.language === 'en' && config.pastor.nameEn ? config.pastor.nameEn : config.pastor.name,
+                    role: i18n.language === 'en' && config.pastor.roleEn ? config.pastor.roleEn : config.pastor.role,
+                    greeting: i18n.language === 'en' && config.pastor.greetingEn ? config.pastor.greetingEn : config.pastor.greeting,
+                    history: i18n.language === 'en' && config.pastor.historyEn ? config.pastor.historyEn : config.pastor.history
+                }));
+            }
 
             // Worship Data
             if (config.services) setServices(config.services);
@@ -91,13 +114,13 @@ const About = () => {
             if (config.location) {
                 setLocationConfig(prev => ({
                     ...prev,
-                    address: config.location.address || prev.address,
+                    address: i18n.language === 'en' && config.location.addressEn ? config.location.addressEn : (config.location.address || prev.address),
                     phone: config.location.phone || prev.phone,
                     mapEmbed: config.location.mapEmbed || prev.mapEmbed
                 }));
             }
         }
-    }, [config]);
+    }, [config, i18n.language]);
 
     useEffect(() => {
         if (location.hash) {

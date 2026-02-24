@@ -356,6 +356,7 @@ const Admin = () => {
 
         // Home
         heroImage: '', heroTitle: '', heroSubtitle: '',
+        heroTitleEn: '', heroSubtitleEn: '',
         heroTitleFont: 'font-sans', heroSubtitleFont: 'font-sans',
         heroTitleColor: '#ffffff', heroSubtitleColor: '#f8fafc',
         heroTitleItalic: false, heroSubtitleItalic: false,
@@ -365,6 +366,7 @@ const Admin = () => {
 
         // About
         aboutBanner: '', aboutTitle: '', aboutSubtitle: '',
+        aboutTitleEn: '', aboutSubtitleEn: '',
         aboutTitleFont: 'font-sans', aboutSubtitleFont: 'font-sans',
         aboutTitleColor: '#ffffff', aboutSubtitleColor: '#f8fafc',
         aboutTitleItalic: false, aboutSubtitleItalic: false,
@@ -374,6 +376,7 @@ const Admin = () => {
 
         // News
         newsBanner: '', newsTitle: '', newsSubtitle: '',
+        newsTitleEn: '', newsSubtitleEn: '',
         newsTitleFont: 'font-sans', newsSubtitleFont: 'font-sans',
         newsTitleColor: '#ffffff', newsSubtitleColor: '#f8fafc',
         newsTitleItalic: false, newsSubtitleItalic: false,
@@ -383,6 +386,7 @@ const Admin = () => {
 
         // TEE
         teeBanner: '', teeTitle: '', teeSubtitle: '',
+        teeTitleEn: '', teeSubtitleEn: '',
         teeTitleFont: 'font-sans', teeSubtitleFont: 'font-sans',
         teeTitleColor: '#ffffff', teeSubtitleColor: '#f8fafc',
         teeTitleItalic: false, teeSubtitleItalic: false,
@@ -393,6 +397,7 @@ const Admin = () => {
 
         // Bible Study
         bibleBanner: '', bibleTitle: '', bibleSubtitle: '',
+        bibleTitleEn: '', bibleSubtitleEn: '',
         bibleTitleFont: 'font-sans', bibleSubtitleFont: 'font-sans',
         bibleTitleColor: '#ffffff', bibleSubtitleColor: '#f8fafc',
         bibleTitleItalic: false, bibleSubtitleItalic: false,
@@ -403,6 +408,7 @@ const Admin = () => {
 
         // Ministry
         ministryBanner: '', ministryTitle: '', ministrySubtitle: '',
+        ministryTitleEn: '', ministrySubtitleEn: '',
         ministryTitleFont: 'font-sans', ministrySubtitleFont: 'font-sans',
         ministryTitleColor: '#ffffff', ministrySubtitleColor: '#f8fafc',
         ministryTitleItalic: false, ministrySubtitleItalic: false,
@@ -412,6 +418,7 @@ const Admin = () => {
 
         // Resources
         resourcesBanner: '', resourcesTitle: '', resourcesSubtitle: '',
+        resourcesTitleEn: '', resourcesSubtitleEn: '',
         resourcesTitleFont: 'font-sans', resourcesSubtitleFont: 'font-sans',
         resourcesTitleColor: '#ffffff', resourcesSubtitleColor: '#f8fafc',
         resourcesTitleItalic: false, resourcesSubtitleItalic: false,
@@ -421,6 +428,7 @@ const Admin = () => {
 
         // Mission
         missionBanner: '', missionTitle: '', missionSubtitle: '',
+        missionTitleEn: '', missionSubtitleEn: '',
         missionTitleFont: 'font-sans', missionSubtitleFont: 'font-sans',
         missionTitleColor: '#ffffff', missionSubtitleColor: '#f8fafc',
         missionTitleItalic: false, missionSubtitleItalic: false,
@@ -431,6 +439,7 @@ const Admin = () => {
 
         // Prayer
         prayerBanner: '', prayerTitle: '', prayerSubtitle: '',
+        prayerTitleEn: '', prayerSubtitleEn: '',
         prayerTitleFont: 'font-sans', prayerSubtitleFont: 'font-sans',
         prayerTitleColor: '#ffffff', prayerSubtitleColor: '#f8fafc',
         prayerTitleItalic: false, prayerSubtitleItalic: false,
@@ -439,18 +448,9 @@ const Admin = () => {
         prayerHeight: 'medium', prayerOverlayOpacity: 40,
         prayerBannerFit: 'cover', prayerBannerPosition: 50,
 
-        // TEE
-        teeBanner: '', teeTitle: '', teeSubtitle: '',
-        teeTitleFont: 'font-sans', teeSubtitleFont: 'font-sans',
-        teeTitleColor: '#ffffff', teeSubtitleColor: '#f8fafc',
-        teeTitleItalic: false, teeSubtitleItalic: false,
-        teeTitleWeight: 'font-bold', teeSubtitleWeight: 'font-medium',
-        teeTitleSize: 40, teeSubtitleSize: 18,
-        teeHeight: 'medium', teeOverlayOpacity: 40,
-        teeBannerFit: 'cover',
-
         // Team Ministry
         teamBanner: '', teamTitle: '', teamSubtitle: '',
+        teamTitleEn: '', teamSubtitleEn: '',
         teamTitleFont: 'font-sans', teamSubtitleFont: 'font-sans',
         teamTitleColor: '#ffffff', teamSubtitleColor: '#f8fafc',
         teamTitleItalic: false, teamSubtitleItalic: false,
@@ -469,20 +469,26 @@ const Admin = () => {
         prayerCommonTopics: '',
         prayerPastorTopics: '',
         prayerChurchTopics: '',
-        prayerWorldTopics: '',
         prayerChurchTopics2026: '', // New field for 2026 topics
         prayerTopicsTitle: '',
         prayerTopicsSubtitle: '',
+        prayerTopicsTitleEn: '', prayerTopicsSubtitleEn: '',
         prayerCoreValues: '',
         prayerGoals: '',
         prayerHours: '',
+        prayerCoreValuesEn: '', prayerGoalsEn: '', prayerHoursEn: '',
+        prayerCommonTopicsEn: '', prayerPastorTopicsEn: '', prayerChurchTopicsEn: '',
+        prayerChurchTopics2026En: '',
 
         author: '', fileType: 'pdf',
         note: '', eventType: 'default',
         startDate: '', endDate: '',
 
         // EmailJS Configuration
-        emailjsServiceId: '', emailjsTemplateId: '', emailjsPublicKey: '', emailjsReceivers: ''
+        emailjsServiceId: '', emailjsTemplateId: '', emailjsPublicKey: '', emailjsReceivers: '',
+
+        // English fields for general items
+        titleEn: '', preacherEn: '', contentEn: '', authorEn: '', staffEnglishRole: '',
     });
 
     const [pastorFile, setPastorFile] = useState(null);
@@ -688,8 +694,6 @@ const Admin = () => {
                     teamSubtitleSize: fbConfig.teamSubtitleSize || 18,
                     teamHeight: fbConfig.teamHeight || 'medium',
                     teamOverlayOpacity: fbConfig.teamOverlayOpacity || 40,
-                    teamHeight: fbConfig.teamHeight || 'medium',
-                    teamOverlayOpacity: fbConfig.teamOverlayOpacity || 40,
                     teamBannerFit: fbConfig.teamBannerFit || 'cover',
                     teamBannerPosition: fbConfig.teamBannerPosition || 50,
 
@@ -743,6 +747,28 @@ const Admin = () => {
                     bibleStep2Image: fbConfig.bibleStep2Image || '',
                     bibleStep3Image: fbConfig.bibleStep3Image || '',
                     bibleStep4Image: fbConfig.bibleStep4Image || '',
+
+                    // English fields for general items
+                    heroTitleEn: fbConfig.heroTitleEn || '', heroSubtitleEn: fbConfig.heroSubtitleEn || '',
+                    aboutTitleEn: fbConfig.aboutTitleEn || '', aboutSubtitleEn: fbConfig.aboutSubtitleEn || '',
+                    newsTitleEn: fbConfig.newsTitleEn || '', newsSubtitleEn: fbConfig.newsSubtitleEn || '',
+                    ministryTitleEn: fbConfig.ministryTitleEn || '', ministrySubtitleEn: fbConfig.ministrySubtitleEn || '',
+                    resourcesTitleEn: fbConfig.resourcesTitleEn || '', resourcesSubtitleEn: fbConfig.resourcesSubtitleEn || '',
+                    missionTitleEn: fbConfig.missionTitleEn || '', missionSubtitleEn: fbConfig.missionSubtitleEn || '',
+                    prayerTitleEn: fbConfig.prayerTitleEn || '', prayerSubtitleEn: fbConfig.prayerSubtitleEn || '',
+                    teeTitleEn: fbConfig.teeTitleEn || '', teeSubtitleEn: fbConfig.teeSubtitleEn || '',
+                    teamTitleEn: fbConfig.teamTitleEn || '', teamSubtitleEn: fbConfig.teamSubtitleEn || '',
+                    bibleTitleEn: fbConfig.bibleTitleEn || '', bibleSubtitleEn: fbConfig.bibleSubtitleEn || '',
+
+                    prayerTopicsTitleEn: fbConfig.prayerTopicsTitleEn || '',
+                    prayerTopicsSubtitleEn: fbConfig.prayerTopicsSubtitleEn || '',
+                    prayerCoreValuesEn: fbConfig.prayerCoreValuesEn || '',
+                    prayerGoalsEn: fbConfig.prayerGoalsEn || '',
+                    prayerHoursEn: fbConfig.prayerHoursEn || '',
+                    prayerCommonTopicsEn: fbConfig.prayerCommonTopicsEn || '',
+                    prayerPastorTopicsEn: fbConfig.prayerPastorTopicsEn || '',
+                    prayerChurchTopicsEn: fbConfig.prayerChurchTopicsEn || '',
+                    prayerChurchTopics2026En: fbConfig.prayerChurchTopics2026En || '',
                 }));
                 setColumns(fbColumns || []);
                 if (fbConfig.staff) {
@@ -865,6 +891,7 @@ const Admin = () => {
                     name: formData.staffName,
                     englishName: formData.staffEnglishName,
                     role: formData.staffRole,
+                    englishRole: formData.staffEnglishRole || '',
                     email: formData.staffEmail,
                     image: finalPhotoUrl
                 } : s);
@@ -874,6 +901,7 @@ const Admin = () => {
                     name: formData.staffName,
                     englishName: formData.staffEnglishName,
                     role: formData.staffRole,
+                    englishRole: formData.staffEnglishRole || '',
                     email: formData.staffEmail,
                     image: finalPhotoUrl
                 };
@@ -891,7 +919,7 @@ const Admin = () => {
             setStaffFile(null);
             setFormData({
                 ...formData,
-                staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', staffEnglishName: ''
+                staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', staffEnglishName: '', staffEnglishRole: ''
             });
             alert('성공적으로 저장되었습니다!');
         } catch (err) {
@@ -951,7 +979,9 @@ const Admin = () => {
                 const vidId = extractYoutubeId(formData.youtubeId);
                 const sermonData = {
                     title: formData.title,
+                    titleEn: formData.titleEn || '',
                     preacher: formData.preacher,
+                    preacherEn: formData.preacherEn || '',
                     date: formData.date,
                     youtubeId: vidId,
                     thumbnail: `https://img.youtube.com/vi/${vidId}/hqdefault.jpg`,
@@ -988,6 +1018,7 @@ const Admin = () => {
 
                 const bulletinData = {
                     title: formData.title,
+                    titleEn: formData.titleEn || '',
                     date: formData.date,
                     fileUrl: finalFileUrl,
                     fileUrl2: finalFileUrl2
@@ -1003,9 +1034,11 @@ const Admin = () => {
             } else if (activeTab === 'notices') {
                 const noticeData = {
                     title: formData.title,
+                    titleEn: formData.titleEn || '',
                     date: formData.date,
                     category: formData.category,
                     content: formData.content,
+                    contentEn: formData.contentEn || '',
                     important: formData.important,
                     link: formData.link || ''
                 };
@@ -1053,6 +1086,7 @@ const Admin = () => {
 
                 const newItem = {
                     title: formData.title,
+                    titleEn: formData.titleEn || '',
                     date: formData.date,
                     url: finalUrl,
                     thumbnailUrl: finalThumbnailUrl,
@@ -1081,8 +1115,10 @@ const Admin = () => {
 
                 const columnData = {
                     title: formData.title,
+                    titleEn: formData.titleEn || '',
                     date: formData.date,
                     author: formData.author || '이남규 목사',
+                    authorEn: formData.authorEn || '',
                     fileUrl: finalFileUrl,
                     fileType: formData.fileType || 'pdf',
                     link: formData.fileUrl // Keep original link for reference
@@ -1122,7 +1158,9 @@ const Admin = () => {
 
                 const dailyWordData = {
                     content: formData.content,
+                    contentEn: formData.contentEn || '',
                     verse: formData.verse || formData.title, // Use title field for verse if verse not specified, or vice versa
+                    verseEn: formData.titleEn || '',
                     date: formData.date,
                     image: finalImageUrl
                 };
@@ -1187,7 +1225,13 @@ const Admin = () => {
                     'teamTitle', 'teamSubtitle', 'teamTitleFont', 'teamSubtitleFont', 'teamTitleColor', 'teamSubtitleColor', 'teamTitleItalic', 'teamSubtitleItalic', 'teamTitleWeight', 'teamSubtitleWeight', 'teamTitleSize', 'teamSubtitleSize', 'teamHeight', 'teamOverlayOpacity', 'teamBannerFit', 'teamBannerPosition',
                     'heroBannerFit', 'aboutBannerFit', 'newsBannerFit', 'ministryBannerFit', 'resourcesBannerFit', 'bibleBannerFit',
                     'heroBannerPosition', 'aboutBannerPosition', 'newsBannerPosition', 'ministryBannerPosition', 'resourcesBannerPosition', 'prayerBannerPosition',
-                    'emailjsServiceId', 'emailjsTemplateId', 'emailjsPublicKey', 'emailjsReceivers'
+                    'emailjsServiceId', 'emailjsTemplateId', 'emailjsPublicKey', 'emailjsReceivers',
+                    'heroTitleEn', 'heroSubtitleEn', 'aboutTitleEn', 'aboutSubtitleEn', 'newsTitleEn', 'newsSubtitleEn',
+                    'ministryTitleEn', 'ministrySubtitleEn', 'resourcesTitleEn', 'resourcesSubtitleEn',
+                    'missionTitleEn', 'missionSubtitleEn', 'prayerTitleEn', 'prayerSubtitleEn',
+                    'teeTitleEn', 'teeSubtitleEn', 'bibleTitleEn', 'bibleSubtitleEn', 'teamTitleEn', 'teamSubtitleEn',
+                    'prayerTopicsTitleEn', 'prayerTopicsSubtitleEn', 'prayerCoreValuesEn', 'prayerGoalsEn', 'prayerHoursEn',
+                    'prayerCommonTopicsEn', 'prayerPastorTopicsEn', 'prayerChurchTopicsEn', 'prayerChurchTopics2026En'
                 ];
                 for (const field of otherFields) {
                     currentConfig[field] = formData[field];
@@ -1262,7 +1306,7 @@ const Admin = () => {
             } else {
                 setFormData({
                     ...formData,
-                    title: '', date: '', preacher: '', youtubeId: '', fileUrl: '', fileUrl2: '', category: '공지', content: '', important: false, type: 'image',
+                    title: '', titleEn: '', date: '', preacher: '', preacherEn: '', youtubeId: '', fileUrl: '', fileUrl2: '', category: '공지', content: '', contentEn: '', important: false, type: 'image',
                     staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', thumbnailUrl: '',
                     note: '', eventType: 'default',
                     startDate: '', endDate: '', staffEnglishName: ''
@@ -1324,6 +1368,7 @@ const Admin = () => {
                 staffName: item.name,
                 staffEnglishName: item.englishName || '',
                 staffRole: item.role,
+                staffEnglishRole: item.englishRole || '',
                 staffEmail: item.email || '',
                 // If the image is a processed Drive thumbnail, don't put it in the input (it looks broken as text)
                 staffPhotoUrl: (item.image && !item.image.includes('drive.google.com/thumbnail') && !item.image.includes('drive.google.com/uc')) ? item.image : ''
@@ -1538,7 +1583,7 @@ const Admin = () => {
 
                         <div className="space-y-4">
                             <div>
-                                <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 mb-1 block">타이틀 (Title)</label>
+                                <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 mb-1 block">타이틀 (Korean Title)</label>
                                 <input
                                     type="text"
                                     className="w-full p-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-lg"
@@ -1547,11 +1592,30 @@ const Admin = () => {
                                 />
                             </div>
                             <div>
-                                <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 mb-1 block">서브 타이틀 (Subtitle)</label>
+                                <label className="text-xs font-bold text-blue-500 uppercase tracking-wider px-1 mb-1 block">English Title</label>
+                                <input
+                                    type="text"
+                                    className="w-full p-3 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-lg"
+                                    placeholder="Enter English Title"
+                                    value={formData[`${pageKey}TitleEn`]}
+                                    onChange={(e) => setFormData({ ...formData, [`${pageKey}TitleEn`]: e.target.value })}
+                                />
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 mb-1 block">서브 타이틀 (Korean Subtitle)</label>
                                 <textarea
                                     className="w-full p-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium h-20 resize-none"
                                     value={formData[`${pageKey}Subtitle`]}
                                     onChange={(e) => setFormData({ ...formData, [`${pageKey}Subtitle`]: e.target.value })}
+                                />
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold text-blue-500 uppercase tracking-wider px-1 mb-1 block">English Subtitle</label>
+                                <textarea
+                                    className="w-full p-3 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium h-20 resize-none"
+                                    placeholder="Enter English Subtitle"
+                                    value={formData[`${pageKey}SubtitleEn`]}
+                                    onChange={(e) => setFormData({ ...formData, [`${pageKey}SubtitleEn`]: e.target.value })}
                                 />
                             </div>
 
@@ -1934,7 +1998,7 @@ const Admin = () => {
                         </div>
                         <form onSubmit={handleFormSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
-                                <label className="text-sm font-bold text-gray-500 ml-1">제목 (Title)</label>
+                                <label className="text-sm font-bold text-gray-500 ml-1">제목 (Korean Title)</label>
                                 <input
                                     type="text"
                                     className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 select-none outline-none"
@@ -1943,8 +2007,19 @@ const Admin = () => {
                                     value={formData.title}
                                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                 />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-sm font-bold text-blue-500 ml-1">English Title</label>
+                                <input
+                                    type="text"
+                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 select-none outline-none"
+                                    placeholder="English version of the title"
+                                    value={formData.titleEn}
+                                    onChange={(e) => setFormData({ ...formData, titleEn: e.target.value })}
+                                />
                                 <p className="text-[10px] text-gray-400 ml-1 font-medium italic">
-                                    {activeTab === 'dailyWord' ? '* 성경 구절 출처 (예: 마태복음 5:13)' : ''}
+                                    {activeTab === 'dailyWord' ? '* Biblical Verse in English (e.g., Matthew 5:13)' : ''}
                                 </p>
                             </div>
 
@@ -1989,13 +2064,23 @@ const Admin = () => {
                             {activeTab === 'sermons' && (
                                 <>
                                     <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-500 ml-1">설교자</label>
+                                        <label className="text-sm font-bold text-gray-500 ml-1">설교자 (Korean Preacher)</label>
                                         <input
                                             type="text"
                                             className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
                                             placeholder="이남규 목사"
                                             value={formData.preacher}
                                             onChange={(e) => setFormData({ ...formData, preacher: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-blue-500 ml-1">English Preacher</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                                            placeholder="Pastor Namgyu Lee"
+                                            value={formData.preacherEn}
+                                            onChange={(e) => setFormData({ ...formData, preacherEn: e.target.value })}
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -2260,13 +2345,23 @@ const Admin = () => {
                                             </select>
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-500 ml-1">작성자 (Author)</label>
+                                            <label className="text-sm font-bold text-gray-500 ml-1">작성자 (Korean Author)</label>
                                             <input
                                                 type="text"
                                                 className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
                                                 placeholder="이남규 목사"
                                                 value={formData.author}
                                                 onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-blue-500 ml-1">English Author</label>
+                                            <input
+                                                type="text"
+                                                className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                                                placeholder="Pastor Namgyu Lee"
+                                                value={formData.authorEn}
+                                                onChange={(e) => setFormData({ ...formData, authorEn: e.target.value })}
                                             />
                                         </div>
                                     </div>
@@ -2317,13 +2412,22 @@ const Admin = () => {
                             {activeTab === 'dailyWord' && (
                                 <div className="space-y-6 md:col-span-2">
                                     <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-500 ml-1">오늘의 말씀 내용 (Content)</label>
+                                        <label className="text-sm font-bold text-gray-500 ml-1">내용 (Korean Content)</label>
                                         <textarea
                                             className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-32 resize-none"
-                                            placeholder="오늘의 성경 구절이나 묵상 내용을 입력하세요."
+                                            placeholder="내용을 입력하세요."
                                             required
                                             value={formData.content}
                                             onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-blue-500 ml-1">English Content</label>
+                                        <textarea
+                                            className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-32 resize-none"
+                                            placeholder="Enter English content."
+                                            value={formData.contentEn}
+                                            onChange={(e) => setFormData({ ...formData, contentEn: e.target.value })}
                                         />
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -2414,13 +2518,23 @@ const Admin = () => {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">직분/역할 (Role)</label>
+                                    <label className="text-sm font-bold text-gray-500 ml-1">직분/역할 (Korean Role)</label>
                                     <input
                                         type="text"
                                         className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
                                         placeholder="예: 담임목사, 교육전도사"
                                         value={formData.staffRole}
                                         onChange={(e) => setFormData({ ...formData, staffRole: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-blue-500 ml-1">English Role</label>
+                                    <input
+                                        type="text"
+                                        className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                                        placeholder="e.g., Senior Pastor"
+                                        value={formData.staffEnglishRole}
+                                        onChange={(e) => setFormData({ ...formData, staffEnglishRole: e.target.value })}
                                     />
                                 </div>
                                 <div className="space-y-2">
@@ -2649,80 +2763,158 @@ const Admin = () => {
                                     </h3>
 
                                     <div className="space-y-8">
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">사역의 핵심 가치 (Core Values)</label>
-                                            <textarea
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
-                                                placeholder="예: 하나님과의 친밀함, 정결한 삶..."
-                                                value={formData.prayerCoreValues}
-                                                onChange={(e) => setFormData({ ...formData, prayerCoreValues: e.target.value })}
-                                            />
+                                        <div className="space-y-4">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">사역의 핵심 가치 (Korean Core Values)</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                    placeholder="예: 하나님과의 친밀함, 정결한 삶..."
+                                                    value={formData.prayerCoreValues}
+                                                    onChange={(e) => setFormData({ ...formData, prayerCoreValues: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Core Values</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                    placeholder="Enter English core values"
+                                                    value={formData.prayerCoreValuesEn}
+                                                    onChange={(e) => setFormData({ ...formData, prayerCoreValuesEn: e.target.value })}
+                                                />
+                                            </div>
                                         </div>
 
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">중보기도부 목표 (Goals)</label>
-                                            <textarea
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
-                                                placeholder="예: 기도의 용사를 양성하고..."
-                                                value={formData.prayerGoals}
-                                                onChange={(e) => setFormData({ ...formData, prayerGoals: e.target.value })}
-                                            />
+                                        <div className="space-y-4">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">중보기도부 목표 (Korean Goals)</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                    placeholder="예: 기도의 용사를 양성하고..."
+                                                    value={formData.prayerGoals}
+                                                    onChange={(e) => setFormData({ ...formData, prayerGoals: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Goals</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                    placeholder="Enter English goals"
+                                                    value={formData.prayerGoalsEn}
+                                                    onChange={(e) => setFormData({ ...formData, prayerGoalsEn: e.target.value })}
+                                                />
+                                            </div>
                                         </div>
 
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">운영시간 (Operating Hours)</label>
-                                            <textarea
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
-                                                placeholder="예: 매주 금요일 오후 8시..."
-                                                value={formData.prayerHours}
-                                                onChange={(e) => setFormData({ ...formData, prayerHours: e.target.value })}
-                                            />
+                                        <div className="space-y-4">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">운영시간 (Korean Operating Hours)</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                    placeholder="예: 매주 금요일 오후 8시..."
+                                                    value={formData.prayerHours}
+                                                    onChange={(e) => setFormData({ ...formData, prayerHours: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Operating Hours</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                    placeholder="Enter English hours (e.g., Every Friday 8pm)"
+                                                    value={formData.prayerHoursEn}
+                                                    onChange={(e) => setFormData({ ...formData, prayerHoursEn: e.target.value })}
+                                                />
+                                            </div>
                                         </div>
 
                                         <div className="space-y-4 mb-8 p-4 bg-blue-50/50 rounded-2xl border border-blue-100">
-                                            <div className="space-y-2">
-                                                <label className="text-sm font-bold text-gray-600 ml-1">기도제목 섹션 타이틀 (Prayer Topics Title)</label>
-                                                <input
-                                                    type="text"
-                                                    className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold text-lg"
-                                                    placeholder="예: 생명의 소리 교회 중보기도 내용"
-                                                    value={formData.prayerTopicsTitle || ''}
-                                                    onChange={(e) => setFormData({ ...formData, prayerTopicsTitle: e.target.value })}
-                                                />
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-bold text-gray-600 ml-1">기도제목 섹션 타이틀 (Korean Title)</label>
+                                                    <input
+                                                        type="text"
+                                                        className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold text-lg"
+                                                        placeholder="예: 생명의 소리 교회 중보기도 내용"
+                                                        value={formData.prayerTopicsTitle || ''}
+                                                        onChange={(e) => setFormData({ ...formData, prayerTopicsTitle: e.target.value })}
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-bold text-blue-500 ml-1">English Topics Title</label>
+                                                    <input
+                                                        type="text"
+                                                        className="w-full p-4 bg-white border border-blue-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold text-lg"
+                                                        placeholder="Enter English Title"
+                                                        value={formData.prayerTopicsTitleEn || ''}
+                                                        onChange={(e) => setFormData({ ...formData, prayerTopicsTitleEn: e.target.value })}
+                                                    />
+                                                </div>
                                             </div>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-bold text-gray-600 ml-1">기도제목 섹션 서브타이틀 (Korean Subtitle)</label>
+                                                    <textarea
+                                                        className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-24 resize-none leading-relaxed"
+                                                        placeholder="예: 우리 교회는 서로를 위해 기도하는 공동체입니다..."
+                                                        value={formData.prayerTopicsSubtitle || ''}
+                                                        onChange={(e) => setFormData({ ...formData, prayerTopicsSubtitle: e.target.value })}
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-bold text-blue-500 ml-1">English Topics Subtitle</label>
+                                                    <textarea
+                                                        className="w-full p-4 bg-white border border-blue-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-24 resize-none leading-relaxed"
+                                                        placeholder="Enter English Subtitle"
+                                                        value={formData.prayerTopicsSubtitleEn || ''}
+                                                        onChange={(e) => setFormData({ ...formData, prayerTopicsSubtitleEn: e.target.value })}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <p className="text-xs text-gray-400 ml-1">* 줄바꿈을 하려면 Enter를 누르거나 &lt;br/&gt; 태그를 사용하세요.</p>
+                                        </div>
+
+                                        <div className="space-y-4">
                                             <div className="space-y-2">
-                                                <label className="text-sm font-bold text-gray-600 ml-1">기도제목 섹션 서브타이틀 (Prayer Topics Subtitle)</label>
+                                                <label className="text-sm font-bold text-gray-600 ml-1">교회를 위한 기도 (Korean Prayer for Church)</label>
                                                 <textarea
-                                                    className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-24 resize-none leading-relaxed"
-                                                    placeholder="예: 우리 교회는 서로를 위해 기도하는 공동체입니다..."
-                                                    value={formData.prayerTopicsSubtitle || ''}
-                                                    onChange={(e) => setFormData({ ...formData, prayerTopicsSubtitle: e.target.value })}
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-48 resize-none leading-relaxed"
+                                                    placeholder="예: 1. 2026년 표어...&#13;&#10;2. 비전..."
+                                                    value={formData.prayerChurchTopics2026}
+                                                    onChange={(e) => setFormData({ ...formData, prayerChurchTopics2026: e.target.value })}
                                                 />
-                                                <p className="text-xs text-gray-400 ml-1">* 줄바꿈을 하려면 Enter를 누르거나 &lt;br/&gt; 태그를 사용하세요.</p>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Prayer for Church</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-48 resize-none leading-relaxed"
+                                                    placeholder="Enter English prayer topics for the church"
+                                                    value={formData.prayerChurchTopics2026En}
+                                                    onChange={(e) => setFormData({ ...formData, prayerChurchTopics2026En: e.target.value })}
+                                                />
                                             </div>
                                         </div>
 
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">교회를 위한 기도 (Prayer for the Church)</label>
-                                            <textarea
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-48 resize-none leading-relaxed"
-                                                placeholder="예: 1. 2026년 표어...&#13;&#10;2. 비전..."
-                                                value={formData.prayerChurchTopics2026}
-                                                onChange={(e) => setFormData({ ...formData, prayerChurchTopics2026: e.target.value })}
-                                            />
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">공동기도제목 (Common Prayer Topics)</label>
-                                            <textarea
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-96 resize-none leading-relaxed"
-                                                placeholder="예: 1. 나라와 민족을 위해...&#13;&#10;2. 한국교회를 위해..."
-                                                value={formData.prayerCommonTopics}
-                                                onChange={(e) => setFormData({ ...formData, prayerCommonTopics: e.target.value })}
-                                            />
-                                            <p className="text-xs text-gray-400 ml-1">
-                                                * 여러 줄로 입력하면 자동으로 목록으로 변환되어 표시됩니다.
-                                            </p>
+                                        <div className="space-y-4">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">공동기도제목 (Korean Common Prayer Topics)</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-96 resize-none leading-relaxed"
+                                                    placeholder="예: 1. 나라와 민족을 위해...&#13;&#10;2. 한국교회를 위해..."
+                                                    value={formData.prayerCommonTopics}
+                                                    onChange={(e) => setFormData({ ...formData, prayerCommonTopics: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Common Prayer Topics</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-96 resize-none leading-relaxed"
+                                                    placeholder="Enter English common prayer topics"
+                                                    value={formData.prayerCommonTopicsEn}
+                                                    onChange={(e) => setFormData({ ...formData, prayerCommonTopicsEn: e.target.value })}
+                                                />
+                                                <p className="text-xs text-gray-400 ml-1">
+                                                    * 여러 줄로 입력하면 자동으로 목록으로 변환되어 표시됩니다.
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -2849,36 +3041,57 @@ const Admin = () => {
                                                 </div>
 
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                    <div className="space-y-2">
-                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">사역 이름 (Name)</label>
-                                                        <input
-                                                            type="text"
-                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
-                                                            value={item.name}
-                                                            onChange={(e) => {
-                                                                const newItems = [...formData.ministryItems];
-                                                                newItems[idx] = { ...newItems[idx], name: e.target.value };
-                                                                setFormData({ ...formData, ministryItems: newItems });
-                                                            }}
-                                                            placeholder="예: The Sent Children"
-                                                        />
+                                                    <div className="space-y-4">
+                                                        <div className="space-y-2">
+                                                            <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">사역 이름 (Korean Name)</label>
+                                                            <input
+                                                                type="text"
+                                                                className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
+                                                                value={item.name}
+                                                                onChange={(e) => {
+                                                                    const newItems = [...formData.ministryItems];
+                                                                    newItems[idx] = { ...newItems[idx], name: e.target.value };
+                                                                    setFormData({ ...formData, ministryItems: newItems });
+                                                                }}
+                                                                placeholder="예: The Sent Children"
+                                                            />
+                                                        </div>
+                                                        <div className="space-y-2">
+                                                            <label className="text-xs font-bold text-blue-500 uppercase tracking-wider ml-1">English Name</label>
+                                                            <input
+                                                                type="text"
+                                                                className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
+                                                                value={item.nameEn || ''}
+                                                                onChange={(e) => {
+                                                                    const newItems = [...formData.ministryItems];
+                                                                    newItems[idx] = { ...newItems[idx], nameEn: e.target.value };
+                                                                    setFormData({ ...formData, ministryItems: newItems });
+                                                                }}
+                                                                placeholder="e.g., The Sent Children"
+                                                            />
+                                                        </div>
                                                     </div>
-                                                    <div className="space-y-2">
-                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이디 (ID)</label>
-                                                        <input
-                                                            type="text"
-                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium font-sans"
-                                                            value={item.id}
-                                                            onChange={(e) => {
-                                                                const newItems = [...formData.ministryItems];
-                                                                newItems[idx] = { ...newItems[idx], id: e.target.value };
-                                                                setFormData({ ...formData, ministryItems: newItems });
-                                                            }}
-                                                            placeholder="예: tsc"
-                                                        />
+                                                    <div className="space-y-4">
+                                                        <div className="space-y-2">
+                                                            <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이디 (ID - URL Key)</label>
+                                                            <input
+                                                                type="text"
+                                                                className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium font-sans"
+                                                                value={item.id}
+                                                                onChange={(e) => {
+                                                                    const newItems = [...formData.ministryItems];
+                                                                    newItems[idx] = { ...newItems[idx], id: e.target.value };
+                                                                    setFormData({ ...formData, ministryItems: newItems });
+                                                                }}
+                                                                placeholder="예: tsc"
+                                                            />
+                                                        </div>
                                                     </div>
-                                                    <div className="space-y-2 col-span-1 md:col-span-2">
-                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">대상 (Target)</label>
+                                                </div>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">대상 (Korean Target)</label>
                                                         <input
                                                             type="text"
                                                             className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm"
@@ -2891,20 +3104,49 @@ const Admin = () => {
                                                             placeholder="예: 영유아 및 초등부"
                                                         />
                                                     </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-blue-500 uppercase tracking-wider ml-1">English Target</label>
+                                                        <input
+                                                            type="text"
+                                                            className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm"
+                                                            value={item.targetEn || ''}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.ministryItems];
+                                                                newItems[idx] = { ...newItems[idx], targetEn: e.target.value };
+                                                                setFormData({ ...formData, ministryItems: newItems });
+                                                            }}
+                                                            placeholder="e.g., Infants, toddlers, and elementary school students"
+                                                        />
+                                                    </div>
                                                 </div>
 
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">요약 설명 (Short Description)</label>
-                                                    <textarea
-                                                        className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[80px] resize-none"
-                                                        value={item.description}
-                                                        onChange={(e) => {
-                                                            const newItems = [...formData.ministryItems];
-                                                            newItems[idx] = { ...newItems[idx], description: e.target.value };
-                                                            setFormData({ ...formData, ministryItems: newItems });
-                                                        }}
-                                                        placeholder="리스트에 표시될 간단한 설명입니다."
-                                                    />
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">요약 설명 (Korean Short Description)</label>
+                                                        <textarea
+                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[80px] resize-none"
+                                                            value={item.description || ''}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.ministryItems];
+                                                                newItems[idx] = { ...newItems[idx], description: e.target.value };
+                                                                setFormData({ ...formData, ministryItems: newItems });
+                                                            }}
+                                                            placeholder="사역에 대한 간단한 설명을 입력하세요."
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-blue-500 uppercase tracking-wider ml-1">English Short Description</label>
+                                                        <textarea
+                                                            className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[80px] resize-none"
+                                                            value={item.descriptionEn || ''}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.ministryItems];
+                                                                newItems[idx] = { ...newItems[idx], descriptionEn: e.target.value };
+                                                                setFormData({ ...formData, ministryItems: newItems });
+                                                            }}
+                                                            placeholder="Enter a short English description."
+                                                        />
+                                                    </div>
                                                 </div>
 
                                                 <div className="space-y-2">
@@ -2996,70 +3238,103 @@ const Admin = () => {
                                                     </button>
                                                 </div>
 
-                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                                    <div className="space-y-2">
-                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">팀 이름 (Name)</label>
-                                                        <input
-                                                            type="text"
-                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
-                                                            value={team.name}
-                                                            onChange={(e) => {
-                                                                const newItems = [...formData.teamMinistryItems];
-                                                                newItems[idx] = { ...newItems[idx], name: e.target.value };
-                                                                setFormData({ ...formData, teamMinistryItems: newItems });
-                                                            }}
-                                                            placeholder="예: 찬양팀"
-                                                        />
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div className="space-y-4">
+                                                        <div className="space-y-2">
+                                                            <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">팀 이름 (Korean Name)</label>
+                                                            <input
+                                                                type="text"
+                                                                className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
+                                                                value={team.name}
+                                                                onChange={(e) => {
+                                                                    const newItems = [...formData.teamMinistryItems];
+                                                                    newItems[idx] = { ...newItems[idx], name: e.target.value };
+                                                                    setFormData({ ...formData, teamMinistryItems: newItems });
+                                                                }}
+                                                                placeholder="예: 찬양팀"
+                                                            />
+                                                        </div>
+                                                        <div className="space-y-2">
+                                                            <label className="text-xs font-bold text-blue-500 uppercase tracking-wider ml-1">English Name</label>
+                                                            <input
+                                                                type="text"
+                                                                className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
+                                                                value={team.nameEn || ''}
+                                                                onChange={(e) => {
+                                                                    const newItems = [...formData.teamMinistryItems];
+                                                                    newItems[idx] = { ...newItems[idx], nameEn: e.target.value };
+                                                                    setFormData({ ...formData, teamMinistryItems: newItems });
+                                                                }}
+                                                                placeholder="e.g., Praise Team"
+                                                            />
+                                                        </div>
                                                     </div>
-                                                    <div className="space-y-2">
-                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이디 (ID)</label>
-                                                        <input
-                                                            type="text"
-                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium font-sans"
-                                                            value={team.id}
-                                                            onChange={(e) => {
-                                                                const newItems = [...formData.teamMinistryItems];
-                                                                newItems[idx] = { ...newItems[idx], id: e.target.value };
-                                                                setFormData({ ...formData, teamMinistryItems: newItems });
-                                                            }}
-                                                            placeholder="예: praise"
-                                                        />
-                                                    </div>
-                                                    <div className="space-y-2">
-                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이콘 (Icon)</label>
-                                                        <select
-                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm appearance-none cursor-pointer"
-                                                            value={team.icon || 'HandHeart'}
-                                                            onChange={(e) => {
-                                                                const newItems = [...formData.teamMinistryItems];
-                                                                newItems[idx] = { ...newItems[idx], icon: e.target.value };
-                                                                setFormData({ ...formData, teamMinistryItems: newItems });
-                                                            }}
-                                                        >
-                                                            <option value="Users">Users (사람들)</option>
-                                                            <option value="Video">Video (미디어)</option>
-                                                            <option value="Heart">Heart (예배/사랑)</option>
-                                                            <option value="Settings">Settings (운영/설정)</option>
-                                                            <option value="PieChart">PieChart (재정)</option>
-                                                            <option value="Music">Music (찬양)</option>
-                                                            <option value="Coffee">Coffee (친교)</option>
-                                                            <option value="HandHeart">HandHeart (봉사)</option>
-                                                        </select>
+                                                    <div className="space-y-4">
+                                                        <div className="space-y-2">
+                                                            <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이디 (ID)</label>
+                                                            <input
+                                                                type="text"
+                                                                className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium font-sans"
+                                                                value={team.id}
+                                                                onChange={(e) => {
+                                                                    const newItems = [...formData.teamMinistryItems];
+                                                                    newItems[idx] = { ...newItems[idx], id: e.target.value };
+                                                                    setFormData({ ...formData, teamMinistryItems: newItems });
+                                                                }}
+                                                                placeholder="예: praise"
+                                                            />
+                                                        </div>
+                                                        <div className="space-y-2">
+                                                            <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">아이콘 (Icon)</label>
+                                                            <select
+                                                                className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm appearance-none cursor-pointer"
+                                                                value={team.icon || 'HandHeart'}
+                                                                onChange={(e) => {
+                                                                    const newItems = [...formData.teamMinistryItems];
+                                                                    newItems[idx] = { ...newItems[idx], icon: e.target.value };
+                                                                    setFormData({ ...formData, teamMinistryItems: newItems });
+                                                                }}
+                                                            >
+                                                                <option value="Users">Users (사람들)</option>
+                                                                <option value="Video">Video (미디어)</option>
+                                                                <option value="Heart">Heart (예배/사랑)</option>
+                                                                <option value="Settings">Settings (운영/설정)</option>
+                                                                <option value="PieChart">PieChart (재정)</option>
+                                                                <option value="Music">Music (찬양)</option>
+                                                                <option value="Coffee">Coffee (친교)</option>
+                                                                <option value="HandHeart">HandHeart (봉사)</option>
+                                                            </select>
+                                                        </div>
                                                     </div>
                                                 </div>
 
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">팀 설명 (Description)</label>
-                                                    <textarea
-                                                        className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[100px] resize-none"
-                                                        value={team.description}
-                                                        onChange={(e) => {
-                                                            const newItems = [...formData.teamMinistryItems];
-                                                            newItems[idx] = { ...newItems[idx], description: e.target.value };
-                                                            setFormData({ ...formData, teamMinistryItems: newItems });
-                                                        }}
-                                                        placeholder="팀의 사역을 설명해 주세요."
-                                                    />
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">팀 설명 (Korean Description)</label>
+                                                        <textarea
+                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[100px] resize-none"
+                                                            value={team.description}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.teamMinistryItems];
+                                                                newItems[idx] = { ...newItems[idx], description: e.target.value };
+                                                                setFormData({ ...formData, teamMinistryItems: newItems });
+                                                            }}
+                                                            placeholder="팀의 사역을 설명해 주세요."
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-blue-500 uppercase tracking-wider ml-1">English Description</label>
+                                                        <textarea
+                                                            className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[100px] resize-none"
+                                                            value={team.descriptionEn || ''}
+                                                            onChange={(e) => {
+                                                                const newItems = [...formData.teamMinistryItems];
+                                                                newItems[idx] = { ...newItems[idx], descriptionEn: e.target.value };
+                                                                setFormData({ ...formData, teamMinistryItems: newItems });
+                                                            }}
+                                                            placeholder="Enter English description."
+                                                        />
+                                                    </div>
                                                 </div>
 
                                                 <div className="space-y-2">
@@ -3154,48 +3429,82 @@ const Admin = () => {
                                                 </button>
 
                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                                                    <div className="space-y-2">
-                                                        <label className="text-sm font-bold text-gray-600 ml-1">예배 명칭</label>
-                                                        <input
-                                                            type="text"
-                                                            className="w-full p-4 bg-white border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium"
-                                                            value={service.name}
-                                                            onChange={(e) => {
-                                                                const newServices = [...(siteConfig.services || churchData.services)];
-                                                                newServices[index] = { ...service, name: e.target.value };
-                                                                setSiteConfig({ ...siteConfig, services: newServices });
-                                                            }}
-                                                            placeholder="예: 1부 주일예배"
-                                                        />
+                                                    <div className="space-y-4">
+                                                        <div className="space-y-2">
+                                                            <label className="text-sm font-bold text-gray-600 ml-1">예배 명칭 (Korean Name)</label>
+                                                            <input
+                                                                type="text"
+                                                                className="w-full p-4 bg-white border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium"
+                                                                value={service.name}
+                                                                onChange={(e) => {
+                                                                    const newServices = [...(siteConfig.services || churchData.services)];
+                                                                    newServices[index] = { ...service, name: e.target.value };
+                                                                    setSiteConfig({ ...siteConfig, services: newServices });
+                                                                }}
+                                                                placeholder="예: 1부 주일예배"
+                                                            />
+                                                        </div>
+                                                        <div className="space-y-2">
+                                                            <label className="text-sm font-bold text-blue-500 ml-1">English Name</label>
+                                                            <input
+                                                                type="text"
+                                                                className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium"
+                                                                value={service.nameEn || ''}
+                                                                onChange={(e) => {
+                                                                    const newServices = [...(siteConfig.services || churchData.services)];
+                                                                    newServices[index] = { ...service, nameEn: e.target.value };
+                                                                    setSiteConfig({ ...siteConfig, services: newServices });
+                                                                }}
+                                                                placeholder="e.g., 1st Sunday Service"
+                                                            />
+                                                        </div>
                                                     </div>
-                                                    <div className="space-y-2">
-                                                        <label className="text-sm font-bold text-gray-600 ml-1">예배 시간</label>
-                                                        <input
-                                                            type="text"
-                                                            className="w-full p-4 bg-white border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium"
-                                                            value={service.time}
-                                                            onChange={(e) => {
-                                                                const newServices = [...(siteConfig.services || churchData.services)];
-                                                                newServices[index] = { ...service, time: e.target.value };
-                                                                setSiteConfig({ ...siteConfig, services: newServices });
-                                                            }}
-                                                            placeholder="예: 11:00 AM"
-                                                        />
+                                                    <div className="space-y-4">
+                                                        <div className="space-y-2">
+                                                            <label className="text-sm font-bold text-gray-600 ml-1">예배 시간 (Time)</label>
+                                                            <input
+                                                                type="text"
+                                                                className="w-full p-4 bg-white border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium"
+                                                                value={service.time}
+                                                                onChange={(e) => {
+                                                                    const newServices = [...(siteConfig.services || churchData.services)];
+                                                                    newServices[index] = { ...service, time: e.target.value };
+                                                                    setSiteConfig({ ...siteConfig, services: newServices });
+                                                                }}
+                                                                placeholder="예: 11:00 AM"
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-sm font-bold text-gray-600 ml-1">설명 / 비고 (Description)</label>
-                                                    <input
-                                                        type="text"
-                                                        className="w-full p-4 bg-white border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium text-sm"
-                                                        value={service.description || ''}
-                                                        onChange={(e) => {
-                                                            const newServices = [...(siteConfig.services || churchData.services)];
-                                                            newServices[index] = { ...service, description: e.target.value };
-                                                            setSiteConfig({ ...siteConfig, services: newServices });
-                                                        }}
-                                                        placeholder="예: 본당 / 한국어 예배"
-                                                    />
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div className="space-y-2">
+                                                        <label className="text-sm font-bold text-gray-600 ml-1">설명 / 비고 (Korean Description)</label>
+                                                        <input
+                                                            type="text"
+                                                            className="w-full p-4 bg-white border border-gray-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium text-sm"
+                                                            value={service.description || ''}
+                                                            onChange={(e) => {
+                                                                const newServices = [...(siteConfig.services || churchData.services)];
+                                                                newServices[index] = { ...service, description: e.target.value };
+                                                                setSiteConfig({ ...siteConfig, services: newServices });
+                                                            }}
+                                                            placeholder="예: 본당 / 한국어 예배"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-sm font-bold text-blue-500 ml-1">English Description</label>
+                                                        <input
+                                                            type="text"
+                                                            className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-xl focus:ring-2 focus:ring-primary/10 outline-none font-medium text-sm"
+                                                            value={service.descriptionEn || ''}
+                                                            onChange={(e) => {
+                                                                const newServices = [...(siteConfig.services || churchData.services)];
+                                                                newServices[index] = { ...service, descriptionEn: e.target.value };
+                                                                setSiteConfig({ ...siteConfig, services: newServices });
+                                                            }}
+                                                            placeholder="e.g., Main Hall / Korean Service"
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
                                         ))}
@@ -3398,18 +3707,33 @@ const Admin = () => {
                                     <MapPin size={20} className="text-primary" /> 오시는 길 및 연락처 설정
                                 </h3>
                                 <div className="grid grid-cols-1 gap-6">
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-600 ml-1">교회 주소 (Address)</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
-                                            placeholder="예: 9025 Glover Road, Fort Langley"
-                                            value={siteConfig.location?.address || ''}
-                                            onChange={(e) => setSiteConfig({
-                                                ...siteConfig,
-                                                location: { ...siteConfig.location, address: e.target.value }
-                                            })}
-                                        />
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-gray-600 ml-1">교회 주소 (Korean Address)</label>
+                                            <input
+                                                type="text"
+                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
+                                                placeholder="예: 9025 Glover Road, Fort Langley"
+                                                value={siteConfig.location?.address || ''}
+                                                onChange={(e) => setSiteConfig({
+                                                    ...siteConfig,
+                                                    location: { ...siteConfig.location, address: e.target.value }
+                                                })}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-blue-500 ml-1">English Address</label>
+                                            <input
+                                                type="text"
+                                                className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
+                                                placeholder="e.g., 9025 Glover Road, Fort Langley"
+                                                value={siteConfig.location?.addressEn || ''}
+                                                onChange={(e) => setSiteConfig({
+                                                    ...siteConfig,
+                                                    location: { ...siteConfig.location, addressEn: e.target.value }
+                                                })}
+                                            />
+                                        </div>
                                     </div>
 
                                     <div className="space-y-2">
@@ -3525,7 +3849,6 @@ const Admin = () => {
 
                 {
                     activeTab === 'intro' && (
-
                         <div className="space-y-6 md:col-span-2">
                             <div className="bg-amber-50/50 p-6 rounded-2xl border border-amber-100 flex gap-4">
                                 <div className="text-amber-500 shrink-0">
@@ -3575,36 +3898,88 @@ const Admin = () => {
                                             onChange={(e) => setSiteConfig({ ...siteConfig, aboutSubtitle: e.target.value })}
                                         />
                                     </div>
+                                    {/* English Titles for Intro */}
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-blue-500 ml-1">English Title</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                                            placeholder="Default: About Us"
+                                            value={siteConfig.aboutTitleEn ?? ''}
+                                            onChange={(e) => setSiteConfig({ ...siteConfig, aboutTitleEn: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-blue-500 ml-1">English Subtitle/Verse</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                                            placeholder="Default: Acts 16:31..."
+                                            value={siteConfig.aboutSubtitleEn ?? ''}
+                                            onChange={(e) => setSiteConfig({ ...siteConfig, aboutSubtitleEn: e.target.value })}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-500 ml-1">목사님 성함 (Korean Name)</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                                            value={siteConfig.pastor?.name || ''}
+                                            onChange={(e) => setSiteConfig({
+                                                ...siteConfig,
+                                                pastor: { ...siteConfig.pastor, name: e.target.value }
+                                            })}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-blue-500 ml-1">English Name</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                                            value={siteConfig.pastor?.nameEn || ''}
+                                            onChange={(e) => setSiteConfig({
+                                                ...siteConfig,
+                                                pastor: { ...siteConfig.pastor, nameEn: e.target.value }
+                                            })}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-500 ml-1">직분/역할 (예: 담임목사)</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                                            value={siteConfig.pastor?.role || ''}
+                                            onChange={(e) => setSiteConfig({
+                                                ...siteConfig,
+                                                pastor: { ...siteConfig.pastor, role: e.target.value }
+                                            })}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-blue-500 ml-1">English Role (e.g., Senior Pastor)</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                                            value={siteConfig.pastor?.roleEn || ''}
+                                            onChange={(e) => setSiteConfig({
+                                                ...siteConfig,
+                                                pastor: { ...siteConfig.pastor, roleEn: e.target.value }
+                                            })}
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">목사님 성함</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                        value={siteConfig.pastor?.name || ''}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            pastor: { ...siteConfig.pastor, name: e.target.value }
-                                        })}
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">직분/역할 (예: 담임목사)</label>
-                                    <input
-                                        type="text"
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                        value={siteConfig.pastor?.role || ''}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            pastor: { ...siteConfig.pastor, role: e.target.value }
-                                        })}
-                                    />
-                                </div>
-                                <div className="space-y-2 md:col-span-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">인사말 내용</label>
+                                    <label className="text-sm font-bold text-gray-500 ml-1">인사말 내용 (Korean Greeting)</label>
                                     <textarea
                                         className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-48"
                                         value={siteConfig.pastor?.greeting || ''}
@@ -3614,64 +3989,87 @@ const Admin = () => {
                                         })}
                                     />
                                 </div>
-                                <div className="space-y-2 md:col-span-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">약력 (Biography) - 줄바꿈으로 구분</label>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-blue-500 ml-1">English Greeting</label>
                                     <textarea
-                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-32"
-                                        placeholder="서울신학대학교 졸업&#13;&#10;기둥교회 부목사"
-                                        value={Array.isArray(siteConfig.pastor?.history)
-                                            ? siteConfig.pastor.history.join('\n')
-                                            : (siteConfig.pastor?.history || '')}
+                                        className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-48"
+                                        value={siteConfig.pastor?.greetingEn || ''}
                                         onChange={(e) => setSiteConfig({
                                             ...siteConfig,
-                                            pastor: {
-                                                ...siteConfig.pastor,
-                                                history: e.target.value.split('\n').filter(line => line.trim() !== '')
-                                            }
+                                            pastor: { ...siteConfig.pastor, greetingEn: e.target.value }
                                         })}
                                     />
                                 </div>
-                                <div className="space-y-2 md:col-span-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">목사님 사진 링크 (Drive URL)</label>
-                                    <div className="flex gap-2">
-                                        <input
-                                            type="url"
-                                            id="drive-input-pastor-image"
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
-                                            placeholder="https://drive.google.com/..."
-                                            defaultValue={siteConfig.pastor?.image || ''}
-                                            onChange={(e) => setSiteConfig({
-                                                ...siteConfig,
-                                                pastor: { ...siteConfig.pastor, image: e.target.value }
-                                            })}
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => {
-                                                const inputElement = document.getElementById('drive-input-pastor-image');
-                                                const input = inputElement?.value;
-                                                if (input && input.includes('drive.google.com')) {
-                                                    const formatted = dbService.formatDriveImage(input);
-                                                    setSiteConfig({
-                                                        ...siteConfig,
-                                                        pastor: { ...siteConfig.pastor, image: formatted }
-                                                    });
-                                                    inputElement.value = formatted;
-                                                    alert('✅ 이미지로 변환되었습니다!');
-                                                }
-                                            }}
-                                            className="px-4 bg-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-300 transition-colors shrink-0 text-sm"
-                                        >
-                                            이미지 변환
-                                        </button>
-                                    </div>
-                                    {siteConfig.pastor?.image && (
-                                        <div className="mt-4 w-48 h-64 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 shadow-lg mx-auto md:mx-0">
-                                            <img src={siteConfig.pastor.image} alt="Pastor Preview" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                                        </div>
-                                    )}
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-gray-500 ml-1">약력 (Korean Biography) - 줄바꿈 구분</label>
+                                    <textarea
+                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-32"
+                                        placeholder="서울신학대학교 졸업&#13;&#10;기둥교회 부목사"
+                                        value={Array.isArray(siteConfig.pastor?.history) ? siteConfig.pastor.history.join('\n') : (siteConfig.pastor?.history || '')}
+                                        onChange={(e) => setSiteConfig({
+                                            ...siteConfig,
+                                            pastor: { ...siteConfig.pastor, history: e.target.value.split('\n').filter(line => line.trim() !== '') }
+                                        })}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-sm font-bold text-blue-500 ml-1">English Biography - New lines for bullets</label>
+                                    <textarea
+                                        className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-32"
+                                        placeholder="Graduate of Seoul Theological University&#13;&#10;Assistant Pastor at Pillar Church"
+                                        value={Array.isArray(siteConfig.pastor?.historyEn) ? siteConfig.pastor.historyEn.join('\n') : (siteConfig.pastor?.historyEn || '')}
+                                        onChange={(e) => setSiteConfig({
+                                            ...siteConfig,
+                                            pastor: { ...siteConfig.pastor, historyEn: e.target.value.split('\n').filter(line => line.trim() !== '') }
+                                        })}
+                                    />
                                 </div>
                             </div>
+
+                            <div className="space-y-2 md:col-span-2">
+                                <label className="text-sm font-bold text-gray-500 ml-1">목사님 사진 링크 (Drive URL)</label>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="url"
+                                        id="drive-input-pastor-image"
+                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
+                                        placeholder="https://drive.google.com/..."
+                                        defaultValue={siteConfig.pastor?.image || ''}
+                                        onChange={(e) => setSiteConfig({
+                                            ...siteConfig,
+                                            pastor: { ...siteConfig.pastor, image: e.target.value }
+                                        })}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            const inputElement = document.getElementById('drive-input-pastor-image');
+                                            const input = inputElement?.value;
+                                            if (input && input.includes('drive.google.com')) {
+                                                const formatted = dbService.formatDriveImage(input);
+                                                setSiteConfig({
+                                                    ...siteConfig,
+                                                    pastor: { ...siteConfig.pastor, image: formatted }
+                                                });
+                                                inputElement.value = formatted;
+                                                alert('✅ 이미지로 변환되었습니다!');
+                                            }
+                                        }}
+                                        className="px-4 bg-slate-200 text-slate-700 rounded-xl font-bold hover:bg-slate-300 transition-colors shrink-0 text-sm"
+                                    >
+                                        이미지 변환
+                                    </button>
+                                </div>
+                                {siteConfig.pastor?.image && (
+                                    <div className="mt-4 w-48 h-64 bg-gray-100 rounded-lg overflow-hidden border border-gray-200 shadow-lg mx-auto md:mx-0">
+                                        <img src={siteConfig.pastor.image} alt="Pastor Preview" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                                    </div>
+                                )}
+                            </div>
+
                             <div className="pt-4 flex justify-end">
                                 <button
                                     onClick={async () => {

@@ -5,7 +5,7 @@ import churchData from '../data/church_data.json';
 import { useTranslation } from 'react-i18next';
 
 const Location = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [config, setConfig] = useState({
         address: churchData.general.address,
         phone: churchData.general.phone.join(', '),
@@ -20,7 +20,7 @@ const Location = () => {
                 if (siteConfig && siteConfig.location) {
                     setConfig(prev => ({
                         ...prev,
-                        address: siteConfig.location.address || prev.address,
+                        address: i18n.language === 'en' && siteConfig.location.addressEn ? siteConfig.location.addressEn : (siteConfig.location.address || prev.address),
                         phone: siteConfig.location.phone || prev.phone,
                         serviceTime: siteConfig.location.serviceTime || "2:00 PM"
                     }));
@@ -30,7 +30,7 @@ const Location = () => {
             }
         };
         fetchConfig();
-    }, []);
+    }, [i18n.language]);
 
     return (
         <div className="min-h-screen pt-24 pb-16 font-sans">
@@ -38,17 +38,17 @@ const Location = () => {
                 {/* Simplified Header */}
                 <div className="text-center mb-16">
                     <h1 className="text-3xl md:text-4xl font-black text-primary mb-6 relative inline-block">
-                        오시는 길 안내
+                        {t('location.title')}
                         <div className="absolute -bottom-2 left-0 w-full h-2 bg-accent/20 rounded-full">
                             <div className="absolute top-0 left-0 w-1/2 h-full bg-accent rounded-full animate-width-expand"></div>
                         </div>
                     </h1>
                     <div className="max-w-2xl mx-auto space-y-2 mt-4">
                         <p className="text-gray-600 font-medium text-lg">
-                            생명의소리 교회에 오시는 걸음마다
+                            {i18n.language === 'en' ? 'Every step you take to The Sent Church' : '생명의소리 교회에 오시는 걸음마다'}
                         </p>
                         <p className="text-gray-600 font-medium text-lg">
-                            하나님의 사랑과 평안이 함께하시길 바랍니다.
+                            {i18n.language === 'en' ? 'May God\'s love and peace be with you.' : '하나님의 사랑과 평안이 함께하시길 바랍니다.'}
                         </p>
                     </div>
                 </div>
