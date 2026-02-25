@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Upload, FileText, Check, X, Play, LayoutDashboard, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, Shield, AlertTriangle, Type, ArrowUp, ArrowDown, Heart, Send, Mail } from 'lucide-react';
+import { Upload, FileText, Check, X, Play, LayoutDashboard, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, Shield, AlertTriangle, Type, ArrowUp, ArrowDown, Heart, Send, Mail, Globe } from 'lucide-react';
 import sermonsInitialData from '../data/sermons.json';
 import bulletinsInitialData from '../data/bulletins.json';
 import noticesInitialData from '../data/notices.json';
@@ -373,6 +373,8 @@ const Admin = () => {
         aboutTitleSize: 40, aboutSubtitleSize: 18,
         aboutHeight: 'medium', aboutOverlayOpacity: 40,
         aboutBannerFit: 'cover',
+        aboutAffiliatedOrgs: '',
+        aboutAffiliatedOrgsEn: '',
 
         // News
         newsBanner: '', newsTitle: '', newsSubtitle: '',
@@ -570,6 +572,8 @@ const Admin = () => {
                     aboutOverlayOpacity: fbConfig.aboutOverlayOpacity || 40,
                     aboutBannerFit: fbConfig.aboutBannerFit || 'cover',
                     aboutBannerPosition: fbConfig.aboutBannerPosition || 50,
+                    aboutAffiliatedOrgs: fbConfig.aboutAffiliatedOrgs || '',
+                    aboutAffiliatedOrgsEn: fbConfig.aboutAffiliatedOrgsEn || '',
 
                     newsBanner: fbConfig.newsBanner || fbConfig.worshipBanner || '',
                     newsTitle: fbConfig.newsTitle || fbConfig.worshipTitle || '',
@@ -4162,6 +4166,31 @@ const Admin = () => {
                                             ...siteConfig,
                                             pastor: { ...siteConfig.pastor, historyEn: e.target.value.split('\n').filter(line => line.trim() !== '') }
                                         })}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-emerald-50/30 rounded-3xl border border-emerald-100/50">
+                                <div className="space-y-4">
+                                    <h4 className="text-sm font-black text-emerald-800 flex items-center gap-2">
+                                        <Shield size={16} /> 소속 총회 및 단체 (Korean)
+                                    </h4>
+                                    <textarea
+                                        className="w-full p-4 bg-white border border-emerald-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/10 outline-none h-32 resize-none"
+                                        placeholder="예: 대한예수교복음교회(KEC)&#13;&#10;세계복음연맹(WEA) 정회원"
+                                        value={siteConfig.aboutAffiliatedOrgs || ''}
+                                        onChange={(e) => setSiteConfig({ ...siteConfig, aboutAffiliatedOrgs: e.target.value })}
+                                    />
+                                </div>
+                                <div className="space-y-4">
+                                    <h4 className="text-sm font-black text-blue-800 flex items-center gap-2">
+                                        <Globe size={16} /> Affiliated Organizations (English)
+                                    </h4>
+                                    <textarea
+                                        className="w-full p-4 bg-white border border-blue-100 rounded-2xl focus:ring-2 focus:ring-blue-500/10 outline-none h-32 resize-none text-blue-600"
+                                        placeholder="e.g., Korea Evangelical Church (KEC)&#13;&#10;Member of WEA"
+                                        value={siteConfig.aboutAffiliatedOrgsEn || ''}
+                                        onChange={(e) => setSiteConfig({ ...siteConfig, aboutAffiliatedOrgsEn: e.target.value })}
                                     />
                                 </div>
                             </div>

@@ -137,7 +137,7 @@ const DailyWordPopup = ({ word }) => {
                         className="flex items-center gap-1 hover:text-primary transition-colors"
                         onClick={() => handleClose(false)}
                     >
-                        <span>더 많은 말씀 보기</span>
+                        <span>{t('home.view_more_words')}</span>
                         <ExternalLink size={12} />
                     </Link>
                 </div>

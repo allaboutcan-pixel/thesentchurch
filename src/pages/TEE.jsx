@@ -13,8 +13,10 @@ const TEE = () => {
 
     const banner = siteConfig?.[`${type}Banner`] || siteConfig?.ministryBanner;
     const isEnglish = i18n.language.startsWith('en');
-    const bannerTitle = (siteConfig?.[`${type}Title`] || t('tee.banner_title'));
-    const bannerSubtitle = (siteConfig?.[`${type}Subtitle`] || t('tee.banner_subtitle'));
+
+    // Fallback titles if config is missing
+    const bannerTitle = (isEnglish && siteConfig?.[`${type}TitleEn`]) ? siteConfig[`${type}TitleEn`] : (siteConfig?.[`${type}Title`] || t('tee.banner_title'));
+    const bannerSubtitle = (isEnglish && siteConfig?.[`${type}SubtitleEn`]) ? siteConfig[`${type}SubtitleEn`] : (siteConfig?.[`${type}Subtitle`] || t('tee.banner_subtitle'));
 
     const bannerFit = siteConfig?.[`${type}BannerFit`] || 'cover';
     const overlayOpacity = siteConfig?.[`${type}OverlayOpacity`] || 40;

@@ -17,8 +17,8 @@ const BibleStudy = () => {
     const isEnglish = i18n.language.startsWith('en');
 
     // Fallback titles if config is missing
-    const bannerTitle = isEnglish ? t('bible.banner_title') : (siteConfig?.[`${type}Title`] || t('bible.banner_title'));
-    const bannerSubtitle = isEnglish ? t('bible.banner_subtitle') : (siteConfig?.[`${type}Subtitle`] || t('bible.banner_subtitle'));
+    const bannerTitle = (isEnglish && siteConfig?.[`${type}TitleEn`]) ? siteConfig[`${type}TitleEn`] : (siteConfig?.[`${type}Title`] || t('bible.banner_title'));
+    const bannerSubtitle = (isEnglish && siteConfig?.[`${type}SubtitleEn`]) ? siteConfig[`${type}SubtitleEn`] : (siteConfig?.[`${type}Subtitle`] || t('bible.banner_subtitle'));
 
     const bannerFit = siteConfig?.[`${type}BannerFit`] || 'cover';
     const overlayOpacity = siteConfig?.[`${type}OverlayOpacity`] || 40;

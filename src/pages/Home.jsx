@@ -334,7 +334,7 @@ const Home = () => {
                         <div className="mt-16 text-center flex flex-col md:flex-row md:items-center justify-between gap-4 px-4">
                             <div>
                                 <p className="text-accent font-black text-base mb-4 tracking-wide uppercase">
-                                    {latestSermon.date} • {(i18n.language === 'en' && latestSermon.preacherEn) ? latestSermon.preacherEn : (latestSermon.preacher || (i18n.language === 'en' ? 'Pastor Namgyu Lee' : '이남규 목사'))}
+                                    {latestSermon.date} • {(i18n.language === 'en' && latestSermon.preacherEn) ? latestSermon.preacherEn : (latestSermon.preacher || t('home.preacher_default'))}
                                 </p>
                                 <h3 className="text-primary text-lg md:text-2xl font-black leading-snug">
                                     {(i18n.language === 'en' && latestSermon.titleEn) ? latestSermon.titleEn : (latestSermon.title || t('home.latest_word'))}
@@ -375,21 +375,14 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* News & Events Section */}
+            {/* Church Calendar Section */}
             <section className="py-20 bg-secondary">
-                <div className="container mx-auto px-4">
-
-
-                    <div className="flex flex-col gap-16">
-                        {/* Church Calendar Section (Full Width) */}
-                        <div id="calendar" className="w-full scroll-mt-24 max-w-4xl mx-auto">
-                            <div className="text-center mb-12">
-                                <h3 className="text-3xl md:text-4xl font-bold text-primary">{t('home.calendar_title')}</h3>
-                                <div className="w-16 h-1 bg-accent mx-auto mt-6" />
-                            </div>
-                            <CalendarWidget />
+                <div id="calendar" className="container mx-auto px-4 scroll-mt-24">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="flex items-center justify-between border-b-2 border-slate-100 pb-4 mb-8">
+                            <h3 className="text-2xl font-black text-primary">{t('home.calendar_title')}</h3>
                         </div>
-
+                        <CalendarWidget />
                     </div>
                 </div>
             </section>

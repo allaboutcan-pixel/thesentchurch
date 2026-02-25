@@ -100,7 +100,9 @@ const resources = {
                 "first_step": "첫걸음",
                 "daily_word_popup_title": "오늘의 말씀",
                 "daily_word_popup_close": "오늘 하루 보지 않기",
-                "daily_word_view_more": "자세히 보기"
+                "daily_word_view_more": "자세히 보기",
+                "preacher_default": "이남규 목사",
+                "view_more_words": "더 많은 말씀 보기"
             },
             "about": {
                 "title": "교회 소개",
@@ -145,7 +147,7 @@ const resources = {
                     "Fort Langley Community Church 부목사",
                     "Port of Hope Ministry in Canada 이사 역임"
                 ],
-                "values_title": "사역 (핵심가치)",
+                "header_verse_fallback": "\"주 예수를 믿으라 그리하면 너와 네 집이 구원을 얻으리라\" (사도행전 16장 31절)",
             },
             "resources": {
                 "title": "주보 및 소식",
@@ -229,8 +231,28 @@ const resources = {
                     "request_button": "온라인 중보기도 요청",
                     "anonymous": "익명 가능",
                     "real_name": "실명 가능",
+                    "form_title": "기도제목 보내기",
+                    "form_name": "성함",
+                    "form_name_placeholder": "이름을 입력하세요",
+                    "form_contact": "연락처",
+                    "form_contact_placeholder": "연락처 또는 이메일",
+                    "form_request": "기도제목",
+                    "form_request_placeholder": "나누고 싶은 기도제목을 적어주세요",
+                    "form_submit": "기도제목 보내기",
+                    "form_sending": "전송 중...",
+                    "form_notice": "* 전송하신 내용은 교역자분들께 전달되어 소중히 기도하겠습니다.",
+                    "form_validation_error": "모든 항목을 입력해 주세요.",
+                    "form_success": "기도제목이 성공적으로 전달되었습니다.",
+                    "form_error": "전송에 실패했습니다. 잠시 후 다시 시도해주세요.",
+                    "emailjs_missing": "관리자 설정에서 EmailJS 키를 설정해주세요.",
                     "values_default": "기도는 하나님과의 거룩한 대화이며,\n모든 사역의 시작이자 마침입니다.",
-                    "goals_default": "중보기도부는 기도로 교회를 세우고,\n성도들의 삶과 교회의 모든 사역이 하나님의\n뜻 안에서 이루어지도록 중보하며,\n성도들이 함께 기도의 자리로 나아가도록 돕는\n영적 기도 공동체가 되는 것을 목표로 합니다."
+                    "goals_default": "중보기도부는 기도로 교회를 세우고,\n성도들의 삶과 교회의 모든 사역이 하나님의\n뜻 안에서 이루어지도록 중보하며,\n성도들이 함께 기도의 자리로 나아가도록 돕는\n영적 기도 공동체가 되는 것을 목표로 합니다.",
+                    "no_content_yet": "내용 준비 중",
+                    "hours_default": "매주 주일 낮 12:30 | 2층 자모실",
+                    "invite_title": "함께 기도해요",
+                    "invite_desc1": "기도제목을 남겨주세요.",
+                    "invite_desc2": "교회가 함께 마음 모아 기도하겠습니다.",
+                    "invite_privacy": "기도제목은 중보기도 사역자들만 열람가능하며, 철저하게 비밀로 지킵니다."
                 }
             },
             "location": {
@@ -427,12 +449,20 @@ const resources = {
                 "view_more": "More",
                 "youtube_desc": "Visit YouTube Channel",
                 "quick_sunday": "Sunday Service | 2PM (Main)",
+                "quick_sunday_sub": "Worship Info",
                 "quick_sunday_time": "2:00 PM",
                 "quick_morning": "Morning Prayer | 6AM (Online)",
+                "quick_morning_sub": "Early Morning Prayer",
                 "quick_morning_desc1": "1st & 2nd week of month",
                 "quick_morning_desc2": "6:00 AM Online Zoom",
                 "quick_bulletin": "Weekly Bulletin",
+                "quick_bulletin_sub": "Weekly Bulletin",
+                "quick_bulletin_desc1": "Updated every week",
+                "quick_bulletin_desc2": "Download PDF",
                 "quick_gallery": "Gallery",
+                "quick_gallery_sub": "Photo Gallery",
+                "quick_gallery_desc1": "Moments of Grace",
+                "quick_gallery_desc2": "Photo Gallery",
                 "latest_word": "Latest Word",
                 "recent_sermons": "Recent Sermons",
                 "sermon_archive": "Sermon Archive",
@@ -447,7 +477,9 @@ const resources = {
                 "first_step": "First Step",
                 "daily_word_popup_title": "Today's Word",
                 "daily_word_popup_close": "Don't show for today",
-                "daily_word_view_more": "View More"
+                "daily_word_view_more": "View More",
+                "preacher_default": "Pastor Namgyu Lee",
+                "view_more_words": "View More Words"
             },
             "about": {
                 "title": "About Us",
@@ -456,7 +488,8 @@ const resources = {
                 "intro_title": "About Our Church",
                 "affiliated_orgs_label": "Church Affiliation",
                 "affiliated_orgs_title": "Church Affiliation",
-                "affiliated_orgs_desc": "The Church of the Sent belongs to the <span class='text-blue-900 font-bold'>\"Korea Evangelical Holiness Church\"</span> (Americas General Assembly)<br/> and is a member of <span class='text-blue-900 font-bold'>\"EFCC (Evangelical Free Church of Canada)\"</span>.<br/><br/> Representative educational institutions of EFCC include <span class='text-blue-900 font-bold'>Trinity Western University</span> in Vancouver, Canada,<br/> and <span class='text-blue-900 font-bold'>Trinity Evangelical Divinity School (TEDS)</span> in the United States.",
+                "affiliated_orgs_desc": "The Church of the Sent is affiliated with the Americas General Assembly of the <span class='text-primary font-bold'>\"Korea Evangelical Holiness Church (KEHC)\"</span>.<br/><br/>The Holiness Church believes in the Triune God and confesses the Bible as the living Word of God. We believe that through the death and resurrection of Jesus Christ, we are regenerated (born again), live a holy life through the baptism of the Holy Spirit, believe in divine healing where physical infirmities are healed by God's power, and also believe in the Second Coming of Jesus.<br/><br/>In Canada, we belong to the <span class='text-primary font-bold'>Evangelical Free Church of Canada (EFCC)</span>, an evangelical denomination. The EFCC confesses that the Bible alone is the absolute authority for faith. Local churches are not controlled by a denominational assembly or church board <span class='text-primary font-bold'>(Free from human organization)</span>; church operations are autonomous for each local church, and decisions are confirmed by the consent of full church members.<br/>Representative educational institutions of the EFCC include <span class='text-primary font-bold'>Trinity Western University</span> in Vancouver, Canada, and <span class='text-primary font-bold'>Trinity Evangelical Divinity School (TEDS)</span> in the United States.",
+                "affiliated_orgs_desc_mobile": "The Church of the Sent is affiliated with the Americas General Assembly of the <span class='text-primary font-bold'>\"Korea Evangelical Holiness Church (KEHC)\"</span>.<br/><br/>The Holiness Church believes in the Triune God and confesses the Bible as the living Word of God. We believe that through the death and resurrection of Jesus Christ, we are regenerated (born again), live a holy life through the baptism of the Holy Spirit, believe in divine healing where physical infirmities are healed by God's power, and also believe in the Second Coming of Jesus.<br/><br/>In Canada, we belong to the <span class='text-primary font-bold'>Evangelical Free Church of Canada (EFCC)</span>, an evangelical denomination. The EFCC confesses that the Bible alone is the absolute authority for faith. Local churches are not controlled by a denominational assembly or church board <span class='text-primary font-bold'>(Free from human organization)</span>; church operations are autonomous for each local church, and decisions are confirmed by the consent of full church members.",
                 "org_kehc": "KEHC Americas",
                 "org_efcc": "EFCC",
                 "org_twu": "Trinity Western Univ.",
@@ -468,7 +501,7 @@ const resources = {
                 "pastor_title": "Pastor's Greeting",
                 "vision_label": "VISION",
                 "vision_title": "Vision",
-                "vision_desc": "",
+                "vision_desc": "A community that fulfills God's dream of human salvation as a church that is sent.",
                 "mission_label": "MISSION",
                 "mission_title": "Mission",
                 "mission_desc": "Every believer is an ambassador of God sent into the world.\n\nWe seek to fulfill God's will on this earth through a Bible-centered life and evangelism.\n\nThe church trains and sends each member to discover their calling and fulfill it within their families and society.\n\nBelievers live as prophets who proclaim the gospel and priests who practice love in their daily lives.",
@@ -491,7 +524,7 @@ const resources = {
                     "Associate Pastor, Fort Langley Community Church",
                     "Former Director, Port of Hope Ministry in Canada"
                 ],
-                "staff_title": "Our Team",
+                "header_verse_fallback": "\"Believe in the Lord Jesus, and you will be saved—you and your household.\" (Acts 16:31)",
             },
             "worship": {
                 "title": "Worship",
@@ -549,8 +582,28 @@ const resources = {
                     "request_button": "Online Prayer Request",
                     "anonymous": "Anonymous available",
                     "real_name": "Real name available",
+                    "form_title": "Send Prayer Request",
+                    "form_name": "Name",
+                    "form_name_placeholder": "Enter your name",
+                    "form_contact": "Contact",
+                    "form_contact_placeholder": "Phone or Email",
+                    "form_request": "Prayer Request",
+                    "form_request_placeholder": "Please enter the topics you want to share",
+                    "form_submit": "Send Prayer Request",
+                    "form_sending": "Sending...",
+                    "form_notice": "* Your request will be shared with our ministers for prayer.",
+                    "form_validation_error": "Please fill in all fields.",
+                    "form_success": "Your prayer request has been sent successfully.",
+                    "form_error": "Failed to send. Please try again later.",
+                    "emailjs_missing": "Please set EmailJS keys in Admin settings.",
                     "values_default": "Prayer is a holy conversation with God, and the beginning and end of all ministry.",
-                    "goals_default": "To help all members become prayer warriors and build a community that ceaselessly prays for the church and neighbors."
+                    "goals_default": "To help all members become prayer warriors and build a community that ceaselessly prays for the church and neighbors.",
+                    "hours_default": "Every Sunday 12:30 PM | 2nd Floor Nursing Room",
+                    "no_content_yet": "Coming Soon",
+                    "invite_title": "Let's Pray Together",
+                    "invite_desc1": "Please leave your prayer topics.",
+                    "invite_desc2": "The church will pray together with one heart.",
+                    "invite_privacy": "Prayer topics are only accessible to intercessory prayer ministers and are kept strictly confidential."
                 }
             },
             "resources": {
@@ -619,7 +672,7 @@ const resources = {
             "매달 첫째,둘째주 화-토요일 6AM": "1st & 2nd Week Tue-Sat 6AM",
             "본당": "Main Chapel",
             "지하 1층": "B1 Floor",
-            "pastor_message_full": "Welcome.\n\nWe hope that our church becomes a space where you can experience the warm love of Jesus, who was love and compassion itself.\n\nWe hope that you can feel the warmth of God here, who cherishes and values every person.\n\nWe hope that you discover God's will, who plans and accomplishes great things in heaven for each person's life.\n\nWe hope that your heart will be filled with hope through the dreams God gives, that the wandering of life will end, and that there will be grace to rise up powerfully towards your vision.",
+            "pastor_message_full": "Welcome to The Church of the Sent.\n\nWe desire to be a place where people can genuinely encounter the warm and compassionate love of Jesus.\nOur prayer is that everyone who comes through our doors will sense God’s presence—who sees each person as deeply valued and dearly loved.\n\nWe hope you will discover God’s greater purpose for your life and His plans to do meaningful and eternal work through you.\nMay your heart be filled with hope through the dreams God gives, your wandering come to an end, and may you rise with renewed strength toward the vision He has prepared for you.",
             "tee": {
                 "banner_title": "TEE",
                 "banner_subtitle": "Theological Education by Extension",

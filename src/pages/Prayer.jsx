@@ -8,7 +8,7 @@ import { useSiteConfig } from '../hooks/useSiteConfig';
 import clsx from 'clsx';
 
 const Prayer = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { config: siteConfig } = useSiteConfig();
     const type = 'prayer';
 
@@ -26,7 +26,7 @@ const Prayer = () => {
 
         // Basic validation
         if (!formData.name || !formData.contact || !formData.request) {
-            alert(t('ministry.prayer.form_validation_error') || '모든 항목을 입력해 주세요.');
+            alert(t('ministry.prayer.form_validation_error'));
             return;
         }
 
@@ -38,7 +38,7 @@ const Prayer = () => {
         const PUBLIC_KEY = siteConfig?.emailjsPublicKey;
 
         if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
-            alert(t('ministry.prayer.emailjs_missing') || '관리자 설정에서 EmailJS 키를 설정해주세요.');
+            alert(t('ministry.prayer.emailjs_missing'));
             setFormStatus('idle');
             return;
         }
@@ -53,21 +53,21 @@ const Prayer = () => {
         emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
             .then(() => {
                 setFormStatus('success');
-                alert(t('ministry.prayer.form_success') || '기도제목이 성공적으로 전달되었습니다.');
+                alert(t('ministry.prayer.form_success'));
                 setFormData({ name: '', contact: '', request: '' });
                 setFormStatus('idle');
                 setIsModalOpen(false);
             }, (error) => {
                 console.error('FAILED...', error);
                 setFormStatus('error');
-                alert(t('ministry.prayer.form_error') || '전송에 실패했습니다. 잠시 후 다시 시도해주세요.');
+                alert(t('ministry.prayer.form_error'));
                 setFormStatus('idle');
             });
     };
 
     const banner = siteConfig?.prayerBanner || "/images/ministry_banner.jpg";
-    const bannerTitle = siteConfig?.prayerTitle || t('nav.prayer');
-    const bannerSubtitle = siteConfig?.prayerSubtitle || t('ministry.prayer.subtitle');
+    const bannerTitle = (i18n.language === 'en' && siteConfig?.prayerTitleEn) ? siteConfig.prayerTitleEn : (siteConfig?.prayerTitle || t('nav.prayer'));
+    const bannerSubtitle = (i18n.language === 'en' && siteConfig?.prayerSubtitleEn) ? siteConfig.prayerSubtitleEn : (siteConfig?.prayerSubtitle || t('ministry.prayer.subtitle'));
 
     const bannerFit = siteConfig?.prayerBannerFit || 'cover';
     const overlayOpacity = siteConfig?.prayerOverlayOpacity || 40;
@@ -234,7 +234,7 @@ const Prayer = () => {
                             ) : (
                                 <div className="w-full rounded-3xl border-2 border-dashed border-blue-200 bg-blue-50/50 flex flex-col items-center justify-center text-blue-400 gap-3 aspect-[4/3]">
                                     <Sparkles size={32} className="opacity-50" />
-                                    <span className="font-bold text-lg text-center px-4">Admin &gt; 중보기도 관리에서<br />소개 이미지를 등록해주세요</span>
+                                    <span className="font-bold text-lg text-center px-4" dangerouslySetInnerHTML={{ __html: t('ministry.prayer.no_content_yet') }} />
                                 </div>
                             )}
                         </div>
@@ -345,7 +345,7 @@ const Prayer = () => {
                         </div>
                         <div className="h-px w-full md:w-px md:h-12 bg-blue-900/20" />
                         <div className="text-xl font-sans font-bold text-blue-800 whitespace-pre-line leading-relaxed">
-                            {siteConfig?.prayerHours !== undefined ? siteConfig.prayerHours : "매주 주일 낮 12:30 | 2층 자모실"}
+                            {siteConfig?.prayerHours !== undefined ? siteConfig.prayerHours : t('ministry.prayer.hours_default')}
                         </div>
                     </motion.div>
                 </div>
@@ -416,7 +416,7 @@ const Prayer = () => {
                                             </ol>
                                         )
                                     ) : (
-                                        <p className="text-stone-400 font-bold py-2">내용 준비 중</p>
+                                        <p className="text-stone-400 font-bold py-2">{t('home.no_content_yet')}</p>
                                     )}
                                 </div>
                             </motion.div>
@@ -427,19 +427,19 @@ const Prayer = () => {
                 {/* 4. CTA Section / Banner Flow */}
                 <div className="text-center pb-24">
                     {/* Banner Header */}
-                    <div className="mb-16 max-w-2xl mx-auto px-4">
+                    <div className="mb-16 max-w-2xl mx-auto px-4 text-center">
                         <h2 className="text-2xl md:text-3xl font-black text-blue-900 mb-6 tracking-tight">
-                            "함께 기도해요"
+                            {t('ministry.prayer.invite_title')}
                         </h2>
                         <div className="space-y-3">
                             <p className="text-lg md:text-xl text-stone-700 font-bold leading-relaxed">
-                                기도제목을 남겨주세요.
+                                {t('ministry.prayer.invite_desc1')}
                             </p>
                             <p className="text-lg md:text-xl text-stone-700 font-bold leading-relaxed">
-                                교회가 함께 마음 모아 기도하겠습니다.
+                                {t('ministry.prayer.invite_desc2')}
                             </p>
                             <p className="text-base text-stone-500 font-medium leading-relaxed pt-2">
-                                기도제목은 중보기도 사역자들만 열람가능하며, 철저하게 비밀로 지킵니다.
+                                {t('ministry.prayer.invite_privacy')}
                             </p>
                         </div>
                         <div className="mt-10 w-16 h-1 bg-blue-200 mx-auto rounded-full" />
@@ -476,7 +476,7 @@ const Prayer = () => {
                                 className="px-10 py-4 bg-white text-blue-900 rounded-2xl font-black text-base hover:bg-blue-50 transition-all shadow-2xl active:scale-95 flex items-center gap-2 border border-slate-100"
                             >
                                 <Send size={20} className="text-blue-600" />
-                                기도제목 보내기
+                                {t('ministry.prayer.form_submit')}
                             </button>
                         </div>
                     </div>
@@ -498,7 +498,7 @@ const Prayer = () => {
                                 className="relative w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl overflow-hidden"
                             >
                                 <div className="p-8 pb-4 flex items-center justify-between">
-                                    <h3 className="text-xl font-black text-blue-900">기도제목 보내기</h3>
+                                    <h3 className="text-xl font-black text-blue-900">{t('ministry.prayer.form_title')}</h3>
                                     <button
                                         onClick={() => setIsModalOpen(false)}
                                         className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400"
@@ -509,34 +509,34 @@ const Prayer = () => {
 
                                 <form onSubmit={handleSubmit} className="p-8 pt-4 space-y-4">
                                     <div className="space-y-1">
-                                        <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">성함</label>
+                                        <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">{t('ministry.prayer.form_name')}</label>
                                         <input
                                             type="text"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                             className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-bold placeholder:text-slate-300"
-                                            placeholder="이름을 입력하세요"
+                                            placeholder={t('ministry.prayer.form_name_placeholder')}
                                             required
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">연락처</label>
+                                        <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">{t('ministry.prayer.form_contact')}</label>
                                         <input
                                             type="text"
                                             value={formData.contact}
                                             onChange={(e) => setFormData({ ...formData, contact: e.target.value })}
                                             className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-bold placeholder:text-slate-300"
-                                            placeholder="연락처 또는 이메일"
+                                            placeholder={t('ministry.prayer.form_contact_placeholder')}
                                             required
                                         />
                                     </div>
                                     <div className="space-y-1">
-                                        <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">기도제목</label>
+                                        <label className="text-xs font-bold text-slate-500 ml-1 uppercase tracking-wider">{t('ministry.prayer.form_request')}</label>
                                         <textarea
                                             value={formData.request}
                                             onChange={(e) => setFormData({ ...formData, request: e.target.value })}
                                             className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-medium h-40 resize-none placeholder:text-slate-300"
-                                            placeholder="나누고 싶은 기도제목을 적어주세요"
+                                            placeholder={t('ministry.prayer.form_request_placeholder')}
                                             required
                                         ></textarea>
                                     </div>
@@ -549,17 +549,17 @@ const Prayer = () => {
                                         {formStatus === 'sending' ? (
                                             <>
                                                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                                전송 중...
+                                                {t('ministry.prayer.form_sending')}
                                             </>
                                         ) : (
                                             <>
                                                 <Send size={20} />
-                                                기도제목 보내기
+                                                {t('ministry.prayer.form_submit')}
                                             </>
                                         )}
                                     </button>
-                                    <p className="text-center text-[10px] text-slate-400 font-medium">
-                                        * 전송하신 내용은 교역자분들께 전달되어 소중히 기도하겠습니다.
+                                    <p className="text-center text-[10px] text-slate-400 font-medium whitespace-pre-line">
+                                        {t('ministry.prayer.form_notice')}
                                     </p>
                                 </form>
                             </motion.div>

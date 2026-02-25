@@ -60,6 +60,8 @@ const About = () => {
         ...churchData.general
     });
 
+    const [aboutAffiliatedOrgs, setAboutAffiliatedOrgs] = useState(null);
+
     useEffect(() => {
         if (config) {
             if (config.aboutBanner) setHeaderBanner(config.aboutBanner);
@@ -84,6 +86,10 @@ const About = () => {
             if (config.aboutOverlayOpacity !== undefined) setOverlayOpacity(config.aboutOverlayOpacity);
             if (config.aboutHeight) setHeight(config.aboutHeight);
             if (config.aboutBannerFit) setBannerFit(config.aboutBannerFit);
+
+            // Affiliated Organizations
+            const affVal = i18n.language === 'en' && config.aboutAffiliatedOrgsEn ? config.aboutAffiliatedOrgsEn : config.aboutAffiliatedOrgs;
+            if (affVal) setAboutAffiliatedOrgs(affVal);
 
             if (config.staff) {
                 const localizedStaff = config.staff.map(s => ({
@@ -225,7 +231,7 @@ const About = () => {
                             fontSize: subtitleSize ? `${subtitleSize}px` : undefined
                         }}
                     >
-                        {subtitle || "\"주 예수를 믿으라 그리하면 너와 네 집이 구원을 얻으리라\" (사도행전 16장 31절)"}
+                        {subtitle || t('about.header_verse_fallback')}
                     </motion.p>
                 </div>
             </div>
@@ -256,7 +262,9 @@ const About = () => {
                             <div className="w-full md:w-7/12">
                                 <div className="prose prose-lg text-gray-600 max-w-none">
                                     <p className="mb-2 mt-12 leading-[2.2] whitespace-pre-line text-gray-700 break-keep">
-                                        {i18n.language === 'en' ? t('pastor_message_full') : (pastorInfo.message || pastorInfo.greeting)}
+                                        {i18n.language === 'en'
+                                            ? (config?.pastor?.greetingEn || t('pastor_message_full'))
+                                            : (pastorInfo.greeting || pastorInfo.message)}
                                     </p>
                                     <div className="mt-8 pt-4 border-t border-gray-100 flex flex-col items-end">
                                         <p className="font-extrabold text-gray-900 flex items-baseline gap-2">
@@ -410,12 +418,12 @@ const About = () => {
                             </div>
 
                             <div
-                                className="hidden md:block text-gray-600 leading-[2.5] mb-12 max-w-4xl mx-auto"
-                                dangerouslySetInnerHTML={{ __html: t('about.affiliated_orgs_desc') }}
+                                className="hidden md:block text-gray-600 leading-[2.5] mb-12 max-w-4xl mx-auto whitespace-pre-line"
+                                dangerouslySetInnerHTML={{ __html: aboutAffiliatedOrgs || t('about.affiliated_orgs_desc') }}
                             />
                             <div
-                                className="md:hidden text-gray-600 text-sm leading-[1.5] mb-8 text-left"
-                                dangerouslySetInnerHTML={{ __html: t('about.affiliated_orgs_desc_mobile') || t('about.affiliated_orgs_desc') }}
+                                className="md:hidden text-gray-600 text-sm leading-[1.5] mb-8 text-left whitespace-pre-line"
+                                dangerouslySetInnerHTML={{ __html: aboutAffiliatedOrgs || t('about.affiliated_orgs_desc_mobile') || t('about.affiliated_orgs_desc') }}
                             />
 
                             <div className="flex flex-wrap justify-center gap-4 md:gap-6">

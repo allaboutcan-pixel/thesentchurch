@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Download, Calendar, Image as ImageIcon, FileText, Play, X, ChevronRight, ChevronLeft, BookOpen, Quote, Music, Maximize } from 'lucide-react';
+import { Download, Calendar, Image as ImageIcon, FileText, Play, X, ChevronRight, ChevronLeft, BookOpen, Quote, Music, Maximize, Bell } from 'lucide-react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import bulletinsInitialData from '../data/bulletins.json';
@@ -143,7 +143,7 @@ const Resources = () => {
         } else if (location.pathname.includes('sermon') || location.pathname.includes('/sermons')) {
             setActiveTab('sermon');
         } else if (location.pathname.includes('news') || location.pathname.includes('/news')) {
-            setActiveTab('bulletin'); // Default to bulletin for News
+            setActiveTab('notice'); // Default to notice for News
         } else {
             setActiveTab('sermon'); // Default to sermon
         }
@@ -374,6 +374,12 @@ const Resources = () => {
 
 
                                 <TabButton
+                                    active={activeTab === 'notice'}
+                                    onClick={() => setActiveTab('notice')}
+                                    icon={<Bell size={18} />}
+                                    label={t('nav.notices')}
+                                />
+                                <TabButton
                                     active={activeTab === 'bulletin'}
                                     onClick={() => setActiveTab('bulletin')}
                                     icon={<FileText size={18} />}
@@ -397,6 +403,71 @@ const Resources = () => {
                 </div>
 
                 {/* Content */}
+                {/* 0. Notices Content */}
+                {activeTab === 'notice' && (
+                    <div className="space-y-12 pb-32 animate-fade-in max-w-4xl mx-auto pt-8">
+                        <div className="border-b-4 border-slate-100 pb-6 space-y-4">
+                            <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+                                <Bell size={28} className="text-primary" />
+                                {t('nav.notices')}
+                            </h3>
+                            <p className="text-slate-400 font-medium text-sm mt-1 italic">{t('home.news_title')}</p>
+                        </div>
+
+                        {notices.length > 0 ? (
+                            <div className="grid gap-6">
+                                {notices.map((notice, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 hover:border-primary/20 hover:shadow-xl transition-all group"
+                                    >
+                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                                            <div className="flex items-center gap-3">
+                                                <span className="px-3 py-1 bg-primary/5 text-primary text-[10px] font-black rounded-lg uppercase tracking-widest">
+                                                    {notice.category || 'Notice'}
+                                                </span>
+                                                <span className="text-slate-400 text-xs font-bold tabular-nums">
+                                                    {notice.date}
+                                                </span>
+                                            </div>
+                                            {notice.important && (
+                                                <span className="flex items-center gap-1.5 text-red-500 text-[10px] font-black uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full w-fit">
+                                                    <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
+                                                    Important
+                                                </span>
+                                            )}
+                                        </div>
+                                        <h4 className="text-xl md:text-2xl font-black text-slate-900 mb-4 group-hover:text-primary transition-colors">
+                                            {(i18n.language === 'en' && notice.titleEn) ? notice.titleEn : notice.title}
+                                        </h4>
+                                        <div className="text-slate-600 leading-relaxed font-medium whitespace-pre-wrap">
+                                            {(i18n.language === 'en' && notice.contentEn) ? notice.contentEn : notice.content}
+                                        </div>
+                                        {notice.link && (
+                                            <div className="mt-8 pt-6 border-t border-slate-50">
+                                                <a
+                                                    href={notice.link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-2 text-primary font-black text-sm hover:gap-3 transition-all"
+                                                >
+                                                    {t('home.daily_word_view_more')}
+                                                    <ChevronRight size={16} />
+                                                </a>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="py-20 flex flex-col items-center justify-center text-slate-300 gap-4">
+                                <Bell size={48} className="opacity-20" />
+                                <p className="font-bold">{t('home.no_content_yet')}</p>
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 {/* Sunday Sermon Content (Playlist Style) */}
                 {activeTab === 'sermon' && (
                     <div className="space-y-24 pb-40 animate-fade-in">
@@ -598,7 +669,7 @@ const Resources = () => {
                                             {t('resources.latest_bulletin')}
                                         </div>
                                         <h2 className="text-2xl md:text-4xl font-black leading-tight text-white">
-                                            {latestBulletin.title}
+                                            {(i18n.language === 'en' && latestBulletin.titleEn) ? latestBulletin.titleEn : latestBulletin.title}
                                         </h2>
                                         <div className="flex items-center gap-3 text-white/60 text-sm font-medium">
                                             <Calendar size={16} className="text-accent" />
@@ -743,7 +814,7 @@ const Resources = () => {
                                                 </div>
                                                 <div className="min-w-0">
                                                     <h4 className="text-xs font-bold text-slate-600 group-hover:text-primary transition-colors truncate">
-                                                        {item.title}
+                                                        {(i18n.language === 'en' && item.titleEn) ? item.titleEn : item.title}
                                                     </h4>
                                                 </div>
                                             </div>
@@ -778,7 +849,7 @@ const Resources = () => {
                                             {t('resources.latest_column')}
                                         </div>
                                         <h2 className="text-2xl md:text-4xl font-black leading-tight text-white">
-                                            {latestColumn.title}
+                                            {(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
                                         </h2>
                                         <div className="flex flex-col gap-1">
                                             <div className="flex items-center gap-3 text-white/60 text-sm font-medium">
@@ -786,7 +857,7 @@ const Resources = () => {
                                                 {latestColumn.date || ""}
                                             </div>
                                             <div className="text-white/80 font-bold">
-                                                {t('resources.author_prefix')}{latestColumn.author || '이남규 목사'}
+                                                {t('resources.author_prefix')}{(i18n.language === 'en' && latestColumn.authorEn) ? latestColumn.authorEn : (latestColumn.author || (i18n.language.startsWith('en') ? 'Pastor Namgyu Lee' : '이남규 목사'))}
                                             </div>
                                         </div>
                                         <div className="flex flex-wrap gap-2 pt-2">
@@ -823,13 +894,13 @@ const Resources = () => {
                                                         return url;
                                                     })()}
                                                     className="w-full h-full border-none opacity-80 hover:opacity-100 transition-opacity"
-                                                    title={latestColumn.title}
+                                                    title={(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
                                                     allowFullScreen
                                                 ></iframe>
                                             ) : latestColumn.fileType === 'image' ? (
                                                 <img
                                                     src={latestColumn.fileUrl}
-                                                    alt={latestColumn.title}
+                                                    alt={(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
                                                     className="w-full h-full object-contain opacity-80 hover:opacity-100 transition-opacity"
                                                     loading="lazy"
                                                 />
@@ -837,7 +908,7 @@ const Resources = () => {
                                                 <iframe
                                                     src={dbService.formatDriveLink(latestColumn.fileUrl)}
                                                     className="w-full h-full border-none opacity-80 hover:opacity-100 transition-opacity"
-                                                    title={latestColumn.title}
+                                                    title={(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
                                                 ></iframe>
                                             )}
                                         </div>
@@ -912,7 +983,7 @@ const Resources = () => {
                                                 </div>
                                                 <div className="min-w-0">
                                                     <h4 className="text-xs font-bold text-slate-600 group-hover:text-primary transition-colors truncate">
-                                                        {item.title}
+                                                        {(i18n.language === 'en' && item.titleEn) ? item.titleEn : item.title}
                                                     </h4>
                                                 </div>
                                             </div>
@@ -1028,7 +1099,7 @@ const Resources = () => {
                                                             ) : (
                                                                 <img
                                                                     src={thumbnailUrl}
-                                                                    alt=""
+                                                                    alt={(i18n.language === 'en' && img.titleEn) ? img.titleEn : img.title}
                                                                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                                                                     loading="lazy"
                                                                     onError={(e) => {
@@ -1059,7 +1130,9 @@ const Resources = () => {
 
                                             {/* Clean Hover Overlay for Title */}
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                                                <p className="text-white text-xs font-bold truncate">{img.title}</p>
+                                                <p className="text-white text-xs font-bold truncate">
+                                                    {(i18n.language === 'en' && img.titleEn) ? img.titleEn : img.title}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -1109,7 +1182,9 @@ const Resources = () => {
                                         <Music size={64} />
                                     </div>
                                     <div className="text-center">
-                                        <h3 className="text-2xl font-black text-primary mb-2">{selectedVideo.title}</h3>
+                                        <h3 className="text-2xl font-black text-primary mb-2">
+                                            {(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
+                                        </h3>
                                         <p className="text-gray-400 font-medium">{selectedVideo.date}</p>
                                     </div>
                                     <audio
@@ -1150,14 +1225,14 @@ const Resources = () => {
                                     className="w-full h-full border-none"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
-                                    title={selectedVideo.title}
+                                    title={(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
                                 ></iframe>
                             )}
                             <div className={clsx(
                                 "absolute left-0 right-0 text-center font-bold",
                                 selectedVideo.type === 'audio' ? "hidden" : "bottom-[-40px] text-white"
                             )}>
-                                {selectedVideo.title}
+                                {(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
                             </div>
                         </div>
                     </div>
@@ -1186,9 +1261,13 @@ const Resources = () => {
                             <div className="lg:w-1/3 p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center gap-8">
                                 <div>
                                     <div className="text-accent font-black tracking-widest text-xs mb-4 uppercase">Pastoral Column</div>
-                                    <h3 className="text-3xl font-black text-white leading-tight mb-4">{selectedArchiveColumn.title}</h3>
+                                    <h3 className="text-3xl font-black text-white leading-tight mb-4">
+                                        {(i18n.language === 'en' && selectedArchiveColumn.titleEn) ? selectedArchiveColumn.titleEn : selectedArchiveColumn.title}
+                                    </h3>
                                     <p className="text-white/40 text-lg font-medium">{selectedArchiveColumn.date}</p>
-                                    <p className="text-white/60 font-bold mt-2">작성: {selectedArchiveColumn.author || '이남규 목사'}</p>
+                                    <p className="text-white/60 font-bold mt-2">
+                                        {t('resources.author_prefix')} {(i18n.language === 'en' && selectedArchiveColumn.authorEn) ? selectedArchiveColumn.authorEn : (selectedArchiveColumn.author || (i18n.language.startsWith('en') ? 'Pastor Namgyu Lee' : '이남규 목사'))}
+                                    </p>
                                 </div>
 
                                 <div className="flex flex-col gap-3 pt-4">
@@ -1235,7 +1314,7 @@ const Resources = () => {
                                     <img
                                         src={selectedArchiveColumn.fileUrl}
                                         className="w-full h-full object-contain"
-                                        alt={selectedArchiveColumn.title}
+                                        alt={(i18n.language === 'en' && selectedArchiveColumn.titleEn) ? selectedArchiveColumn.titleEn : selectedArchiveColumn.title}
                                     />
                                 ) : (
                                     <iframe
@@ -1274,7 +1353,9 @@ const Resources = () => {
                             <div className="lg:w-1/3 p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center gap-8">
                                 <div>
                                     <div className="text-accent font-black tracking-widest text-xs mb-4 uppercase">Weekly Bulletin</div>
-                                    <h3 className="text-3xl font-black text-white leading-tight mb-4">{selectedArchiveBulletin.title}</h3>
+                                    <h3 className="text-3xl font-black text-white leading-tight mb-4">
+                                        {(i18n.language === 'en' && selectedArchiveBulletin.titleEn) ? selectedArchiveBulletin.titleEn : selectedArchiveBulletin.title}
+                                    </h3>
                                     <div className="flex items-center gap-2 text-white/40 text-lg font-medium">
                                         <Calendar size={20} className="text-accent" />
                                         {selectedArchiveBulletin.date}
@@ -1401,7 +1482,7 @@ const Resources = () => {
                                 <span className="text-white/40 text-sm font-black uppercase tracking-widest">Sunday Sermon</span>
                             </div>
                             <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
-                                {selectedVideo.title}
+                                {(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
                             </h3>
                         </div>
                     </div>
