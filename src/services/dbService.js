@@ -261,18 +261,22 @@ export const dbService = {
     getSermons: () => dbService.fetchItems(SERMONS),
     getBulletins: () => dbService.fetchItems(BULLETINS),
     getGallery: () => dbService.fetchItems(DB_COLLECTIONS.GALLERY),
+    getColumns: () => dbService.fetchItems(COLUMNS),
 
     addSermon: (data) => dbService.addItem(SERMONS, data),
     addBulletin: (data) => dbService.addItem(BULLETINS, data),
     addGalleryItem: (data) => dbService.addItem(DB_COLLECTIONS.GALLERY, data),
+    addColumn: (data) => dbService.addItem(COLUMNS, data),
 
     updateSermon: (id, data) => dbService.updateItem(SERMONS, id, data),
     updateBulletin: (id, data) => dbService.updateItem(BULLETINS, id, data),
     updateGalleryItem: (id, data) => dbService.updateItem(DB_COLLECTIONS.GALLERY, id, data),
+    updateColumn: (id, data) => dbService.updateItem(COLUMNS, id, data),
 
     deleteSermon: (id) => dbService.deleteItem(SERMONS, id),
     deleteBulletin: (id) => dbService.deleteItem(BULLETINS, id),
     deleteGalleryItem: (id) => dbService.deleteItem(DB_COLLECTIONS.GALLERY, id),
+    deleteColumn: (id) => dbService.deleteItem(COLUMNS, id),
 
     // Calendar
     getCalendarEvents: async () => {
