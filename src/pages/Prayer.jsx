@@ -105,8 +105,8 @@ const Prayer = () => {
             id: 'church',
             title: t('ministry.prayer.church_prayer_title'),
             icon: <Target className="w-6 h-6" />,
-            topics: (i18n.language === 'en' && siteConfig?.prayerChurchTopicsEn)
-                ? parseTopics(siteConfig.prayerChurchTopicsEn)
+            topics: (i18n.language === 'en' && (siteConfig?.prayerChurchTopicsEn || siteConfig?.prayerChurchTopics2026En))
+                ? parseTopics(siteConfig.prayerChurchTopicsEn || siteConfig.prayerChurchTopics2026En)
                 : (siteConfig?.prayerChurchTopics || siteConfig?.prayerChurchTopics2026)
                     ? parseTopics(siteConfig.prayerChurchTopics || siteConfig.prayerChurchTopics2026)
                     : (t('ministry.prayer.church_topics', { returnObjects: true }) || [])
@@ -281,7 +281,7 @@ const Prayer = () => {
                                     <Heart size={28} strokeWidth={1.5} />
                                 </div>
                                 <h3 className="text-xl font-black text-blue-900 tracking-tight">
-                                    {t('ministry.prayer.section2_title')}
+                                    {(i18n.language === 'en' && siteConfig?.prayerCoreValuesTitleEn) ? siteConfig.prayerCoreValuesTitleEn : (siteConfig?.prayerCoreValuesTitle || t('ministry.prayer.section2_title'))}
                                 </h3>
                             </div>
                             <div className="text-base md:text-lg text-stone-600 leading-[1.8] whitespace-pre-line font-medium break-keep pl-8">
@@ -303,10 +303,10 @@ const Prayer = () => {
                                     <Target size={28} strokeWidth={1.5} />
                                 </div>
                                 <h3 className="text-xl font-black text-blue-900 tracking-tight">
-                                    {t('ministry.prayer.section3_title')}
+                                    {(i18n.language === 'en' && siteConfig?.prayerGoalsTitleEn) ? siteConfig.prayerGoalsTitleEn : (siteConfig?.prayerGoalsTitle || t('ministry.prayer.section3_title'))}
                                 </h3>
                             </div>
-                            <div className="text-base md:text-lg text-stone-600 leading-[1.8] font-medium break-keep pl-4">
+                            <div className="text-base md:text-lg text-stone-600 leading-[1.8] whitespace-pre-line font-medium break-keep pl-4">
                                 {(() => {
                                     const rawText = i18n.language === 'en'
                                         ? (siteConfig?.prayerGoalsEn || siteConfig?.prayerGoals || t('ministry.prayer.goals_default'))
@@ -350,7 +350,9 @@ const Prayer = () => {
                             <div className="p-2 bg-blue-100 rounded-full text-blue-700 font-bold">
                                 <Clock className="w-6 h-6" />
                             </div>
-                            <span className="text-xl font-bold text-blue-900 uppercase tracking-widest">{t('ministry.prayer.section4_title')}</span>
+                            <span className="text-xl font-bold text-blue-900 uppercase tracking-widest">
+                                {(i18n.language === 'en' && siteConfig?.prayerHoursTitleEn) ? siteConfig.prayerHoursTitleEn : (siteConfig?.prayerHoursTitle || t('ministry.prayer.section4_title'))}
+                            </span>
                         </div>
                         <div className="h-px w-full md:w-px md:h-12 bg-blue-900/20" />
                         <div className="text-xl font-sans font-bold text-blue-800 whitespace-pre-line leading-relaxed">

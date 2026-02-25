@@ -767,6 +767,12 @@ const Admin = () => {
 
                     prayerTopicsTitleEn: fbConfig.prayerTopicsTitleEn || '',
                     prayerTopicsSubtitleEn: fbConfig.prayerTopicsSubtitleEn || '',
+                    prayerCoreValuesTitle: fbConfig.prayerCoreValuesTitle || '',
+                    prayerCoreValuesTitleEn: fbConfig.prayerCoreValuesTitleEn || '',
+                    prayerGoalsTitle: fbConfig.prayerGoalsTitle || '',
+                    prayerGoalsTitleEn: fbConfig.prayerGoalsTitleEn || '',
+                    prayerHoursTitle: fbConfig.prayerHoursTitle || '',
+                    prayerHoursTitleEn: fbConfig.prayerHoursTitleEn || '',
                     prayerCoreValuesEn: fbConfig.prayerCoreValuesEn || '',
                     prayerGoalsEn: fbConfig.prayerGoalsEn || '',
                     prayerHoursEn: fbConfig.prayerHoursEn || '',
@@ -1159,6 +1165,16 @@ const Admin = () => {
                 }
             } else if (activeTab === 'site' || activeTab === 'intro' || activeTab === 'prayer' || activeTab === 'education_ministry' || activeTab === 'location' || activeTab === 'worship') {
                 let currentConfig = { ...siteConfig };
+
+                // Ensure all text fields from formData are merged into currentConfig
+                // This is necessary because many fields only update formData and not siteConfig directly
+                Object.keys(formData).forEach(key => {
+                    // Skip media fields (handled separately below) and fields for other tabs (sermons, bulletins, etc.)
+                    const skipFields = ['title', 'date', 'preacher', 'youtubeId', 'fileUrl', 'fileUrl2', 'thumbnailUrl', 'type', 'staffName', 'staffRole', 'staffEmail', 'staffPhotoUrl', 'note', 'eventType', 'startDate', 'endDate'];
+                    if (!skipFields.includes(key) && formData[key] !== undefined) {
+                        currentConfig[key] = formData[key];
+                    }
+                });
 
                 // Process ONLY media fields that might need upload or drive formatting
                 // These are fields that might have newly selected files in bannerFiles
@@ -2744,14 +2760,47 @@ const Admin = () => {
 
                                     <div className="space-y-8">
                                         <div className="space-y-4">
-                                            <div className="space-y-2">
-                                                <label className="text-sm font-bold text-gray-600 ml-1">사역의 핵심 가치 (Korean Core Values)</label>
-                                                <textarea
-                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
-                                                    placeholder="예: 하나님과의 친밀함, 정결한 삶..."
-                                                    value={formData.prayerCoreValues}
-                                                    onChange={(e) => setFormData({ ...formData, prayerCoreValues: e.target.value })}
-                                                />
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-bold text-gray-600 ml-1">사역의 핵심 가치 섹션 타이틀 (Korean Title)</label>
+                                                    <input
+                                                        type="text"
+                                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
+                                                        placeholder="예: 중보기도 사역의 핵심 가치"
+                                                        value={formData.prayerCoreValuesTitle || ''}
+                                                        onChange={(e) => setFormData({ ...formData, prayerCoreValuesTitle: e.target.value })}
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-bold text-blue-500 ml-1">English Core Values Title</label>
+                                                    <input
+                                                        type="text"
+                                                        className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
+                                                        placeholder="Enter English Title"
+                                                        value={formData.prayerCoreValuesTitleEn || ''}
+                                                        onChange={(e) => setFormData({ ...formData, prayerCoreValuesTitleEn: e.target.value })}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-bold text-gray-600 ml-1">사역의 핵심 가치 (Korean Core Values)</label>
+                                                    <textarea
+                                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                        placeholder="예: 하나님과의 친밀함, 정결한 삶..."
+                                                        value={formData.prayerCoreValues}
+                                                        onChange={(e) => setFormData({ ...formData, prayerCoreValues: e.target.value })}
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-bold text-blue-500 ml-1">English Core Values Content</label>
+                                                    <textarea
+                                                        className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                        placeholder="Enter English core values"
+                                                        value={formData.prayerCoreValuesEn}
+                                                        onChange={(e) => setFormData({ ...formData, prayerCoreValuesEn: e.target.value })}
+                                                    />
+                                                </div>
                                             </div>
                                             <div className="space-y-2">
                                                 <label className="text-sm font-bold text-blue-500 ml-1">English Core Values</label>
@@ -2764,7 +2813,29 @@ const Admin = () => {
                                             </div>
                                         </div>
 
-                                        <div className="space-y-4">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">중보기도부 목표 섹션 타이틀 (Korean Title)</label>
+                                                <input
+                                                    type="text"
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
+                                                    placeholder="예: 중보기도부 목표"
+                                                    value={formData.prayerGoalsTitle || ''}
+                                                    onChange={(e) => setFormData({ ...formData, prayerGoalsTitle: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Goals Title</label>
+                                                <input
+                                                    type="text"
+                                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
+                                                    placeholder="Enter English Title"
+                                                    value={formData.prayerGoalsTitleEn || ''}
+                                                    onChange={(e) => setFormData({ ...formData, prayerGoalsTitleEn: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div className="space-y-2">
                                                 <label className="text-sm font-bold text-gray-600 ml-1">중보기도부 목표 (Korean Goals)</label>
                                                 <textarea
@@ -2775,7 +2846,7 @@ const Admin = () => {
                                                 />
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="text-sm font-bold text-blue-500 ml-1">English Goals</label>
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Goals Content</label>
                                                 <textarea
                                                     className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
                                                     placeholder="Enter English goals"
@@ -2785,7 +2856,29 @@ const Admin = () => {
                                             </div>
                                         </div>
 
-                                        <div className="space-y-4">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">운영시간 섹션 타이틀 (Korean Title)</label>
+                                                <input
+                                                    type="text"
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
+                                                    placeholder="예: 운영시간"
+                                                    value={formData.prayerHoursTitle || ''}
+                                                    onChange={(e) => setFormData({ ...formData, prayerHoursTitle: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Hours Title</label>
+                                                <input
+                                                    type="text"
+                                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
+                                                    placeholder="Enter English Title"
+                                                    value={formData.prayerHoursTitleEn || ''}
+                                                    onChange={(e) => setFormData({ ...formData, prayerHoursTitleEn: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div className="space-y-2">
                                                 <label className="text-sm font-bold text-gray-600 ml-1">운영시간 (Korean Operating Hours)</label>
                                                 <textarea
@@ -2796,7 +2889,7 @@ const Admin = () => {
                                                 />
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="text-sm font-bold text-blue-500 ml-1">English Operating Hours</label>
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Operating Hours Content</label>
                                                 <textarea
                                                     className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
                                                     placeholder="Enter English hours (e.g., Every Friday 8pm)"
