@@ -105,17 +105,21 @@ const Prayer = () => {
             id: 'church',
             title: t('ministry.prayer.church_prayer_title'),
             icon: <Target className="w-6 h-6" />,
-            topics: (siteConfig?.prayerChurchTopics || siteConfig?.prayerChurchTopics2026)
-                ? parseTopics(siteConfig.prayerChurchTopics || siteConfig.prayerChurchTopics2026)
-                : (t('ministry.prayer.church_topics', { returnObjects: true }) || [])
+            topics: (i18n.language === 'en' && siteConfig?.prayerChurchTopicsEn)
+                ? parseTopics(siteConfig.prayerChurchTopicsEn)
+                : (siteConfig?.prayerChurchTopics || siteConfig?.prayerChurchTopics2026)
+                    ? parseTopics(siteConfig.prayerChurchTopics || siteConfig.prayerChurchTopics2026)
+                    : (t('ministry.prayer.church_topics', { returnObjects: true }) || [])
         },
         {
             id: 'common',
             title: t('ministry.prayer.common_prayer_title'),
             icon: <Heart className="w-6 h-6" />,
-            topics: siteConfig?.prayerCommonTopics
-                ? parseTopics(siteConfig.prayerCommonTopics)
-                : (t('ministry.prayer.common_topics', { returnObjects: true }) || [])
+            topics: (i18n.language === 'en' && siteConfig?.prayerCommonTopicsEn)
+                ? parseTopics(siteConfig.prayerCommonTopicsEn)
+                : siteConfig?.prayerCommonTopics
+                    ? parseTopics(siteConfig.prayerCommonTopics)
+                    : (t('ministry.prayer.common_topics', { returnObjects: true }) || [])
         }
         // Pastor Prayer section removed as per request
         /*
@@ -281,7 +285,9 @@ const Prayer = () => {
                                 </h3>
                             </div>
                             <div className="text-base md:text-lg text-stone-600 leading-[1.8] whitespace-pre-line font-medium break-keep pl-8">
-                                {siteConfig?.prayerCoreValues !== undefined ? siteConfig.prayerCoreValues : t('ministry.prayer.values_default')}
+                                {i18n.language === 'en'
+                                    ? (siteConfig?.prayerCoreValuesEn || siteConfig?.prayerCoreValues || t('ministry.prayer.values_default'))
+                                    : (siteConfig?.prayerCoreValues !== undefined ? siteConfig.prayerCoreValues : t('ministry.prayer.values_default'))}
                             </div>
                         </motion.div>
 
@@ -302,14 +308,17 @@ const Prayer = () => {
                             </div>
                             <div className="text-base md:text-lg text-stone-600 leading-[1.8] font-medium break-keep pl-4">
                                 {(() => {
-                                    const rawText = siteConfig?.prayerGoals !== undefined ? siteConfig.prayerGoals : t('ministry.prayer.goals_default');
+                                    const rawText = i18n.language === 'en'
+                                        ? (siteConfig?.prayerGoalsEn || siteConfig?.prayerGoals || t('ministry.prayer.goals_default'))
+                                        : (siteConfig?.prayerGoals !== undefined ? siteConfig.prayerGoals : t('ministry.prayer.goals_default'));
 
                                     // Strip existing newlines and rebuild with responsive control
                                     const cleanText = rawText.replace(/\n/g, ' ');
 
-                                    // Shared breaks (PC & Mobile)
-                                    // PC-only breaks (hidden on Mobile)
-                                    // Mobile-only breaks (hidden on PC)
+                                    // For English, we might want different break logic or just simple wrapping
+                                    if (i18n.language === 'en') {
+                                        return <div>{rawText}</div>;
+                                    }
 
                                     const formatted = cleanText
                                         .replace(/중보기도부는 기도로 교회를 세우고,/g, '중보기도부는 기도로 교회를 세우고,<br />')
@@ -345,7 +354,9 @@ const Prayer = () => {
                         </div>
                         <div className="h-px w-full md:w-px md:h-12 bg-blue-900/20" />
                         <div className="text-xl font-sans font-bold text-blue-800 whitespace-pre-line leading-relaxed">
-                            {siteConfig?.prayerHours !== undefined ? siteConfig.prayerHours : t('ministry.prayer.hours_default')}
+                            {i18n.language === 'en'
+                                ? (siteConfig?.prayerHoursEn || siteConfig?.prayerHours || t('ministry.prayer.hours_default'))
+                                : (siteConfig?.prayerHours !== undefined ? siteConfig.prayerHours : t('ministry.prayer.hours_default'))}
                         </div>
                     </motion.div>
                 </div>
@@ -358,11 +369,17 @@ const Prayer = () => {
                             <span className="text-blue-600 font-bold tracking-widest text-sm uppercase">Intercessory Ministry</span>
                         </div>
                         <h2 className="text-2xl md:text-3xl font-black text-blue-900 mb-6 tracking-tight">
-                            {siteConfig?.prayerTopicsTitle || t('ministry.prayer.section1_title')}
+                            {i18n.language === 'en'
+                                ? (siteConfig?.prayerTopicsTitleEn || siteConfig?.prayerTopicsTitle || t('ministry.prayer.section1_title'))
+                                : (siteConfig?.prayerTopicsTitle || t('ministry.prayer.section1_title'))}
                         </h2>
                         <div
                             className="text-lg text-stone-500 font-medium leading-relaxed max-w-2xl mx-auto break-keep"
-                            dangerouslySetInnerHTML={{ __html: (siteConfig?.prayerTopicsSubtitle || t('ministry.prayer.section1_desc')).replace(/\n/g, '<br/>') }}
+                            dangerouslySetInnerHTML={{
+                                __html: (i18n.language === 'en'
+                                    ? (siteConfig?.prayerTopicsSubtitleEn || siteConfig?.prayerTopicsSubtitle || t('ministry.prayer.section1_desc'))
+                                    : (siteConfig?.prayerTopicsSubtitle || t('ministry.prayer.section1_desc'))).replace(/\n/g, '<br/>')
+                            }}
                         />
                     </div>
 

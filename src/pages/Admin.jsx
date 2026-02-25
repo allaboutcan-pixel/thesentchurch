@@ -3637,7 +3637,7 @@ const Admin = () => {
                                     </h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">새벽기도 일정</label>
+                                            <label className="text-sm font-bold text-gray-600 ml-1">새벽기도 일정 (Korean)</label>
                                             <input
                                                 type="text"
                                                 className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
@@ -3648,6 +3648,22 @@ const Admin = () => {
                                                     specialServices: {
                                                         ...siteConfig.specialServices,
                                                         dawn: { ...(siteConfig.specialServices?.dawn || {}), schedule: e.target.value }
+                                                    }
+                                                })}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label className="text-sm font-bold text-blue-500 ml-1">Dawn Service Schedule (English)</label>
+                                            <input
+                                                type="text"
+                                                className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
+                                                value={siteConfig.specialServices?.dawn?.scheduleEn || ''}
+                                                placeholder="e.g., 1st & 2nd Saturday 6:00 AM"
+                                                onChange={(e) => setSiteConfig({
+                                                    ...siteConfig,
+                                                    specialServices: {
+                                                        ...siteConfig.specialServices,
+                                                        dawn: { ...(siteConfig.specialServices?.dawn || {}), scheduleEn: e.target.value }
                                                     }
                                                 })}
                                             />
@@ -3680,40 +3696,77 @@ const Admin = () => {
                                     <div className="space-y-4">
                                         {(siteConfig.otherMeetings || churchData.other_meetings).map((meeting, index) => (
                                             <div key={index} className="flex gap-2 items-start">
-                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-grow">
-                                                    <input
-                                                        type="text"
-                                                        placeholder="모임 명칭"
-                                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none font-medium"
-                                                        value={meeting.name}
-                                                        onChange={(e) => {
-                                                            const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
-                                                            newMeetings[index] = { ...meeting, name: e.target.value };
-                                                            setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
-                                                        }}
-                                                    />
-                                                    <input
-                                                        type="text"
-                                                        placeholder="시간"
-                                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none font-medium"
-                                                        value={meeting.time}
-                                                        onChange={(e) => {
-                                                            const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
-                                                            newMeetings[index] = { ...meeting, time: e.target.value };
-                                                            setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
-                                                        }}
-                                                    />
-                                                    <input
-                                                        type="text"
-                                                        placeholder="장소"
-                                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none font-medium"
-                                                        value={meeting.location}
-                                                        onChange={(e) => {
-                                                            const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
-                                                            newMeetings[index] = { ...meeting, location: e.target.value };
-                                                            setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
-                                                        }}
-                                                    />
+                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 flex-grow">
+                                                    <div className="space-y-2">
+                                                        <label className="text-[10px] font-bold text-gray-400 ml-1 uppercase">모임 명칭 (Korean)</label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="모임 명칭"
+                                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none font-medium"
+                                                            value={meeting.name}
+                                                            onChange={(e) => {
+                                                                const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
+                                                                newMeetings[index] = { ...meeting, name: e.target.value };
+                                                                setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-[10px] font-bold text-blue-500 ml-1 uppercase tracking-wider">English Name</label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="English Name"
+                                                            className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-xl outline-none font-medium"
+                                                            value={meeting.nameEn || ''}
+                                                            onChange={(e) => {
+                                                                const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
+                                                                newMeetings[index] = { ...meeting, nameEn: e.target.value };
+                                                                setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-[10px] font-bold text-gray-400 ml-1 uppercase">시간 (Time)</label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="시간"
+                                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none font-medium"
+                                                            value={meeting.time}
+                                                            onChange={(e) => {
+                                                                const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
+                                                                newMeetings[index] = { ...meeting, time: e.target.value };
+                                                                setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-[10px] font-bold text-gray-400 ml-1 uppercase">장소 (Korean)</label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="장소"
+                                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none font-medium"
+                                                            value={meeting.location}
+                                                            onChange={(e) => {
+                                                                const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
+                                                                newMeetings[index] = { ...meeting, location: e.target.value };
+                                                                setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-[10px] font-bold text-blue-500 ml-1 uppercase tracking-wider">English Location</label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="English Location"
+                                                            className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-xl outline-none font-medium"
+                                                            value={meeting.locationEn || ''}
+                                                            onChange={(e) => {
+                                                                const newMeetings = [...(siteConfig.otherMeetings || churchData.other_meetings)];
+                                                                newMeetings[index] = { ...meeting, locationEn: e.target.value };
+                                                                setSiteConfig({ ...siteConfig, otherMeetings: newMeetings });
+                                                            }}
+                                                        />
+                                                    </div>
                                                 </div>
                                                 <button
                                                     type="button"

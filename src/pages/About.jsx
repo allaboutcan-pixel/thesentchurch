@@ -594,7 +594,11 @@ const About = () => {
                                     <div className="flex justify-between items-center border-b border-gray-50 pb-3">
                                         <span className="text-gray-500 text-sm font-medium">{t('game_schedule', { defaultValue: 'Schedule' })}</span>
                                         {/* Use t() for schedule text if it matches known constant. otherwise display as is */}
-                                        <span className="text-primary font-bold text-right">{t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim())}</span>
+                                        <span className="text-primary font-bold text-right">
+                                            {i18n.language === 'en' && (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
+                                                ? (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
+                                                : t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim())}
+                                        </span>
                                     </div>
                                     <div className="bg-gray-50 p-4 rounded-xl">
                                         <span className="block text-gray-400 text-xs mb-1">Zoom Link / ID</span>
@@ -652,8 +656,12 @@ const About = () => {
                                     {otherMeetings.map((meeting, idx) => (
                                         <div key={idx} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-white hover:shadow-sm transition-all border border-transparent hover:border-gray-100">
                                             <div className="mb-1 sm:mb-0">
-                                                <h4 className="font-bold text-gray-800">{t(meeting.name?.trim())}</h4>
-                                                <p className="text-xs text-accent font-medium">{t(meeting.location?.trim())}</p>
+                                                <h4 className="font-bold text-gray-800">
+                                                    {i18n.language === 'en' && meeting.nameEn ? meeting.nameEn : t(meeting.name?.trim())}
+                                                </h4>
+                                                <p className="text-xs text-accent font-medium">
+                                                    {i18n.language === 'en' && meeting.locationEn ? meeting.locationEn : t(meeting.location?.trim())}
+                                                </p>
                                             </div>
                                             <div className="flex items-center gap-2">
                                                 <span className="px-3 py-1 bg-white text-primary text-sm font-bold rounded-lg border border-gray-100 shadow-sm min-w-[80px] text-center">

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Users, Globe, Heart, BookOpen, UserPlus } from 'lucide-react';
+import { useSiteConfig } from '../hooks/useSiteConfig';
 import clsx from 'clsx';
 
 const NavItem = ({ to, active, icon, label }) => (
@@ -20,7 +21,8 @@ const NavItem = ({ to, active, icon, label }) => (
 );
 
 const MinistryNav = ({ active, category = 'education' }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const { config } = useSiteConfig();
 
     const educationItems = [
         { id: 'nextgen', to: '/ministry', icon: <Users size={18} /> },
@@ -45,7 +47,11 @@ const MinistryNav = ({ active, category = 'education' }) => {
                         to={item.to}
                         active={active === item.id}
                         icon={item.icon}
-                        label={t(`nav.${item.id}`)}
+                        label={
+                            (i18n.language === 'en' && item.id === 'prayer' && config?.prayerTitleEn)
+                                ? config.prayerTitleEn
+                                : t(`nav.${item.id}`)
+                        }
                     />
                 ))}
             </div>

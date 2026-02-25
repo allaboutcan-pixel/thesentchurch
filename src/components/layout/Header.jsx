@@ -99,7 +99,9 @@ const Header = () => {
                                                 to={sub.path}
                                                 className="block px-5 py-3 text-sm text-gray-600 hover:bg-primary/5 hover:text-primary transition-colors border-b border-gray-50 last:border-0"
                                             >
-                                                {t(`nav.${sub.id || sub.path.split('/').pop()}`)}
+                                                {(i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn)
+                                                    ? config.prayerTitleEn
+                                                    : t(`nav.${sub.id || sub.path.split('/').pop()}`)}
                                             </Link>
                                         ))}
                                     </div>
@@ -173,7 +175,11 @@ const Header = () => {
                                             if (item.path === '/') handleHomeClick(e);
                                         }}
                                     >
-                                        <span className="text-sm">{t(`nav.${item.id}`)}</span>
+                                        <span className="text-sm">
+                                            {(i18n.language === 'en' && (item.id === 'prayer' || item.path === '/ministry/prayer') && config?.prayerTitleEn)
+                                                ? config.prayerTitleEn
+                                                : t(`nav.${item.id}`)}
+                                        </span>
                                     </Link>
 
                                     {item.subItems && (
@@ -201,7 +207,9 @@ const Header = () => {
                                                     className="block px-10 py-3 text-sm text-gray-500 hover:text-primary"
                                                     onClick={() => setIsOpen(false)}
                                                 >
-                                                    • {t(`nav.${sub.id || sub.path.split('/').pop()}`)}
+                                                    • {(i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn)
+                                                        ? config.prayerTitleEn
+                                                        : t(`nav.${sub.id || sub.path.split('/').pop()}`)}
                                                 </Link>
                                             ))}
                                         </div>
