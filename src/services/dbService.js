@@ -19,7 +19,6 @@ import { db, storage } from "../lib/firebase";
 // Collection Names
 const SERMONS = "sermons";
 const BULLETINS = "bulletins";
-const NOTICES = "notices";
 const COLUMNS = "columns";
 const DAILY_WORD = "daily_word";
 const SITE_CONFIG = "siteConfig";
@@ -261,27 +260,19 @@ export const dbService = {
     // Specific Fetchers for convenience
     getSermons: () => dbService.fetchItems(SERMONS),
     getBulletins: () => dbService.fetchItems(BULLETINS),
-    getNotices: (count) => dbService.fetchItems(NOTICES, count),
     getGallery: () => dbService.fetchItems(DB_COLLECTIONS.GALLERY),
-    getColumns: () => dbService.fetchItems(COLUMNS),
 
     addSermon: (data) => dbService.addItem(SERMONS, data),
     addBulletin: (data) => dbService.addItem(BULLETINS, data),
-    addNotice: (data) => dbService.addItem(NOTICES, data),
     addGalleryItem: (data) => dbService.addItem(DB_COLLECTIONS.GALLERY, data),
-    addColumn: (data) => dbService.addItem(COLUMNS, data),
 
     updateSermon: (id, data) => dbService.updateItem(SERMONS, id, data),
     updateBulletin: (id, data) => dbService.updateItem(BULLETINS, id, data),
-    updateNotice: (id, data) => dbService.updateItem(NOTICES, id, data),
     updateGalleryItem: (id, data) => dbService.updateItem(DB_COLLECTIONS.GALLERY, id, data),
-    updateColumn: (id, data) => dbService.updateItem(COLUMNS, id, data),
 
     deleteSermon: (id) => dbService.deleteItem(SERMONS, id),
     deleteBulletin: (id) => dbService.deleteItem(BULLETINS, id),
-    deleteNotice: (id) => dbService.deleteItem(NOTICES, id),
     deleteGalleryItem: (id) => dbService.deleteItem(DB_COLLECTIONS.GALLERY, id),
-    deleteColumn: (id) => dbService.deleteItem(COLUMNS, id),
 
     // Calendar
     getCalendarEvents: async () => {
@@ -474,6 +465,5 @@ export const dbService = {
     },
 
     resetSermons: (data) => dbService.resetCollection(SERMONS, data),
-    resetBulletins: (data) => dbService.resetCollection(BULLETINS, data),
-    resetNotices: (data) => dbService.resetCollection(NOTICES, data)
+    resetBulletins: (data) => dbService.resetCollection(BULLETINS, data)
 };

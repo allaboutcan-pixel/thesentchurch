@@ -4,7 +4,6 @@ import { Play, ArrowRight, Youtube } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import churchData from '../data/church_data.json';
 import sermonsInitialData from '../data/sermons.json';
-import noticesInitialData from '../data/notices.json';
 import { dbService } from '../services/dbService';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import { isVideo, getYoutubeId, getDriveId } from '../utils/mediaUtils';
@@ -20,7 +19,6 @@ const DEFAULT_HERO_IMAGE = ""; // Set to empty to avoid accidental flashes
 const Home = () => {
     // ... items ...
     const [latestSermon, setLatestSermon] = useState(sermonsInitialData[0] || {});
-    const [recentNotices, setRecentNotices] = useState(noticesInitialData.slice(0, 3));
     const [latestDailyWord, setLatestDailyWord] = useState(null);
     const [heroImage, setHeroImage] = useState("");
     const [isVideoLoaded, setIsVideoLoaded] = useState(false);
@@ -48,9 +46,8 @@ const Home = () => {
         const fetchLiveContent = async () => {
             try {
                 // Fetch in parallel for better performance
-                const [liveSermons, liveNotices, liveDailyWords] = await Promise.all([
+                const [liveSermons, liveDailyWords] = await Promise.all([
                     dbService.getSermons(),
-                    dbService.getNotices(3),
                     dbService.fetchItems('daily_word', 7) // Enough context to find today's word
                 ]);
 
@@ -67,7 +64,6 @@ const Home = () => {
                     });
                     setLatestSermon(cleanedSermons[0]);
                 }
-                if (liveNotices.length > 0) setRecentNotices(liveNotices);
 
                 if (liveDailyWords && liveDailyWords.length > 0) {
                     // Use local date to match user's device time (fixes UTC/KST issues)
