@@ -1172,11 +1172,18 @@ const Admin = () => {
                     savedItem = await Promise.race([dbService.addDailyWord(dailyWordData), timeout]);
                     setDailyWords([savedItem, ...dailyWords]);
                 }
-            } else if (activeTab === 'site' || activeTab === 'intro' || activeTab === 'prayer' || activeTab === 'education_ministry') {
+            } else if (activeTab === 'site' || activeTab === 'intro' || activeTab === 'prayer' || activeTab === 'education_ministry' || activeTab === 'location' || activeTab === 'worship') {
                 let currentConfig = { ...siteConfig };
 
-                // Processing function that handles both files and URLs
-                const processField = async (fieldName) => {
+                // Process ONLY media fields that might need upload or drive formatting
+                // These are fields that might have newly selected files in bannerFiles
+                const mediaFields = [
+                    'heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner',
+                    'missionBanner', 'prayerBanner', 'teeBanner', 'bibleBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage',
+                    'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image'
+                ];
+
+                for (const fieldName of mediaFields) {
                     const localFile = bannerFiles[fieldName];
                     if (localFile) {
                         try {
@@ -1186,60 +1193,20 @@ const Admin = () => {
                             console.error(`Error uploading banner ${fieldName}:`, err);
                         }
                     } else {
-                        const val = formData[fieldName];
+                        const val = currentConfig[fieldName];
                         if (typeof val === 'string' && val.includes('drive.google.com')) {
-                            // If it's already tagged as a video link or the field allows video, format it correctly
                             if (isVideo(val)) {
                                 currentConfig[fieldName] = dbService.formatDriveVideo(val);
                             } else {
                                 currentConfig[fieldName] = dbService.formatDriveImage(val);
                             }
-                        } else {
-                            currentConfig[fieldName] = val === undefined ? '' : val;
                         }
                     }
-                };
-
-                // Process all banner fields - REMOVED others, only heroImage remains
-                // Process ONLY media fields that might need upload or drive formatting
-                const mediaFields = [
-                    'heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner',
-                    'missionBanner', 'prayerBanner', 'teeBanner', 'bibleBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage',
-                    'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image'
-                ];
-                for (const field of mediaFields) {
-                    await processField(field);
-                }
-
-                // Directly copy all other setting fields
-                const otherFields = [
-                    'heroTitle', 'heroSubtitle', 'heroTitleFont', 'heroSubtitleFont', 'heroTitleColor', 'heroSubtitleColor', 'heroTitleItalic', 'heroSubtitleItalic', 'heroTitleSize', 'heroSubtitleSize', 'heroHeight', 'heroOverlayOpacity',
-                    'aboutTitle', 'aboutSubtitle', 'aboutTitleFont', 'aboutSubtitleFont', 'aboutTitleColor', 'aboutSubtitleColor', 'aboutTitleItalic', 'aboutSubtitleItalic', 'aboutTitleSize', 'aboutSubtitleSize', 'aboutHeight', 'aboutOverlayOpacity',
-                    'newsTitle', 'newsSubtitle', 'newsTitleFont', 'newsSubtitleFont', 'newsTitleColor', 'newsSubtitleColor', 'newsTitleItalic', 'newsSubtitleItalic', 'newsTitleSize', 'newsSubtitleSize', 'newsHeight', 'newsOverlayOpacity',
-                    'ministryTitle', 'ministrySubtitle', 'ministryTitleFont', 'ministrySubtitleFont', 'ministryTitleColor', 'ministrySubtitleColor', 'ministryTitleItalic', 'ministrySubtitleItalic', 'ministryTitleSize', 'ministrySubtitleSize', 'ministryHeight', 'ministryOverlayOpacity',
-                    'resourcesTitle', 'resourcesSubtitle', 'resourcesTitleFont', 'resourcesSubtitleFont', 'resourcesTitleColor', 'resourcesSubtitleColor', 'resourcesTitleItalic', 'resourcesSubtitleItalic', 'resourcesTitleSize', 'resourcesSubtitleSize', 'resourcesHeight', 'resourcesOverlayOpacity',
-                    'missionTitle', 'missionSubtitle', 'missionTitleFont', 'missionSubtitleFont', 'missionTitleColor', 'missionSubtitleColor', 'missionTitleItalic', 'missionSubtitleItalic', 'missionTitleWeight', 'missionSubtitleWeight', 'missionTitleSize', 'missionSubtitleSize', 'missionHeight', 'missionOverlayOpacity', 'missionBannerFit', 'missionBannerPosition',
-                    'prayerCommonTopics', 'prayerPastorTopics', 'prayerChurchTopics', 'prayerChurchTopics2026', 'prayerTopicsTitle', 'prayerTopicsSubtitle', 'prayerCoreValues', 'prayerGoals', 'prayerHours',
-                    'teeTitle', 'teeSubtitle', 'teeTitleFont', 'teeSubtitleFont', 'teeTitleColor', 'teeSubtitleColor', 'teeTitleItalic', 'teeSubtitleItalic', 'teeTitleWeight', 'teeSubtitleWeight', 'teeTitleSize', 'teeSubtitleSize', 'teeHeight', 'teeOverlayOpacity', 'teeBannerFit', 'teeBannerPosition',
-                    'bibleTitle', 'bibleSubtitle', 'bibleTitleFont', 'bibleSubtitleFont', 'bibleTitleColor', 'bibleSubtitleColor', 'bibleTitleItalic', 'bibleSubtitleItalic', 'bibleTitleWeight', 'bibleSubtitleWeight', 'bibleTitleSize', 'bibleSubtitleSize', 'bibleHeight', 'bibleOverlayOpacity', 'bibleBannerFit', 'bibleBannerPosition',
-                    'teamTitle', 'teamSubtitle', 'teamTitleFont', 'teamSubtitleFont', 'teamTitleColor', 'teamSubtitleColor', 'teamTitleItalic', 'teamSubtitleItalic', 'teamTitleWeight', 'teamSubtitleWeight', 'teamTitleSize', 'teamSubtitleSize', 'teamHeight', 'teamOverlayOpacity', 'teamBannerFit', 'teamBannerPosition',
-                    'heroBannerFit', 'aboutBannerFit', 'newsBannerFit', 'ministryBannerFit', 'resourcesBannerFit', 'bibleBannerFit',
-                    'heroBannerPosition', 'aboutBannerPosition', 'newsBannerPosition', 'ministryBannerPosition', 'resourcesBannerPosition', 'prayerBannerPosition',
-                    'emailjsServiceId', 'emailjsTemplateId', 'emailjsPublicKey', 'emailjsReceivers',
-                    'heroTitleEn', 'heroSubtitleEn', 'aboutTitleEn', 'aboutSubtitleEn', 'newsTitleEn', 'newsSubtitleEn',
-                    'ministryTitleEn', 'ministrySubtitleEn', 'resourcesTitleEn', 'resourcesSubtitleEn',
-                    'missionTitleEn', 'missionSubtitleEn', 'prayerTitleEn', 'prayerSubtitleEn',
-                    'teeTitleEn', 'teeSubtitleEn', 'bibleTitleEn', 'bibleSubtitleEn', 'teamTitleEn', 'teamSubtitleEn',
-                    'prayerTopicsTitleEn', 'prayerTopicsSubtitleEn', 'prayerCoreValuesEn', 'prayerGoalsEn', 'prayerHoursEn',
-                    'prayerCommonTopicsEn', 'prayerPastorTopicsEn', 'prayerChurchTopicsEn', 'prayerChurchTopics2026En'
-                ];
-                for (const field of otherFields) {
-                    currentConfig[field] = formData[field];
                 }
 
                 // Process ministryItems (TSC/TSY)
-                if (formData.ministryItems && formData.ministryItems.length > 0) {
-                    const updatedMinistryItems = [...formData.ministryItems];
+                if (currentConfig.ministryItems && currentConfig.ministryItems.length > 0) {
+                    const updatedMinistryItems = [...currentConfig.ministryItems];
                     for (let i = 0; i < updatedMinistryItems.length; i++) {
                         const fieldName = `ministry-${i}`;
                         const localFile = bannerFiles[fieldName];
@@ -1258,8 +1225,8 @@ const Admin = () => {
                 }
 
                 // Process teamMinistryItems
-                if (formData.teamMinistryItems && formData.teamMinistryItems.length > 0) {
-                    const updatedTeamItems = [...formData.teamMinistryItems];
+                if (currentConfig.teamMinistryItems && currentConfig.teamMinistryItems.length > 0) {
+                    const updatedTeamItems = [...currentConfig.teamMinistryItems];
                     for (let i = 0; i < updatedTeamItems.length; i++) {
                         const fieldName = `team-${i}`;
                         const localFile = bannerFiles[fieldName];
@@ -1277,19 +1244,12 @@ const Admin = () => {
                     currentConfig.teamMinistryItems = updatedTeamItems;
                 }
 
-                // Removed redundant redundant assignments - all fields are now in mediaFields or otherFields
-
                 await Promise.race([dbService.updateSiteConfig(currentConfig), timeout]);
                 setSiteConfig({ ...currentConfig });
                 setBannerFiles({}); // Clear selected files after successful save
                 setPastorFile(null); // Clear pastor file after successful save
-                alert('모든 배너 및 사이트 설정이 저장되었습니다!');
+                alert('✅ 모든 설정이 저장되었습니다!');
                 setShowAddForm(false);
-                setIsLoading(false);
-                return;
-            } else if (activeTab === 'worship' || activeTab === 'location') {
-                await Promise.race([dbService.updateSiteConfig(siteConfig), timeout]);
-                alert('✅ 정보가 성공적으로 저장되었습니다!');
                 setIsLoading(false);
                 return;
             }
@@ -1476,7 +1436,10 @@ const Admin = () => {
                             fieldName={imageField}
                             bannerFiles={bannerFiles}
                             setBannerFiles={setBannerFiles}
-                            onChange={(val) => setFormData(prev => ({ ...prev, [imageField]: val }))}
+                            onChange={(val) => {
+                                setFormData(prev => ({ ...prev, [imageField]: val }));
+                                setSiteConfig(prev => ({ ...prev, [imageField]: val }));
+                            }}
                         />
                         {pageKey === 'prayer' && (
                             <div className="max-w-2xl">
@@ -1486,7 +1449,10 @@ const Admin = () => {
                                     fieldName="prayerIntroImage"
                                     bannerFiles={bannerFiles}
                                     setBannerFiles={setBannerFiles}
-                                    onChange={(val) => setFormData(prev => ({ ...prev, prayerIntroImage: val }))}
+                                    onChange={(val) => {
+                                        setFormData(prev => ({ ...prev, prayerIntroImage: val }));
+                                        setSiteConfig(prev => ({ ...prev, prayerIntroImage: val }));
+                                    }}
                                     aspectRatio="aspect-[4/3]"
                                 />
                             </div>
@@ -1502,7 +1468,11 @@ const Admin = () => {
                                 max="90"
                                 className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
                                 value={formData[`${pageKey}OverlayOpacity`]}
-                                onChange={(e) => setFormData({ ...formData, [`${pageKey}OverlayOpacity`]: e.target.value })}
+                                onChange={(e) => {
+                                    const val = e.target.value;
+                                    setFormData(prev => ({ ...prev, [`${pageKey}OverlayOpacity`]: val }));
+                                    setSiteConfig(prev => ({ ...prev, [`${pageKey}OverlayOpacity`]: val }));
+                                }}
                             />
                         </div>
                         <div className="space-y-2">
@@ -1512,7 +1482,10 @@ const Admin = () => {
                                     <button
                                         key={h}
                                         type="button"
-                                        onClick={() => setFormData({ ...formData, [`${pageKey}Height`]: h })}
+                                        onClick={() => {
+                                            setFormData(prev => ({ ...prev, [`${pageKey}Height`]: h }));
+                                            setSiteConfig(prev => ({ ...prev, [`${pageKey}Height`]: h }));
+                                        }}
                                         className={clsx(
                                             "py-2 rounded-xl text-xs font-black transition-all border-2",
                                             formData[`${pageKey}Height`] === h
@@ -1536,7 +1509,10 @@ const Admin = () => {
                                     <button
                                         key={fit.id}
                                         type="button"
-                                        onClick={() => setFormData({ ...formData, [`${pageKey}BannerFit`]: fit.id })}
+                                        onClick={() => {
+                                            setFormData(prev => ({ ...prev, [`${pageKey}BannerFit`]: fit.id }));
+                                            setSiteConfig(prev => ({ ...prev, [`${pageKey}BannerFit`]: fit.id }));
+                                        }}
                                         className={clsx(
                                             "py-2 rounded-xl text-xs font-black transition-all border-2",
                                             formData[`${pageKey}BannerFit`] === fit.id
@@ -1559,7 +1535,11 @@ const Admin = () => {
                                     max="100"
                                     className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
                                     value={formData[`${pageKey}BannerPosition`]}
-                                    onChange={(e) => setFormData({ ...formData, [`${pageKey}BannerPosition`]: e.target.value })}
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        setFormData(prev => ({ ...prev, [`${pageKey}BannerPosition`]: val }));
+                                        setSiteConfig(prev => ({ ...prev, [`${pageKey}BannerPosition`]: val }));
+                                    }}
                                 />
                                 <div className="flex justify-between text-[10px] text-gray-400 mt-1 px-1">
                                     <span>Top (0%)</span>
@@ -1588,7 +1568,11 @@ const Admin = () => {
                                     type="text"
                                     className="w-full p-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-lg"
                                     value={formData[`${pageKey}Title`]}
-                                    onChange={(e) => setFormData({ ...formData, [`${pageKey}Title`]: e.target.value })}
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        setFormData(prev => ({ ...prev, [`${pageKey}Title`]: val }));
+                                        setSiteConfig(prev => ({ ...prev, [`${pageKey}Title`]: val }));
+                                    }}
                                 />
                             </div>
                             <div>
@@ -1598,7 +1582,11 @@ const Admin = () => {
                                     className="w-full p-3 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-lg"
                                     placeholder="Enter English Title"
                                     value={formData[`${pageKey}TitleEn`]}
-                                    onChange={(e) => setFormData({ ...formData, [`${pageKey}TitleEn`]: e.target.value })}
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        setFormData(prev => ({ ...prev, [`${pageKey}TitleEn`]: val }));
+                                        setSiteConfig(prev => ({ ...prev, [`${pageKey}TitleEn`]: val }));
+                                    }}
                                 />
                             </div>
                             <div>
@@ -1606,7 +1594,11 @@ const Admin = () => {
                                 <textarea
                                     className="w-full p-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium h-20 resize-none"
                                     value={formData[`${pageKey}Subtitle`]}
-                                    onChange={(e) => setFormData({ ...formData, [`${pageKey}Subtitle`]: e.target.value })}
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        setFormData(prev => ({ ...prev, [`${pageKey}Subtitle`]: val }));
+                                        setSiteConfig(prev => ({ ...prev, [`${pageKey}Subtitle`]: val }));
+                                    }}
                                 />
                             </div>
                             <div>
@@ -1615,7 +1607,11 @@ const Admin = () => {
                                     className="w-full p-3 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium h-20 resize-none"
                                     placeholder="Enter English Subtitle"
                                     value={formData[`${pageKey}SubtitleEn`]}
-                                    onChange={(e) => setFormData({ ...formData, [`${pageKey}SubtitleEn`]: e.target.value })}
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        setFormData(prev => ({ ...prev, [`${pageKey}SubtitleEn`]: val }));
+                                        setSiteConfig(prev => ({ ...prev, [`${pageKey}SubtitleEn`]: val }));
+                                    }}
                                 />
                             </div>
 
@@ -1638,7 +1634,11 @@ const Admin = () => {
                                     <select
                                         className="w-full p-3 bg-gray-50 border border-gray-100 rounded-2xl outline-none text-sm appearance-none cursor-pointer"
                                         value={formData[`${pageKey}SubtitleFont`]}
-                                        onChange={(e) => setFormData({ ...formData, [`${pageKey}SubtitleFont`]: e.target.value })}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            setFormData(prev => ({ ...prev, [`${pageKey}SubtitleFont`]: val }));
+                                            setSiteConfig(prev => ({ ...prev, [`${pageKey}SubtitleFont`]: val }));
+                                        }}
                                     >
                                         <option value="font-sans">Basic Sans (고딕체)</option>
                                         <option value="font-nanum-serif">Serif (명조체)</option>
@@ -1721,7 +1721,11 @@ const Admin = () => {
                                         max="60"
                                         className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
                                         value={formData[`${pageKey}SubtitleSize`]}
-                                        onChange={(e) => setFormData({ ...formData, [`${pageKey}SubtitleSize`]: parseInt(e.target.value) })}
+                                        onChange={(e) => {
+                                            const val = parseInt(e.target.value);
+                                            setFormData(prev => ({ ...prev, [`${pageKey}SubtitleSize`]: val }));
+                                            setSiteConfig(prev => ({ ...prev, [`${pageKey}SubtitleSize`]: val }));
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -1746,7 +1750,11 @@ const Admin = () => {
                                             type="color"
                                             className="w-8 h-8 rounded-full cursor-pointer border-none bg-transparent p-0"
                                             value={formData[`${pageKey}SubtitleColor`]}
-                                            onChange={(e) => setFormData({ ...formData, [`${pageKey}SubtitleColor`]: e.target.value })}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, [`${pageKey}SubtitleColor`]: val }));
+                                                setSiteConfig(prev => ({ ...prev, [`${pageKey}SubtitleColor`]: val }));
+                                            }}
                                         />
                                         <span className="text-xs font-mono text-gray-500 uppercase">{formData[`${pageKey}SubtitleColor`]}</span>
                                     </div>
@@ -4072,25 +4080,11 @@ const Admin = () => {
 
                             <div className="pt-4 flex justify-end">
                                 <button
-                                    onClick={async () => {
-                                        const btn = document.getElementById('save-pastor-btn');
-                                        btn.innerText = '저장 중...';
-                                        try {
-                                            const currentConfig = { ...siteConfig };
-                                            currentConfig['ministryItems'] = formData.ministryItems;
-                                            currentConfig['teamMinistryItems'] = formData.teamMinistryItems;
-
-                                            await dbService.updateSiteConfig(currentConfig);
-                                            alert('✅ 저장되었습니다.');
-                                        } catch (e) {
-                                            alert('저장 실패: ' + e.message);
-                                        }
-                                        btn.innerText = '설정 저장하기';
-                                    }}
+                                    onClick={handleFormSubmit}
                                     id="save-pastor-btn"
                                     className="px-8 py-3 bg-primary text-white rounded-xl font-bold shadow-lg hover:bg-primary-dark transition-all"
                                 >
-                                    설정 저장하기
+                                    {isLoading ? '저장 중...' : '설정 저장하기'}
                                 </button>
                             </div>
                         </div>
