@@ -606,6 +606,10 @@ const Admin = () => {
                     ministryOverlayOpacity: fbConfig.ministryOverlayOpacity || 40,
                     ministryBannerFit: fbConfig.ministryBannerFit || 'cover',
                     ministryBannerPosition: fbConfig.ministryBannerPosition || 50,
+                    sundaySchoolTitle: fbConfig.sundaySchoolTitle || '',
+                    sundaySchoolTitleEn: fbConfig.sundaySchoolTitleEn || '',
+                    sundaySchoolSubtitle: fbConfig.sundaySchoolSubtitle || '',
+                    sundaySchoolSubtitleEn: fbConfig.sundaySchoolSubtitleEn || '',
 
                     resourcesBanner: fbConfig.resourcesBanner || '',
                     resourcesTitle: fbConfig.resourcesTitle || '',
@@ -735,6 +739,7 @@ const Admin = () => {
                     prayerCoreValues: fbConfig.prayerCoreValues || '',
                     prayerGoals: fbConfig.prayerGoals || '',
                     prayerHours: fbConfig.prayerHours || '',
+                    prayerCommonTopicsEn: fbConfig.prayerCommonTopicsEn || '',
 
                     // EmailJS Config
                     emailjsServiceId: fbConfig.emailjsServiceId || '',
@@ -2908,7 +2913,11 @@ const Admin = () => {
                                                     className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-96 resize-none leading-relaxed"
                                                     placeholder="예: 1. 나라와 민족을 위해...&#13;&#10;2. 한국교회를 위해..."
                                                     value={formData.prayerCommonTopics}
-                                                    onChange={(e) => setFormData({ ...formData, prayerCommonTopics: e.target.value })}
+                                                    onChange={(e) => {
+                                                        const val = e.target.value;
+                                                        setFormData(prev => ({ ...prev, prayerCommonTopics: val }));
+                                                        setSiteConfig(prev => ({ ...prev, prayerCommonTopics: val }));
+                                                    }}
                                                 />
                                             </div>
                                             <div className="space-y-2">
@@ -2917,7 +2926,11 @@ const Admin = () => {
                                                     className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-96 resize-none leading-relaxed"
                                                     placeholder="Enter English common prayer topics"
                                                     value={formData.prayerCommonTopicsEn}
-                                                    onChange={(e) => setFormData({ ...formData, prayerCommonTopicsEn: e.target.value })}
+                                                    onChange={(e) => {
+                                                        const val = e.target.value;
+                                                        setFormData(prev => ({ ...prev, prayerCommonTopicsEn: val }));
+                                                        setSiteConfig(prev => ({ ...prev, prayerCommonTopicsEn: val }));
+                                                    }}
                                                 />
                                                 <p className="text-xs text-gray-400 ml-1">
                                                     * 여러 줄로 입력하면 자동으로 목록으로 변환되어 표시됩니다.
@@ -3019,6 +3032,75 @@ const Admin = () => {
                                     </div>
                                 </div>
 
+                                {/* Sunday School Intro Settings */}
+                                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                        <div className="p-2 bg-blue-50 rounded-xl text-blue-600"><Type size={20} /></div>
+                                        주일학교/청소년부 소개글 (Sunday School Intro)
+                                    </h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="space-y-4">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">주일학교 메인 타이틀 (Korean)</label>
+                                                <input
+                                                    type="text"
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium"
+                                                    value={formData.sundaySchoolTitle || ''}
+                                                    onChange={(e) => {
+                                                        const val = e.target.value;
+                                                        setFormData(prev => ({ ...prev, sundaySchoolTitle: val }));
+                                                        setSiteConfig(prev => ({ ...prev, sundaySchoolTitle: val }));
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">Sunday School Main Title (English)</label>
+                                                <input
+                                                    type="text"
+                                                    className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium text-blue-600"
+                                                    placeholder="e.g., Our Sunday School..."
+                                                    value={formData.sundaySchoolTitleEn || ''}
+                                                    onChange={(e) => {
+                                                        const val = e.target.value;
+                                                        setFormData(prev => ({ ...prev, sundaySchoolTitleEn: val }));
+                                                        setSiteConfig(prev => ({ ...prev, sundaySchoolTitleEn: val }));
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="space-y-4">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">주일학교 상세 설명 (Korean)</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium h-32 resize-none"
+                                                    value={formData.sundaySchoolSubtitle || ''}
+                                                    onChange={(e) => {
+                                                        const val = e.target.value;
+                                                        setFormData(prev => ({ ...prev, sundaySchoolSubtitle: val }));
+                                                        setSiteConfig(prev => ({ ...prev, sundaySchoolSubtitle: val }));
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">Sunday School Subtitle (English)</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium h-32 resize-none text-blue-600"
+                                                    placeholder="Enter English description..."
+                                                    value={formData.sundaySchoolSubtitleEn || ''}
+                                                    onChange={(e) => {
+                                                        const val = e.target.value;
+                                                        setFormData(prev => ({ ...prev, sundaySchoolSubtitleEn: val }));
+                                                        setSiteConfig(prev => ({ ...prev, sundaySchoolSubtitleEn: val }));
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p className="text-xs text-gray-400 ml-1 italic">
+                                        * 교육(TSC/TSY) 페이지 상단에 표시되는 공통 소개 문구입니다.
+                                    </p>
+                                </div>
+
                                 {/* Ministry List Management */}
                                 <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
                                     <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
@@ -3057,9 +3139,11 @@ const Admin = () => {
                                                                 className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
                                                                 value={item.name}
                                                                 onChange={(e) => {
+                                                                    const val = e.target.value;
                                                                     const newItems = [...formData.ministryItems];
-                                                                    newItems[idx] = { ...newItems[idx], name: e.target.value };
+                                                                    newItems[idx] = { ...newItems[idx], name: val };
                                                                     setFormData({ ...formData, ministryItems: newItems });
+                                                                    setSiteConfig({ ...siteConfig, ministryItems: newItems });
                                                                 }}
                                                                 placeholder="예: The Sent Children"
                                                             />
@@ -3071,9 +3155,11 @@ const Admin = () => {
                                                                 className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
                                                                 value={item.nameEn || ''}
                                                                 onChange={(e) => {
+                                                                    const val = e.target.value;
                                                                     const newItems = [...formData.ministryItems];
-                                                                    newItems[idx] = { ...newItems[idx], nameEn: e.target.value };
+                                                                    newItems[idx] = { ...newItems[idx], nameEn: val };
                                                                     setFormData({ ...formData, ministryItems: newItems });
+                                                                    setSiteConfig({ ...siteConfig, ministryItems: newItems });
                                                                 }}
                                                                 placeholder="e.g., The Sent Children"
                                                             />
@@ -3087,9 +3173,11 @@ const Admin = () => {
                                                                 className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium font-sans"
                                                                 value={item.id}
                                                                 onChange={(e) => {
+                                                                    const val = e.target.value;
                                                                     const newItems = [...formData.ministryItems];
-                                                                    newItems[idx] = { ...newItems[idx], id: e.target.value };
+                                                                    newItems[idx] = { ...newItems[idx], id: val };
                                                                     setFormData({ ...formData, ministryItems: newItems });
+                                                                    setSiteConfig({ ...siteConfig, ministryItems: newItems });
                                                                 }}
                                                                 placeholder="예: tsc"
                                                             />
@@ -3105,9 +3193,11 @@ const Admin = () => {
                                                             className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm"
                                                             value={item.target || ''}
                                                             onChange={(e) => {
+                                                                const val = e.target.value;
                                                                 const newItems = [...formData.ministryItems];
-                                                                newItems[idx] = { ...newItems[idx], target: e.target.value };
+                                                                newItems[idx] = { ...newItems[idx], target: val };
                                                                 setFormData({ ...formData, ministryItems: newItems });
+                                                                setSiteConfig({ ...siteConfig, ministryItems: newItems });
                                                             }}
                                                             placeholder="예: 영유아 및 초등부"
                                                         />
@@ -3119,9 +3209,11 @@ const Admin = () => {
                                                             className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm"
                                                             value={item.targetEn || ''}
                                                             onChange={(e) => {
+                                                                const val = e.target.value;
                                                                 const newItems = [...formData.ministryItems];
-                                                                newItems[idx] = { ...newItems[idx], targetEn: e.target.value };
+                                                                newItems[idx] = { ...newItems[idx], targetEn: val };
                                                                 setFormData({ ...formData, ministryItems: newItems });
+                                                                setSiteConfig({ ...siteConfig, ministryItems: newItems });
                                                             }}
                                                             placeholder="e.g., Infants, toddlers, and elementary school students"
                                                         />
@@ -3135,9 +3227,11 @@ const Admin = () => {
                                                             className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[80px] resize-none"
                                                             value={item.description || ''}
                                                             onChange={(e) => {
+                                                                const val = e.target.value;
                                                                 const newItems = [...formData.ministryItems];
-                                                                newItems[idx] = { ...newItems[idx], description: e.target.value };
+                                                                newItems[idx] = { ...newItems[idx], description: val };
                                                                 setFormData({ ...formData, ministryItems: newItems });
+                                                                setSiteConfig({ ...siteConfig, ministryItems: newItems });
                                                             }}
                                                             placeholder="사역에 대한 간단한 설명을 입력하세요."
                                                         />
@@ -3148,27 +3242,48 @@ const Admin = () => {
                                                             className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[80px] resize-none"
                                                             value={item.descriptionEn || ''}
                                                             onChange={(e) => {
+                                                                const val = e.target.value;
                                                                 const newItems = [...formData.ministryItems];
-                                                                newItems[idx] = { ...newItems[idx], descriptionEn: e.target.value };
+                                                                newItems[idx] = { ...newItems[idx], descriptionEn: val };
                                                                 setFormData({ ...formData, ministryItems: newItems });
+                                                                setSiteConfig({ ...siteConfig, ministryItems: newItems });
                                                             }}
                                                             placeholder="Enter a short English description."
                                                         />
                                                     </div>
                                                 </div>
 
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">상세 내용 (Detail Content)</label>
-                                                    <textarea
-                                                        className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[120px]"
-                                                        placeholder="상세 페이지에 표시될 내용입니다."
-                                                        value={item.detail || ''}
-                                                        onChange={(e) => {
-                                                            const newItems = [...formData.ministryItems];
-                                                            newItems[idx] = { ...newItems[idx], detail: e.target.value };
-                                                            setFormData({ ...formData, ministryItems: newItems });
-                                                        }}
-                                                    />
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">상세 내용 (Korean Detail Content)</label>
+                                                        <textarea
+                                                            className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[120px]"
+                                                            placeholder="상세 페이지에 표시될 내용입니다."
+                                                            value={item.detail || ''}
+                                                            onChange={(e) => {
+                                                                const val = e.target.value;
+                                                                const newItems = [...formData.ministryItems];
+                                                                newItems[idx] = { ...newItems[idx], detail: val };
+                                                                setFormData({ ...formData, ministryItems: newItems });
+                                                                setSiteConfig({ ...siteConfig, ministryItems: newItems });
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <label className="text-xs font-bold text-blue-500 uppercase tracking-wider ml-1">English Detail Content</label>
+                                                        <textarea
+                                                            className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[120px]"
+                                                            placeholder="Detailed content for the English page."
+                                                            value={item.detailEn || ''}
+                                                            onChange={(e) => {
+                                                                const val = e.target.value;
+                                                                const newItems = [...formData.ministryItems];
+                                                                newItems[idx] = { ...newItems[idx], detailEn: val };
+                                                                setFormData({ ...formData, ministryItems: newItems });
+                                                                setSiteConfig({ ...siteConfig, ministryItems: newItems });
+                                                            }}
+                                                        />
+                                                    </div>
                                                 </div>
 
                                                 <div className="space-y-2">
@@ -3183,6 +3298,7 @@ const Admin = () => {
                                                             const newItems = [...formData.ministryItems];
                                                             newItems[idx] = { ...newItems[idx], image: val };
                                                             setFormData({ ...formData, ministryItems: newItems });
+                                                            setSiteConfig({ ...siteConfig, ministryItems: newItems });
                                                         }}
                                                         showPreview={true}
                                                         aspectRatio="aspect-video"
@@ -3255,9 +3371,11 @@ const Admin = () => {
                                                                 className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
                                                                 value={team.name}
                                                                 onChange={(e) => {
+                                                                    const val = e.target.value;
                                                                     const newItems = [...formData.teamMinistryItems];
-                                                                    newItems[idx] = { ...newItems[idx], name: e.target.value };
+                                                                    newItems[idx] = { ...newItems[idx], name: val };
                                                                     setFormData({ ...formData, teamMinistryItems: newItems });
+                                                                    setSiteConfig({ ...siteConfig, teamMinistryItems: newItems });
                                                                 }}
                                                                 placeholder="예: 찬양팀"
                                                             />
@@ -3269,9 +3387,11 @@ const Admin = () => {
                                                                 className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-gray-700"
                                                                 value={team.nameEn || ''}
                                                                 onChange={(e) => {
+                                                                    const val = e.target.value;
                                                                     const newItems = [...formData.teamMinistryItems];
-                                                                    newItems[idx] = { ...newItems[idx], nameEn: e.target.value };
+                                                                    newItems[idx] = { ...newItems[idx], nameEn: val };
                                                                     setFormData({ ...formData, teamMinistryItems: newItems });
+                                                                    setSiteConfig({ ...siteConfig, teamMinistryItems: newItems });
                                                                 }}
                                                                 placeholder="e.g., Praise Team"
                                                             />
@@ -3285,9 +3405,11 @@ const Admin = () => {
                                                                 className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium font-sans"
                                                                 value={team.id}
                                                                 onChange={(e) => {
+                                                                    const val = e.target.value;
                                                                     const newItems = [...formData.teamMinistryItems];
-                                                                    newItems[idx] = { ...newItems[idx], id: e.target.value };
+                                                                    newItems[idx] = { ...newItems[idx], id: val };
                                                                     setFormData({ ...formData, teamMinistryItems: newItems });
+                                                                    setSiteConfig({ ...siteConfig, teamMinistryItems: newItems });
                                                                 }}
                                                                 placeholder="예: praise"
                                                             />
@@ -3298,9 +3420,11 @@ const Admin = () => {
                                                                 className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm appearance-none cursor-pointer"
                                                                 value={team.icon || 'HandHeart'}
                                                                 onChange={(e) => {
+                                                                    const val = e.target.value;
                                                                     const newItems = [...formData.teamMinistryItems];
-                                                                    newItems[idx] = { ...newItems[idx], icon: e.target.value };
+                                                                    newItems[idx] = { ...newItems[idx], icon: val };
                                                                     setFormData({ ...formData, teamMinistryItems: newItems });
+                                                                    setSiteConfig({ ...siteConfig, teamMinistryItems: newItems });
                                                                 }}
                                                             >
                                                                 <option value="Users">Users (사람들)</option>
@@ -3323,9 +3447,11 @@ const Admin = () => {
                                                             className="w-full p-4 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[100px] resize-none"
                                                             value={team.description}
                                                             onChange={(e) => {
+                                                                const val = e.target.value;
                                                                 const newItems = [...formData.teamMinistryItems];
-                                                                newItems[idx] = { ...newItems[idx], description: e.target.value };
+                                                                newItems[idx] = { ...newItems[idx], description: val };
                                                                 setFormData({ ...formData, teamMinistryItems: newItems });
+                                                                setSiteConfig({ ...siteConfig, teamMinistryItems: newItems });
                                                             }}
                                                             placeholder="팀의 사역을 설명해 주세요."
                                                         />
@@ -3336,9 +3462,11 @@ const Admin = () => {
                                                             className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none text-sm min-h-[100px] resize-none"
                                                             value={team.descriptionEn || ''}
                                                             onChange={(e) => {
+                                                                const val = e.target.value;
                                                                 const newItems = [...formData.teamMinistryItems];
-                                                                newItems[idx] = { ...newItems[idx], descriptionEn: e.target.value };
+                                                                newItems[idx] = { ...newItems[idx], descriptionEn: val };
                                                                 setFormData({ ...formData, teamMinistryItems: newItems });
+                                                                setSiteConfig({ ...siteConfig, teamMinistryItems: newItems });
                                                             }}
                                                             placeholder="Enter English description."
                                                         />
@@ -3357,6 +3485,7 @@ const Admin = () => {
                                                             const newItems = [...formData.teamMinistryItems];
                                                             newItems[idx] = { ...newItems[idx], image: val };
                                                             setFormData({ ...formData, teamMinistryItems: newItems });
+                                                            setSiteConfig({ ...siteConfig, teamMinistryItems: newItems });
                                                         }}
                                                         showPreview={true}
                                                         aspectRatio="aspect-video"

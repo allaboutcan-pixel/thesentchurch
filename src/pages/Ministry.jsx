@@ -26,8 +26,9 @@ const Ministry = () => {
     const [subtitleSize, setSubtitleSize] = useState(18);
     const [overlayOpacity, setOverlayOpacity] = useState(40);
     const [height, setHeight] = useState("medium");
-    const [bannerFit, setBannerFit] = useState("cover");
+    const [ministryBannerFit, setBannerFit] = useState("cover");
     const [ministryList, setMinistryList] = useState(churchData.ministries);
+    const [siteConfig, setSiteConfig] = useState(null);
 
     const formatDetail = (text) => {
         if (!text) return null;
@@ -91,6 +92,7 @@ const Ministry = () => {
             if (!isMounted) return;
 
             if (config) {
+                if (isMounted) setSiteConfig(config);
                 if (config.ministryBanner) setHeaderBanner(config.ministryBanner);
 
                 // Multi-language banner content
@@ -244,15 +246,23 @@ const Ministry = () => {
                 <div className="max-w-4xl mx-auto text-center px-4">
                     {/* Desktop Version: Keep as is */}
                     <h2 className="hidden md:block text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line break-keep">
-                        {t('ministry.sunday_school_title')}
+                        {i18n.language === 'en'
+                            ? (siteConfig?.sundaySchoolTitleEn || t('ministry.sunday_school_title'))
+                            : (siteConfig?.sundaySchoolTitle || t('ministry.sunday_school_title'))}
                     </h2>
                     {/* Mobile Version: Use translation with <br/> tags */}
                     <h2
-                        className="block md:hidden text-xl font-bold text-gray-800 mb-6 leading-relaxed"
-                        dangerouslySetInnerHTML={{ __html: t('ministry.sunday_school_desc_mobile') }}
+                        className="block md:hidden text-xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line"
+                        dangerouslySetInnerHTML={{
+                            __html: i18n.language === 'en'
+                                ? (siteConfig?.sundaySchoolTitleEn || t('ministry.sunday_school_title')).replace(/\n/g, '<br/>')
+                                : (siteConfig?.sundaySchoolTitle || t('ministry.sunday_school_desc_mobile')).replace(/\n/g, '<br/>')
+                        }}
                     />
                     <p className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep">
-                        "{t('ministry.sunday_school_subtitle')}"
+                        "{i18n.language === 'en'
+                            ? (siteConfig?.sundaySchoolSubtitleEn || t('ministry.sunday_school_subtitle'))
+                            : (siteConfig?.sundaySchoolSubtitle || t('ministry.sunday_school_subtitle'))}"
                     </p>
                 </div>
             </div>
@@ -261,26 +271,23 @@ const Ministry = () => {
                 <div className="flex flex-col">
 
                     {ministryList.map((ministry, index) => {
-                        // Determine translated content
-                        const tName = ministry.id ? t(`ministry.${ministry.id}_name`) : ministry.name;
-                        const tTarget = ministry.id ? t(`ministry.${ministry.id}_target`) : ministry.target;
-                        const tDesc = ministry.id ? t(`ministry.${ministry.id}_desc`) : ministry.description;
-                        const tDetail = ministry.id ? t(`ministry.${ministry.id}_detail`) : ministry.detail;
-
                         const isEn = i18n.language === 'en';
-                        const tDetailValid = tDetail && tDetail !== `ministry.${ministry.id}_detail`;
-                        const tDescValid = tDesc && tDesc !== `ministry.${ministry.id}_desc`;
 
-                        const displayDetail = isEn
-                            ? (tDetailValid ? tDetail : ministry.detail)
-                            : (ministry.detail || (tDetailValid ? tDetail : ''));
+                        // Translation Helper
+                        const getTranslation = (dbVal, dbEnVal, i18nKey) => {
+                            if (isEn) {
+                                if (dbEnVal) return dbEnVal;
+                                const translated = t(i18nKey);
+                                if (translated !== i18nKey) return translated;
+                                return dbVal || '';
+                            }
+                            return dbVal || t(i18nKey);
+                        };
 
-                        const displayDesc = isEn
-                            ? (tDescValid ? tDesc : ministry.description)
-                            : (ministry.description || (tDescValid ? tDesc : ''));
-
-                        const displayName = (tName && tName !== `ministry.${ministry.id}_name`) ? tName : ministry.name;
-                        const displayTarget = (tTarget && tTarget !== `ministry.${ministry.id}_target`) ? tTarget : ministry.target;
+                        const displayName = getTranslation(ministry.name, ministry.nameEn, `ministry.${ministry.id}_name`);
+                        const displayTarget = getTranslation(ministry.target, ministry.targetEn, `ministry.${ministry.id}_target`);
+                        const displayDesc = getTranslation(ministry.description, ministry.descriptionEn, `ministry.${ministry.id}_desc`);
+                        const displayDetail = getTranslation(ministry.detail, ministry.detailEn, `ministry.${ministry.id}_detail`);
 
                         // Check if this section should have the brown background
                         // IDs: 'team_ministry', 'mission_evangelism', 'prayer', 'tsc', 'tsy'

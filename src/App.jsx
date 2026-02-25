@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react'; // Deployment trigger: 2026-02-14 20:45 Fix unused var
+import React, { lazy, Suspense } from 'react'; // Deployment trigger: 2026-02-25 10:11 Fix TSC/TSY translations
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import ScrollToTop from './components/ScrollToTop';

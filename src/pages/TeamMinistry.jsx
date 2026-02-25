@@ -23,8 +23,12 @@ const TeamMinistry = () => {
 
     const banner = siteConfig?.teamBanner || "/images/ministry_banner.jpg";
     const isEnglish = i18n.language.startsWith('en');
-    const title = isEnglish ? t('team_ministry.title') : (siteConfig?.teamTitle || t('team_ministry.title'));
-    const subtitle = isEnglish ? t('team_ministry.subtitle') : (siteConfig?.teamSubtitle || t('team_ministry.subtitle'));
+    const title = isEnglish
+        ? (siteConfig?.teamTitleEn || t('team_ministry.title'))
+        : (siteConfig?.teamTitle || t('team_ministry.title'));
+    const subtitle = isEnglish
+        ? (siteConfig?.teamSubtitleEn || t('team_ministry.subtitle'))
+        : (siteConfig?.teamSubtitle || t('team_ministry.subtitle'));
     const overlayOpacity = siteConfig?.teamOverlayOpacity || 40;
 
     // Dynamic Style Settings
@@ -123,9 +127,14 @@ const TeamMinistry = () => {
                         const Icon = iconMap[team.icon] || HandHeart;
                         const isEnglish = i18n.language.startsWith('en');
 
-                        const displayName = isEnglish && team.nameEn ? team.nameEn : team.name;
-                        const displayEnglishName = team.englishName; // This is a separate field often used for decorative purposes
-                        const displayDescription = isEnglish && team.descriptionEn ? team.descriptionEn : team.description;
+                        // Prioritize DB English fields, then DB Korean fields, then fallback to current values
+                        const displayName = isEnglish
+                            ? (team.nameEn || team.name || '')
+                            : (team.name || '');
+                        const displayDescription = isEnglish
+                            ? (team.descriptionEn || team.description || '')
+                            : (team.description || '');
+                        const displayEnglishName = team.englishName || team.nameEn; // Use nameEn as fallback for decorative english name
 
                         return (
                             <motion.div
