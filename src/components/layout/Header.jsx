@@ -99,7 +99,7 @@ const Header = () => {
                                                 to={sub.path}
                                                 className="block px-5 py-3 text-sm text-gray-600 hover:bg-primary/5 hover:text-primary transition-colors border-b border-gray-50 last:border-0"
                                             >
-                                                {(i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn)
+                                                {(i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn && config.prayerTitleEn !== "A church built on prayer")
                                                     ? config.prayerTitleEn
                                                     : t(`nav.${sub.id || sub.path.split('/').pop()}`)}
                                             </Link>
@@ -207,7 +207,7 @@ const Header = () => {
                                                     className="block px-10 py-3 text-sm text-gray-500 hover:text-primary"
                                                     onClick={() => setIsOpen(false)}
                                                 >
-                                                    • {(i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn)
+                                                    • {(i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn && config.prayerTitleEn !== "A church built on prayer")
                                                         ? config.prayerTitleEn
                                                         : t(`nav.${sub.id || sub.path.split('/').pop()}`)}
                                                 </Link>

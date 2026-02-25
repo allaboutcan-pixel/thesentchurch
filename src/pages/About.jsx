@@ -516,9 +516,11 @@ const About = () => {
                                     <h3 className="text-xl font-bold text-gray-900 leading-tight">{staff.name}</h3>
                                     <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-1">{staff.englishName}</p>
                                     <p className="text-accent font-medium mb-4 text-sm">
-                                        {staff.role === '담임목사' ? t('nav.role_pastor') :
-                                            staff.role === '유스 담당' ? t('nav.role_youth') :
-                                                staff.role === '행정' ? t('nav.role_admin') : staff.role}
+                                        {(i18n.language === 'en' && staff.englishRole) ? staff.englishRole : (
+                                            staff.role === '담임목사' ? t('nav.role_pastor') :
+                                                staff.role === '유스 담당' ? t('nav.role_youth') :
+                                                    staff.role === '행정' ? t('nav.role_admin') : staff.role
+                                        )}
                                     </p>
                                     <div className="flex justify-center items-center gap-2 text-gray-500 text-sm">
                                         <Mail size={14} />

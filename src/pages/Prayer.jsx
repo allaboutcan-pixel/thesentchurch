@@ -66,7 +66,7 @@ const Prayer = () => {
     };
 
     const banner = siteConfig?.prayerBanner || "/images/ministry_banner.jpg";
-    const bannerTitle = (i18n.language === 'en' && siteConfig?.prayerTitleEn) ? siteConfig.prayerTitleEn : (siteConfig?.prayerTitle || t('nav.prayer'));
+    const bannerTitle = (i18n.language === 'en' && siteConfig?.prayerTitleEn && siteConfig.prayerTitleEn !== "A church built on prayer") ? siteConfig.prayerTitleEn : (siteConfig?.prayerTitle || t('nav.prayer'));
     const bannerSubtitle = (i18n.language === 'en' && siteConfig?.prayerSubtitleEn) ? siteConfig.prayerSubtitleEn : (siteConfig?.prayerSubtitle || t('ministry.prayer.subtitle'));
 
     const bannerFit = siteConfig?.prayerBannerFit || 'cover';
