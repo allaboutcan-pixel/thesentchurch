@@ -26,7 +26,7 @@ const Ministry = () => {
     const [subtitleSize, setSubtitleSize] = useState(18);
     const [overlayOpacity, setOverlayOpacity] = useState(40);
     const [height, setHeight] = useState("medium");
-    const [ministryBannerFit, setBannerFit] = useState("cover");
+    const [bannerFit, setBannerFit] = useState("cover");
     const [ministryList, setMinistryList] = useState(churchData.ministries);
     const [siteConfig, setSiteConfig] = useState(null);
 
