@@ -52,15 +52,15 @@ const Header = () => {
         >
             <div className="container mx-auto px-4 flex justify-between items-center">
                 {/* Logo */}
-                <Link to="/" className="flex items-center gap-3 group" onClick={handleHomeClick}>
+                <Link to="/" className="flex items-center gap-2 md:gap-3 group" onClick={handleHomeClick}>
                     <div className="w-9 h-9 md:w-14 md:h-14 bg-white rounded-full flex items-center justify-center shadow-xl group-hover:scale-105 transition-transform overflow-hidden p-1">
                         <img src={config.logo || "/images/church_logo.jpg"} alt="Church Logo" className="w-full h-full object-contain scale-[2.0]" />
                     </div>
                     <div className="flex flex-col">
-                        <span className={clsx("font-bold text-[18px] md:text-xl leading-none transition-colors", isScrolled ? "text-primary" : "text-primary")}>
+                        <span className={clsx("font-bold text-[14px] xs:text-[15px] md:text-xl leading-none transition-colors whitespace-nowrap", isScrolled ? "text-primary" : "text-primary")}>
                             {config.name}
                         </span>
-                        <span className={clsx("text-[11px] md:text-[13px] font-black uppercase tracking-[0.1em] mt-1 transition-colors", isScrolled ? "text-gray-400" : "text-white")}>
+                        <span className={clsx("text-[8px] xs:text-[9px] md:text-[13px] font-black uppercase tracking-[0.1em] mt-1 transition-colors whitespace-nowrap", isScrolled ? "text-gray-400" : "text-white")}>
                             {config.englishName || "The Sent Church"}
                         </span>
                     </div>
