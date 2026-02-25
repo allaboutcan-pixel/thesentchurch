@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Upload, FileText, Check, X, Play, LayoutDashboard, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, Shield, AlertTriangle, Type, ArrowUp, ArrowDown, Heart, Send, Mail, Globe } from 'lucide-react';
 import sermonsInitialData from '../data/sermons.json';
 import bulletinsInitialData from '../data/bulletins.json';
-import noticesInitialData from '../data/notices.json';
 
 import churchData from '../data/church_data.json';
 import { dbService } from '../services/dbService';
@@ -323,7 +322,6 @@ const Admin = () => {
     // States for data
     const [sermons, setSermons] = useState([]);
     const [bulletins, setBulletins] = useState([]);
-    const [notices, setNotices] = useState([]);
     const [gallery, setGallery] = useState([]);
     const [siteConfig, setSiteConfig] = useState({});
     const [staffList, setStaffList] = useState([]);
@@ -504,7 +502,6 @@ const Admin = () => {
         try {
             const fbSermons = await dbService.getSermons();
             const fbBulletins = await dbService.getBulletins();
-            const fbNotices = await dbService.getNotices();
             const fbGallery = await dbService.getGallery();
             const fbColumns = await dbService.getColumns();
             const fbDailyWords = await dbService.getDailyWords();
@@ -518,7 +515,6 @@ const Admin = () => {
 
             setSermons(fbSermons);
             setBulletins(fbBulletins);
-            setNotices(fbNotices);
             setGallery(fbGallery);
             setColumns(fbColumns || []);
 
@@ -797,7 +793,6 @@ const Admin = () => {
             setIsFirebaseConfigured(false);
             setSermons(sermonsInitialData);
             setBulletins(bulletinsInitialData);
-            setNotices(noticesInitialData);
             setGallery([]);
             setColumns([]);
             setDailyWords([]);
@@ -1040,25 +1035,6 @@ const Admin = () => {
                     savedItem = await Promise.race([dbService.addBulletin(bulletinData), timeout]);
                     setBulletins([savedItem, ...bulletins]);
                 }
-            } else if (activeTab === 'notices') {
-                const noticeData = {
-                    title: formData.title,
-                    titleEn: formData.titleEn || '',
-                    date: formData.date,
-                    category: formData.category,
-                    content: formData.content,
-                    contentEn: formData.contentEn || '',
-                    important: formData.important,
-                    link: formData.link || ''
-                };
-
-                if (editingId) {
-                    savedItem = await Promise.race([dbService.updateNotice(editingId, noticeData), timeout]);
-                    setNotices(notices.map(n => n.id === editingId ? savedItem : n));
-                } else {
-                    savedItem = await Promise.race([dbService.addNotice(noticeData), timeout]);
-                    setNotices([savedItem, ...notices]);
-                }
             } else if (activeTab === 'gallery') {
                 let finalUrl = formData.fileUrl;
                 let detectedType = formData.type;
@@ -1275,7 +1251,7 @@ const Admin = () => {
             } else {
                 setFormData({
                     ...formData,
-                    title: '', titleEn: '', date: '', preacher: '', preacherEn: '', youtubeId: '', fileUrl: '', fileUrl2: '', category: '공지', content: '', contentEn: '', important: false, type: 'image',
+                    title: '', titleEn: '', date: '', preacher: '', preacherEn: '', youtubeId: '', fileUrl: '', fileUrl2: '', type: 'image',
                     staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', thumbnailUrl: '',
                     note: '', eventType: 'default',
                     startDate: '', endDate: '', staffEnglishName: ''
@@ -1305,9 +1281,6 @@ const Admin = () => {
             } else if (type === 'bulletin') {
                 await dbService.deleteBulletin(id);
                 setBulletins(bulletins.filter(b => b.id !== id));
-            } else if (type === 'notice') {
-                await dbService.deleteNotice(id);
-                setNotices(notices.filter(n => n.id !== id));
             } else if (type === 'gallery') {
                 await dbService.deleteGalleryItem(id);
                 setGallery(gallery.filter(g => g.id !== id));
@@ -1383,16 +1356,6 @@ const Admin = () => {
                 fileType: item.fileType || 'pdf'
             });
             setFile(null);
-        } else if (type === 'notice') {
-            setFormData({
-                ...formData,
-                title: item.title,
-                date: item.date,
-                category: item.category || '공지',
-                content: item.content || '',
-                important: item.important || false,
-                link: item.link || ''
-            });
         } else if (type === 'calendar') {
             setFormData({
                 ...formData,
@@ -4400,9 +4363,8 @@ const Admin = () => {
                             {/* Empty State */}
                             {(activeTab === 'sermons' ? sermons :
                                 activeTab === 'bulletins' ? bulletins :
-                                    activeTab === 'notices' ? notices :
-                                        activeTab === 'columns' ? columns :
-                                            activeTab === 'dailyWord' ? dailyWords : gallery).length === 0 && activeTab !== 'dailyWord' && (
+                                    activeTab === 'columns' ? columns :
+                                        activeTab === 'dailyWord' ? dailyWords : gallery).length === 0 && activeTab !== 'dailyWord' && (
                                     <div className="p-20 text-center text-gray-400 font-medium">
                                         데이터가 없습니다. 상단 '새 항목 등록하기'를 눌러 추가해 주세요.
                                     </div>

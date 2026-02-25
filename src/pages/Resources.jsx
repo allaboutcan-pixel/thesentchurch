@@ -143,7 +143,7 @@ const Resources = () => {
         } else if (location.pathname.includes('sermon') || location.pathname.includes('/sermons')) {
             setActiveTab('sermon');
         } else if (location.pathname.includes('news') || location.pathname.includes('/news')) {
-            setActiveTab('notice'); // Default to notice for News
+            setActiveTab('bulletin'); // Default to bulletin for News
         } else {
             setActiveTab('sermon'); // Default to sermon
         }
@@ -374,12 +374,6 @@ const Resources = () => {
 
 
                                 <TabButton
-                                    active={activeTab === 'notice'}
-                                    onClick={() => setActiveTab('notice')}
-                                    icon={<Bell size={18} />}
-                                    label={t('nav.notices')}
-                                />
-                                <TabButton
                                     active={activeTab === 'bulletin'}
                                     onClick={() => setActiveTab('bulletin')}
                                     icon={<FileText size={18} />}
@@ -403,70 +397,6 @@ const Resources = () => {
                 </div>
 
                 {/* Content */}
-                {/* 0. Notices Content */}
-                {activeTab === 'notice' && (
-                    <div className="space-y-12 pb-32 animate-fade-in max-w-4xl mx-auto pt-8">
-                        <div className="border-b-4 border-slate-100 pb-6 space-y-4">
-                            <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
-                                <Bell size={28} className="text-primary" />
-                                {t('nav.notices')}
-                            </h3>
-                            <p className="text-slate-400 font-medium text-sm mt-1 italic">{t('home.news_title')}</p>
-                        </div>
-
-                        {notices.length > 0 ? (
-                            <div className="grid gap-6">
-                                {notices.map((notice, idx) => (
-                                    <div
-                                        key={idx}
-                                        className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 hover:border-primary/20 hover:shadow-xl transition-all group"
-                                    >
-                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                                            <div className="flex items-center gap-3">
-                                                <span className="px-3 py-1 bg-primary/5 text-primary text-[10px] font-black rounded-lg uppercase tracking-widest">
-                                                    {notice.category || 'Notice'}
-                                                </span>
-                                                <span className="text-slate-400 text-xs font-bold tabular-nums">
-                                                    {notice.date}
-                                                </span>
-                                            </div>
-                                            {notice.important && (
-                                                <span className="flex items-center gap-1.5 text-red-500 text-[10px] font-black uppercase tracking-widest bg-red-50 px-3 py-1 rounded-full w-fit">
-                                                    <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
-                                                    Important
-                                                </span>
-                                            )}
-                                        </div>
-                                        <h4 className="text-xl md:text-2xl font-black text-slate-900 mb-4 group-hover:text-primary transition-colors">
-                                            {(i18n.language === 'en' && notice.titleEn) ? notice.titleEn : notice.title}
-                                        </h4>
-                                        <div className="text-slate-600 leading-relaxed font-medium whitespace-pre-wrap">
-                                            {(i18n.language === 'en' && notice.contentEn) ? notice.contentEn : notice.content}
-                                        </div>
-                                        {notice.link && (
-                                            <div className="mt-8 pt-6 border-t border-slate-50">
-                                                <a
-                                                    href={notice.link}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="inline-flex items-center gap-2 text-primary font-black text-sm hover:gap-3 transition-all"
-                                                >
-                                                    {t('home.daily_word_view_more')}
-                                                    <ChevronRight size={16} />
-                                                </a>
-                                            </div>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="py-20 flex flex-col items-center justify-center text-slate-300 gap-4">
-                                <Bell size={48} className="opacity-20" />
-                                <p className="font-bold">{t('home.no_content_yet')}</p>
-                            </div>
-                        )}
-                    </div>
-                )}
 
                 {/* Sunday Sermon Content (Playlist Style) */}
                 {activeTab === 'sermon' && (
