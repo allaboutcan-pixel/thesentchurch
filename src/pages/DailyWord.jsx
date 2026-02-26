@@ -50,8 +50,11 @@ const DailyWord = () => {
                 if (config) {
                     const prefix = 'resources'; // Unify with sermons/media page
                     if (config[`${prefix}Banner`]) setHeaderBanner(config[`${prefix}Banner`]);
-                    if (config[`${prefix}Title`]) setTitle(config[`${prefix}Title`]);
-                    if (config[`${prefix}Subtitle`]) setSubtitle(config[`${prefix}Subtitle`]);
+
+                    const titleVal = i18n.language.startsWith('en') && config[`${prefix}TitleEn`] ? config[`${prefix}TitleEn`] : config[`${prefix}Title`];
+                    const subtitleVal = i18n.language.startsWith('en') && config[`${prefix}SubtitleEn`] ? config[`${prefix}SubtitleEn`] : config[`${prefix}Subtitle`];
+                    if (titleVal) setTitle(titleVal);
+                    if (subtitleVal) setSubtitle(subtitleVal);
                     if (config[`${prefix}TitleFont`]) setTitleFont(config[`${prefix}TitleFont`]);
                     if (config[`${prefix}SubtitleFont`]) setSubtitleFont(config[`${prefix}SubtitleFont`]);
                     if (config[`${prefix}TitleColor`]) setTitleColor(config[`${prefix}TitleColor`]);

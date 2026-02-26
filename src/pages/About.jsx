@@ -372,7 +372,7 @@ const About = () => {
                             </div>
                             <div className="relative z-10">
                                 <h3 className="text-3xl font-black mb-4 flex items-baseline gap-2 text-white uppercase">
-                                    {i18n.language.startsWith('en') ? 'Ministry (Core Values)' : <>MINISTRY <span className="text-xl font-bold opacity-80">{t('about.values_title')}</span></>}
+                                    {i18n.language.startsWith('en') ? 'Core Values' : <>MINISTRY <span className="text-xl font-bold opacity-80">{t('about.values_title')}</span></>}
                                 </h3>
                                 <ul className="space-y-1 pl-4 py-1 border-l-2 border-accent/50">
                                     {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => {

@@ -259,7 +259,7 @@ const Ministry = () => {
                                 : (siteConfig?.sundaySchoolTitle || t('ministry.sunday_school_desc_mobile')).replace(/\n/g, '<br/>')
                         }}
                     />
-                    <p className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep">
+                    <p className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep whitespace-pre-line">
                         "{i18n.language === 'en'
                             ? (siteConfig?.sundaySchoolSubtitleEn || t('ministry.sunday_school_subtitle'))
                             : (siteConfig?.sundaySchoolSubtitle || t('ministry.sunday_school_subtitle'))}"
