@@ -790,6 +790,7 @@ const Admin = () => {
                     prayerPastorTopicsEn: fbConfig.prayerPastorTopicsEn || '',
                     prayerChurchTopicsEn: fbConfig.prayerChurchTopicsEn || '',
                     prayerChurchTopics2026En: fbConfig.prayerChurchTopics2026En || '',
+                    prayerCommonTopicsEn: fbConfig.prayerCommonTopicsEn || '',
                 }));
                 setColumns(fbColumns || []);
                 if (fbConfig.staff) {
@@ -2976,7 +2977,6 @@ const Admin = () => {
                                                     onChange={(e) => {
                                                         const val = e.target.value;
                                                         setFormData(prev => ({ ...prev, prayerCommonTopics: val }));
-                                                        setSiteConfig(prev => ({ ...prev, prayerCommonTopics: val }));
                                                     }}
                                                 />
                                             </div>
@@ -2989,7 +2989,6 @@ const Admin = () => {
                                                     onChange={(e) => {
                                                         const val = e.target.value;
                                                         setFormData(prev => ({ ...prev, prayerCommonTopicsEn: val }));
-                                                        setSiteConfig(prev => ({ ...prev, prayerCommonTopicsEn: val }));
                                                     }}
                                                 />
                                                 <p className="text-xs text-gray-400 ml-1">

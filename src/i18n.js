@@ -414,7 +414,7 @@ const resources = {
                 "tsc": "The Sent Children (TSC)",
                 "tsy": "The Sent Youth (TSY)",
                 "mission": "Mission",
-                "prayer": "Intercessory Prayer",
+                "prayer": "A Church Built on Prayer",
                 "nextgen_tsc_tsy": "Next Gen - TSC/TSY",
                 "senior_pastor": "Senior Pastor",
                 "role_pastor": "Senior Pastor",
@@ -534,8 +534,8 @@ const resources = {
                 "online_desc": "* This is a sacred morning prayer session held online."
             },
             "ministry": {
-                "title": "Next Gen / Community",
-                "subtitle": "Growing together in faith community",
+                "title": "Sent by God, into the world",
+                "subtitle": "“Therefore go and make disciples of all nations...” (Matthew 28:19)",
                 "learn_more": "Learn More",
                 "fold": "Close",
                 "sunday_school_title": "Our Sunday School helps children grow in God's Word,\nand become disciples who serve God with faith and loyalty.",
@@ -557,7 +557,7 @@ const resources = {
                 "prayer_desc": "We believe God will work through our prayers.",
                 "prayer_detail": "Our church is a community that prays for one another. Please share the prayer topics below and join us in intercessory prayer from your own place.\n\nWe believe God will work through our prayers.",
                 "prayer": {
-                    "title": "Intercessory Prayer",
+                    "title": "A Church Built on Prayer",
                     "subtitle": "We believe God will work through our prayers.",
                     "intro_title": "About Intercessory Prayer",
                     "intro_subtitle": "Introduction to Intercessory Prayer",

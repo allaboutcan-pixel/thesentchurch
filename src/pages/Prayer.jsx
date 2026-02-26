@@ -66,8 +66,9 @@ const Prayer = () => {
     };
 
     const banner = siteConfig?.prayerBanner || "/images/ministry_banner.jpg";
-    const bannerTitle = (i18n.language === 'en' && siteConfig?.prayerTitleEn && !siteConfig.prayerTitleEn.toLowerCase().includes("built on prayer")) ? siteConfig.prayerTitleEn : (siteConfig?.prayerTitle || t('nav.prayer'));
-    const bannerSubtitle = (i18n.language === 'en' && siteConfig?.prayerSubtitleEn) ? siteConfig.prayerSubtitleEn : (siteConfig?.prayerSubtitle || t('ministry.prayer.subtitle'));
+    const isEn = i18n.language === 'en' || i18n.language.startsWith('en-');
+    const bannerTitle = (isEn && siteConfig?.prayerTitleEn) ? siteConfig.prayerTitleEn : (siteConfig?.prayerTitle || t('nav.prayer'));
+    const bannerSubtitle = (isEn && siteConfig?.prayerSubtitleEn) ? siteConfig.prayerSubtitleEn : (siteConfig?.prayerSubtitle || t('ministry.prayer.subtitle'));
 
     const bannerFit = siteConfig?.prayerBannerFit || 'cover';
     const overlayOpacity = siteConfig?.prayerOverlayOpacity || 40;

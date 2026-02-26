@@ -96,11 +96,12 @@ const Ministry = () => {
                 if (config.ministryBanner) setHeaderBanner(config.ministryBanner);
 
                 // Multi-language banner content
-                const titleVal = i18n.language === 'en' && config.ministryTitleEn ? config.ministryTitleEn : config.ministryTitle;
-                const subtitleVal = i18n.language === 'en' && config.ministrySubtitleEn ? config.ministrySubtitleEn : config.ministrySubtitle;
+                const isEn = i18n.language === 'en' || i18n.language.startsWith('en-');
+                const titleVal = isEn && config.ministryTitleEn ? config.ministryTitleEn : (!isEn ? config.ministryTitle : null);
+                const subtitleVal = isEn && config.ministrySubtitleEn ? config.ministrySubtitleEn : (!isEn ? config.ministrySubtitle : null);
 
-                if (titleVal) setTitle(titleVal);
-                if (subtitleVal) setSubtitle(subtitleVal);
+                setTitle(titleVal || "");
+                setSubtitle(subtitleVal || "");
 
                 if (config.ministryTitleFont) setTitleFont(config.ministryTitleFont);
                 if (config.ministrySubtitleFont) setSubtitleFont(config.ministrySubtitleFont);
