@@ -673,28 +673,29 @@ const resources = {
                 "banner_title": "TEE",
                 "banner_subtitle": "Theological Education by Extension",
                 "intro_title": "What is TEE?",
-                "intro_desc": "TEE stands for <span class='text-blue-600 font-bold'>Theological Education by Extension</span>,<br/>based on 2 Timothy 2:2.<br/><br/>It is a proven training method helping faith pass on to the next generation through Bible study and discipleship.",
-                "intro_subdesc": "Currently, TEE is used in over 110 countries and 70 languages,<br/>utilized by numerous churches for lay leadership training.",
+                "intro_desc": "TEE stands for <span class='text-blue-600 font-bold'>Theological Education by Extension</span>.<br/>Rooted in the vision of 2 Timothy 2:2, it is a discipleship-focused approach to theological training that extends beyond the classroom and into everyday life.",
+                "intro_subdesc": "Through Bible study and intentional disciple-making, TEE helps nurture a faith that can be faithfully passed on to the next generation. It is a proven and widely used training model for equipping believers and developing leaders within the local church.<br/><br/>Today, TEE is used in more than 110 countries and in over 70 languages around the world. Many churches rely on it to strengthen lay leadership, deepen biblical understanding, and raise up faithful disciples who can serve and lead with confidence.",
                 "bible_verse": "And the things you have heard me say in the presence of many witnesses entrust to reliable people who will also be qualified to teach others.",
+                "bible_verse_mobile": "And the things you have heard me say in the presence of many witnesses entrust to reliable people who will also be qualified to teach others.",
                 "bible_ref": "2 Timothy 2:2",
 
                 "ministry_goal_title": "Ministry Goal",
-                "ministry_goal_subtitle": "Reproduction through Discipleship",
-                "ministry_goal_eng": "Reproduction through Discipleship",
+                "ministry_goal_subtitle": "",
+                "ministry_goal_eng": "",
                 "ministry_goal_quote": "“The Goal of TEE is Reproduce!”",
 
-                "core_goal_title": "Core Goal",
-                "core_goal_desc": "It is <strong>Spiritual Reproduction</strong> where one disciple raises another.<br/>Through small group training, we build up saints spiritually and help them grow into future church leaders.<br/><br/>It starts slow and small, but when the gospel and disciples spread together, it bears amazing influence and fruit.",
+                "core_goal_title": "Core Purpose",
+                "core_goal_desc": "At the heart of TEE is <strong>spiritual multiplication</strong>—one disciple raising up another.<br/>Through small group–based training, believers are strengthened spiritually and equipped to grow into the next generation of leaders within the church.<br/><br/>What begins slowly and modestly can grow into something powerful. When the gospel spreads through faithful disciples, it produces lasting fruit and meaningful impact.",
 
                 "core_value_title": "Core Value",
                 "core_value_subtitle": "Application",
-                "core_value_desc": "The most important value of TEE is the practical application of the Word.<br/>It aims for discipleship that appears in life, not just faith remaining in knowledge.<br/>\"Faith without deeds is dead.\"",
-                "core_value_box": "Learning the Word, applying it to life,\nand becoming like Christ through practice",
+                "core_value_desc": "One of TEE’s highest priorities is the practical application of God’s Word.<br/>The goal is not faith that remains in knowledge alone, but discipleship that is lived out in everyday life.<br/><br/>As Scripture reminds us, “Faith without works is dead.”",
+                "core_value_box": "Learning the Word, applying it to daily life,\nand growing to reflect Christ through faithful practice—this is the heart of TEE.",
                 "core_value_sub": "",
 
-                "features_title": "Features of TEE",
-                "features_desc": "TEE does not force practice.\nAs you study following the textbook and guidelines,\nit naturally helps you apply and practice in life.\nIt is a journey of accompanying students to obey and grow voluntarily.",
-                "features_desc_mobile": "TEE does not force practice.\nAs you study following the textbook and guidelines,\nit naturally helps you apply and practice in life.\nIt is a journey of accompanying students to obey and grow voluntarily.",
+                "features_title": "What Makes TEE Distinct",
+                "features_desc": "TEE does not pressure participants into outward performance.\nRather, as students engage with the material and follow the structured guidance, they are naturally led toward meaningful application and obedient action.\n\nIt is a journey of discipleship that walks alongside believers, encouraging voluntary obedience, spiritual growth, and lasting transformation.",
+                "features_desc_mobile": "TEE does not pressure participants into outward performance.\nRather, as students engage with the material and follow the structured guidance, they are naturally led toward meaningful application and obedient action.\n\nIt is a journey of discipleship that walks alongside believers, encouraging voluntary obedience, spiritual growth, and lasting transformation.",
 
                 "method_title": "Education Method of TEE",
                 "method_desc": "Follows these principles:",
@@ -709,9 +710,9 @@ const resources = {
                 "smart_t_title": "T – Tangible",
                 "smart_t_desc": "Tangible Training",
 
-                "fruits_title": "Fruits We Expect",
-                "fruits_desc": "We hope that through TEE, each saint will be built up by the Word,<br/>build each other up in small group communities,<br/>and grow into a healthy church that raises other disciples.",
-                "fruits_desc_mobile": "We hope that through TEE, each saint will be built up by the Word,<br/>build each other up in small group communities,<br/>and grow into a healthy church that raises other disciples."
+                "fruits_title": "Expected Fruit",
+                "fruits_desc": "Through TEE, we pray that each member will be firmly grounded in God’s Word, growing in faith and maturity.<br/>As we build one another up within small-group community, we look forward to seeing a healthy church take shape—one that raises up new disciples who, in turn, disciple others.<br/><br/>Our hope is that, through this process, our church will continue to grow into a vibrant community where lives are strengthened by Scripture, relationships are deepened in Christ, and disciples are continually multiplied.",
+                "fruits_desc_mobile": "Through TEE, we pray that each member will be firmly grounded in God’s Word, growing in faith and maturity.<br/>As we build one another up within small-group community, we look forward to seeing a healthy church take shape—one that raises up new disciples who, in turn, disciple others.<br/><br/>Our hope is that, through this process, our church will continue to grow into a vibrant community where lives are strengthened by Scripture, relationships are deepened in Christ, and disciples are continually multiplied."
             },
             "team_ministry": {
                 "title": "Team Ministry",
