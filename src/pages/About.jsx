@@ -308,7 +308,7 @@ const About = () => {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
                         {/* Vision Card */}
-                        <div className="relative group rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] flex flex-col p-8 text-white">
+                        <div className="relative group rounded-3xl overflow-hidden shadow-2xl h-full min-h-[480px] flex flex-col p-6 md:p-8 text-white">
                             <div className="absolute inset-0 z-0">
                                 <img
                                     src={visionImage}
@@ -333,7 +333,7 @@ const About = () => {
                         </div>
 
                         {/* Mission Card */}
-                        <div className="relative group rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] flex flex-col p-8 text-white">
+                        <div className="relative group rounded-3xl overflow-hidden shadow-2xl h-full min-h-[480px] flex flex-col p-6 md:p-8 text-white">
                             <div className="absolute inset-0 z-0">
                                 <img
                                     src={missionImage}
@@ -358,7 +358,7 @@ const About = () => {
                         </div>
 
                         {/* Ministry Card (Core Values) */}
-                        <div className="relative group rounded-3xl overflow-hidden shadow-2xl aspect-[4/5] flex flex-col p-8 text-white">
+                        <div className="relative group rounded-3xl overflow-hidden shadow-2xl h-full min-h-[480px] flex flex-col p-6 md:p-8 text-white">
                             <div className="absolute inset-0 z-0">
                                 <img
                                     src={ministryImage}
@@ -393,13 +393,13 @@ const About = () => {
                                             <li key={num} className="leading-tight">
                                                 <div className={clsx(
                                                     "font-black tracking-wide mb-0.5 opacity-100",
-                                                    i18n.language.startsWith('en') ? "text-[11px] md:text-xs" : "text-xs md:text-sm"
+                                                    i18n.language.startsWith('en') ? "text-[10px] md:text-[11px]" : "text-xs md:text-sm"
                                                 )}>
                                                     {title}
                                                 </div>
                                                 <div className={clsx(
                                                     "font-medium opacity-80 whitespace-pre-wrap",
-                                                    i18n.language.startsWith('en') ? "text-[10px] md:text-[11px]" : "text-[11px] md:text-xs"
+                                                    i18n.language.startsWith('en') ? "text-[9px] md:text-[10px] leading-snug" : "text-[11px] md:text-xs"
                                                 )}>
                                                     {desc}
                                                 </div>
