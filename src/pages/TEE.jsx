@@ -189,9 +189,9 @@ const TEE = () => {
                                 <h3 className="text-lg font-bold text-slate-800">{t('tee.ministry_goal_title')}</h3>
                             </div>
 
-                            <div className="flex-1 flex flex-col items-center pt-16 pb-8">
-                                <div className="text-center mb-10 w-full px-4">
-                                    <h4 className="text-base md:text-lg font-sans font-bold text-slate-400 leading-loose uppercase tracking-[0.3em] mb-4">
+                            <div className="flex-1 flex flex-col items-center pt-8 pb-12">
+                                <div className="text-center mb-16 w-full px-4">
+                                    <h4 className="text-base md:text-lg font-sans font-bold text-slate-400 leading-loose uppercase tracking-[0.3em] mb-3">
                                         {t('tee.ministry_goal_subtitle')}
                                     </h4>
                                     <p className="text-lg md:text-xl font-bold text-blue-900 font-sans leading-relaxed max-w-[85%] mx-auto">
