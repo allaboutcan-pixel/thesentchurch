@@ -92,7 +92,7 @@ const Worship = () => {
         };
         fetchConfig();
         return () => { isMounted = false; };
-    }, []);
+    }, [i18n.language]);
 
     // Handle hash navigation
     const { hash } = useLocation();

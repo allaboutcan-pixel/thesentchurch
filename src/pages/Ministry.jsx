@@ -131,7 +131,7 @@ const Ministry = () => {
         };
         fetchBanner();
         return () => { isMounted = false; };
-    }, []);
+    }, [config, i18n.language]);
 
     return (
         <div className="min-h-screen bg-[#efebe9]">

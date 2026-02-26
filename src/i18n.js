@@ -50,6 +50,27 @@ const resources = {
                 "val7": "가정·문화: 성경의 가치로 가정과 사회를 세웁니다.",
                 "val8": "헌신: 모든 성도가 주인으로 섬기는 교회입니다."
             },
+            "calendar": {
+                "jan": "1월",
+                "feb": "2월",
+                "mar": "3월",
+                "apr": "4월",
+                "may": "5월",
+                "jun": "6월",
+                "jul": "7월",
+                "aug": "8월",
+                "sep": "9월",
+                "oct": "10월",
+                "nov": "11월",
+                "dec": "12월",
+                "sun": "일",
+                "mon": "월",
+                "tue": "화",
+                "wed": "수",
+                "thu": "목",
+                "fri": "금",
+                "sat": "토"
+            },
             "home": {
                 "hero_title": "문화적 기독교를 벗고 성서적 기독교로",
                 "hero_subtitle": "The Church of the Sent",
@@ -98,6 +119,16 @@ const resources = {
                 "first_step": "첫걸음",
                 "daily_word_popup_title": "오늘의 말씀",
                 "daily_word_popup_close": "오늘 하루 보지 않기",
+                "contact": {
+                    "subtitle": "궁금하신 점을 남겨주세요",
+                    "name": "성함",
+                    "name_placeholder": "성함을 입력해주세요",
+                    "phone": "연락처",
+                    "phone_placeholder": "연락 받으실 번호를 입력해주세요",
+                    "message": "문의 내용",
+                    "message_placeholder": "문의하실 내용을 자유롭게 적어주세요.",
+                    "mail_notice": "* 버튼을 누르면 기기의 메일 앱이 실행됩니다."
+                },
                 "daily_word_view_more": "자세히 보기",
                 "preacher_default": "이남규 목사",
                 "view_more_words": "더 많은 말씀 보기"
@@ -116,7 +147,6 @@ const resources = {
                 "org_twu": "Trinity Western University",
                 "org_kehc_korea": "예수교대한성결교회",
                 "org_ldp": "LDP",
-                "org_teds": "Trinity Evangelical Divinity School",
                 "visit_website": "홈페이지 방문",
                 "pastor_label": "PASTOR",
                 "pastor_title": "담임목사 인사말",
@@ -786,6 +816,37 @@ const resources = {
                 "verse": "But these are written that you may believe that <br/> Jesus is the Messiah, the Son of God, and that <br/> by believing you may have life in his name.",
                 "verse_ref": "John 20:31",
                 "inquiry_button": "Inquiry"
+            },
+            "calendar": {
+                "jan": "Jan",
+                "feb": "Feb",
+                "mar": "Mar",
+                "apr": "Apr",
+                "may": "May",
+                "jun": "Jun",
+                "jul": "Jul",
+                "aug": "Aug",
+                "sep": "Sep",
+                "oct": "Oct",
+                "nov": "Nov",
+                "dec": "Dec",
+                "sun": "Sun",
+                "mon": "Mon",
+                "tue": "Tue",
+                "wed": "Wed",
+                "thu": "Thu",
+                "fri": "Fri",
+                "sat": "Sat"
+            },
+            "contact": {
+                "subtitle": "Please leave your questions",
+                "name": "Name",
+                "name_placeholder": "Please enter your name",
+                "phone": "Phone",
+                "phone_placeholder": "Please enter your phone number",
+                "message": "Message",
+                "message_placeholder": "Please feel free to write your inquiry.",
+                "mail_notice": "* Clicking the button will launch your device's mail app."
             }
         }
     }

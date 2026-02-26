@@ -3,7 +3,11 @@ import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, Inf
 import { dbService } from '../services/dbService';
 import clsx from 'clsx';
 
+import { useTranslation } from 'react-i18next';
+
 const CalendarWidget = () => {
+    const { t, i18n } = useTranslation();
+    const isEn = i18n.language === 'en';
     // Force calendar to Canada/Vancouver time for consistent display
     const getVancouverDate = () => {
         try {
@@ -31,7 +35,7 @@ const CalendarWidget = () => {
             }
         };
         fetchEvents();
-    }, []);
+    }, [i18n.language]);
 
     const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
     const getFirstDayOfMonth = (year, month) => new Date(year, month, 1).getDay();
@@ -77,8 +81,11 @@ const CalendarWidget = () => {
     const selectedEvents = events.filter(e => isDateInEventRange(selectedDate, e));
     const mainEvent = selectedEvents[0] || null;
 
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"];
+    const monthNames = [
+        t('calendar.jan'), t('calendar.feb'), t('calendar.mar'), t('calendar.apr'),
+        t('calendar.may'), t('calendar.jun'), t('calendar.jul'), t('calendar.aug'),
+        t('calendar.sep'), t('calendar.oct'), t('calendar.nov'), t('calendar.dec')
+    ];
 
     // Grid rendering logic
     const totalSlots = Math.ceil((firstDay + daysInMonth) / 7) * 7;
@@ -130,7 +137,7 @@ const CalendarWidget = () => {
                 </div>
 
                 <div className="grid grid-cols-7 border-b border-gray-100 mb-4 pb-4">
-                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d, i) => (
+                    {[t('calendar.sun'), t('calendar.mon'), t('calendar.tue'), t('calendar.wed'), t('calendar.thu'), t('calendar.fri'), t('calendar.sat')].map((d, i) => (
                         <div key={i} className={clsx(
                             "text-xs font-black uppercase tracking-widest text-center",
                             i === 0 ? "text-red-400" : "text-gray-400"
@@ -177,7 +184,7 @@ const CalendarWidget = () => {
                                                     )}
                                                     title={event.title}
                                                 >
-                                                    {event.title}
+                                                    {isEn && event.titleEn ? event.titleEn : event.title}
                                                 </div>
                                             ))}
                                         </div>
@@ -196,7 +203,7 @@ const CalendarWidget = () => {
                                 <Info size={24} className="text-accent" />
                             </div>
                             <div>
-                                <h4 className="text-xl font-bold text-primary">{mainEvent.title}</h4>
+                                <h4 className="text-xl font-bold text-primary">{isEn && mainEvent.titleEn ? mainEvent.titleEn : mainEvent.title}</h4>
                                 <p className="text-sm text-gray-500 font-bold">
                                     {(() => {
                                         const d = parseDateLocal(mainEvent.startDate);
@@ -212,7 +219,7 @@ const CalendarWidget = () => {
                         {mainEvent.note && (
                             <div className="max-w-md border-l-2 border-accent/20 pl-4">
                                 <p className="text-sm text-gray-500 leading-relaxed italic font-medium">
-                                    {mainEvent.note}
+                                    {isEn && mainEvent.noteEn ? mainEvent.noteEn : mainEvent.note}
                                 </p>
                             </div>
                         )}

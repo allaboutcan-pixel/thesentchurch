@@ -130,7 +130,7 @@ const DailyWord = () => {
         };
         fetchData();
         return () => { isMounted = false; };
-    }, []);
+    }, [i18n.language]);
 
     return (
         <div className="min-h-screen bg-white">

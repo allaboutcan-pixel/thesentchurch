@@ -92,7 +92,7 @@ ${formData.message}
                         </div>
                         <div>
                             <h2 className="font-bold text-lg">{t('home.first_step')}</h2>
-                            <p className="text-xs text-white/80 font-light">궁금하신 점을 남겨주세요</p>
+                            <p className="text-xs text-white/80 font-light">{t('contact.subtitle')}</p>
                         </div>
                     </div>
                     <button
@@ -106,7 +106,7 @@ ${formData.message}
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     <div className="space-y-1">
-                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">성함 (Name)</label>
+                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">{t('contact.name')}</label>
                         <div className="relative">
                             <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                             <input
@@ -115,13 +115,13 @@ ${formData.message}
                                 value={formData.name}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                 className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm font-medium transition-all"
-                                placeholder="성함을 입력해주세요"
+                                placeholder={t('contact.name_placeholder')}
                             />
                         </div>
                     </div>
 
                     <div className="space-y-1">
-                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">연락처 (Phone)</label>
+                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">{t('contact.phone')}</label>
                         <div className="relative">
                             <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                             <input
@@ -130,19 +130,19 @@ ${formData.message}
                                 value={formData.phone}
                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                 className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm font-medium transition-all"
-                                placeholder="연락 받으실 번호를 입력해주세요"
+                                placeholder={t('contact.phone_placeholder')}
                             />
                         </div>
                     </div>
 
                     <div className="space-y-1">
-                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">문의 내용 (Message)</label>
+                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">{t('contact.message')}</label>
                         <textarea
                             required
                             value={formData.message}
                             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                             className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm font-medium transition-all min-h-[120px] resize-none"
-                            placeholder="문의하실 내용을 자유롭게 적어주세요."
+                            placeholder={t('contact.message_placeholder')}
                         />
                     </div>
 
@@ -155,7 +155,7 @@ ${formData.message}
                             {t('home.first_step')}
                         </button>
                         <p className="text-[10px] text-gray-400 text-center mt-3">
-                            * 버튼을 누르면 기기의 메일 앱이 실행됩니다.
+                            {t('contact.mail_notice')}
                         </p>
                         <div className="mt-6 pt-6 border-t border-gray-100">
                             <p className="text-[10px] font-bold text-gray-400 uppercase text-center mb-1">Direct Email</p>
