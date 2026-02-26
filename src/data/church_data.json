@@ -46,6 +46,7 @@
             "name": "모세팀",
             "englishName": "Moses Team",
             "description": "인생의 후반전을 든든하게 서로 받쳐주는 동무들의 모임입니다. 혼자가 아니라 함께 하기에 기력은 쇠하지 않고 오히려 모세처럼 사명을 꽃피우는 모세팀! 5학년도 좋고 6학년 이상도 환영합니다. 월 2회 정기 모임이 있습니다.",
+            "descriptionEn": "This is a fellowship for those in the later seasons of life, where we walk together in faith, encouraging and strengthening one another.\nAs we journey together, God renews our strength and continues His work in us.\nIf you are in your 50s, 60s, or beyond, we would love to have you join us.\nWe gather twice a month.",
             "image": "https://lh3.googleusercontent.com/d/1xiyxldEtf5iJD5pndhf2cT52Q5b3HtG-",
             "icon": "Users"
         },
@@ -54,6 +55,7 @@
             "name": "미디어팀",
             "englishName": "Media Team",
             "description": "주일 예배의 감동을 생생한 방송으로 담아 내어 온라인 세상 속에 교회의 문을 활짝 열어 모든 사람들과 소통하기 위한 사역입니다. 우리의 목적은 시공간을 초월해서 교회의 사명인 복음을 온 세상에 전하는 것입니다.",
+            "descriptionEn": "Our media ministry captures and shares the meaningful moments of Sunday worship through creative media and online broadcasting, extending the reach of our church beyond its walls.\n\nBy connecting with people both near and far, we seek to share the message of the gospel more widely and faithfully participate in God’s mission to all nations.",
             "image": "https://lh3.googleusercontent.com/d/1uLYW78wkl8xkwTaCLX8t9kzz3fREmO_H",
             "icon": "Video"
         },
@@ -62,6 +64,7 @@
             "name": "예배팀",
             "englishName": "Service Team",
             "description": "우리 교회를 찾는 모든 사람들이 하나님의 깊은 사랑을 실제로 경험하도록 돕는 사역입니다. 내 집같은 편안함 속에서 온 가족이 함께 마음을 다해 예배하며, 주일이 주는 참된 기쁨과 축복을 풍성히 누리도록 정성을 다해 섬기는 팀입니다.",
+            "descriptionEn": "We hope that everyone who visits our church will experience the deep love of God.\nOur team serves with joy and care so that families can worship in a warm, welcoming space a true home away from home free to focus on the joy and blessings of the Lord’s Day",
             "image": "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?auto=format&fit=crop&q=80&w=800",
             "icon": "Heart"
         },
@@ -70,6 +73,7 @@
             "name": "운영팀",
             "englishName": "Steering Team",
             "description": "우리는 교회의 모든 자원과 행정이 원활하게 흐르도록 조율하여 우리 교회 공동체가 오직 하나님의 비전을 실현하는 데 전념하도록 건강한 토대를 형성하는 것입니다. 모든 팀들이 질서와 조화 속에 각자가 맡은 사명을 이룰 수 있도록 든든한 후견자가 되는 팀입니다.",
+            "descriptionEn": "Our team supports the church behind the scenes, helping everything run smoothly and faithfully.\nBy maintaining a strong and steady foundation, we help the church stay focused on God’s vision.\nWe joyfully serve alongside every ministry so that all may work together in unity and harmony.",
             "image": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=800",
             "icon": "Settings"
         },
@@ -78,6 +82,7 @@
             "name": "재정팀",
             "englishName": "Finance Team",
             "description": "우리는 교회의 모든 수입과 지출을 투명하고 공정하게 관리하여 하나님 나라의 자원이 목적에 맞게 쓰이도록 건강한 교회 살림의 기틀을 세우는 사역입니다. 정직한 청지기 정신으로 재정의 신뢰도를 높임으로써 공동체의 사역을 든든히 뒷받침하고 성도들의 소중한 헌신이 아름다운 열매로 맺어지도록 신실하게 봉사하는 팀입니다.",
+            "descriptionEn": "Our team faithfully cares for the church’s finances with transparency and integrity.\nBy stewarding God’s resources wisely, we support the ministries of the church and help ensure that the generous giving of our members bears lasting fruit.",
             "image": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800",
             "icon": "PieChart"
         },
@@ -86,6 +91,7 @@
             "name": "찬양팀",
             "englishName": "Worship Team",
             "description": "우리는 하나님께서 찾으시는 신령과 진정의 예배, 모든 회중이 감동과 감격 속에 온 존재로 주님께 나아가는 예배를 꿈꿉니다. 찬양팀은 성령의 임재 안에서 모든 성도가 위로와 회복 그리고 치유를 경험하도록 돕는 거룩한 예배의 통로가 되는 사역입니다.",
+            "descriptionEn": "Our desire is to see worship that honors God in spirit and in truth, where every heart is drawn near to Him with love and wholehearted devotion.\nThe praise team joyfully serves by leading us into God’s presence and helping create a welcoming space where people can find comfort, renewal, and healing through the Holy Spirit.",
             "image": "https://lh3.googleusercontent.com/d/1m59MwGGrCb1RThJX9rSb0UbWE66Wujba",
             "icon": "Music"
         },
@@ -94,6 +100,7 @@
             "name": "친교팀",
             "englishName": "Fellowship Team",
             "description": "우리 사역은 예수님이 보여주신 식탁 공동체의 사랑을 재현하여 성도 간의 연합을 돈독히 세워가는 데 그 목적이 있습니다. 따뜻한 친교를 통해 주님 안에서 한 가족의 온기를 나누며, 모든 성도가 교회라는 신앙의 터 위에 깊이 뿌리 내리도록 정성을 다하는 팀입니다.",
+            "descriptionEn": "Our heart is to reflect the love of the table fellowship Jesus shared, building deeper unity within our church family.\nThrough genuine hospitality and warm fellowship, we create space for everyone to feel at home in Christ and to grow strong roots in the life of faith together.",
             "image": "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=800",
             "icon": "Coffee"
         }

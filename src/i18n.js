@@ -718,9 +718,9 @@ const resources = {
             },
             "team_ministry": {
                 "title": "Team Ministry",
-                "subtitle": "Joy of Serving Together",
-                "intro_title": "Joy of Serving Together",
-                "intro_desc": "We build up the body of Christ, the church, through each person's gifts.<br class='hidden md:block' />We invite you to the ministry field where small commitments gather to bear beautiful fruit.",
+                "subtitle": "The Joy of Serving Together",
+                "intro_title": "The Joy of Serving Together",
+                "intro_desc": "We build up the body of Christ by serving with the gifts God has given each of us.<br class='hidden md:block' />We invite you to step into a place of ministry where even small acts of service come together to bear beautiful and lasting fruit.",
                 "intro_badge": "Team Ministry",
                 "cta_title": "Invitation to Serve",
                 "cta_desc": "If you wish to serve the church with the talents God has given you,<br />please knock on the door of any team at any time.",
@@ -770,9 +770,9 @@ const resources = {
                 "theme4_point2": "The cross, far from defeat, reveals the fullness of God’s glory and sends us into the world with renewed purpose and mission.",
                 "recommend_title": "Who This Study Is For",
                 "recommend_items": [
-                    "Those who are beginning to explore the Bible and want to discover its richness",
-                    "Those who wish to see familiar passages with fresh understanding and context",
-                    "Those who desire to strengthen the foundation of their faith and apply God’s Word to daily life"
+                    "Those who are new to the Bible and want to begin discovering its richness",
+                    "Those who would like to revisit familiar passages and see them in context",
+                    "Those who want to build a strong foundation of faith and apply God’s Word to everyday life"
                 ],
                 "guide_title": "Study Details",
                 "guide_time": "Time: Tuesdays at 9:30 AM (Online via Zoom)",
