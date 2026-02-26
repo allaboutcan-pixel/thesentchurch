@@ -284,16 +284,22 @@ const Worship = () => {
 
                             <div className="space-y-4">
                                 {otherMeetings.map((meeting, idx) => (
-                                    <div key={idx} className="group p-6 rounded-2xl border border-gray-50 hover:bg-gray-50 hover:border-gray-200 transition-all flex justify-between items-center">
-                                        <div className="flex flex-col">
-                                            <span className="text-lg font-bold text-gray-800">{t(meeting.name?.trim())}</span>
+                                    <div key={idx} className="group p-5 md:p-6 rounded-2xl border border-gray-50 hover:bg-gray-50 hover:border-gray-200 transition-all flex justify-between items-center gap-4">
+                                        <div className="flex flex-col min-w-0">
+                                            <span className={clsx(
+                                                "font-bold text-gray-800 break-words",
+                                                i18n.language === 'en' ? "text-[14px] md:text-[15px] leading-snug tracking-tight" : "text-lg"
+                                            )}>{t(meeting.name?.trim())}</span>
                                             <div className="flex items-center gap-1 text-gray-400 text-xs mt-1">
-                                                <MapPin size={12} />
-                                                <span>{t(meeting.location?.trim())}</span>
+                                                <MapPin size={12} className="shrink-0" />
+                                                <span className="truncate">{t(meeting.location?.trim())}</span>
                                             </div>
                                         </div>
-                                        <div className="text-right">
-                                            <span className="text-xl font-black text-accent">{meeting.time}</span>
+                                        <div className="text-right whitespace-nowrap shrink-0">
+                                            <span className={clsx(
+                                                "font-black text-accent",
+                                                i18n.language === 'en' ? "text-lg md:text-xl" : "text-xl"
+                                            )}>{meeting.time}</span>
                                         </div>
                                     </div>
                                 ))}
