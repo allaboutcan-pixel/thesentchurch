@@ -8,7 +8,7 @@ import { useSiteConfig } from '../hooks/useSiteConfig';
 import clsx from 'clsx';
 
 const ComingSoon = ({ type = 'mission' }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { config: siteConfig } = useSiteConfig();
 
     // Standard ministry/education banner and title settings
