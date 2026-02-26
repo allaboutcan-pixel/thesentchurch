@@ -17,8 +17,8 @@ const ComingSoon = ({ type = 'mission' }) => {
 
     const banner = siteConfig?.[`${type}Banner`] || ministryItem?.image || siteConfig?.ministryBanner;
     const isEn = i18n.language === 'en' || i18n.language.startsWith('en-');
-    const bannerTitle = (isEn && siteConfig?.[`${type}TitleEn`]) ? siteConfig[`${type}TitleEn`] : (siteConfig?.[`${type}Title`] || (type === 'tee' ? 'TEE' : (type === 'team' ? '팀사역' : (['mission', 'prayer'].includes(type) ? t(`nav.${type}`) : t('nav.ministry')))));
-    const bannerSubtitle = (isEn && siteConfig?.[`${type}SubtitleEn`]) ? siteConfig[`${type}SubtitleEn`] : (siteConfig?.[`${type}Subtitle`] || ministryItem?.[isEn ? 'descriptionEn' : 'description'] || siteConfig?.[isEn ? 'ministrySubtitleEn' : 'ministrySubtitle'] || "");
+    const bannerTitle = (isEn && siteConfig?.[`${type}TitleEn`]) ? siteConfig[`${type}TitleEn`] : (isEn ? t(`nav.${type}`) : (siteConfig?.[`${type}Title`] || (type === 'tee' ? 'TEE' : (type === 'team' ? '팀사역' : (['mission', 'prayer'].includes(type) ? t(`nav.${type}`) : t('nav.ministry'))))));
+    const bannerSubtitle = (isEn && siteConfig?.[`${type}SubtitleEn`]) ? siteConfig[`${type}SubtitleEn`] : (isEn ? (ministryItem?.descriptionEn || siteConfig?.ministrySubtitleEn || "") : (siteConfig?.[`${type}Subtitle`] || ministryItem?.description || siteConfig?.ministrySubtitle || ""));
 
     const bannerFit = siteConfig?.[`${type}BannerFit`] || 'cover';
     const overlayOpacity = siteConfig?.[`${type}OverlayOpacity`] || 40;

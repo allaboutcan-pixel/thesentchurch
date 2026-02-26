@@ -414,7 +414,7 @@ const resources = {
                 "tsc": "The Sent Children (TSC)",
                 "tsy": "The Sent Youth (TSY)",
                 "mission": "Mission",
-                "prayer": "A Church Built on Prayer",
+                "prayer": "Intercessory Prayer",
                 "nextgen_tsc_tsy": "Next Gen - TSC/TSY",
                 "senior_pastor": "Senior Pastor",
                 "role_pastor": "Senior Pastor",
