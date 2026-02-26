@@ -4621,165 +4621,168 @@ const Admin = () => {
                                                 </div>
                                             </div>
                                         </div>
-                    </div>
-                            ))
-                )}
-                        </div>
-        </div >
-    )
-}
-{
-    !isFirebaseConfigured && (
-        <div className="mt-10 p-10 bg-amber-50 rounded-[2.5rem] border border-amber-100 flex flex-col md:flex-row gap-8 items-start relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
-                <Shield size={120} />
-            </div>
-            <div className="p-5 bg-amber-100 rounded-3xl text-amber-600 shadow-sm border border-amber-200">
-                <AlertTriangle size={32} />
-            </div>
-            <div className="relative z-10 font-sans">
-                <h4 className="font-black text-amber-900 text-xl mb-3 flex items-center gap-2">
-                    Firebase Firestore 활성화가 필요합니다
-                </h4>
-                <p className="text-amber-800/80 leading-relaxed max-w-2xl mb-8 font-medium">
-                    현재 <code className="bg-amber-100 px-2 py-0.5 rounded text-amber-900">src/lib/firebase.js</code>에 프로젝트 키는 잘 입력되었습니다.
-                    마지막으로 **Firebase Console** 사이트에서 [Firestore Database]를 활성화(테스트 모드로 시작)해 주셔야 여기서 저장하는 내용이 전 세계에 실시간 반영됩니다.
-                </p>
-                <div className="flex flex-wrap gap-4">
-                    <a href="https://console.firebase.google.com/" target="_blank" className="bg-amber-600 text-white px-8 py-3.5 rounded-2xl font-bold shadow-lg shadow-amber-600/20 hover:bg-amber-700 transition-all flex items-center gap-2">파이어베이스 콘솔 바로가기 <ExternalLink size={16} /></a>
-                    <button onClick={loadData} className="bg-white text-amber-800 border border-amber-200 px-8 py-3.5 rounded-2xl font-bold hover:bg-amber-100 transition-all">연결 재시도</button>
-                </div>
-            </div>
-        </div>
-    )
-}
-
-{/* Staff List View */ }
-{
-    activeTab === 'staff' && !showAddForm && (
-        <div className="animate-fade-in-up">
-            {staffList.length === 0 ? (
-                <div className="text-center py-20 bg-white rounded-[2rem] border border-gray-100 shadow-sm">
-                    <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
-                        <Users size={40} />
-                    </div>
-                    <p className="text-gray-400 font-bold mb-2">등록된 섬기는 분이 없습니다.</p>
-                    <p className="text-gray-300 text-sm">새 항목 등록하기 버튼을 눌러 추가해주세요.</p>
-                </div>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {staffList.map((staff) => (
-                        <div key={staff.id || staff.name} className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all group relative overflow-hidden">
-                            <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-                                <button
-                                    onClick={() => handleEdit(staff, 'staff')}
-                                    className="p-2 bg-blue-50 text-blue-500 rounded-xl hover:bg-blue-100 transition-colors shadow-sm"
-                                    title="수정"
-                                >
-                                    <Settings size={18} />
-                                </button>
-                                <button
-                                    onClick={() => handleDelete('staff', staff.id)}
-                                    className="p-2 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-colors shadow-sm"
-                                    title="삭제"
-                                >
-                                    <Trash2 size={18} />
-                                </button>
+                                    ))
+                                )}
                             </div>
-
-                            <div className="flex flex-col items-center">
-                                <div className="w-48 h-48 bg-gray-100 rounded-full mb-6 overflow-hidden border-8 border-gray-50 shadow-inner group-hover:scale-105 transition-transform duration-300">
-                                    {staff.image ? (
-                                        <img
-                                            src={staff.image}
-                                            alt={staff.name}
-                                            referrerPolicy="no-referrer"
-                                            className="w-full h-full object-cover"
-                                            onError={(e) => {
-                                                e.target.onerror = null;
-                                                e.target.style.display = 'none';
-                                                e.target.parentElement.classList.add('flex', 'items-center', 'justify-center', 'bg-gray-100');
-                                                e.target.parentElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-50 text-gray-400"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>';
-                                            }}
-                                        />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-gray-300 bg-gray-100">
-                                            <Users size={64} className="opacity-50" />
-                                        </div>
-                                    )}
+                        </div >
+                    )
+                }
+                {
+                    !isFirebaseConfigured && (
+                        <div className="mt-10 p-10 bg-amber-50 rounded-[2.5rem] border border-amber-100 flex flex-col md:flex-row gap-8 items-start relative overflow-hidden">
+                            <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
+                                <Shield size={120} />
+                            </div>
+                            <div className="p-5 bg-amber-100 rounded-3xl text-amber-600 shadow-sm border border-amber-200">
+                                <AlertTriangle size={32} />
+                            </div>
+                            <div className="relative z-10 font-sans">
+                                <h4 className="font-black text-amber-900 text-xl mb-3 flex items-center gap-2">
+                                    Firebase Firestore 활성화가 필요합니다
+                                </h4>
+                                <p className="text-amber-800/80 leading-relaxed max-w-2xl mb-8 font-medium">
+                                    현재 <code className="bg-amber-100 px-2 py-0.5 rounded text-amber-900">src/lib/firebase.js</code>에 프로젝트 키는 잘 입력되었습니다.
+                                    마지막으로 **Firebase Console** 사이트에서 [Firestore Database]를 활성화(테스트 모드로 시작)해 주셔야 여기서 저장하는 내용이 전 세계에 실시간 반영됩니다.
+                                </p>
+                                <div className="flex flex-wrap gap-4">
+                                    <a href="https://console.firebase.google.com/" target="_blank" className="bg-amber-600 text-white px-8 py-3.5 rounded-2xl font-bold shadow-lg shadow-amber-600/20 hover:bg-amber-700 transition-all flex items-center gap-2">파이어베이스 콘솔 바로가기 <ExternalLink size={16} /></a>
+                                    <button onClick={loadData} className="bg-white text-amber-800 border border-amber-200 px-8 py-3.5 rounded-2xl font-bold hover:bg-amber-100 transition-all">연결 재시도</button>
                                 </div>
-                                <h3 className="text-xl font-bold text-gray-800">{staff.name}</h3>
-                                {staff.englishName && <p className="text-[10px] font-bold text-gray-400 -mt-1 uppercase tracking-wider">{staff.englishName}</p>}
-                                <p className="text-accent font-medium text-sm mb-1 mt-1">{staff.role}</p>
-                                {staff.englishRole && <p className="text-blue-500 font-medium text-[10px] mb-2">{staff.englishRole}</p>}
-                                <p className="text-gray-400 text-xs px-3 py-1 bg-gray-50 rounded-full">{staff.email || '이메일 없음'}</p>
                             </div>
                         </div>
-                    ))}
-                </div>
-            )}
-        </div>
-    )
-}
+                    )
+                }
 
-{/* Calendar List */ }
-{
-    activeTab === 'calendar' && (
-        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden animate-fade-in-up">
-            <div className="overflow-x-auto">
-                <table className="w-full">
-                    <thead>
-                        <tr className="bg-gray-50 border-b border-gray-100">
-                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider w-32">Date</th>
-                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Event</th>
-                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Note</th>
-                            <th className="px-8 py-5 text-right text-xs font-bold text-gray-400 uppercase tracking-wider w-32">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-50">
-                        {calendarEvents.length === 0 ? (
-                            <tr>
-                                <td colSpan="4" className="px-8 py-10 text-center text-gray-400 font-medium">
-                                    등록된 일정이 없습니다.
-                                </td>
-                            </tr>
-                        ) : (
-                            calendarEvents.map((item) => (
-                                <tr key={item.id} className="hover:bg-gray-50/50 transition-all group">
-                                    <td className="px-8 py-5 whitespace-nowrap text-sm text-gray-400 font-mono font-bold">{item.date}</td>
-                                    <td className="px-8 py-5">
-                                        <div className="flex flex-col">
-                                            <span className="text-sm font-black text-slate-800">{item.title}</span>
-                                            <span className={clsx(
-                                                "text-[10px] font-bold px-2 py-0.5 rounded w-fit mt-1",
-                                                item.type === 'special' ? "bg-accent/10 text-accent" : "bg-gray-100 text-gray-500"
-                                            )}>
-                                                {item.type === 'special' ? '특별 일정' : '일반 일정'}
-                                            </span>
+                {/* Staff List View */}
+                {
+                    activeTab === 'staff' && !showAddForm && (
+                        <div className="animate-fade-in-up">
+                            {staffList.length === 0 ? (
+                                <div className="text-center py-20 bg-white rounded-[2rem] border border-gray-100 shadow-sm">
+                                    <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
+                                        <Users size={40} />
+                                    </div>
+                                    <p className="text-gray-400 font-bold mb-2">등록된 섬기는 분이 없습니다.</p>
+                                    <p className="text-gray-300 text-sm">새 항목 등록하기 버튼을 눌러 추가해주세요.</p>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {staffList.map((staff) => (
+                                        <div key={staff.id || staff.name} className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all group relative overflow-hidden">
+                                            <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                                                <button
+                                                    onClick={() => handleEdit(staff, 'staff')}
+                                                    className="p-2 bg-blue-50 text-blue-500 rounded-xl hover:bg-blue-100 transition-colors shadow-sm"
+                                                    title="수정"
+                                                >
+                                                    <Settings size={18} />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete('staff', staff.id)}
+                                                    className="p-2 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-colors shadow-sm"
+                                                    title="삭제"
+                                                >
+                                                    <Trash2 size={18} />
+                                                </button>
+                                            </div>
+
+                                            <div className="flex flex-col items-center">
+                                                <div className="w-48 h-48 bg-gray-100 rounded-full mb-6 overflow-hidden border-8 border-gray-50 shadow-inner group-hover:scale-105 transition-transform duration-300">
+                                                    {staff.image ? (
+                                                        <img
+                                                            src={staff.image}
+                                                            alt={staff.name}
+                                                            referrerPolicy="no-referrer"
+                                                            className="w-full h-full object-cover"
+                                                            onError={(e) => {
+                                                                e.target.onerror = null;
+                                                                e.target.style.display = 'none';
+                                                                e.target.parentElement.classList.add('flex', 'items-center', 'justify-center', 'bg-gray-100');
+                                                                e.target.parentElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-50 text-gray-400"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>';
+                                                            }}
+                                                        />
+                                                    ) : (
+                                                        <div className="w-full h-full flex items-center justify-center text-gray-300 bg-gray-100">
+                                                            <Users size={64} className="opacity-50" />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <h3 className="text-xl font-bold text-gray-800">{staff.name}</h3>
+                                                {staff.englishName && <p className="text-[10px] font-bold text-gray-400 -mt-1 uppercase tracking-wider">{staff.englishName}</p>}
+                                                <p className="text-accent font-medium text-sm mb-1 mt-1">{staff.role}</p>
+                                                {staff.englishRole && <p className="text-blue-500 font-medium text-[10px] mb-2">{staff.englishRole}</p>}
+                                                <p className="text-gray-400 text-xs px-3 py-1 bg-gray-50 rounded-full">{staff.email || '이메일 없음'}</p>
+                                            </div>
                                         </div>
-                                    </td>
-                                    <td className="px-8 py-5 text-sm text-gray-500">{item.note}</td>
-                                    <td className="px-8 py-5 whitespace-nowrap text-right space-x-2">
-                                        <button
-                                            onClick={() => handleEdit(item, 'calendar')}
-                                            className="text-gray-200 hover:text-primary transition-all p-2 rounded-2xl hover:bg-primary/5 active:scale-90"
-                                        >
-                                            <Settings size={18} />
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete('calendar', item.id)}
-                                            className="text-gray-200 hover:text-red-500 transition-all p-2 rounded-2xl hover:bg-red-50 active:scale-90"
-                                        >
-                                            <Trash2 size={18} />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
-            </div>
-        </main>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    )
+                }
+
+                {/* Calendar List */}
+                {
+                    activeTab === 'calendar' && (
+                        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden animate-fade-in-up">
+                            <div className="overflow-x-auto">
+                                <table className="w-full">
+                                    <thead>
+                                        <tr className="bg-gray-50 border-b border-gray-100">
+                                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider w-32">Date</th>
+                                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Event</th>
+                                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Note</th>
+                                            <th className="px-8 py-5 text-right text-xs font-bold text-gray-400 uppercase tracking-wider w-32">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-gray-50">
+                                        {calendarEvents.length === 0 ? (
+                                            <tr>
+                                                <td colSpan="4" className="px-8 py-10 text-center text-gray-400 font-medium">
+                                                    등록된 일정이 없습니다.
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            calendarEvents.map((item) => (
+                                                <tr key={item.id} className="hover:bg-gray-50/50 transition-all group">
+                                                    <td className="px-8 py-5 whitespace-nowrap text-sm text-gray-400 font-mono font-bold">{item.date}</td>
+                                                    <td className="px-8 py-5">
+                                                        <div className="flex flex-col">
+                                                            <span className="text-sm font-black text-slate-800">{item.title}</span>
+                                                            <span className={clsx(
+                                                                "text-[10px] font-bold px-2 py-0.5 rounded w-fit mt-1",
+                                                                item.type === 'special' ? "bg-accent/10 text-accent" : "bg-gray-100 text-gray-500"
+                                                            )}>
+                                                                {item.type === 'special' ? '특별 일정' : '일반 일정'}
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-8 py-5 text-sm text-gray-500">{item.note}</td>
+                                                    <td className="px-8 py-5 whitespace-nowrap text-right space-x-2">
+                                                        <button
+                                                            onClick={() => handleEdit(item, 'calendar')}
+                                                            className="text-gray-200 hover:text-primary transition-all p-2 rounded-2xl hover:bg-primary/5 active:scale-90"
+                                                        >
+                                                            <Settings size={18} />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDelete('calendar', item.id)}
+                                                            className="text-gray-200 hover:text-red-500 transition-all p-2 rounded-2xl hover:bg-red-50 active:scale-90"
+                                                        >
+                                                            <Trash2 size={18} />
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    )
+                }
+            </main>
+        </div>
     );
 };
 
