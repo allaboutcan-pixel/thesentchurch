@@ -84,8 +84,9 @@ const Home = () => {
                         displayWord = liveDailyWords.find(w => w.date === tomStr);
                     }
 
-                    // If no word for today or tomorrow (e.g. Sunday/Monday morning), find the last available past word
-                    const lastWord = liveDailyWords.filter(w => w.date < todayStr).sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+                    // If no word for today or tomorrow (e.g. general fallback), find the last available past word
+                    // Important fallback: Always show something if data exists (sorted[0] is the most recent)
+                    const lastWord = liveDailyWords.filter(w => w.date < todayStr).sort((a, b) => new Date(b.date) - new Date(a.date))[0] || liveDailyWords[0];
 
                     setLatestDailyWord(displayWord || lastWord || null);
                 }

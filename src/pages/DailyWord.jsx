@@ -16,7 +16,7 @@ const getDayName = (dateStr) => {
 };
 
 const DailyWord = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [dailyWords, setDailyWords] = useState([]);
     const [latestWord, setLatestWord] = useState(null);
     const [archiveData, setArchiveData] = useState({}); // { year: { month: [items] } }
@@ -37,6 +37,7 @@ const DailyWord = () => {
     const [subtitleSize, setSubtitleSize] = useState(24);
     const [overlayOpacity, setOverlayOpacity] = useState(40);
     const [height, setHeight] = useState("medium");
+    const [bannerFit, setBannerFit] = useState("cover");
 
     useEffect(() => {
         let isMounted = true;
@@ -67,13 +68,15 @@ const DailyWord = () => {
                     if (config[`${prefix}SubtitleSize`]) setSubtitleSize(config[`${prefix}SubtitleSize`]);
                     if (config[`${prefix}OverlayOpacity`] !== undefined) setOverlayOpacity(config[`${prefix}OverlayOpacity`]);
                     if (config[`${prefix}Height`]) setHeight(config[`${prefix}Height`]);
+                    if (config[`${prefix}BannerFit`]) setBannerFit(config[`${prefix}BannerFit`]);
                 }
 
                 if (words.length > 0) {
                     const sorted = [...words].sort((a, b) => new Date(b.date) - new Date(a.date));
-                    // User requested to only show 5 items in archive
-                    const limitedWords = sorted.slice(0, 5);
-                    setDailyWords(limitedWords);
+                    // The user registered 5 items per week and deletes old ones.
+                    // We increase this limit slightly to ensure all current week items are captured.
+                    const displayList = sorted.slice(0, 10);
+                    setDailyWords(displayList);
 
                     // Use local date components to match user's device time (fixes UTC/KST/PST offset issues)
                     const d = new Date();
@@ -81,6 +84,7 @@ const DailyWord = () => {
                     const month = String(d.getMonth() + 1).padStart(2, '0');
                     const day = String(d.getDate()).padStart(2, '0');
                     const todayStr = `${year}-${month}-${day}`;
+
                     // Find word exactly for today to support scheduling
                     const todayWord = sorted.find(w => w.date === todayStr);
 
@@ -94,26 +98,30 @@ const DailyWord = () => {
                     }
 
                     // If no word for today or tomorrow (e.g. general fallback), find the last available past word
+                    // Important: Always fallback to the most recent word (sorted[0]) if no match is found
                     const lastWord = sorted.find(w => w.date < todayStr) || sorted[0];
 
                     setLatestWord(displayWord || lastWord);
 
                     const grouped = {};
-                    limitedWords.forEach(item => {
+                    displayList.forEach(item => {
                         if (!item.date) return;
-                        const [y, m] = item.date.split('-');
-                        const year = y;
-                        const month = parseInt(m, 10).toString();
+                        const dateParts = item.date.split('-');
+                        if (dateParts.length < 2) return;
+                        const year = dateParts[0];
+                        const month = parseInt(dateParts[1], 10).toString();
                         if (!grouped[year]) grouped[year] = {};
                         if (!grouped[year][month]) grouped[year][month] = [];
                         grouped[year][month].push(item);
                     });
                     setArchiveData(grouped);
 
-                    if (limitedWords.length > 0) {
-                        const [ly, lm] = limitedWords[0].date.split('-');
-                        setSelectedYear(ly);
-                        setSelectedMonth(parseInt(lm, 10).toString());
+                    if (displayList.length > 0) {
+                        const dateParts = displayList[0].date.split('-');
+                        if (dateParts.length >= 2) {
+                            setSelectedYear(dateParts[0]);
+                            setSelectedMonth(parseInt(dateParts[1], 10).toString());
+                        }
                     }
                 }
             } catch (error) {
@@ -132,7 +140,10 @@ const DailyWord = () => {
                     <img
                         src={headerBanner}
                         alt="Daily Word Banner"
-                        className="w-full h-full object-cover"
+                        className={clsx(
+                            "w-full h-full transition-all duration-700",
+                            bannerFit === 'contain' ? "object-contain" : "object-cover"
+                        )}
                         loading="eager"
                         fetchpriority="high"
                         decoding="async"
@@ -146,7 +157,7 @@ const DailyWord = () => {
                 </div>
                 <div className="relative z-10 container mx-auto px-4 text-center">
                     <h1 className={clsx(
-                        "mb-3 animate-fade-in-up break-keep",
+                        "mb-8 animate-fade-in-up break-keep",
                         titleWeight,
                         titleFont,
                         titleItalic && "italic"
@@ -156,7 +167,7 @@ const DailyWord = () => {
                             fontSize: titleSize ? `${titleSize}px` : undefined
                         }}
                     >
-                        {title || t('resources.daily_word_title')}
+                        {i18n.language.startsWith('en') ? (title || t('resources.daily_word_title')) : t('resources.daily_word_title')}
                     </h1>
                     <div className="w-20 h-1.5 bg-accent mx-auto mb-8 rounded-full animate-fade-in-up delay-75" />
                     <h2 className={clsx(
@@ -170,7 +181,7 @@ const DailyWord = () => {
                             fontSize: subtitleSize ? `${subtitleSize}px` : undefined
                         }}
                     >
-                        {subtitle || t('resources.daily_word_subtitle')}
+                        {i18n.language.startsWith('en') ? (subtitle || t('resources.daily_word_subtitle')) : t('resources.daily_word_subtitle')}
                     </h2>
                 </div>
             </section>
