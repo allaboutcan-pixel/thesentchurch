@@ -200,7 +200,7 @@ const TEE = () => {
                                 </div>
                                 <div className="w-full max-w-md mx-auto mt-auto mb-4 px-6">
                                     <img
-                                        src="/images/tee_multiplication.png"
+                                        src="/images/tee_multiplication.jpg"
                                         alt="TEE Multiplication Diagram"
                                         className="w-full h-auto object-contain opacity-90 drop-shadow-md"
                                     />
