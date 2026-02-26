@@ -203,6 +203,11 @@ const TEE = () => {
                                         src="/images/tee_multiplication.jpg"
                                         alt="TEE Multiplication Diagram"
                                         className="w-full h-auto object-contain opacity-90 drop-shadow-md"
+                                        onError={(e) => {
+                                            if (!e.target.src.endsWith('.JPG')) {
+                                                e.target.src = '/images/tee_multiplication.JPG';
+                                            }
+                                        }}
                                     />
                                 </div>
                             </div>
