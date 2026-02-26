@@ -614,6 +614,8 @@ const Admin = () => {
                     resourcesBanner: fbConfig.resourcesBanner || '',
                     resourcesTitle: fbConfig.resourcesTitle || '',
                     resourcesSubtitle: fbConfig.resourcesSubtitle || '',
+                    resourcesTitleEn: fbConfig.resourcesTitleEn || '',
+                    resourcesSubtitleEn: fbConfig.resourcesSubtitleEn || '',
                     resourcesTitleFont: fbConfig.resourcesTitleFont || 'font-sans',
                     resourcesSubtitleFont: fbConfig.resourcesSubtitleFont || 'font-sans',
                     resourcesTitleColor: fbConfig.resourcesTitleColor || '#ffffff',
@@ -632,6 +634,8 @@ const Admin = () => {
                     missionBanner: fbConfig.missionBanner || '',
                     missionTitle: fbConfig.missionTitle || '',
                     missionSubtitle: fbConfig.missionSubtitle || '',
+                    missionTitleEn: fbConfig.missionTitleEn || '',
+                    missionSubtitleEn: fbConfig.missionSubtitleEn || '',
                     missionTitleFont: fbConfig.missionTitleFont || 'font-sans',
                     missionSubtitleFont: fbConfig.missionSubtitleFont || 'font-sans',
                     missionTitleColor: fbConfig.missionTitleColor || '#ffffff',
@@ -650,6 +654,8 @@ const Admin = () => {
                     prayerBanner: fbConfig.prayerBanner || '',
                     prayerTitle: fbConfig.prayerTitle || '',
                     prayerSubtitle: fbConfig.prayerSubtitle || '',
+                    prayerTitleEn: fbConfig.prayerTitleEn || '',
+                    prayerSubtitleEn: fbConfig.prayerSubtitleEn || '',
                     prayerTitleFont: fbConfig.prayerTitleFont || 'font-sans',
                     prayerSubtitleFont: fbConfig.prayerSubtitleFont || 'font-sans',
                     prayerTitleColor: fbConfig.prayerTitleColor || '#ffffff',
@@ -668,6 +674,8 @@ const Admin = () => {
                     teeBanner: fbConfig.teeBanner || '',
                     teeTitle: fbConfig.teeTitle || '',
                     teeSubtitle: fbConfig.teeSubtitle || '',
+                    teeTitleEn: fbConfig.teeTitleEn || '',
+                    teeSubtitleEn: fbConfig.teeSubtitleEn || '',
                     teeTitleFont: fbConfig.teeTitleFont || 'font-sans',
                     teeSubtitleFont: fbConfig.teeSubtitleFont || 'font-sans',
                     teeTitleColor: fbConfig.teeTitleColor || '#ffffff',
@@ -686,6 +694,8 @@ const Admin = () => {
                     teamBanner: fbConfig.teamBanner || '',
                     teamTitle: fbConfig.teamTitle || '',
                     teamSubtitle: fbConfig.teamSubtitle || '',
+                    teamTitleEn: fbConfig.teamTitleEn || '',
+                    teamSubtitleEn: fbConfig.teamSubtitleEn || '',
                     teamTitleFont: fbConfig.teamTitleFont || 'font-sans',
                     teamSubtitleFont: fbConfig.teamSubtitleFont || 'font-sans',
                     teamTitleColor: fbConfig.teamTitleColor || '#ffffff',
@@ -704,6 +714,8 @@ const Admin = () => {
                     bibleBanner: fbConfig.bibleBanner || '',
                     bibleTitle: fbConfig.bibleTitle || '',
                     bibleSubtitle: fbConfig.bibleSubtitle || '',
+                    bibleTitleEn: fbConfig.bibleTitleEn || '',
+                    bibleSubtitleEn: fbConfig.bibleSubtitleEn || '',
                     bibleTitleFont: fbConfig.bibleTitleFont || 'font-sans',
                     bibleSubtitleFont: fbConfig.bibleSubtitleFont || 'font-sans',
                     bibleTitleColor: fbConfig.bibleTitleColor || '#ffffff',
@@ -1873,7 +1885,7 @@ const Admin = () => {
                     />
                     <SidebarItem
                         icon={<BookOpen size={20} />}
-                        label="교육/사역 (Education/Ministry)"
+                        label="교육 및 사역 관리"
                         active={activeTab === 'education_ministry'}
                         onClick={() => { setActiveTab('education_ministry'); setShowAddForm(false); }}
                     />
@@ -1946,7 +1958,7 @@ const Admin = () => {
                         </p>
                     </div>
                     {isLoading && <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>}
-                    {!showAddForm && activeTab !== 'site' && activeTab !== 'intro' && activeTab !== 'general' && activeTab !== 'worship' && (
+                    {!showAddForm && activeTab !== 'site' && activeTab !== 'intro' && activeTab !== 'general' && activeTab !== 'worship' && activeTab !== 'prayer' && activeTab !== 'education_ministry' && activeTab !== 'location' && (
                         <button
                             onClick={() => {
                                 setEditingId(null);
@@ -1973,7 +1985,7 @@ const Admin = () => {
                 </header>
 
                 {/* Form Section */}
-                {showAddForm && activeTab !== 'site' && activeTab !== 'staff' && activeTab !== 'general' && activeTab !== 'worship' && (
+                {showAddForm && activeTab !== 'site' && activeTab !== 'staff' && activeTab !== 'general' && activeTab !== 'worship' && activeTab !== 'prayer' && activeTab !== 'education_ministry' && activeTab !== 'location' && (
                     <div className="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 mb-10 animate-fade-in-up">
                         <div className="flex justify-between items-center mb-8 pb-4 border-b border-gray-50">
                             <h2 className="text-xl font-bold flex items-center gap-2 text-gray-700">
@@ -2476,8 +2488,7 @@ const Admin = () => {
                             </div>
                         </form>
                     </div>
-                )
-                }
+                )}
 
                 {/* Staff Form */}
                 {
@@ -2801,219 +2812,219 @@ const Admin = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">중보기도부 목표 섹션 타이틀 (Korean Title)</label>
-                                            <input
-                                                type="text"
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
-                                                placeholder="예: 중보기도부 목표"
-                                                value={formData.prayerGoalsTitle || ''}
-                                                onChange={(e) => setFormData({ ...formData, prayerGoalsTitle: e.target.value })}
-                                            />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-blue-500 ml-1">English Goals Title</label>
-                                            <input
-                                                type="text"
-                                                className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
-                                                placeholder="Enter English Title"
-                                                value={formData.prayerGoalsTitleEn || ''}
-                                                onChange={(e) => setFormData({ ...formData, prayerGoalsTitleEn: e.target.value })}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">중보기도부 목표 (Korean Goals)</label>
-                                            <textarea
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
-                                                placeholder="예: 기도의 용사를 양성하고..."
-                                                value={formData.prayerGoals}
-                                                onChange={(e) => setFormData({ ...formData, prayerGoals: e.target.value })}
-                                            />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-blue-500 ml-1">English Goals Content</label>
-                                            <textarea
-                                                className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
-                                                placeholder="Enter English goals"
-                                                value={formData.prayerGoalsEn}
-                                                onChange={(e) => setFormData({ ...formData, prayerGoalsEn: e.target.value })}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">운영시간 섹션 타이틀 (Korean Title)</label>
-                                            <input
-                                                type="text"
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
-                                                placeholder="예: 운영시간"
-                                                value={formData.prayerHoursTitle || ''}
-                                                onChange={(e) => setFormData({ ...formData, prayerHoursTitle: e.target.value })}
-                                            />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-blue-500 ml-1">English Hours Title</label>
-                                            <input
-                                                type="text"
-                                                className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
-                                                placeholder="Enter English Title"
-                                                value={formData.prayerHoursTitleEn || ''}
-                                                onChange={(e) => setFormData({ ...formData, prayerHoursTitleEn: e.target.value })}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">운영시간 (Korean Operating Hours)</label>
-                                            <textarea
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
-                                                placeholder="예: 매주 금요일 오후 8시..."
-                                                value={formData.prayerHours}
-                                                onChange={(e) => setFormData({ ...formData, prayerHours: e.target.value })}
-                                            />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-blue-500 ml-1">English Operating Hours Content</label>
-                                            <textarea
-                                                className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
-                                                placeholder="Enter English hours (e.g., Every Friday 8pm)"
-                                                value={formData.prayerHoursEn}
-                                                onChange={(e) => setFormData({ ...formData, prayerHoursEn: e.target.value })}
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-4 mb-8 p-4 bg-blue-50/50 rounded-2xl border border-blue-100">
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div className="space-y-2">
-                                                <label className="text-sm font-bold text-gray-600 ml-1">기도제목 섹션 타이틀 (Korean Title)</label>
+                                                <label className="text-sm font-bold text-gray-600 ml-1">중보기도부 목표 섹션 타이틀 (Korean Title)</label>
                                                 <input
                                                     type="text"
-                                                    className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold text-lg"
-                                                    placeholder="예: 생명의 소리 교회 중보기도 내용"
-                                                    value={formData.prayerTopicsTitle || ''}
-                                                    onChange={(e) => setFormData({ ...formData, prayerTopicsTitle: e.target.value })}
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
+                                                    placeholder="예: 중보기도부 목표"
+                                                    value={formData.prayerGoalsTitle || ''}
+                                                    onChange={(e) => setFormData({ ...formData, prayerGoalsTitle: e.target.value })}
                                                 />
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="text-sm font-bold text-blue-500 ml-1">English Topics Title</label>
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Goals Title</label>
                                                 <input
                                                     type="text"
-                                                    className="w-full p-4 bg-white border border-blue-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold text-lg"
+                                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
                                                     placeholder="Enter English Title"
-                                                    value={formData.prayerTopicsTitleEn || ''}
-                                                    onChange={(e) => setFormData({ ...formData, prayerTopicsTitleEn: e.target.value })}
+                                                    value={formData.prayerGoalsTitleEn || ''}
+                                                    onChange={(e) => setFormData({ ...formData, prayerGoalsTitleEn: e.target.value })}
                                                 />
                                             </div>
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div className="space-y-2">
-                                                <label className="text-sm font-bold text-gray-600 ml-1">기도제목 섹션 서브타이틀 (Korean Subtitle)</label>
+                                                <label className="text-sm font-bold text-gray-600 ml-1">중보기도부 목표 (Korean Goals)</label>
                                                 <textarea
-                                                    className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-24 resize-none leading-relaxed"
-                                                    placeholder="예: 우리 교회는 서로를 위해 기도하는 공동체입니다..."
-                                                    value={formData.prayerTopicsSubtitle || ''}
-                                                    onChange={(e) => setFormData({ ...formData, prayerTopicsSubtitle: e.target.value })}
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                    placeholder="예: 기도의 용사를 양성하고..."
+                                                    value={formData.prayerGoals}
+                                                    onChange={(e) => setFormData({ ...formData, prayerGoals: e.target.value })}
                                                 />
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="text-sm font-bold text-blue-500 ml-1">English Topics Subtitle</label>
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Goals Content</label>
                                                 <textarea
-                                                    className="w-full p-4 bg-white border border-blue-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-24 resize-none leading-relaxed"
-                                                    placeholder="Enter English Subtitle"
-                                                    value={formData.prayerTopicsSubtitleEn || ''}
-                                                    onChange={(e) => setFormData({ ...formData, prayerTopicsSubtitleEn: e.target.value })}
+                                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                    placeholder="Enter English goals"
+                                                    value={formData.prayerGoalsEn}
+                                                    onChange={(e) => setFormData({ ...formData, prayerGoalsEn: e.target.value })}
                                                 />
                                             </div>
                                         </div>
-                                        <p className="text-xs text-gray-400 ml-1">* 줄바꿈을 하려면 Enter를 누르거나 &lt;br/&gt; 태그를 사용하세요.</p>
-                                    </div>
 
-                                    <div className="space-y-4">
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">교회를 위한 기도 (Korean Prayer for Church)</label>
-                                            <textarea
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-48 resize-none leading-relaxed"
-                                                placeholder="예: 1. 2026년 표어...&#13;&#10;2. 비전..."
-                                                value={formData.prayerChurchTopics2026}
-                                                onChange={(e) => setFormData({ ...formData, prayerChurchTopics2026: e.target.value })}
-                                            />
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">운영시간 섹션 타이틀 (Korean Title)</label>
+                                                <input
+                                                    type="text"
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
+                                                    placeholder="예: 운영시간"
+                                                    value={formData.prayerHoursTitle || ''}
+                                                    onChange={(e) => setFormData({ ...formData, prayerHoursTitle: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Hours Title</label>
+                                                <input
+                                                    type="text"
+                                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold"
+                                                    placeholder="Enter English Title"
+                                                    value={formData.prayerHoursTitleEn || ''}
+                                                    onChange={(e) => setFormData({ ...formData, prayerHoursTitleEn: e.target.value })}
+                                                />
+                                            </div>
                                         </div>
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-blue-500 ml-1">English Prayer for Church</label>
-                                            <textarea
-                                                className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-48 resize-none leading-relaxed"
-                                                placeholder="Enter English prayer topics for the church"
-                                                value={formData.prayerChurchTopics2026En}
-                                                onChange={(e) => setFormData({ ...formData, prayerChurchTopics2026En: e.target.value })}
-                                            />
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">운영시간 (Korean Operating Hours)</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                    placeholder="예: 매주 금요일 오후 8시..."
+                                                    value={formData.prayerHours}
+                                                    onChange={(e) => setFormData({ ...formData, prayerHours: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Operating Hours Content</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-32 resize-none leading-relaxed"
+                                                    placeholder="Enter English hours (e.g., Every Friday 8pm)"
+                                                    value={formData.prayerHoursEn}
+                                                    onChange={(e) => setFormData({ ...formData, prayerHoursEn: e.target.value })}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div className="space-y-4">
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-600 ml-1">공동기도제목 (Korean Common Prayer Topics)</label>
-                                            <textarea
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-96 resize-none leading-relaxed"
-                                                placeholder="예: 1. 나라와 민족을 위해...&#13;&#10;2. 한국교회를 위해..."
-                                                value={formData.prayerCommonTopics}
-                                                onChange={(e) => {
-                                                    const val = e.target.value;
-                                                    setFormData(prev => ({ ...prev, prayerCommonTopics: val }));
-                                                    setSiteConfig(prev => ({ ...prev, prayerCommonTopics: val }));
-                                                }}
-                                            />
+                                        <div className="space-y-4 mb-8 p-4 bg-blue-50/50 rounded-2xl border border-blue-100">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-bold text-gray-600 ml-1">기도제목 섹션 타이틀 (Korean Title)</label>
+                                                    <input
+                                                        type="text"
+                                                        className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold text-lg"
+                                                        placeholder="예: 생명의 소리 교회 중보기도 내용"
+                                                        value={formData.prayerTopicsTitle || ''}
+                                                        onChange={(e) => setFormData({ ...formData, prayerTopicsTitle: e.target.value })}
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-bold text-blue-500 ml-1">English Topics Title</label>
+                                                    <input
+                                                        type="text"
+                                                        className="w-full p-4 bg-white border border-blue-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-bold text-lg"
+                                                        placeholder="Enter English Title"
+                                                        value={formData.prayerTopicsTitleEn || ''}
+                                                        onChange={(e) => setFormData({ ...formData, prayerTopicsTitleEn: e.target.value })}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-bold text-gray-600 ml-1">기도제목 섹션 서브타이틀 (Korean Subtitle)</label>
+                                                    <textarea
+                                                        className="w-full p-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-24 resize-none leading-relaxed"
+                                                        placeholder="예: 우리 교회는 서로를 위해 기도하는 공동체입니다..."
+                                                        value={formData.prayerTopicsSubtitle || ''}
+                                                        onChange={(e) => setFormData({ ...formData, prayerTopicsSubtitle: e.target.value })}
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-sm font-bold text-blue-500 ml-1">English Topics Subtitle</label>
+                                                    <textarea
+                                                        className="w-full p-4 bg-white border border-blue-200 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-24 resize-none leading-relaxed"
+                                                        placeholder="Enter English Subtitle"
+                                                        value={formData.prayerTopicsSubtitleEn || ''}
+                                                        onChange={(e) => setFormData({ ...formData, prayerTopicsSubtitleEn: e.target.value })}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <p className="text-xs text-gray-400 ml-1">* 줄바꿈을 하려면 Enter를 누르거나 &lt;br/&gt; 태그를 사용하세요.</p>
                                         </div>
-                                        <div className="space-y-2">
-                                            <label className="text-sm font-bold text-blue-500 ml-1">English Common Prayer Topics</label>
-                                            <textarea
-                                                className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-96 resize-none leading-relaxed"
-                                                placeholder="Enter English common prayer topics"
-                                                value={formData.prayerCommonTopicsEn}
-                                                onChange={(e) => {
-                                                    const val = e.target.value;
-                                                    setFormData(prev => ({ ...prev, prayerCommonTopicsEn: val }));
-                                                    setSiteConfig(prev => ({ ...prev, prayerCommonTopicsEn: val }));
-                                                }}
-                                            />
-                                            <p className="text-xs text-gray-400 ml-1">
-                                                * 여러 줄로 입력하면 자동으로 목록으로 변환되어 표시됩니다.
-                                            </p>
+
+                                        <div className="space-y-4">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">교회를 위한 기도 (Korean Prayer for Church)</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-48 resize-none leading-relaxed"
+                                                    placeholder="예: 1. 2026년 표어...&#13;&#10;2. 비전..."
+                                                    value={formData.prayerChurchTopics2026}
+                                                    onChange={(e) => setFormData({ ...formData, prayerChurchTopics2026: e.target.value })}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Prayer for Church</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-48 resize-none leading-relaxed"
+                                                    placeholder="Enter English prayer topics for the church"
+                                                    value={formData.prayerChurchTopics2026En}
+                                                    onChange={(e) => setFormData({ ...formData, prayerChurchTopics2026En: e.target.value })}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-4">
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">공동기도제목 (Korean Common Prayer Topics)</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-96 resize-none leading-relaxed"
+                                                    placeholder="예: 1. 나라와 민족을 위해...&#13;&#10;2. 한국교회를 위해..."
+                                                    value={formData.prayerCommonTopics}
+                                                    onChange={(e) => {
+                                                        const val = e.target.value;
+                                                        setFormData(prev => ({ ...prev, prayerCommonTopics: val }));
+                                                        setSiteConfig(prev => ({ ...prev, prayerCommonTopics: val }));
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">English Common Prayer Topics</label>
+                                                <textarea
+                                                    className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-accent/10 outline-none font-medium h-96 resize-none leading-relaxed"
+                                                    placeholder="Enter English common prayer topics"
+                                                    value={formData.prayerCommonTopicsEn}
+                                                    onChange={(e) => {
+                                                        const val = e.target.value;
+                                                        setFormData(prev => ({ ...prev, prayerCommonTopicsEn: val }));
+                                                        setSiteConfig(prev => ({ ...prev, prayerCommonTopicsEn: val }));
+                                                    }}
+                                                />
+                                                <p className="text-xs text-gray-400 ml-1">
+                                                    * 여러 줄로 입력하면 자동으로 목록으로 변환되어 표시됩니다.
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            {/* Prayer Request Image Section */}
-                            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
-                                <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                                    <div className="p-2 bg-primary/10 rounded-xl text-primary"><Send size={20} /></div>
-                                    중보기도 요청 섹션 이미지 (Prayer Request Section Image)
-                                </h3>
-                                <div className="p-6 bg-gray-50 rounded-2xl border border-gray-100">
-                                    <div className="max-w-2xl">
-                                        <BannerManager
-                                            label="중보기도 요청 배경 이미지"
-                                            value={formData.prayerRequestImage}
-                                            fieldName="prayerRequestImage"
-                                            bannerFiles={bannerFiles}
-                                            setBannerFiles={setBannerFiles}
-                                            onChange={(val) => setFormData(prev => ({ ...prev, prayerRequestImage: val }))}
-                                            aspectRatio="aspect-video"
-                                        />
+                                {/* Prayer Request Image Section */}
+                                <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-8">
+                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                        <div className="p-2 bg-primary/10 rounded-xl text-primary"><Send size={20} /></div>
+                                        중보기도 요청 섹션 이미지 (Prayer Request Section Image)
+                                    </h3>
+                                    <div className="p-6 bg-gray-50 rounded-2xl border border-gray-100">
+                                        <div className="max-w-2xl">
+                                            <BannerManager
+                                                label="중보기도 요청 배경 이미지"
+                                                value={formData.prayerRequestImage}
+                                                fieldName="prayerRequestImage"
+                                                bannerFiles={bannerFiles}
+                                                setBannerFiles={setBannerFiles}
+                                                onChange={(val) => setFormData(prev => ({ ...prev, prayerRequestImage: val }))}
+                                                aspectRatio="aspect-video"
+                                            />
+                                        </div>
+                                        <p className="text-xs text-gray-400 mt-4 ml-1">
+                                            * '함께 기도해요' 섹션의 배경 이미지입니다.
+                                        </p>
                                     </div>
-                                    <p className="text-xs text-gray-400 mt-4 ml-1">
-                                        * '함께 기도해요' 섹션의 배경 이미지입니다.
-                                    </p>
                                 </div>
                             </div>
-                        </div>
+                        </section>
                     )
                 }
 
@@ -4610,168 +4621,165 @@ const Admin = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                    ))
-                                )}
-                            </div>
+                    </div>
+                            ))
+                )}
                         </div>
-                    )
-                }
-                {
-                    !isFirebaseConfigured && (
-                        <div className="mt-10 p-10 bg-amber-50 rounded-[2.5rem] border border-amber-100 flex flex-col md:flex-row gap-8 items-start relative overflow-hidden">
-                            <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
-                                <Shield size={120} />
-                            </div>
-                            <div className="p-5 bg-amber-100 rounded-3xl text-amber-600 shadow-sm border border-amber-200">
-                                <AlertTriangle size={32} />
-                            </div>
-                            <div className="relative z-10 font-sans">
-                                <h4 className="font-black text-amber-900 text-xl mb-3 flex items-center gap-2">
-                                    Firebase Firestore 활성화가 필요합니다
-                                </h4>
-                                <p className="text-amber-800/80 leading-relaxed max-w-2xl mb-8 font-medium">
-                                    현재 <code className="bg-amber-100 px-2 py-0.5 rounded text-amber-900">src/lib/firebase.js</code>에 프로젝트 키는 잘 입력되었습니다.
-                                    마지막으로 **Firebase Console** 사이트에서 [Firestore Database]를 활성화(테스트 모드로 시작)해 주셔야 여기서 저장하는 내용이 전 세계에 실시간 반영됩니다.
-                                </p>
-                                <div className="flex flex-wrap gap-4">
-                                    <a href="https://console.firebase.google.com/" target="_blank" className="bg-amber-600 text-white px-8 py-3.5 rounded-2xl font-bold shadow-lg shadow-amber-600/20 hover:bg-amber-700 transition-all flex items-center gap-2">파이어베이스 콘솔 바로가기 <ExternalLink size={16} /></a>
-                                    <button onClick={loadData} className="bg-white text-amber-800 border border-amber-200 px-8 py-3.5 rounded-2xl font-bold hover:bg-amber-100 transition-all">연결 재시도</button>
-                                </div>
-                            </div>
-                        </div>
-                    )
-                }
-
-                {/* Staff List View */}
-                {
-                    activeTab === 'staff' && !showAddForm && (
-                        <div className="animate-fade-in-up">
-                            {staffList.length === 0 ? (
-                                <div className="text-center py-20 bg-white rounded-[2rem] border border-gray-100 shadow-sm">
-                                    <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
-                                        <Users size={40} />
-                                    </div>
-                                    <p className="text-gray-400 font-bold mb-2">등록된 섬기는 분이 없습니다.</p>
-                                    <p className="text-gray-300 text-sm">새 항목 등록하기 버튼을 눌러 추가해주세요.</p>
-                                </div>
-                            ) : (
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {staffList.map((staff) => (
-                                        <div key={staff.id || staff.name} className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all group relative overflow-hidden">
-                                            <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
-                                                <button
-                                                    onClick={() => handleEdit(staff, 'staff')}
-                                                    className="p-2 bg-blue-50 text-blue-500 rounded-xl hover:bg-blue-100 transition-colors shadow-sm"
-                                                    title="수정"
-                                                >
-                                                    <Settings size={18} />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete('staff', staff.id)}
-                                                    className="p-2 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-colors shadow-sm"
-                                                    title="삭제"
-                                                >
-                                                    <Trash2 size={18} />
-                                                </button>
-                                            </div>
-
-                                            <div className="flex flex-col items-center">
-                                                <div className="w-48 h-48 bg-gray-100 rounded-full mb-6 overflow-hidden border-8 border-gray-50 shadow-inner group-hover:scale-105 transition-transform duration-300">
-                                                    {staff.image ? (
-                                                        <img
-                                                            src={staff.image}
-                                                            alt={staff.name}
-                                                            referrerPolicy="no-referrer"
-                                                            className="w-full h-full object-cover"
-                                                            onError={(e) => {
-                                                                e.target.onerror = null;
-                                                                e.target.style.display = 'none';
-                                                                e.target.parentElement.classList.add('flex', 'items-center', 'justify-center', 'bg-gray-100');
-                                                                e.target.parentElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-50 text-gray-400"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>';
-                                                            }}
-                                                        />
-                                                    ) : (
-                                                        <div className="w-full h-full flex items-center justify-center text-gray-300 bg-gray-100">
-                                                            <Users size={64} className="opacity-50" />
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <h3 className="text-xl font-bold text-gray-800">{staff.name}</h3>
-                                                {staff.englishName && <p className="text-[10px] font-bold text-gray-400 -mt-1 uppercase tracking-wider">{staff.englishName}</p>}
-                                                <p className="text-accent font-medium text-sm mb-1 mt-1">{staff.role}</p>
-                                                {staff.englishRole && <p className="text-blue-500 font-medium text-[10px] mb-2">{staff.englishRole}</p>}
-                                                <p className="text-gray-400 text-xs px-3 py-1 bg-gray-50 rounded-full">{staff.email || '이메일 없음'}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    )
-                }
-
-                {/* Calendar List */}
-                {
-                    activeTab === 'calendar' && (
-                        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden animate-fade-in-up">
-                            <div className="overflow-x-auto">
-                                <table className="w-full">
-                                    <thead>
-                                        <tr className="bg-gray-50 border-b border-gray-100">
-                                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider w-32">Date</th>
-                                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Event</th>
-                                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Note</th>
-                                            <th className="px-8 py-5 text-right text-xs font-bold text-gray-400 uppercase tracking-wider w-32">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-gray-50">
-                                        {calendarEvents.length === 0 ? (
-                                            <tr>
-                                                <td colSpan="4" className="px-8 py-10 text-center text-gray-400 font-medium">
-                                                    등록된 일정이 없습니다.
-                                                </td>
-                                            </tr>
-                                        ) : (
-                                            calendarEvents.map((item) => (
-                                                <tr key={item.id} className="hover:bg-gray-50/50 transition-all group">
-                                                    <td className="px-8 py-5 whitespace-nowrap text-sm text-gray-400 font-mono font-bold">{item.date}</td>
-                                                    <td className="px-8 py-5">
-                                                        <div className="flex flex-col">
-                                                            <span className="text-sm font-black text-slate-800">{item.title}</span>
-                                                            <span className={clsx(
-                                                                "text-[10px] font-bold px-2 py-0.5 rounded w-fit mt-1",
-                                                                item.type === 'special' ? "bg-accent/10 text-accent" : "bg-gray-100 text-gray-500"
-                                                            )}>
-                                                                {item.type === 'special' ? '특별 일정' : '일반 일정'}
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-8 py-5 text-sm text-gray-500">{item.note}</td>
-                                                    <td className="px-8 py-5 whitespace-nowrap text-right space-x-2">
-                                                        <button
-                                                            onClick={() => handleEdit(item, 'calendar')}
-                                                            className="text-gray-200 hover:text-primary transition-all p-2 rounded-2xl hover:bg-primary/5 active:scale-90"
-                                                        >
-                                                            <Settings size={18} />
-                                                        </button>
-                                                        <button
-                                                            onClick={() => handleDelete('calendar', item.id)}
-                                                            className="text-gray-200 hover:text-red-500 transition-all p-2 rounded-2xl hover:bg-red-50 active:scale-90"
-                                                        >
-                                                            <Trash2 size={18} />
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    )
-                }
-            </main >
         </div >
+    )
+}
+{
+    !isFirebaseConfigured && (
+        <div className="mt-10 p-10 bg-amber-50 rounded-[2.5rem] border border-amber-100 flex flex-col md:flex-row gap-8 items-start relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-10 opacity-5 pointer-events-none">
+                <Shield size={120} />
+            </div>
+            <div className="p-5 bg-amber-100 rounded-3xl text-amber-600 shadow-sm border border-amber-200">
+                <AlertTriangle size={32} />
+            </div>
+            <div className="relative z-10 font-sans">
+                <h4 className="font-black text-amber-900 text-xl mb-3 flex items-center gap-2">
+                    Firebase Firestore 활성화가 필요합니다
+                </h4>
+                <p className="text-amber-800/80 leading-relaxed max-w-2xl mb-8 font-medium">
+                    현재 <code className="bg-amber-100 px-2 py-0.5 rounded text-amber-900">src/lib/firebase.js</code>에 프로젝트 키는 잘 입력되었습니다.
+                    마지막으로 **Firebase Console** 사이트에서 [Firestore Database]를 활성화(테스트 모드로 시작)해 주셔야 여기서 저장하는 내용이 전 세계에 실시간 반영됩니다.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                    <a href="https://console.firebase.google.com/" target="_blank" className="bg-amber-600 text-white px-8 py-3.5 rounded-2xl font-bold shadow-lg shadow-amber-600/20 hover:bg-amber-700 transition-all flex items-center gap-2">파이어베이스 콘솔 바로가기 <ExternalLink size={16} /></a>
+                    <button onClick={loadData} className="bg-white text-amber-800 border border-amber-200 px-8 py-3.5 rounded-2xl font-bold hover:bg-amber-100 transition-all">연결 재시도</button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+{/* Staff List View */ }
+{
+    activeTab === 'staff' && !showAddForm && (
+        <div className="animate-fade-in-up">
+            {staffList.length === 0 ? (
+                <div className="text-center py-20 bg-white rounded-[2rem] border border-gray-100 shadow-sm">
+                    <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
+                        <Users size={40} />
+                    </div>
+                    <p className="text-gray-400 font-bold mb-2">등록된 섬기는 분이 없습니다.</p>
+                    <p className="text-gray-300 text-sm">새 항목 등록하기 버튼을 눌러 추가해주세요.</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {staffList.map((staff) => (
+                        <div key={staff.id || staff.name} className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all group relative overflow-hidden">
+                            <div className="absolute top-4 right-4 z-10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                                <button
+                                    onClick={() => handleEdit(staff, 'staff')}
+                                    className="p-2 bg-blue-50 text-blue-500 rounded-xl hover:bg-blue-100 transition-colors shadow-sm"
+                                    title="수정"
+                                >
+                                    <Settings size={18} />
+                                </button>
+                                <button
+                                    onClick={() => handleDelete('staff', staff.id)}
+                                    className="p-2 bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-colors shadow-sm"
+                                    title="삭제"
+                                >
+                                    <Trash2 size={18} />
+                                </button>
+                            </div>
+
+                            <div className="flex flex-col items-center">
+                                <div className="w-48 h-48 bg-gray-100 rounded-full mb-6 overflow-hidden border-8 border-gray-50 shadow-inner group-hover:scale-105 transition-transform duration-300">
+                                    {staff.image ? (
+                                        <img
+                                            src={staff.image}
+                                            alt={staff.name}
+                                            referrerPolicy="no-referrer"
+                                            className="w-full h-full object-cover"
+                                            onError={(e) => {
+                                                e.target.onerror = null;
+                                                e.target.style.display = 'none';
+                                                e.target.parentElement.classList.add('flex', 'items-center', 'justify-center', 'bg-gray-100');
+                                                e.target.parentElement.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-50 text-gray-400"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>';
+                                            }}
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-gray-300 bg-gray-100">
+                                            <Users size={64} className="opacity-50" />
+                                        </div>
+                                    )}
+                                </div>
+                                <h3 className="text-xl font-bold text-gray-800">{staff.name}</h3>
+                                {staff.englishName && <p className="text-[10px] font-bold text-gray-400 -mt-1 uppercase tracking-wider">{staff.englishName}</p>}
+                                <p className="text-accent font-medium text-sm mb-1 mt-1">{staff.role}</p>
+                                {staff.englishRole && <p className="text-blue-500 font-medium text-[10px] mb-2">{staff.englishRole}</p>}
+                                <p className="text-gray-400 text-xs px-3 py-1 bg-gray-50 rounded-full">{staff.email || '이메일 없음'}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    )
+}
+
+{/* Calendar List */ }
+{
+    activeTab === 'calendar' && (
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden animate-fade-in-up">
+            <div className="overflow-x-auto">
+                <table className="w-full">
+                    <thead>
+                        <tr className="bg-gray-50 border-b border-gray-100">
+                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider w-32">Date</th>
+                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Event</th>
+                            <th className="px-8 py-5 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Note</th>
+                            <th className="px-8 py-5 text-right text-xs font-bold text-gray-400 uppercase tracking-wider w-32">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50">
+                        {calendarEvents.length === 0 ? (
+                            <tr>
+                                <td colSpan="4" className="px-8 py-10 text-center text-gray-400 font-medium">
+                                    등록된 일정이 없습니다.
+                                </td>
+                            </tr>
+                        ) : (
+                            calendarEvents.map((item) => (
+                                <tr key={item.id} className="hover:bg-gray-50/50 transition-all group">
+                                    <td className="px-8 py-5 whitespace-nowrap text-sm text-gray-400 font-mono font-bold">{item.date}</td>
+                                    <td className="px-8 py-5">
+                                        <div className="flex flex-col">
+                                            <span className="text-sm font-black text-slate-800">{item.title}</span>
+                                            <span className={clsx(
+                                                "text-[10px] font-bold px-2 py-0.5 rounded w-fit mt-1",
+                                                item.type === 'special' ? "bg-accent/10 text-accent" : "bg-gray-100 text-gray-500"
+                                            )}>
+                                                {item.type === 'special' ? '특별 일정' : '일반 일정'}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td className="px-8 py-5 text-sm text-gray-500">{item.note}</td>
+                                    <td className="px-8 py-5 whitespace-nowrap text-right space-x-2">
+                                        <button
+                                            onClick={() => handleEdit(item, 'calendar')}
+                                            className="text-gray-200 hover:text-primary transition-all p-2 rounded-2xl hover:bg-primary/5 active:scale-90"
+                                        >
+                                            <Settings size={18} />
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete('calendar', item.id)}
+                                            className="text-gray-200 hover:text-red-500 transition-all p-2 rounded-2xl hover:bg-red-50 active:scale-90"
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
+                    </tbody>
+                </table>
+            </div>
+        </main>
     );
 };
 
