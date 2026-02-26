@@ -321,7 +321,7 @@ const About = () => {
                             </div>
                             <div className="relative z-10">
                                 <h3 className="text-3xl font-black mb-4 flex items-baseline gap-2 text-white">
-                                    VISION <span className="text-xl font-bold opacity-80">{t('about.vision_title')}</span>
+                                    VISION {i18n.language.startsWith('en') ? '' : <span className="text-xl font-bold opacity-80">{t('about.vision_title')}</span>}
                                 </h3>
                                 <div className={clsx(
                                     "font-bold leading-relaxed opacity-95 whitespace-pre-wrap",
@@ -346,7 +346,7 @@ const About = () => {
                             </div>
                             <div className="relative z-10">
                                 <h3 className="text-3xl font-black mb-4 flex items-baseline gap-2 text-white">
-                                    MISSION <span className="text-xl font-bold opacity-80">{t('about.mission_title')}</span>
+                                    MISSION {i18n.language.startsWith('en') ? '' : <span className="text-xl font-bold opacity-80">{t('about.mission_title')}</span>}
                                 </h3>
                                 <div className={clsx(
                                     "font-bold opacity-95 whitespace-pre-wrap",
@@ -371,8 +371,8 @@ const About = () => {
                                 <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-transparent" />
                             </div>
                             <div className="relative z-10">
-                                <h3 className="text-3xl font-black mb-4 flex items-baseline gap-2 text-white">
-                                    MINISTRY <span className="text-xl font-bold opacity-80">{t('about.values_title')}</span>
+                                <h3 className="text-3xl font-black mb-4 flex items-baseline gap-2 text-white uppercase">
+                                    {i18n.language.startsWith('en') ? 'Ministry (Core Values)' : <>MINISTRY <span className="text-xl font-bold opacity-80">{t('about.values_title')}</span></>}
                                 </h3>
                                 <ul className="space-y-1 pl-4 py-1 border-l-2 border-accent/50">
                                     {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => {
