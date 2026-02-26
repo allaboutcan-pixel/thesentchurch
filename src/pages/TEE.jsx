@@ -189,13 +189,22 @@ const TEE = () => {
                                 <h3 className="text-lg font-bold text-slate-800">{t('tee.ministry_goal_title')}</h3>
                             </div>
 
-                            <div className="flex-1 flex flex-col items-center justify-center gap-16 py-24">
-                                <h4 className="text-base md:text-lg font-sans font-bold text-slate-400 text-center leading-loose uppercase tracking-[0.3em] mb-4">
-                                    {t('tee.ministry_goal_subtitle')}
-                                </h4>
-                                <p className="text-lg md:text-xl font-bold text-center text-blue-900 font-sans leading-[2.2] max-w-[80%]">
-                                    {t('tee.ministry_goal_quote')}
-                                </p>
+                            <div className="flex-1 flex flex-col items-center pt-16 pb-8">
+                                <div className="text-center mb-10 w-full px-4">
+                                    <h4 className="text-base md:text-lg font-sans font-bold text-slate-400 leading-loose uppercase tracking-[0.3em] mb-4">
+                                        {t('tee.ministry_goal_subtitle')}
+                                    </h4>
+                                    <p className="text-lg md:text-xl font-bold text-blue-900 font-sans leading-relaxed max-w-[85%] mx-auto">
+                                        {t('tee.ministry_goal_quote')}
+                                    </p>
+                                </div>
+                                <div className="w-full max-w-md mx-auto mt-auto mb-4 px-6">
+                                    <img
+                                        src="/images/tee_multiplication.png"
+                                        alt="TEE Multiplication Diagram"
+                                        className="w-full h-auto object-contain opacity-90 drop-shadow-md"
+                                    />
+                                </div>
                             </div>
                         </motion.div>
 
@@ -233,11 +242,11 @@ const TEE = () => {
                             className="flex flex-col h-full space-y-6 bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow border-t-4 border-blue-600"
                         >
                             <div>
-                                <h3 className="text-lg font-bold text-blue-800 mb-2 flex items-center gap-2">
-                                    <Heart size={20} className="text-blue-500" />
+                                <h3 className="text-xl md:text-2xl font-bold text-blue-800 mb-2 flex items-center gap-2">
+                                    <Heart size={24} className="text-blue-500" />
                                     {t('tee.core_value_title')}
                                 </h3>
-                                <h2 className="text-xl font-sans font-bold text-slate-900 mb-4">
+                                <h2 className="text-lg md:text-xl font-sans font-bold text-slate-500 mb-4 uppercase tracking-wide">
                                     {t('tee.core_value_subtitle')}
                                 </h2>
                                 <p className="text-base text-slate-700 leading-loose" dangerouslySetInnerHTML={{ __html: t('tee.core_value_desc') }} />
