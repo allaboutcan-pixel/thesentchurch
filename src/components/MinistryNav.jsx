@@ -48,7 +48,7 @@ const MinistryNav = ({ active, category = 'education' }) => {
                         active={active === item.id}
                         icon={item.icon}
                         label={
-                            (i18n.language === 'en' && item.id === 'prayer' && config?.prayerTitleEn && config.prayerTitleEn !== "A church built on prayer")
+                            (i18n.language === 'en' && item.id === 'prayer' && config?.prayerTitleEn && !config.prayerTitleEn.toLowerCase().includes("built on prayer"))
                                 ? config.prayerTitleEn
                                 : t(`nav.${item.id}`)
                         }

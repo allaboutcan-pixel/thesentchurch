@@ -276,10 +276,10 @@ const Ministry = () => {
                         // Translation Helper
                         const getTranslation = (dbVal, dbEnVal, i18nKey) => {
                             if (isEn) {
-                                if (dbEnVal && dbEnVal !== "A church built on prayer") return dbEnVal;
+                                if (dbEnVal && !dbEnVal.toLowerCase().includes("built on prayer")) return dbEnVal;
                                 const translated = t(i18nKey);
                                 if (translated !== i18nKey) return translated;
-                                return (dbVal === "A church built on prayer") ? "" : (dbVal || '');
+                                return (dbVal && dbVal.toLowerCase().includes("built on prayer")) ? "" : (dbVal || '');
                             }
                             return dbVal || t(i18nKey);
                         };
