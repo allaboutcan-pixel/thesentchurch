@@ -213,7 +213,7 @@ const BibleStudy = () => {
                                 <div className="absolute bottom-1 right-2 w-12 h-12 bg-blue-400/20 rounded-full border border-white/10 blur-xl" />
 
                                 <h3
-                                    className="relative z-10 text-sm md:text-base italic font-bold text-blue-50 leading-[3.0] break-keep text-center tracking-wide"
+                                    className="relative z-10 text-sm md:text-base italic font-bold text-blue-50 leading-relaxed break-keep text-center tracking-wide"
                                     dangerouslySetInnerHTML={{ __html: `"${t('bible.intro_card_desc')}"` }}
                                 />
                             </div>
@@ -236,9 +236,7 @@ const BibleStudy = () => {
                             {t('bible.theo_diff_text1')}
                         </p>
                         <div className="w-full h-px bg-slate-200 my-8"></div>
-                        <p className="font-semibold text-slate-700">
-                            {t('bible.theo_diff_text2')}
-                        </p>
+                        <p className="text-slate-600 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text2') }} />
                         <p>
                             {t('bible.theo_diff_text3')}
                         </p>
@@ -285,7 +283,7 @@ const BibleStudy = () => {
                                                 {/* Key Events */}
                                                 <div className="bg-white/80 p-5 rounded-2xl border border-stone-100 shadow-sm">
                                                     <h5 className="text-xs font-black text-blue-500 uppercase tracking-widest mb-2 flex items-center gap-2">
-                                                        <Map size={14} /> 핵심 사건
+                                                        <Map size={14} /> {t('bible.key_events')}
                                                     </h5>
                                                     <p className="text-slate-700 font-bold break-keep" dangerouslySetInnerHTML={{ __html: theme.events }} />
                                                 </div>
@@ -293,7 +291,7 @@ const BibleStudy = () => {
                                                 {/* Learning Points */}
                                                 <div className="space-y-4">
                                                     <h5 className="text-xs font-black text-blue-500 uppercase tracking-widest mb-1 flex items-center gap-2 px-1">
-                                                        <Lightbulb size={14} /> 학습 요점
+                                                        <Lightbulb size={14} /> {t('bible.learning_points')}
                                                     </h5>
                                                     <div className="space-y-3">
                                                         {theme.points.map((pt, pIdx) => (
@@ -467,9 +465,7 @@ const BibleStudy = () => {
                     >
                         <Quote className="w-6 h-6 text-stone-700 absolute top-5 left-5" />
                         <div className="relative z-10 max-w-xl mx-auto">
-                            <p className="text-base md:text-lg font-medium leading-relaxed mb-3 break-keep italic">
-                                "{t('bible.verse')}"
-                            </p>
+                            <p className="text-base md:text-lg font-medium leading-relaxed mb-3 break-keep italic" dangerouslySetInnerHTML={{ __html: `"${t('bible.verse')}"` }} />
                             <p className="text-blue-400 font-bold tracking-widest uppercase text-xs">{t('bible.verse_ref')}</p>
                         </div>
                     </motion.div>
