@@ -769,12 +769,6 @@ const Admin = () => {
                     aboutTitleEn: fbConfig.aboutTitleEn || '', aboutSubtitleEn: fbConfig.aboutSubtitleEn || '',
                     newsTitleEn: fbConfig.newsTitleEn || '', newsSubtitleEn: fbConfig.newsSubtitleEn || '',
                     ministryTitleEn: fbConfig.ministryTitleEn || '', ministrySubtitleEn: fbConfig.ministrySubtitleEn || '',
-                    resourcesTitleEn: fbConfig.resourcesTitleEn || '', resourcesSubtitleEn: fbConfig.resourcesSubtitleEn || '',
-                    missionTitleEn: fbConfig.missionTitleEn || '', missionSubtitleEn: fbConfig.missionSubtitleEn || '',
-                    prayerTitleEn: fbConfig.prayerTitleEn || '', prayerSubtitleEn: fbConfig.prayerSubtitleEn || '',
-                    teeTitleEn: fbConfig.teeTitleEn || '', teeSubtitleEn: fbConfig.teeSubtitleEn || '',
-                    teamTitleEn: fbConfig.teamTitleEn || '', teamSubtitleEn: fbConfig.teamSubtitleEn || '',
-                    bibleTitleEn: fbConfig.bibleTitleEn || '', bibleSubtitleEn: fbConfig.bibleSubtitleEn || '',
 
                     prayerTopicsTitleEn: fbConfig.prayerTopicsTitleEn || '',
                     prayerTopicsSubtitleEn: fbConfig.prayerTopicsSubtitleEn || '',
