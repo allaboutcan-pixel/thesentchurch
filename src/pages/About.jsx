@@ -377,7 +377,18 @@ const About = () => {
                                 <ul className="space-y-1 pl-4 py-1 border-l-2 border-accent/50">
                                     {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => {
                                         const text = t(`nav.val${num}`);
-                                        const [title, desc] = text.includes(':') ? text.split(':') : [text, ''];
+                                        // Support splitting by either newline (\n) or colon (:)
+                                        let title = text;
+                                        let desc = '';
+                                        if (text.includes('\n')) {
+                                            const parts = text.split('\n');
+                                            title = parts[0];
+                                            desc = parts.slice(1).join('\n');
+                                        } else if (text.includes(':')) {
+                                            const parts = text.split(':');
+                                            title = parts[0];
+                                            desc = parts.slice(1).join(':').trim();
+                                        }
                                         return (
                                             <li key={num} className="leading-tight">
                                                 <div className={clsx(
