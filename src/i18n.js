@@ -555,17 +555,17 @@ const resources = {
                 "prayer_name": "Intercessory Prayer",
                 "prayer_target": "Community",
                 "prayer_desc": "We believe God will work through our prayers.",
-                "prayer_detail": "Our church is a community that prays for one another. Please share the prayer topics below and join us in intercessory prayer from your own place.\n\nWe believe God will work through our prayers.",
+                "prayer_detail": "Our church is a community that prays for one another.\n\nWe invite you to share the prayer requests below and join us in prayer wherever you are.\n\nWe believe that as we pray together, God is at work among us.",
                 "prayer": {
                     "title": "A Church Built on Prayer",
                     "subtitle": "We believe God will work through our prayers.",
                     "intro_title": "About Intercessory Prayer",
                     "intro_subtitle": "Introduction to Intercessory Prayer",
-                    "intro_content": "Requests for intercessory prayer can be made online via the church website or through the prayer box located at the entrance of the church sanctuary.",
-                    "intro_desc": "Our church is a community that prays for one another.\nPlease share the prayer topics below and join us in intercessory prayer from your own place.\n\n<span class='text-blue-800'>We believe God will work through our prayers.</span>",
-                    "instructions_desc": "Requests for intercessory prayer can be made online via the church website or through the prayer box located at the entrance of the church sanctuary.",
-                    "privacy_notice": "Topics for prayer are only accessible to intercessory prayer ministers and are kept strictly confidential.",
-                    "privacy_notice_full": "Topics for prayer are only accessible to intercessory prayer ministers and are kept strictly confidential.",
+                    "intro_content": "Prayer requests may be submitted online through the church website or placed in the prayer box located at the entrance of the sanctuary.",
+                    "intro_desc": "Our church is a community that prays for one another.\nWe invite you to share the prayer requests below and join us in prayer wherever you are.\n\n<span class='text-blue-800 font-bold'>We believe that as we pray together, God is at work among us.</span>",
+                    "instructions_desc": "Prayer requests may be submitted online through the church website or placed in the prayer box located at the entrance of the sanctuary.",
+                    "privacy_notice": "All requests are shared only with our intercessory prayer team and are kept strictly confidential.",
+                    "privacy_notice_full": "All requests are shared only with our intercessory prayer team and are kept strictly confidential.",
                     "section1_title": "Intercessory Prayer Topics of The Church of the Sent",
                     "section1_desc": "Our church is a community that prays for one another.\nPlease share the prayer topics below and join us in intercessory prayer from your own place.",
                     "common_prayer_title": "General Prayer Topics",
@@ -598,10 +598,10 @@ const resources = {
                     "goals_default": "To help all members become prayer warriors and build a community that ceaselessly prays for the church and neighbors.",
                     "hours_default": "Every Sunday 12:30 PM | 2nd Floor Nursing Room",
                     "no_content_yet": "Coming Soon",
-                    "invite_title": "Let's Pray Together",
-                    "invite_desc1": "Please leave your prayer topics.",
-                    "invite_desc2": "The church will pray together with one heart.",
-                    "invite_privacy": "Prayer topics are only accessible to intercessory prayer ministers and are kept strictly confidential."
+                    "invite_title": "Let’s Pray Together",
+                    "invite_desc1": "We invite you to share your prayer requests with us.",
+                    "invite_desc2": "As a church family, we will lift them up together in prayer.",
+                    "invite_privacy": "All requests are kept confidential and are seen only by our prayer team."
                 }
             },
             "resources": {
