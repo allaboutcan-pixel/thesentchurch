@@ -673,8 +673,8 @@ const resources = {
                 "banner_title": "TEE",
                 "banner_subtitle": "Theological Education by Extension",
                 "intro_title": "What is TEE?",
-                "intro_desc": "TEE stands for <span class='text-blue-600 font-bold'>Theological Education by Extension</span>.<br/>Rooted in the vision of 2 Timothy 2:2, it is a discipleship-focused approach to theological training that extends beyond the classroom and into everyday life.",
-                "intro_subdesc": "Through Bible study and intentional disciple-making, TEE helps nurture a faith that can be faithfully passed on to the next generation. It is a proven and widely used training model for equipping believers and developing leaders within the local church.<br/><br/>Today, TEE is used in more than 110 countries and in over 70 languages around the world. Many churches rely on it to strengthen lay leadership, deepen biblical understanding, and raise up faithful disciples who can serve and lead with confidence.",
+                "intro_desc": "TEE stands for Theological Education by Extension. <br/>\nRooted in the vision of 2 Timothy 2:2, it is a discipleship-focused approach to<br/> theological training that extends beyond the classroom and into everyday life.",
+                "intro_subdesc": "Through Bible study and intentional disciple-making, TEE helps nurture a faith that can<br/> be faithfully passed on to the next generation. It is a proven and widely used training <br/>model for equipping believers and developing leaders within the local church.<br/><br/>Today, TEE is used in more than 110 countries and in over 70 languages around the world. <br/>Many churches rely on it to strengthen lay leadership, deepen biblical understanding, <br/>and raise up faithful disciples who can serve and lead with confidence.",
                 "bible_verse": "And the things you have heard me say in the presence of many witnesses entrust to reliable people who will also be qualified to teach others.",
                 "bible_verse_mobile": "And the things you have heard me say in the presence of many witnesses entrust to reliable people who will also be qualified to teach others.",
                 "bible_ref": "2 Timothy 2:2",
@@ -694,8 +694,8 @@ const resources = {
                 "core_value_sub": "",
 
                 "features_title": "What Makes TEE Distinct",
-                "features_desc": "TEE does not pressure participants into outward performance.\nRather, as students engage with the material and follow the structured guidance, they are naturally led toward meaningful application and obedient action.\n\nIt is a journey of discipleship that walks alongside believers, encouraging voluntary obedience, spiritual growth, and lasting transformation.",
-                "features_desc_mobile": "TEE does not pressure participants into outward performance.\nRather, as students engage with the material and follow the structured guidance, they are naturally led toward meaningful application and obedient action.\n\nIt is a journey of discipleship that walks alongside believers, encouraging voluntary obedience, spiritual growth, and lasting transformation.",
+                "features_desc": "TEE does not pressure participants <br/> into outward performance. <br/> Rather, as students engage with the material and <br/> follow the structured guidance, they are naturally led <br/> toward meaningful application and obedient action.<br/><br/>It is a journey of discipleship that walks alongside <br/> believers, encouraging voluntary obedience, <br/> spiritual growth, and lasting transformation.",
+                "features_desc_mobile": "TEE does not pressure participants <br/> into outward performance. <br/> Rather, as students engage with the material and <br/> follow the structured guidance, they are naturally led <br/> toward meaningful application and obedient action.<br/><br/>It is a journey of discipleship that walks alongside <br/> believers, encouraging voluntary obedience, <br/> spiritual growth, and lasting transformation.",
 
                 "method_title": "Education Method of TEE",
                 "method_desc": "Follows these principles:",
@@ -711,8 +711,8 @@ const resources = {
                 "smart_t_desc": "Tangible Training",
 
                 "fruits_title": "Expected Fruit",
-                "fruits_desc": "Through TEE, we pray that each member will be firmly grounded in God’s Word, growing in faith and maturity.<br/>As we build one another up within small-group community, we look forward to seeing a healthy church take shape—one that raises up new disciples who, in turn, disciple others.<br/><br/>Our hope is that, through this process, our church will continue to grow into a vibrant community where lives are strengthened by Scripture, relationships are deepened in Christ, and disciples are continually multiplied.",
-                "fruits_desc_mobile": "Through TEE, we pray that each member will be firmly grounded in God’s Word, growing in faith and maturity.<br/>As we build one another up within small-group community, we look forward to seeing a healthy church take shape—one that raises up new disciples who, in turn, disciple others.<br/><br/>Our hope is that, through this process, our church will continue to grow into a vibrant community where lives are strengthened by Scripture, relationships are deepened in Christ, and disciples are continually multiplied."
+                "fruits_desc": "Through TEE, we pray that each member will be firmly grounded<br/>in God’s Word, growing in faith and maturity.<br/>As we build one another up within small-group community,<br/>we look forward to seeing a healthy church take shape<br/>one that raises up new disciples who, in turn, disciple others.<br/><br/>Our hope is that, through this process, our church will continue to grow into a vibrant community where lives are strengthened by Scripture, relationships are deepened in Christ, and disciples are continually multiplied.",
+                "fruits_desc_mobile": "Through TEE, we pray that each member will be firmly grounded<br/>in God’s Word, growing in faith and maturity.<br/>As we build one another up within small-group community,<br/>we look forward to seeing a healthy church take shape<br/>one that raises up new disciples who, in turn, disciple others.<br/><br/>Our hope is that, through this process, our church will continue to grow into a vibrant community where lives are strengthened by Scripture, relationships are deepened in Christ, and disciples are continually multiplied.",
             },
             "team_ministry": {
                 "title": "Team Ministry",
@@ -789,10 +789,14 @@ const resources = {
 
 i18n
     .use(initReactI18next)
+    .use(LanguageDetector)
     .init({
         resources,
-        lng: 'ko',
         fallbackLng: 'ko',
+        detection: {
+            order: ['localStorage', 'cookie', 'navigator'],
+            caches: ['localStorage']
+        },
         interpolation: {
             escapeValue: false
         }

@@ -189,16 +189,14 @@ const TEE = () => {
                                 <h3 className="text-lg font-bold text-slate-800">{t('tee.ministry_goal_title')}</h3>
                             </div>
 
-                            <div className="flex-1 flex items-center justify-center py-4">
-                                <h4 className="text-2xl md:text-3xl font-sans font-bold text-blue-900 text-center leading-relaxed">
+                            <div className="flex-1 flex flex-col items-center justify-center gap-16 py-24">
+                                <h4 className="text-base md:text-lg font-sans font-bold text-slate-400 text-center leading-loose uppercase tracking-[0.3em] mb-4">
                                     {t('tee.ministry_goal_subtitle')}
                                 </h4>
+                                <p className="text-lg md:text-xl font-bold text-center text-blue-900 font-sans leading-[2.2] max-w-[80%]">
+                                    {t('tee.ministry_goal_quote')}
+                                </p>
                             </div>
-
-                            <div className="h-px bg-slate-200 w-full mb-6 mt-auto" />
-                            <p className="text-lg font-black text-center text-slate-700 italic font-sans leading-relaxed">
-                                {t('tee.ministry_goal_quote')}
-                            </p>
                         </motion.div>
 
                         {/* Core Goal */}
@@ -270,9 +268,9 @@ const TEE = () => {
                                     <Award className="text-white" />
                                     <span className="text-white">{t('tee.features_title')}</span>
                                 </h3>
-                                <div className="space-y-6 text-blue-50 text-xl leading-loose whitespace-pre-line font-light text-center">
-                                    <span className="md:hidden">{t('tee.features_desc_mobile')}</span>
-                                    <span className="hidden md:block">{t('tee.features_desc')}</span>
+                                <div className="space-y-6 text-blue-50 text-xl leading-loose font-light text-center">
+                                    <span className="md:hidden" dangerouslySetInnerHTML={{ __html: t('tee.features_desc_mobile') }} />
+                                    <span className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('tee.features_desc') }} />
                                 </div>
                             </div>
                         </motion.div>
