@@ -776,7 +776,7 @@ const resources = {
                 "intro_badge": "Bible Study",
                 "intro_title": "Gospel of John: Diving into the Depths of the Word",
                 "intro_card_desc": "The surest way to grow in love <br/> with Scripture is to begin with <br/> the Gospel of John.",
-                "intro_desc": "In this study, we journey through the Gospel of John with careful attention to its context, movement, and message.<br/>Using Scripture itself as our primary text, we seek to encounter God’s Word more deeply and build a firm foundation for faith.",
+                "intro_desc": "In this study, we journey through the Gospel of John with <br class='hidden md:block' /> careful attention to its context, movement, and message. <br class='hidden md:block' /> Using Scripture itself as our primary text, we seek to encounter <br class='hidden md:block' /> God’s Word more deeply and build a firm foundation for faith.",
                 "theo_diff_title": "The Distinctive Voice of John’s Gospel",
                 "theo_diff_text1": "The Synoptic Gospels—Matthew, Mark, and Luke—offer a vivid account of <br class='hidden md:block' /> what Jesus did and what He said. The Gospel of John invites us <br class='hidden md:block' /> to go even deeper, revealing who Jesus truly is <br class='hidden md:block' /> and the profound spiritual meaning of His death and resurrection.",
                 "theo_diff_text2": "If the Synoptic Gospels present a clear picture of <br class='hidden md:block' /> Jesus’ life and ministry, the Gospel of John brings into focus the depth of <br class='hidden md:block' /> His identity and the significance of His work.",
