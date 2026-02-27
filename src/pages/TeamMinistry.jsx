@@ -118,7 +118,7 @@ const TeamMinistry = () => {
                     <h2 className="text-xl md:text-3xl font-black text-blue-900 mb-8 leading-tight">
                         {t('team_ministry.intro_title')}
                     </h2>
-                    <p className="text-lg md:text-xl text-stone-600 max-w-3xl mx-auto leading-relaxed" dangerouslySetInnerHTML={{ __html: t('team_ministry.intro_desc') }} />
+                    <p className="text-lg md:text-xl text-stone-600 max-w-3xl mx-auto leading-[2.2]" dangerouslySetInnerHTML={{ __html: t('team_ministry.intro_desc') }} />
                 </div>
 
                 {/* Teams Grid */}

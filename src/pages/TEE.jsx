@@ -135,7 +135,7 @@ const TEE = () => {
                         <h2 className="text-3xl md:text-4xl font-sans font-bold text-slate-900">
                             {t('tee.intro_title')}
                         </h2>
-                        <div className="space-y-6 text-sm md:text-lg text-slate-600 leading-loose word-keep break-keep">
+                        <div className="space-y-6 text-sm md:text-lg text-slate-600 leading-[2.2] word-keep break-keep">
                             <p dangerouslySetInnerHTML={{ __html: t('tee.intro_desc') }} />
                             <p dangerouslySetInnerHTML={{ __html: t('tee.intro_subdesc') }} />
                         </div>
@@ -339,7 +339,7 @@ const TEE = () => {
                         <h2 className="text-3xl font-sans font-bold text-slate-900 mb-8">
                             {t('tee.fruits_title')}
                         </h2>
-                        <p className="text-sm md:text-xl text-slate-600 leading-loose break-keep font-light">
+                        <p className="text-sm md:text-xl text-slate-600 leading-[2.2] break-keep font-light">
                             <span className="md:hidden" dangerouslySetInnerHTML={{ __html: t('tee.fruits_desc_mobile') }} />
                             <span className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('tee.fruits_desc') }} />
                         </p>

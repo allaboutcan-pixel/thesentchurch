@@ -213,7 +213,7 @@ const Prayer = () => {
                         <span className="inline-block px-4 py-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-sm font-bold tracking-widest uppercase rounded-full mb-6 backdrop-blur-sm shadow-sm">
                             {t('ministry.prayer.intro_title')}
                         </span>
-                        <h2 className="text-2xl md:text-4xl font-black text-blue-900 leading-loose">
+                        <h2 className="text-2xl md:text-4xl font-black text-blue-900 leading-[2.2]">
                             {t('ministry.prayer.intro_subtitle')}
                         </h2>
                     </div>
@@ -246,7 +246,7 @@ const Prayer = () => {
 
                         {/* Right Column: Invitation Text */}
                         <div className="text-left space-y-8">
-                            <div className="text-lg md:text-xl text-stone-700 leading-loose font-bold break-keep"
+                            <div className="text-lg md:text-xl text-stone-700 leading-[2.2] font-bold break-keep"
                                 dangerouslySetInnerHTML={{ __html: t('ministry.prayer.intro_desc') }}
                             />
                             <div className="w-20 h-1.5 bg-blue-400/30 rounded-full" />
@@ -377,7 +377,7 @@ const Prayer = () => {
                                 : (siteConfig?.prayerTopicsTitle || t('ministry.prayer.section1_title'))}
                         </h2>
                         <div
-                            className="text-lg text-stone-500 font-medium leading-relaxed max-w-2xl mx-auto break-keep"
+                            className="text-lg text-stone-500 font-medium leading-[2.2] max-w-2xl mx-auto break-keep"
                             dangerouslySetInnerHTML={{
                                 __html: (i18n.language === 'en'
                                     ? (siteConfig?.prayerTopicsSubtitleEn || siteConfig?.prayerTopicsSubtitle || t('ministry.prayer.section1_desc'))
@@ -414,7 +414,7 @@ const Prayer = () => {
                                                     </div>
                                                 )}
                                                 {section.topics.length > 1 && (
-                                                    <ol className="list-decimal marker:text-blue-500 marker:font-black pl-5 space-y-4 text-stone-600 font-medium text-lg lg:text-xl leading-relaxed">
+                                                    <ol className="list-decimal marker:text-blue-500 marker:font-black pl-5 space-y-4 text-stone-600 font-medium text-lg lg:text-xl leading-[2.2]">
                                                         {section.topics.slice(1).map((topic, idx) => (
                                                             <li key={idx} className="pl-2">
                                                                 {topic}
@@ -425,7 +425,7 @@ const Prayer = () => {
                                             </div>
                                         ) : (
                                             <ol className={clsx(
-                                                "space-y-4 text-stone-600 font-medium text-lg lg:text-xl leading-relaxed pl-5",
+                                                "space-y-4 text-stone-600 font-medium text-lg lg:text-xl leading-[2.2] pl-5",
                                                 section.topics.length > 1 ? "list-decimal marker:text-blue-500 marker:font-black" : "list-none"
                                             )}>
                                                 {section.topics.map((topic, idx) => (
