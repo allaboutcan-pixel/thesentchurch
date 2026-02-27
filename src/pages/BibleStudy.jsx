@@ -233,12 +233,12 @@ const BibleStudy = () => {
                     </h2>
                     <div className="space-y-8 text-slate-600 leading-loose text-lg font-medium break-keep">
                         <p>
-                            {t('bible.theo_diff_text1')}
+                            <p dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text1') }} />
                         </p>
                         <div className="w-full h-px bg-slate-200 my-8"></div>
                         <p className="text-slate-600 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text2') }} />
                         <p>
-                            {t('bible.theo_diff_text3')}
+                            <p dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text3') }} />
                         </p>
                     </div>
                 </div>
