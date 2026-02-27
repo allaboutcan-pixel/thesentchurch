@@ -182,12 +182,12 @@ const BibleStudy = () => {
                             <span className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-700 text-sm font-bold tracking-widest uppercase mb-2">
                                 {t('bible.intro_badge')}
                             </span>
-                            <h2 className="text-3xl md:text-4xl font-sans font-black text-slate-900 break-keep">
+                            <h2 className={clsx("font-sans font-black text-slate-900 break-keep", isEnglish ? "text-2xl md:text-3xl" : "text-3xl md:text-4xl")}>
                                 {t('bible.intro_title')}
                             </h2>
                         </div>
 
-                        <div className="text-sm md:text-base text-slate-500 leading-[3.5] word-keep break-keep font-medium max-w-2xl mx-auto">
+                        <div className={clsx("text-sm md:text-base text-slate-500 word-keep break-keep font-medium max-w-2xl mx-auto", isEnglish ? "leading-[4.5]" : "leading-[3.5]")}>
                             <p dangerouslySetInnerHTML={{ __html: t('bible.intro_desc') }} />
                         </div>
 
