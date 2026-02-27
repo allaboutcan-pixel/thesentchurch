@@ -283,7 +283,7 @@ const TEE = () => {
                                     <Award className="text-white" />
                                     <span className="text-white">{t('tee.features_title')}</span>
                                 </h3>
-                                <div className="space-y-6 text-blue-50 text-xl leading-loose font-light text-center">
+                                <div className="space-y-6 text-blue-50 text-sm md:text-lg leading-loose font-light text-center">
                                     <span className="md:hidden" dangerouslySetInnerHTML={{ __html: t('tee.features_desc_mobile') }} />
                                     <span className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('tee.features_desc') }} />
                                 </div>
