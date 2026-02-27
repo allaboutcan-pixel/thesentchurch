@@ -254,7 +254,10 @@ const TEE = () => {
                                 <h2 className="text-lg md:text-xl font-sans font-bold text-slate-500 mb-4 uppercase tracking-wide">
                                     {t('tee.core_value_subtitle')}
                                 </h2>
-                                <p className="text-sm md:text-base text-slate-700 leading-loose" dangerouslySetInnerHTML={{ __html: t('tee.core_value_desc') }} />
+                                <p className="text-sm md:text-base text-slate-700 leading-loose">
+                                    <span className="md:hidden" dangerouslySetInnerHTML={{ __html: t('tee.core_value_desc_mobile') || t('tee.core_value_desc') }} />
+                                    <span className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('tee.core_value_desc') }} />
+                                </p>
                             </div>
 
                             <div className="bg-slate-50 p-6 rounded-xl border border-blue-100 mt-auto">
