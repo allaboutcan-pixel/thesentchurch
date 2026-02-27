@@ -30,22 +30,6 @@ const Ministry = () => {
     const [ministryList, setMinistryList] = useState([]);
     const [siteConfig, setSiteConfig] = useState(null);
 
-    // Filtering logic based on path
-    useEffect(() => {
-        const path = location.pathname.split('/').pop();
-        let filtered = churchData.ministries;
-
-        if (path === 'ministry') {
-            // Education main: show only Next Gen (TSC/TSY)
-            filtered = churchData.ministries.filter(m => ['tsc', 'tsy'].includes(m.id));
-        } else if (path === 'mission') {
-            // Mission page: show only Mission & Evangelism
-            filtered = churchData.ministries.filter(m => m.id === 'mission_evangelism');
-        }
-
-        setMinistryList(filtered);
-    }, [location.pathname]);
-
     const formatDetail = (text) => {
         if (!text) return null;
         return (
@@ -101,6 +85,17 @@ const Ministry = () => {
         }
     }, [location.pathname]);
 
+    // Helper to filter items based on path
+    const getFilteredItems = (items) => {
+        const path = location.pathname.split('/').pop();
+        if (path === 'ministry') {
+            return items.filter(m => ['tsc', 'tsy'].includes(m.id));
+        } else if (path === 'mission') {
+            return items.filter(m => m.id === 'mission_evangelism');
+        }
+        return items;
+    };
+
     useEffect(() => {
         let isMounted = true;
         const fetchBanner = async () => {
@@ -133,21 +128,30 @@ const Ministry = () => {
                 if (config.ministryHeight) setHeight(config.ministryHeight);
                 if (config.ministryBannerFit) setBannerFit(config.ministryBannerFit);
 
-                if (config.ministryItems) {
-                    const localizedItems = config.ministryItems.map(m => ({
-                        ...m,
-                        name: i18n.language === 'en' && m.nameEn ? m.nameEn : m.name,
-                        target: i18n.language === 'en' && m.targetEn ? m.targetEn : m.target,
-                        description: i18n.language === 'en' && m.descriptionEn ? m.descriptionEn : m.description,
-                        detail: i18n.language === 'en' && m.detailEn ? m.detailEn : m.detail
-                    }));
-                    setMinistryList(localizedItems);
-                }
+                const currentItems = config.ministryItems || churchData.ministries;
+                const localizedItems = currentItems.map(m => ({
+                    ...m,
+                    name: i18n.language === 'en' && m.nameEn ? m.nameEn : m.name,
+                    target: i18n.language === 'en' && m.targetEn ? m.targetEn : m.target,
+                    description: i18n.language === 'en' && m.descriptionEn ? m.descriptionEn : m.description,
+                    detail: i18n.language === 'en' && m.detailEn ? m.detailEn : m.detail
+                }));
+                setMinistryList(getFilteredItems(localizedItems));
+            } else {
+                // Fallback if no config
+                const localizedItems = churchData.ministries.map(m => ({
+                    ...m,
+                    name: i18n.language === 'en' && m.nameEn ? m.nameEn : m.name,
+                    target: i18n.language === 'en' && m.targetEn ? m.targetEn : m.target,
+                    description: i18n.language === 'en' && m.descriptionEn ? m.descriptionEn : m.description,
+                    detail: i18n.language === 'en' && m.detailEn ? m.detailEn : m.detail
+                }));
+                setMinistryList(getFilteredItems(localizedItems));
             }
         };
         fetchBanner();
         return () => { isMounted = false; };
-    }, [config, i18n.language]);
+    }, [i18n.language, location.pathname]);
 
     return (
         <div className="min-h-screen bg-[#efebe9]">
