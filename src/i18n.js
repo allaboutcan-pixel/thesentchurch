@@ -604,7 +604,7 @@ const resources = {
                     "intro_title": "About Intercessory Prayer",
                     "intro_subtitle": "Introduction to Intercessory Prayer",
                     "intro_content": "Prayer requests may be submitted online through the church website or placed in the prayer box located at the entrance of the sanctuary.",
-                    "intro_desc": "Our church is a community that prays for one another.\nWe invite you to share the prayer requests below and join us in prayer wherever you are.\n\n<span class='text-blue-800 font-bold'>We believe that as we pray together, God is at work among us.</span>",
+                    "intro_desc": "Our church is a community that prays for one another.<br/>We invite you to share the prayer requests below and join us<br/>in prayer wherever you are.<br/><br/><span class='text-blue-800 font-bold'>We believe that as we pray together,<br/>God is at work among us.</span>",
                     "instructions_desc": "Prayer requests may be submitted online through the church website or placed in the prayer box located at the entrance of the sanctuary.",
                     "privacy_notice": "All requests are shared only with our intercessory prayer team and are kept strictly confidential.",
                     "privacy_notice_full": "All requests are shared only with our intercessory prayer team and are kept strictly confidential.",
