@@ -293,7 +293,7 @@ const Home = () => {
             <section className="py-24">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2">{t('home.media_title')}</h2>
+                        <h2 className="text-2xl md:text-3xl font-bold text-primary mt-2">{t('home.media_title')}</h2>
                         <div className="w-16 h-1 bg-accent mx-auto mt-6" />
                     </div>
 
@@ -365,7 +365,7 @@ const Home = () => {
             <section className="py-24 bg-secondary relative z-20">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2">{t('home.quick_menu_title')}</h2>
+                        <h2 className="text-2xl md:text-3xl font-bold text-primary mt-2">{t('home.quick_menu_title')}</h2>
                         <div className="w-16 h-1 bg-accent mx-auto mt-6" />
                     </div>
                     <QuickLinks services={config?.services || churchData.services} />
