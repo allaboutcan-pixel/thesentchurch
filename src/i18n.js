@@ -317,6 +317,7 @@ const resources = {
                 "core_value_subtitle": "적용 (Application)",
                 "core_value_desc": "TEE가 가장 중요하게 여기는 가치는 말씀의 실제적인 적용입니다.<br/>지식에 머무는 신앙이 아니라 삶으로 나타나는 제자도를 목표로 합니다.<br/>“행함이 없는 믿음은 죽은 믿음입니다.”",
                 "core_value_box": "말씀을 배우고, 삶에 적용하며,\n실천을 통해 그리스도를 닮아가는 것",
+                "core_value_box_mobile": "말씀을 배우고,\n삶에 적용하며,\n실천을 통해 그리스도를 닮아가는 것",
                 "core_value_sub": "",
 
                 "features_title": "TEE의 특징",
@@ -723,6 +724,7 @@ const resources = {
                 "core_value_subtitle": "Application",
                 "core_value_desc": "One of TEE’s highest priorities is the practical application of <br/> God’s Word. The goal is not faith that remains in knowledge alone, <br/> but discipleship that is lived out in everyday life.",
                 "core_value_box": "Learning the Word, applying it to daily life,\nand growing to reflect Christ through faithful practice—this is the heart of TEE.",
+                "core_value_box_mobile": "Learning the Word,<br/>applying it to daily life,<br/>and growing to reflect Christ<br/>through faithful practice<br/>this is the heart of TEE.",
                 "core_value_sub": "",
 
                 "features_title": "What Makes TEE Distinct",
@@ -859,7 +861,7 @@ i18n
         resources,
         fallbackLng: 'ko',
         detection: {
-            order: ['localStorage', 'cookie', 'navigator'],
+            order: ['localStorage', 'cookie'],
             caches: ['localStorage']
         },
         interpolation: {
