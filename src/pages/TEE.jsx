@@ -186,7 +186,7 @@ const TEE = () => {
                                 <div className="p-3 bg-blue-50 rounded-full text-blue-500">
                                     <Target size={32} strokeWidth={1.5} />
                                 </div>
-                                <h3 className="text-lg font-bold text-slate-800">{t('tee.ministry_goal_title')}</h3>
+                                <h3 className="text-xl font-bold text-slate-800">{t('tee.ministry_goal_title')}</h3>
                             </div>
 
                             <div className="flex-1 flex flex-col items-center pt-8 pb-12">
@@ -281,7 +281,7 @@ const TEE = () => {
                             {/* Bg decoration */}
                             <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full translate-x-1/2 -translate-y-1/2" />
 
-                            <div className="relative z-10 flex flex-col h-full justify-center">
+                            <div className="relative z-10 flex flex-col h-full pt-8 md:pt-12">
                                 <h3 className="text-2xl font-bold mb-8 flex items-center justify-center gap-3">
                                     <Award className="text-white" />
                                     <span className="text-white">{t('tee.features_title')}</span>
