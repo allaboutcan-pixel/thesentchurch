@@ -730,7 +730,7 @@ const resources = {
                 "core_value_sub": "",
 
                 "features_title": "What Makes TEE Distinct",
-                "features_desc": "TEE focuses on natural growth, not outward pressure.<br/>Through structured study, students are led toward voluntary obedience<br/>and meaningful application—a journey of discipleship for lasting transformation.",
+                "features_desc": "TEE focuses on natural growth, not outward pressure.<br/>Through structured study, students are led toward<br/>voluntary obedience and meaningful application<br/>a journey of discipleship for lasting transformation.",
                 "features_desc_mobile": "TEE focuses on natural growth,<br/>not outward pressure.<br/>Through structured study, students are<br/>led toward voluntary obedience and<br/>meaningful application—a journey of<br/>discipleship for lasting transformation.",
 
                 "method_title": "Education Method of TEE",
