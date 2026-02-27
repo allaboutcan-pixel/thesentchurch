@@ -115,10 +115,10 @@ const TeamMinistry = () => {
                     <span className="inline-block px-4 py-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-sm font-bold tracking-widest uppercase rounded-full mb-6 backdrop-blur-sm shadow-sm">
                         {t('team_ministry.intro_badge')}
                     </span>
-                    <h2 className="text-xl md:text-3xl font-black text-blue-900 mb-8 leading-tight">
+                    <h2 className="text-lg md:text-2xl font-black text-blue-900 mb-8 leading-[1.6]">
                         {t('team_ministry.intro_title')}
                     </h2>
-                    <p className="text-lg md:text-xl text-stone-600 max-w-3xl mx-auto leading-[2.2]" dangerouslySetInnerHTML={{ __html: t('team_ministry.intro_desc') }} />
+                    <p className="text-base md:text-lg text-stone-600 max-w-3xl mx-auto leading-[2.8]" dangerouslySetInnerHTML={{ __html: t('team_ministry.intro_desc') }} />
                 </div>
 
                 {/* Teams Grid */}
