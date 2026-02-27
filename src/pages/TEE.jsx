@@ -244,17 +244,17 @@ const TEE = () => {
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="flex flex-col h-full space-y-6 bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow border-t-4 border-blue-600"
+                            className="flex flex-col h-full space-y-6 bg-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow border-t-4 border-blue-600 text-center"
                         >
                             <div>
-                                <h3 className="text-xl md:text-2xl font-bold text-blue-800 mb-2 flex items-center gap-2">
+                                <h3 className="text-xl md:text-2xl font-bold text-blue-800 mb-2 flex items-center justify-center gap-2">
                                     <Heart size={24} className="text-blue-500" />
                                     {t('tee.core_value_title')}
                                 </h3>
-                                <h2 className="text-lg md:text-xl font-sans font-bold text-slate-500 mb-4 uppercase tracking-wide">
+                                <h2 className="text-lg md:text-xl font-sans font-bold text-slate-500 mb-4 uppercase tracking-wide text-center">
                                     {t('tee.core_value_subtitle')}
                                 </h2>
-                                <p className="text-sm md:text-base text-slate-700 leading-loose">
+                                <p className="text-sm md:text-base text-slate-700 leading-loose text-center">
                                     <span className="md:hidden" dangerouslySetInnerHTML={{ __html: t('tee.core_value_desc_mobile') || t('tee.core_value_desc') }} />
                                     <span className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('tee.core_value_desc') }} />
                                 </p>
