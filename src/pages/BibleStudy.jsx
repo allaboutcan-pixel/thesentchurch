@@ -465,7 +465,10 @@ const BibleStudy = () => {
                     >
                         <Quote className="w-6 h-6 text-stone-700 absolute top-5 left-5" />
                         <div className="relative z-10 max-w-xl mx-auto">
-                            <p className="text-base md:text-lg font-medium leading-relaxed mb-3 break-keep italic" dangerouslySetInnerHTML={{ __html: `"${t('bible.verse')}"` }} />
+                            <p className="text-base md:text-lg font-medium leading-relaxed mb-3 break-keep italic">
+                                <span className="md:hidden" dangerouslySetInnerHTML={{ __html: `"${t('bible.verse_mobile')}"` }} />
+                                <span className="hidden md:block" dangerouslySetInnerHTML={{ __html: `"${t('bible.verse')}"` }} />
+                            </p>
                             <p className="text-blue-400 font-bold tracking-widest uppercase text-xs">{t('bible.verse_ref')}</p>
                         </div>
                     </motion.div>

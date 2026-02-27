@@ -321,8 +321,8 @@ const resources = {
                 "core_value_sub": "",
 
                 "features_title": "TEE의 특징",
-                "features_desc": "TEE는 실천을 강요하지 않습니다.\n교재와 가이드라인을 따라 공부하다 보면\n자연스럽게 삶에 적용하고 실천하도록 돕습니다.\n학생들이 자발적으로 순종하고 성장하도록\n동행하는 훈련 과정입니다.",
-                "features_desc_mobile": "TEE는 실천을 강요하지 않습니다.\n교재와 가이드라인을 따라\n공부하다 보면,\n자연스럽게 삶에 적용하고\n실천하도록 돕습니다.\n학생들이 자발적으로\n순종하고 성장하도록\n동행하는 훈련 과정입니다.",
+                "features_desc": "TEE는 외적인 강요가 아닌 자연스러운 변화를 추구합니다.<br/>교재를 통해 자발적인 순종과 성장을 경험하며,<br/>삶의 변화로 이어지는 제자 훈련의 여정입니다.",
+                "features_desc_mobile": "TEE는 외적인 강요가 아닌<br/>자연스러운 변화를 추구합니다.<br/>교재를 통해 자발적인 순종과<br/>성장을 경험하며, 삶의 변화로<br/>이어지는 제자 훈련의 여정입니다.",
 
                 "method_title": "TEE의 교육 방식",
                 "method_desc": "다음과 같은 원칙을 따릅니다.",
@@ -408,6 +408,7 @@ const resources = {
                 "prayer_2_title": "일상의 동행",
                 "prayer_2_desc": "날마다 말씀을 먹고 마심으로 내 안에 주님이 거하시고, 나의 모든 일상이 하나님과 함께하는 예배가 되게 하소서.",
                 "verse": "오직 이것을 기록함은 너희로 예수께서 하나님의 아들 그리스도이심을 믿게 하려 함이요 또 너희로 믿고 그 이름을 힘입어 생명을 얻게 하려 함이니라",
+                "verse_mobile": "오직 이것을 기록함은<br/>너희로 예수께서 하나님의 아들<br/>그리스도이심을 믿게 하려 함이요<br/>또 너희로 믿고 그 이름을 힘입어<br/>생명을 얻게 하려 함이니라",
                 "verse_ref": "요한복음 20장 31절",
                 "inquiry_button": "참여 문의"
             }
@@ -728,8 +729,8 @@ const resources = {
                 "core_value_sub": "",
 
                 "features_title": "What Makes TEE Distinct",
-                "features_desc": "TEE does not pressure participants <br/> into outward performance. <br/> Rather, as students engage with the material and <br/> follow the structured guidance, they are naturally led <br/> toward meaningful application and obedient action.<br/><br/>It is a journey of discipleship that walks alongside <br/> believers, encouraging voluntary obedience, <br/> spiritual growth, and lasting transformation.",
-                "features_desc_mobile": "TEE does not pressure participants <br/> into outward performance. <br/> Rather, as students engage with the material and <br/> follow the structured guidance, they are naturally led <br/> toward meaningful application and obedient action.<br/><br/>It is a journey of discipleship that walks alongside <br/> believers, encouraging voluntary obedience, <br/> spiritual growth, and lasting transformation.",
+                "features_desc": "TEE focuses on natural growth, not outward pressure.<br/>Through structured study, students are led toward voluntary obedience<br/>and meaningful application—a journey of discipleship for lasting transformation.",
+                "features_desc_mobile": "TEE focuses on natural growth,<br/>not outward pressure.<br/>Through structured study, students are<br/>led toward voluntary obedience and<br/>meaningful application—a journey of<br/>discipleship for lasting transformation.",
 
                 "method_title": "Education Method of TEE",
                 "method_desc": "Follows these principles:",
@@ -815,7 +816,8 @@ const resources = {
                 "prayer_1_desc": "Let me do the Lord's work with my own free will, but let all glory be given to God alone.",
                 "prayer_2_title": "Daily Walk",
                 "prayer_2_desc": "Let the Lord dwell in me as I eat and drink the Word every day, and let my entire daily life be worship with God.",
-                "verse": "But these are written that you may believe that <br/> Jesus is the Messiah, the Son of God, and that <br/> by believing you may have life in his name.",
+                "verse": "But these are written that you may believe that Jesus is the Messiah, the Son of God, and that by believing you may have life in his name.",
+                "verse_mobile": "But these are written that you may<br/>believe that Jesus is the Messiah,<br/>the Son of God, and that<br/>by believing you may have life in his name.",
                 "verse_ref": "John 20:31",
                 "inquiry_button": "Inquiry"
             },
