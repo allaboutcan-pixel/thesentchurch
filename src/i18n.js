@@ -735,8 +735,8 @@ const resources = {
                 "core_value_subtitle": "Application",
                 "core_value_desc": "One of TEE’s highest priorities is the practical application of <br/> God’s Word. The goal is not faith that remains in knowledge alone, <br/> but discipleship that is lived out in everyday life.",
                 "core_value_desc_mobile": "One of TEE’s highest priorities is<br/>the practical application of God’s Word.<br/>The goal is not faith that remains in<br/>knowledge alone, but discipleship<br/>that is lived out in everyday life.",
-                "core_value_box": "Learning the Word, applying it to daily life,\nand growing to reflect Christ through faithful practice—this is the heart of TEE.",
-                "core_value_box_mobile": "Learning the Word,<br/>applying it to daily life,<br/>and growing to reflect Christ<br/>through faithful practice<br/>this is the heart of TEE.",
+                "core_value_box": "Learning the Word,\napplying it to daily life,\nand growing to reflect Christ through faithful practice—\nthis is the heart of TEE.",
+                "core_value_box_mobile": "Learning the Word,\napplying it to daily life,\nand growing to reflect Christ through faithful practice—\nthis is the heart of TEE.",
                 "core_value_sub": "",
 
                 "features_title": "What Makes TEE Distinct",
@@ -757,8 +757,8 @@ const resources = {
                 "smart_t_desc": "Tangible Training",
 
                 "fruits_title": "Expected Fruit",
-                "fruits_desc": "Through TEE, we pray that each member will be firmly rooted<br/>in God’s Word, growing in faith and maturity.<br/>As we build one another up in small-group community,<br/>we look forward to seeing a healthy church take shape<br/>one that raises up new disciples who, in turn, disciple others.<br/><br/>Our hope is that, through this journey, our church will continue to grow into a vibrant community where lives are strengthened by Scripture, relationships are deepened in Christ, and disciples are continually multiplied.",
-                "fruits_desc_mobile": "Through TEE, we pray that each member<br/>will be firmly rooted in God’s Word,<br/>growing in faith and maturity.<br/>As we build one another up in small-group community,<br/>we look forward to seeing a healthy church<br/>take shape one that raises up new disciples who,<br/>in turn, disciple others.<br/><br/>Our hope is that, through this journey, our church will<br/>continue to grow into a vibrant community where lives are<br/>strengthened by Scripture, relationships are deepened<br/>in Christ, and disciples are continually multiplied.",
+                "fruits_desc": "Through TEE, we pray that each member will be firmly rooted in God’s Word, growing in faith and maturity. As we build one another up in small-group community, we look forward to seeing a healthy church take shape—one that raises up new disciples who, in turn, disciple others.<br/><br/>Our hope is that, through this journey, our church will continue to grow into a vibrant community where lives are strengthened by Scripture, relationships are deepened in Christ, and disciples are continually multiplied.",
+                "fruits_desc_mobile": "Through TEE, we pray that each member will be firmly rooted in God’s Word, growing in faith and maturity. As we build one another up in small-group community, we look forward to seeing a healthy church take shape—one that raises up new disciples who, in turn, disciple others.<br/><br/>Our hope is that, through this journey, our church will continue to grow into a vibrant community where lives are strengthened by Scripture, relationships are deepened in Christ, and disciples are continually multiplied.",
             },
             "team_ministry": {
                 "title": "Team Ministry",
