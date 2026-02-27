@@ -735,7 +735,7 @@ const resources = {
                 "core_value_subtitle": "Application",
                 "core_value_desc": "One of TEE’s highest priorities is the practical application of <br/> God’s Word. The goal is not faith that remains in knowledge alone, <br/> but discipleship that is lived out in everyday life.",
                 "core_value_desc_mobile": "One of TEE’s highest priorities is<br/>the practical application of God’s Word.<br/>The goal is not faith that remains in<br/>knowledge alone, but discipleship<br/>that is lived out in everyday life.",
-                "core_value_box": "Learning the Word,\napplying it to daily life,\nand growing to reflect Christ through faithful practice—\nthis is the heart of TEE.",
+                "core_value_box": "Learning the Word, applying it to daily life,\nand growing to reflect Christ through faithful practice—\nthis is the heart of TEE.",
                 "core_value_box_mobile": "Learning the Word,\napplying it to daily life,\nand growing to reflect Christ through faithful practice—\nthis is the heart of TEE.",
                 "core_value_sub": "",
 
