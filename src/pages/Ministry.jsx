@@ -27,8 +27,24 @@ const Ministry = () => {
     const [overlayOpacity, setOverlayOpacity] = useState(40);
     const [height, setHeight] = useState("medium");
     const [bannerFit, setBannerFit] = useState("cover");
-    const [ministryList, setMinistryList] = useState(churchData.ministries);
+    const [ministryList, setMinistryList] = useState([]);
     const [siteConfig, setSiteConfig] = useState(null);
+
+    // Filtering logic based on path
+    useEffect(() => {
+        const path = location.pathname.split('/').pop();
+        let filtered = churchData.ministries;
+
+        if (path === 'ministry') {
+            // Education main: show only Next Gen (TSC/TSY)
+            filtered = churchData.ministries.filter(m => ['tsc', 'tsy'].includes(m.id));
+        } else if (path === 'mission') {
+            // Mission page: show only Mission & Evangelism
+            filtered = churchData.ministries.filter(m => m.id === 'mission_evangelism');
+        }
+
+        setMinistryList(filtered);
+    }, [location.pathname]);
 
     const formatDetail = (text) => {
         if (!text) return null;
@@ -237,8 +253,8 @@ const Ministry = () => {
             {/* Quick Menu Nav */}
             <div className="container mx-auto px-4 mt-12">
                 <MinistryNav
-                    active={location.pathname.includes('/tee') ? 'tee' : (location.pathname.includes('/team') ? 'team_ministry' : 'nextgen')}
-                    category={location.pathname.includes('/team') ? 'ministry' : 'education'}
+                    active={location.pathname.includes('/tee') ? 'tee' : (location.pathname.includes('/team') ? 'team_ministry' : (location.pathname.includes('/mission') ? 'mission_evangelism' : 'nextgen'))}
+                    category={(location.pathname.includes('/team') || location.pathname.includes('/mission')) ? 'ministry' : 'education'}
                 />
             </div>
 
