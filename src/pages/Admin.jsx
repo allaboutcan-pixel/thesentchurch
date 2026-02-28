@@ -1641,7 +1641,11 @@ const Admin = () => {
                                     <select
                                         className="w-full p-3 bg-gray-50 border border-gray-100 rounded-2xl outline-none text-sm appearance-none cursor-pointer"
                                         value={formData[`${pageKey}TitleFont`]}
-                                        onChange={(e) => setFormData({ ...formData, [`${pageKey}TitleFont`]: e.target.value })}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            setFormData(prev => ({ ...prev, [`${pageKey}TitleFont`]: val }));
+                                            setSiteConfig(prev => ({ ...prev, [`${pageKey}TitleFont`]: val }));
+                                        }}
                                     >
                                         <option value="font-sans">Basic Sans (고딕체)</option>
                                         <option value="font-nanum-serif">Serif (명조체)</option>
@@ -1676,7 +1680,11 @@ const Admin = () => {
                                             id={`${pageKey}TitleItalic`}
                                             className="w-4 h-4 rounded border-gray-300 text-primary cursor-pointer"
                                             checked={formData[`${pageKey}TitleItalic`]}
-                                            onChange={(e) => setFormData({ ...formData, [`${pageKey}TitleItalic`]: e.target.checked })}
+                                            onChange={(e) => {
+                                                const val = e.target.checked;
+                                                setFormData(prev => ({ ...prev, [`${pageKey}TitleItalic`]: val }));
+                                                setSiteConfig(prev => ({ ...prev, [`${pageKey}TitleItalic`]: val }));
+                                            }}
                                         />
                                         <label htmlFor={`${pageKey}TitleItalic`} className="text-xs font-bold text-gray-500 cursor-pointer">Title Italic</label>
                                     </div>
@@ -1686,7 +1694,11 @@ const Admin = () => {
                                             id={`${pageKey}TitleBold`}
                                             className="w-4 h-4 rounded border-gray-300 text-primary cursor-pointer"
                                             checked={formData[`${pageKey}TitleWeight`] === 'font-bold' || formData[`${pageKey}TitleWeight`] === 'font-black'}
-                                            onChange={(e) => setFormData({ ...formData, [`${pageKey}TitleWeight`]: e.target.checked ? 'font-bold' : 'font-medium' })}
+                                            onChange={(e) => {
+                                                const val = e.target.checked ? 'font-bold' : 'font-medium';
+                                                setFormData(prev => ({ ...prev, [`${pageKey}TitleWeight`]: val }));
+                                                setSiteConfig(prev => ({ ...prev, [`${pageKey}TitleWeight`]: val }));
+                                            }}
                                         />
                                         <label htmlFor={`${pageKey}TitleBold`} className="text-xs font-bold text-gray-500 cursor-pointer">Title Bold</label>
                                     </div>
@@ -1698,7 +1710,11 @@ const Admin = () => {
                                             id={`${pageKey}SubtitleItalic`}
                                             className="w-4 h-4 rounded border-gray-300 text-primary cursor-pointer"
                                             checked={formData[`${pageKey}SubtitleItalic`]}
-                                            onChange={(e) => setFormData({ ...formData, [`${pageKey}SubtitleItalic`]: e.target.checked })}
+                                            onChange={(e) => {
+                                                const val = e.target.checked;
+                                                setFormData(prev => ({ ...prev, [`${pageKey}SubtitleItalic`]: val }));
+                                                setSiteConfig(prev => ({ ...prev, [`${pageKey}SubtitleItalic`]: val }));
+                                            }}
                                         />
                                         <label htmlFor={`${pageKey}SubtitleItalic`} className="text-xs font-bold text-gray-500 cursor-pointer">Subtitle Italic</label>
                                     </div>
@@ -1708,7 +1724,11 @@ const Admin = () => {
                                             id={`${pageKey}SubtitleBold`}
                                             className="w-4 h-4 rounded border-gray-300 text-primary cursor-pointer"
                                             checked={formData[`${pageKey}SubtitleWeight`] === 'font-bold'}
-                                            onChange={(e) => setFormData({ ...formData, [`${pageKey}SubtitleWeight`]: e.target.checked ? 'font-bold' : 'font-medium' })}
+                                            onChange={(e) => {
+                                                const val = e.target.checked ? 'font-bold' : 'font-medium';
+                                                setFormData(prev => ({ ...prev, [`${pageKey}SubtitleWeight`]: val }));
+                                                setSiteConfig(prev => ({ ...prev, [`${pageKey}SubtitleWeight`]: val }));
+                                            }}
                                         />
                                         <label htmlFor={`${pageKey}SubtitleBold`} className="text-xs font-bold text-gray-500 cursor-pointer">Subtitle Bold</label>
                                     </div>
@@ -1727,7 +1747,11 @@ const Admin = () => {
                                         max="120"
                                         className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
                                         value={formData[`${pageKey}TitleSize`]}
-                                        onChange={(e) => setFormData({ ...formData, [`${pageKey}TitleSize`]: parseInt(e.target.value) })}
+                                        onChange={(e) => {
+                                            const val = parseInt(e.target.value);
+                                            setFormData(prev => ({ ...prev, [`${pageKey}TitleSize`]: val }));
+                                            setSiteConfig(prev => ({ ...prev, [`${pageKey}TitleSize`]: val }));
+                                        }}
                                     />
                                 </div>
                                 <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100">
@@ -1758,7 +1782,11 @@ const Admin = () => {
                                             type="color"
                                             className="w-8 h-8 rounded-full cursor-pointer border-none bg-transparent p-0"
                                             value={formData[`${pageKey}TitleColor`]}
-                                            onChange={(e) => setFormData({ ...formData, [`${pageKey}TitleColor`]: e.target.value })}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, [`${pageKey}TitleColor`]: val }));
+                                                setSiteConfig(prev => ({ ...prev, [`${pageKey}TitleColor`]: val }));
+                                            }}
                                         />
                                         <span className="text-xs font-mono text-gray-500 uppercase">{formData[`${pageKey}TitleColor`]}</span>
                                     </div>
@@ -2574,14 +2602,14 @@ const Admin = () => {
                                     />
                                 </div>
                                 <div className="space-y-2 md:col-span-2">
-                                    <label className="text-sm font-bold text-blue-500 ml-1">English Biography / Description (For About Us page)</label>
+                                    <label className="text-sm font-bold text-blue-500 ml-1">English Biography / Description (For About page)</label>
                                     <textarea
                                         className="w-full p-4 bg-blue-50/50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-32 resize-none leading-relaxed"
                                         placeholder="Enter english biography lines (use enter to create bullets if needed)"
                                         value={formData.staffHistoryEn || ''}
                                         onChange={(e) => setFormData({ ...formData, staffHistoryEn: e.target.value })}
                                     />
-                                    <p className="text-[10px] text-gray-400 font-medium ml-1 mt-1">* This description will be shown on the English version of the About Us page.</p>
+                                    <p className="text-[10px] text-gray-400 font-medium ml-1 mt-1">* This description will be shown on the English version of the About page.</p>
                                 </div>
 
                                 <div className="space-y-4">
@@ -4153,7 +4181,10 @@ const Admin = () => {
                                             label="교회소개 배너"
                                             value={siteConfig.aboutBanner}
                                             fieldName="aboutBanner"
-                                            onChange={(val) => setSiteConfig({ ...siteConfig, aboutBanner: val })}
+                                            onChange={(val) => {
+                                                setSiteConfig(prev => ({ ...prev, aboutBanner: val }));
+                                                setFormData(prev => ({ ...prev, aboutBanner: val }));
+                                            }}
                                             bannerFiles={bannerFiles}
                                             setBannerFiles={setBannerFiles}
                                         />
@@ -4167,7 +4198,7 @@ const Admin = () => {
                                             value={siteConfig.aboutTitle ?? ''}
                                             onChange={(e) => {
                                                 const val = e.target.value;
-                                                setSiteConfig({ ...siteConfig, aboutTitle: val });
+                                                setSiteConfig(prev => ({ ...prev, aboutTitle: val }));
                                                 setFormData(prev => ({ ...prev, aboutTitle: val }));
                                             }}
                                         />
@@ -4181,7 +4212,7 @@ const Admin = () => {
                                             value={siteConfig.aboutSubtitle ?? ''}
                                             onChange={(e) => {
                                                 const val = e.target.value;
-                                                setSiteConfig({ ...siteConfig, aboutSubtitle: val });
+                                                setSiteConfig(prev => ({ ...prev, aboutSubtitle: val }));
                                                 setFormData(prev => ({ ...prev, aboutSubtitle: val }));
                                             }}
                                         />
@@ -4192,11 +4223,11 @@ const Admin = () => {
                                         <input
                                             type="text"
                                             className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                            placeholder="Default: About Us"
+                                            placeholder="Default: About"
                                             value={siteConfig.aboutTitleEn ?? ''}
                                             onChange={(e) => {
                                                 const val = e.target.value;
-                                                setSiteConfig({ ...siteConfig, aboutTitleEn: val });
+                                                setSiteConfig(prev => ({ ...prev, aboutTitleEn: val }));
                                                 setFormData(prev => ({ ...prev, aboutTitleEn: val }));
                                             }}
                                         />
@@ -4210,7 +4241,7 @@ const Admin = () => {
                                             value={siteConfig.aboutSubtitleEn ?? ''}
                                             onChange={(e) => {
                                                 const val = e.target.value;
-                                                setSiteConfig({ ...siteConfig, aboutSubtitleEn: val });
+                                                setSiteConfig(prev => ({ ...prev, aboutSubtitleEn: val }));
                                                 setFormData(prev => ({ ...prev, aboutSubtitleEn: val }));
                                             }}
                                         />
@@ -4370,7 +4401,7 @@ const Admin = () => {
                                         value={siteConfig.aboutAffiliatedOrgs || ''}
                                         onChange={(e) => {
                                             const val = e.target.value;
-                                            setSiteConfig({ ...siteConfig, aboutAffiliatedOrgs: val });
+                                            setSiteConfig(prev => ({ ...prev, aboutAffiliatedOrgs: val }));
                                             setFormData(prev => ({ ...prev, aboutAffiliatedOrgs: val }));
                                         }}
                                     />
@@ -4385,7 +4416,7 @@ const Admin = () => {
                                         value={siteConfig.aboutAffiliatedOrgsEn || ''}
                                         onChange={(e) => {
                                             const val = e.target.value;
-                                            setSiteConfig({ ...siteConfig, aboutAffiliatedOrgsEn: val });
+                                            setSiteConfig(prev => ({ ...prev, aboutAffiliatedOrgsEn: val }));
                                             setFormData(prev => ({ ...prev, aboutAffiliatedOrgsEn: val }));
                                         }}
                                     />
@@ -4400,11 +4431,14 @@ const Admin = () => {
                                         id="drive-input-pastor-image"
                                         className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
                                         placeholder="https://drive.google.com/..."
-                                        defaultValue={siteConfig.pastor?.image || ''}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            pastor: { ...siteConfig.pastor, image: e.target.value }
-                                        })}
+                                        value={siteConfig.pastor?.image || ''}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            setSiteConfig(prev => ({
+                                                ...prev,
+                                                pastor: { ...prev.pastor, image: val }
+                                            }));
+                                        }}
                                     />
                                     <button
                                         type="button"
@@ -4413,10 +4447,10 @@ const Admin = () => {
                                             const input = inputElement?.value;
                                             if (input && input.includes('drive.google.com')) {
                                                 const formatted = dbService.formatDriveImage(input);
-                                                setSiteConfig({
-                                                    ...siteConfig,
-                                                    pastor: { ...siteConfig.pastor, image: formatted }
-                                                });
+                                                setSiteConfig(prev => ({
+                                                    ...prev,
+                                                    pastor: { ...prev.pastor, image: formatted }
+                                                }));
                                                 inputElement.value = formatted;
                                                 alert('✅ 이미지로 변환되었습니다!');
                                             }
