@@ -488,7 +488,7 @@ const Admin = () => {
         emailjsServiceId: '', emailjsTemplateId: '', emailjsPublicKey: '', emailjsReceivers: '',
 
         // English fields for general items
-        titleEn: '', preacherEn: '', contentEn: '', authorEn: '', staffEnglishRole: '',
+        titleEn: '', preacherEn: '', contentEn: '', authorEn: '', staffEnglishRole: '', staffHistoryEn: '',
     });
 
     const [pastorFile, setPastorFile] = useState(null);
@@ -899,7 +899,7 @@ const Admin = () => {
                 finalPhotoUrl = dbService.formatDriveImage(formData.staffPhotoUrl);
             }
 
-            let newStaffList;
+            const newStaffList;
             if (editingId) {
                 newStaffList = staffList.map(s => s.id === editingId ? {
                     ...s,
@@ -908,6 +908,7 @@ const Admin = () => {
                     role: formData.staffRole,
                     englishRole: formData.staffEnglishRole || '',
                     email: formData.staffEmail,
+                    historyEn: formData.staffHistoryEn || '',
                     image: finalPhotoUrl
                 } : s);
             } else {
@@ -918,6 +919,7 @@ const Admin = () => {
                     role: formData.staffRole,
                     englishRole: formData.staffEnglishRole || '',
                     email: formData.staffEmail,
+                    historyEn: formData.staffHistoryEn || '',
                     image: finalPhotoUrl
                 };
                 newStaffList = [...staffList, newStaffMember];
@@ -934,7 +936,7 @@ const Admin = () => {
             setStaffFile(null);
             setFormData({
                 ...formData,
-                staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', staffEnglishName: '', staffEnglishRole: ''
+                staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', staffEnglishName: '', staffEnglishRole: '', staffHistoryEn: ''
             });
             alert('성공적으로 저장되었습니다!');
         } catch (err) {
@@ -1275,7 +1277,7 @@ const Admin = () => {
                     title: '', titleEn: '', date: '', preacher: '', preacherEn: '', youtubeId: '', fileUrl: '', fileUrl2: '', type: 'image',
                     staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', thumbnailUrl: '',
                     note: '', eventType: 'default',
-                    startDate: '', endDate: '', staffEnglishName: ''
+                    startDate: '', endDate: '', staffEnglishName: '', staffEnglishRole: '', staffHistoryEn: ''
                 });
             }
             alert('성공적으로 저장되었습니다!');
@@ -1333,6 +1335,7 @@ const Admin = () => {
                 staffRole: item.role,
                 staffEnglishRole: item.englishRole || '',
                 staffEmail: item.email || '',
+                staffHistoryEn: typeof item.historyEn === 'string' ? item.historyEn : (Array.isArray(item.historyEn) ? item.historyEn.join('\n') : ''),
                 // If the image is a processed Drive thumbnail, don't put it in the input (it looks broken as text)
                 staffPhotoUrl: (item.image && !item.image.includes('drive.google.com/thumbnail') && !item.image.includes('drive.google.com/uc')) ? item.image : ''
             });
@@ -2545,6 +2548,16 @@ const Admin = () => {
                                         value={formData.staffEmail}
                                         onChange={(e) => setFormData({ ...formData, staffEmail: e.target.value })}
                                     />
+                                </div>
+                                <div className="space-y-2 md:col-span-2">
+                                    <label className="text-sm font-bold text-blue-500 ml-1">English Biography / Description (For About Us page)</label>
+                                    <textarea
+                                        className="w-full p-4 bg-blue-50/50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-32 resize-none leading-relaxed"
+                                        placeholder="Enter english biography lines (use enter to create bullets if needed)"
+                                        value={formData.staffHistoryEn || ''}
+                                        onChange={(e) => setFormData({ ...formData, staffHistoryEn: e.target.value })}
+                                    />
+                                    <p className="text-[10px] text-gray-400 font-medium ml-1 mt-1">* This description will be shown on the English version of the About Us page.</p>
                                 </div>
 
                                 <div className="space-y-4">

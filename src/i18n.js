@@ -520,10 +520,10 @@ const resources = {
                 "view_more_words": "View More Words"
             },
             "about": {
-                "title": "About Us",
+                "title": "About",
                 "subtitle": "The church that follows the Sound of Life.",
                 "intro_label": "INTRO",
-                "intro_title": "About Our Church",
+                "intro_title": "Our Beliefs",
                 "affiliated_orgs_label": "Church Affiliation",
                 "affiliated_orgs_title": "Church Affiliation",
                 "affiliated_orgs_desc": "The Church of the Sent is affiliated with the Americas General Assembly<br/>of the <span class='text-primary font-bold'>Korea Evangelical Holiness Church (KEHC)</span>.<br/><br/>The Holiness Church believes in the Triune God and affirms the Bible<br/>as the living and authoritative Word of God.<br/>We believe that through the death and resurrection of Jesus Christ we are born again,<br/>that through the work of the Holy Spirit we are called to live holy and sanctified lives,<br/>that God has the power to bring healing, and that Jesus Christ will return again.<br/><br/>In Canada, we are also part of the <span class='text-primary font-bold'>Evangelical Free Church of Canada (EFCC)</span>,<br/>an evangelical denomination that affirms the Bible as the final authority for faith and life.<br/><br/>Within the EFCC, each local church is self-governing and operates with a high degree of autonomy.<br/>While we share a common statement of faith and mission,<br/>local congregations are led by their own leadership and affirmed by their membership.<br/><br/>Representative educational institutions connected with the EFCC<br/>include <span class='text-primary font-bold'>Trinity Western University in British Columbia, Canada,<br/>and Trinity Evangelical Divinity School (TEDS) in the United States</span>.",
@@ -546,7 +546,7 @@ const resources = {
                 "values_label": "MINISTRY",
                 "values_title": "Ministry (Core Values)",
                 "staff_label": "STAFF",
-                "staff_title": "Our Team",
+                "staff_title": "Our Staff",
                 "pastor_photo": "Pastor's Photo",
                 "pastor_history_title": "About Pastor",
                 "pastor_history": [
@@ -574,11 +574,11 @@ const resources = {
                 "online_desc": "* This is a sacred morning prayer session held online."
             },
             "ministry": {
-                "title": "Next Generation",
+                "title": "Kids/Youth",
                 "subtitle": "“Therefore go and make disciples of all nations...” (Matthew 28:19)",
                 "learn_more": "Learn More",
                 "fold": "Close",
-                "sunday_school_title": "Next Generation",
+                "sunday_school_title": "Kids/Youth",
                 "sunday_school_description": "In our Sunday School, children grow in the truth of God’s Word, <br class='hidden md:block'/> are encouraged to follow Jesus faithfully, and are nurtured to <br class='hidden md:block'/> become lifelong disciples who serve Him with willing hearts.",
                 "sunday_school_subtitle": "“Train up a child in the way he should go, <br class='hidden md:block'/> even when he is old he will not depart from it.” <br class='hidden md:block'/> (Proverbs 22:6)",
                 "tsc_name": "The Sent Children (TSC)",

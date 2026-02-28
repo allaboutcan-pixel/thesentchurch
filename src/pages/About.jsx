@@ -281,14 +281,18 @@ const About = () => {
 
                                     {/* Pastor History Section (Left Aligned) */}
                                     <div className="mt-40 pt-6 border-t border-gray-100">
-                                        <h4 className="text-sm font-bold text-blue-600 mb-3">{t('about.pastor_history_title')}</h4>
+                                        <h4 className="text-sm font-bold text-blue-600 mb-3">
+                                            {i18n.language === 'en' ? 'Biography' : t('about.pastor_history_title')}
+                                        </h4>
                                         <ul className="space-y-1.5 pl-2">
-                                            {(t('about.pastor_history', { returnObjects: true }) || pastorInfo.history || churchData.intro.pastor.history).map((item, idx) => (
-                                                <li key={idx} className="text-sm text-gray-500 flex items-start gap-2">
-                                                    <span className="w-1.5 h-1.5 bg-accent/40 rounded-full mt-1.5 shrink-0" />
-                                                    <span>{item}</span>
-                                                </li>
-                                            ))}
+                                            {(i18n.language === 'en' && pastorInfo.historyEn ?
+                                                (typeof pastorInfo.historyEn === 'string' ? pastorInfo.historyEn.split('\n') : pastorInfo.historyEn)
+                                                : (t('about.pastor_history', { returnObjects: true }) || pastorInfo.history || churchData.intro.pastor.history)).map((item, idx) => (
+                                                    <li key={idx} className="text-sm text-gray-500 flex items-start gap-2">
+                                                        <span className="w-1.5 h-1.5 bg-accent/40 rounded-full mt-1.5 shrink-0" />
+                                                        <span>{item}</span>
+                                                    </li>
+                                                ))}
                                         </ul>
                                     </div>
                                 </div>
@@ -534,10 +538,23 @@ const About = () => {
                                                     staff.role === '행정' ? t('nav.role_admin') : staff.role
                                         )}
                                     </p>
-                                    <div className="flex justify-center items-center gap-2 text-gray-500 text-sm">
+                                    <div className="flex justify-center items-center gap-2 text-gray-500 text-sm mb-4">
                                         <Mail size={14} />
                                         <a href={`mailto:${staff.email}`} className="hover:text-primary transition-colors">{staff.email}</a>
                                     </div>
+
+                                    {(i18n.language === 'en' && staff.historyEn) && (
+                                        <div className="mt-4 pt-4 border-t border-gray-100 text-left">
+                                            <ul className="space-y-1 pl-1">
+                                                {(typeof staff.historyEn === 'string' ? staff.historyEn.split('\n') : staff.historyEn).map((item, idx) => (
+                                                    <li key={idx} className="text-[11px] text-gray-500 flex items-start gap-1.5">
+                                                        <span className="w-1 h-1 bg-accent/40 rounded-full mt-1.5 shrink-0" />
+                                                        <span className="leading-tight">{item}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         ))}
