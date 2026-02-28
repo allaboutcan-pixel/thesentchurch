@@ -159,7 +159,7 @@ const resources = {
                 "staff_label": "STAFF",
                 "staff_title": "섬기는 사람들",
                 "pastor_photo": "담임목사 사진",
-                "pastor_history_title": "이남규 목사님은 (About Pastor)",
+                "pastor_history_title": "이남규 목사님은",
                 "pastor_history": [
                     "서경대학교 법학과 졸업",
                     "성결신학대학원 졸업 (M.Div., 목회학 석사)",
@@ -201,7 +201,7 @@ const resources = {
             },
 
             "worship": {
-                "title": "Service Guide",
+                "title": "예배 안내",
                 "verse": "\"하나님은 영이시니 예배하는 자가 영과 진리로 예배할지니라\"",
                 "sunday_service": "주일 예배",
                 "dawn_service": "새벽 예배",
