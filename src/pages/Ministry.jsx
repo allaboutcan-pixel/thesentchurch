@@ -294,7 +294,7 @@ const Ministry = () => {
                         <>
                             {/* Desktop Korean Description */}
                             <p className="hidden md:block text-lg md:text-xl text-gray-600 font-medium leading-relaxed break-keep whitespace-pre-line mb-8">
-                                {t('ministry.sunday_school_description_kr') || t('ministry.sunday_school_title')}
+                                {t('ministry.sunday_school_description')}
                             </p>
                             {/* Mobile Korean Description (with requested line breaks) */}
                             <p
