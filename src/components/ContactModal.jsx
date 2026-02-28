@@ -93,7 +93,7 @@ ${formData.message}
                         </div>
                         <div>
                             <h2 className="font-bold text-lg">{t('home.first_step')}</h2>
-                            <p className="text-xs text-white/80 font-light">{t('contact.subtitle')}</p>
+                            <p className="text-xs text-white/80 font-light">{t('home.contact.subtitle')}</p>
                         </div>
                     </div>
                     <button
@@ -107,7 +107,7 @@ ${formData.message}
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="p-6 space-y-4">
                     <div className="space-y-1">
-                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">{t('contact.name')}</label>
+                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">{t('home.contact.name')}</label>
                         <div className="relative">
                             <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                             <input
@@ -116,13 +116,13 @@ ${formData.message}
                                 value={formData.name}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                 className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm font-medium transition-all"
-                                placeholder={t('contact.name_placeholder')}
+                                placeholder={t('home.contact.name_placeholder')}
                             />
                         </div>
                     </div>
 
                     <div className="space-y-1">
-                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">{t('contact.phone')}</label>
+                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">{t('home.contact.phone')}</label>
                         <div className="relative">
                             <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                             <input
@@ -131,19 +131,19 @@ ${formData.message}
                                 value={formData.phone}
                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                 className="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm font-medium transition-all"
-                                placeholder={t('contact.phone_placeholder')}
+                                placeholder={t('home.contact.phone_placeholder')}
                             />
                         </div>
                     </div>
 
                     <div className="space-y-1">
-                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">{t('contact.message')}</label>
+                        <label className="text-xs font-bold text-gray-500 uppercase ml-1">{t('home.contact.message')}</label>
                         <textarea
                             required
                             value={formData.message}
                             onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                             className="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm font-medium transition-all min-h-[120px] resize-none"
-                            placeholder={t('contact.message_placeholder')}
+                            placeholder={t('home.contact.message_placeholder')}
                         />
                     </div>
 
@@ -156,10 +156,10 @@ ${formData.message}
                             {t('home.first_step')}
                         </button>
                         <p className="text-[10px] text-gray-400 text-center mt-3">
-                            {t('contact.mail_notice')}
+                            {t('home.contact.mail_notice')}
                         </p>
                         <div className="mt-6 pt-6 border-t border-gray-100">
-                            <p className="text-[10px] font-bold text-gray-400 uppercase text-center mb-1">Direct Email</p>
+                            <p className="text-[10px] font-bold text-gray-400 uppercase text-center mb-1">{t('contact.direct_email')}</p>
                             <p className="text-sm font-black text-primary text-center select-all">thesentnamgyu@gmail.com</p>
                         </div>
                     </div>

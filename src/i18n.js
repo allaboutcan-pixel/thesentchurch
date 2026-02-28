@@ -118,14 +118,15 @@ const resources = {
                 "daily_word_popup_title": "오늘의 말씀",
                 "daily_word_popup_close": "오늘 하루 보지 않기",
                 "contact": {
-                    "subtitle": "궁금하신 점을 남겨주세요",
+                    "subtitle": "문의사항을 남겨주세요.",
                     "name": "성함",
                     "name_placeholder": "성함을 입력해주세요",
                     "phone": "연락처",
                     "phone_placeholder": "연락 받으실 번호를 입력해주세요",
                     "message": "문의 내용",
                     "message_placeholder": "문의하실 내용을 자유롭게 적어주세요.",
-                    "mail_notice": "* 버튼을 누르면 기기의 메일 앱이 실행됩니다."
+                    "mail_notice": "* 버튼을 누르면 기기의 메일 앱이 실행됩니다.",
+                    "direct_email": "직접 이메일 보내기"
                 },
                 "daily_word_view_more": "자세히 보기",
                 "preacher_default": "이남규 목사",
@@ -483,6 +484,18 @@ const resources = {
                 "news_title": "Church News",
                 "calendar_title": "Church Calendar",
                 "contact_title": "Contact & Info",
+                "direct_email": "Direct Email",
+                "contact": {
+                    "subtitle": "Please leave your inquiries below",
+                    "name": "Name",
+                    "name_placeholder": "Enter your name",
+                    "phone": "Phone",
+                    "phone_placeholder": "Enter your phone number",
+                    "message": "Message",
+                    "message_placeholder": "Enter your message",
+                    "mail_notice": "* Clicking the button will open your device's email app.",
+                    "direct_email": "Direct Email"
+                },
                 "contact_desc": "If you need any information about our services or church life, please contact us.",
                 "view_more": "More",
                 "youtube_desc": "Visit YouTube Channel",
