@@ -690,7 +690,7 @@ const resources = {
             "교역자 기도모임": "Ministers' Prayer Meeting",
             "봉사자 예배": "Volunteer Service",
             "중보기도 모임": "Intercessory Prayer Meeting",
-            "교회 지하 1층": "Church Floor B1",
+            "교회 지하 1층": "Church B1 Floor",
             "자모실": "Nursing Room",
             "매달 첫째 둘째주 6:00 AM": "1st & 2nd Week 6:00 AM",
 
@@ -710,7 +710,7 @@ const resources = {
 
             "매달 첫째,둘째주 화-토요일 6AM": "1st & 2nd Week Tue-Sat 6AM",
             "본당": "Main Chapel",
-            "지하 1층": "Floor B1",
+            "지하 1층": "B1 Floor",
             "pastor_message_full": "Welcome to The Church of the Sent.\n\nWe desire to be a place where people can genuinely encounter the warm and compassionate love of Jesus.\nOur prayer is that everyone who comes through our doors will sense God’s presence—who sees each person as deeply valued and dearly loved.\n\nWe hope you will discover God’s greater purpose for your life and His plans to do meaningful and eternal work through you.\nMay your heart be filled with hope through the dreams God gives, your wandering come to an end, and may you rise with renewed strength toward the vision He has prepared for you.",
             "tee": {
                 "banner_title": "TEE",
