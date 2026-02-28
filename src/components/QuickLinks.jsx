@@ -59,11 +59,9 @@ const QuickLinks = () => {
                         )}
                         <h3 className="text-lg md:text-xl text-white group-hover:text-accent transition-colors leading-tight flex flex-col gap-1">
                             <span className="font-black">{item.title.split('|')[0].trim()}</span>
-                            {item.title.includes('|') && (
-                                <span className="text-sm md:text-base font-normal opacity-70">
-                                    {item.title.split('|')[1].trim()}
-                                </span>
-                            )}
+                            <span className="text-sm md:text-base font-normal opacity-70">
+                                {item.title.includes('|') ? item.title.split('|')[1].trim() : '\u00A0'}
+                            </span>
                         </h3>
                     </div>
                 </Link>
