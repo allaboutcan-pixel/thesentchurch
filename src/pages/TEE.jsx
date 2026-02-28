@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { BookOpen, Target, Heart, CheckCircle2, Globe2, Leaf, Sprout, Award, Scroll, Quote, ExternalLink, Download } from 'lucide-react';
+import MinistryNav from '../components/MinistryNav';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import clsx from 'clsx';
 
@@ -29,6 +30,7 @@ const TEE = () => {
     const subtitleColor = siteConfig?.[`${type}SubtitleColor`] || '#f8fafc';
     const subtitleItalic = siteConfig?.[`${type}SubtitleItalic`] || false;
     const titleWeight = siteConfig?.[`${type}TitleWeight`] || 'font-black';
+    const titleItalic = siteConfig?.[`${type}TitleItalic`] || false;
     const subtitleWeight = siteConfig?.[`${type}SubtitleWeight`] || 'font-medium';
     const titleSize = siteConfig?.[`${type}TitleSize`];
     const subtitleSize = siteConfig?.[`${type}SubtitleSize`];
@@ -317,7 +319,9 @@ const TEE = () => {
                                 className="bg-white p-6 rounded-xl shadow-sm border-b-4 border-blue-500 text-center hover:-translate-y-1 transition-transform duration-300"
                             >
                                 <div className="text-4xl font-black text-blue-200 mb-3">{item.letter}</div>
-                                <h4 className="text-lg font-bold text-slate-700 mb-2">{item.title.split('–')[1].trim()}</h4>
+                                <h4 className="text-lg font-bold text-slate-700 mb-2">
+                                    {(item.title && item.title.includes('–')) ? item.title.split('–')[1].trim() : item.title}
+                                </h4>
                                 <p className="text-sm text-slate-500 break-keep leading-relaxed">{item.desc}</p>
                             </motion.div>
                         ))}
