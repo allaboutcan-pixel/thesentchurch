@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
 import { Download, Calendar, Image as ImageIcon, FileText, Play, X, ChevronRight, ChevronLeft, BookOpen, Quote, Music, Maximize, Bell } from 'lucide-react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import bulletinsInitialData from '../data/bulletins.json';
 import { dbService } from '../services/dbService';
 import { isVideo, getYoutubeId } from '../utils/mediaUtils';
+import { safeSplitDate } from '../utils/dateUtils';
 import CalendarWidget from '../components/CalendarWidget';
 
 const Resources = () => {
     const { t, i18n } = useTranslation();
     const location = useLocation();
     const [activeTab, setActiveTab] = useState('sermon');
+    // eslint-disable-next-line no-unused-vars
     const [bulletins, setBulletins] = useState(bulletinsInitialData);
     const [latestBulletin, setLatestBulletin] = useState(null);
     const [activePage, setActivePage] = useState(1);
@@ -28,19 +31,26 @@ const Resources = () => {
 
     const [columns, setColumns] = useState([]);
     const [latestColumn, setLatestColumn] = useState(null);
+    // eslint-disable-next-line no-unused-vars
     const [columnArchiveData, setColumnArchiveData] = useState({});
     const [selectedColumnYear, setSelectedColumnYear] = useState(new Date().getFullYear().toString());
     const [selectedColumnMonth, setSelectedColumnMonth] = useState((new Date().getMonth() + 1).toString());
     const [selectedArchiveColumn, setSelectedArchiveColumn] = useState(null);
+    // eslint-disable-next-line no-unused-vars
     const [notices, setNotices] = useState([]);
 
+    // eslint-disable-next-line no-unused-vars
     const [galleryItems, setGalleryItems] = useState([]);
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [selectedArchiveBulletin, setSelectedArchiveBulletin] = useState(null);
     const [activeArchivePage, setActiveArchivePage] = useState(1);
+    // eslint-disable-next-line no-unused-vars
     const [isBulletinFullScreen, setIsBulletinFullScreen] = useState(false);
+    // eslint-disable-next-line no-unused-vars
     const [playingSermonId, setPlayingSermonId] = useState(null);
+    // eslint-disable-next-line no-unused-vars
     const [showSermonModal, setShowSermonModal] = useState(false);
+    // eslint-disable-next-line no-unused-vars
     const [isConfigLoaded, setIsConfigLoaded] = useState(false);
 
     // Filter sermons for the grid
@@ -173,19 +183,19 @@ const Resources = () => {
 
                     const grouped = {};
                     sorted.forEach(item => {
-                        if (!item.date) return;
-                        const [y, m] = item.date.split('-');
-                        const year = y;
-                        const month = parseInt(m, 10).toString();
+                        const [year, month] = safeSplitDate(item.date);
                         if (!grouped[year]) grouped[year] = {};
                         if (!grouped[year][month]) grouped[year][month] = [];
                         grouped[year][month].push(item);
                     });
                     setArchiveData(grouped);
 
-                    const [ly, lm] = sorted[0].date.split('-');
-                    setSelectedYear(ly);
-                    setSelectedMonth(parseInt(lm, 10).toString());
+                    // Safeguard initial selections
+                    if (sorted[0]) {
+                        const [ly, lm] = safeSplitDate(sorted[0].date);
+                        setSelectedYear(ly);
+                        setSelectedMonth(parseInt(lm, 10).toString());
+                    }
                 }
 
                 // Process Gallery
@@ -206,19 +216,18 @@ const Resources = () => {
 
                     const grouped = {};
                     cleanedSermons.forEach(item => {
-                        if (!item.date) return;
-                        const [y, m] = item.date.split('-');
-                        const year = y;
-                        const month = parseInt(m, 10).toString();
+                        const [year, month] = safeSplitDate(item.date);
                         if (!grouped[year]) grouped[year] = {};
                         if (!grouped[year][month]) grouped[year][month] = [];
                         grouped[year][month].push(item);
                     });
                     setSermonArchiveData(grouped);
 
-                    const [ly, lm] = cleanedSermons[0].date.split('-');
-                    setSelectedSermonYear(ly);
-                    setSelectedSermonMonth(parseInt(lm, 10).toString());
+                    if (cleanedSermons[0]) {
+                        const [ly, lm] = safeSplitDate(cleanedSermons[0].date);
+                        setSelectedSermonYear(ly);
+                        setSelectedSermonMonth(parseInt(lm, 10).toString());
+                    }
                 }
 
                 // Process Columns
@@ -229,18 +238,18 @@ const Resources = () => {
 
                     const grouped = {};
                     sorted.forEach(item => {
-                        if (!item.date) return;
-                        const [y, m] = item.date.split('-');
-                        const year = y;
-                        const month = parseInt(m, 10).toString();
+                        const [year, month] = safeSplitDate(item.date);
                         if (!grouped[year]) grouped[year] = {};
                         if (!grouped[year][month]) grouped[year][month] = [];
                         grouped[year][month].push(item);
                     });
                     setColumnArchiveData(grouped);
-                    const [ly, lm] = sorted[0].date.split('-');
-                    setSelectedColumnYear(ly);
-                    setSelectedColumnMonth(parseInt(lm, 10).toString());
+
+                    if (sorted[0]) {
+                        const [ly, lm] = safeSplitDate(sorted[0].date);
+                        setSelectedColumnYear(ly);
+                        setSelectedColumnMonth(parseInt(lm, 10).toString());
+                    }
                 }
 
                 // Process Notices

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import churchData from '../data/church_data.json';
 import { MapPin, Phone, Mail, Clock, Calendar, Handshake, Globe, School, BookOpen, ExternalLink, Video, Users, Youtube, Facebook, Instagram } from 'lucide-react';

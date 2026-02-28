@@ -3,22 +3,14 @@ import { X, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-
-const getDayName = (dateStr) => {
-    if (!dateStr) return '';
-    // Parse YYYY-MM-DD manually to prevent timezone offset issues
-    const [year, month, day] = dateStr.split('-').map(Number);
-    const date = new Date(year, month - 1, day);
-    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-    return dayNames[date.getDay()];
-};
+import { getDayName } from '../utils/dateUtils';
 
 const DailyWordPopup = ({ word }) => {
     const [isOpen, setIsOpen] = useState(false);
     const { t } = useTranslation();
 
     useEffect(() => {
-        if (!word) return;
+        if (!word || !word.date || typeof word.date !== 'string') return;
 
         const lastClosed = localStorage.getItem('daily_word_closed_date');
 

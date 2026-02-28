@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Clock, MapPin, Info, Image as ImageIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Info } from 'lucide-react';
 import { dbService } from '../services/dbService';
 import clsx from 'clsx';
-
 import { useTranslation } from 'react-i18next';
+import { parseDateLocal } from '../utils/dateUtils';
 
 const CalendarWidget = () => {
     const { t, i18n } = useTranslation();
@@ -20,18 +20,16 @@ const CalendarWidget = () => {
     const [currentDate, setCurrentDate] = useState(getVancouverDate());
     const [selectedDate, setSelectedDate] = useState(getVancouverDate());
     const [events, setEvents] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [hoveredEvent, setHoveredEvent] = useState(null);
 
     useEffect(() => {
         const fetchEvents = async () => {
             try {
                 const data = await dbService.getCalendarEvents();
-                setEvents(data);
-            } catch (error) {
-                console.error("Failed to load calendar events", error);
-            } finally {
-                setLoading(false);
+                // Ensure data is array
+                setEvents(Array.isArray(data) ? data : []);
+            } catch (err) {
+                console.error("Failed to load calendar events", err);
+                setEvents([]);
             }
         };
         fetchEvents();
@@ -51,30 +49,31 @@ const CalendarWidget = () => {
 
     const isSameDay = (d1, d2) => {
         if (!d1 || !d2) return false;
-        return d1.getFullYear() === d2.getFullYear() &&
-            d1.getMonth() === d2.getMonth() &&
-            d1.getDate() === d2.getDate();
+        try {
+            return d1.getFullYear() === d2.getFullYear() &&
+                d1.getMonth() === d2.getMonth() &&
+                d1.getDate() === d2.getDate();
+        } catch (err) {
+            return false;
+        }
     };
 
-    // Parse "YYYY-MM-DD" manually to avoid UTC offset issues
-    const parseDateLocal = (dateStr) => {
-        if (!dateStr) return null;
-        if (dateStr instanceof Date) return dateStr;
-        const [y, m, d] = dateStr.split('-').map(Number);
-        return new Date(y, m - 1, d);
-    };
-
+    // Range check helper with guards
     const isDateInEventRange = (date, event) => {
-        const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        if (!date || !event || !event.startDate) return false;
 
-        const start = parseDateLocal(event.startDate);
-        const end = parseDateLocal(event.endDate || event.startDate);
+        try {
+            const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-        if (!start || !end) return false;
+            const start = parseDateLocal(event.startDate);
+            const end = parseDateLocal(event.endDate || event.startDate);
 
-        const s = new Date(start.getFullYear(), start.getMonth(), start.getDate());
-        const e = new Date(end.getFullYear(), end.getMonth(), end.getDate());
-        return d >= s && d <= e;
+            const s = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+            const e = new Date(end.getFullYear(), end.getMonth(), end.getDate());
+            return d >= s && d <= e;
+        } catch (err) {
+            return false;
+        }
     };
 
     // Events for the selected day

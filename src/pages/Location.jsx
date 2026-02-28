@@ -122,7 +122,7 @@ const Location = () => {
                                             const rawPhone = config.phone;
                                             const phones = Array.isArray(rawPhone)
                                                 ? rawPhone
-                                                : (typeof rawPhone === 'string' ? rawPhone.split(/[,\/]/) : [rawPhone]);
+                                                : (typeof rawPhone === 'string' ? rawPhone.split(/[,/]/) : [rawPhone]);
 
                                             return (phones || []).map((p, i) => (
                                                 <span key={i} className="block text-gray-800 font-bold text-lg leading-tight">{p && p.trim ? p.trim() : p}</span>

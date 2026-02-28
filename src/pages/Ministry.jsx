@@ -77,7 +77,7 @@ const Ministry = () => {
         if (path && (path === 'tsc' || path === 'tsy' || path === 'mission' || path === 'tee' || path === 'team')) {
             // Slight delay to ensure DOM is ready
             setTimeout(() => {
-                const element = document.getElementById(path);
+                const element = document.getElementById(targetId);
                 if (element) {
                     element.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
@@ -85,18 +85,18 @@ const Ministry = () => {
         }
     }, [location.pathname]);
 
-    // Helper to filter items based on path
-    const getFilteredItems = (items) => {
-        const path = location.pathname.split('/').pop();
-        if (path === 'ministry') {
-            return items.filter(m => ['tsc', 'tsy'].includes(m.id));
-        } else if (path === 'mission') {
-            return items.filter(m => m.id === 'mission_evangelism');
-        }
-        return items;
-    };
-
     useEffect(() => {
+        // Helper to filter items based on path
+        const getFilteredItems = (items) => {
+            const currentPath = location.pathname.split('/').pop();
+            if (currentPath === 'ministry') {
+                return items.filter(m => ['tsc', 'tsy'].includes(m.id));
+            } else if (currentPath === 'mission') {
+                return items.filter(m => m.id === 'mission_evangelism');
+            }
+            return items;
+        };
+
         let isMounted = true;
         const fetchBanner = async () => {
             const config = await dbService.getSiteConfig();

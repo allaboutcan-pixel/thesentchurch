@@ -5,15 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { dbService } from '../services/dbService';
-
-const getDayName = (dateStr) => {
-    if (!dateStr) return '';
-    // Parse YYYY-MM-DD manually to prevent timezone offset issues
-    const [year, month, day] = dateStr.split('-').map(Number);
-    const date = new Date(year, month - 1, day);
-    const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
-    return dayNames[date.getDay()];
-};
+import { getDayName, safeSplitDate } from '../utils/dateUtils';
 
 const DailyWord = () => {
     const { t, i18n } = useTranslation();
@@ -105,11 +97,7 @@ const DailyWord = () => {
 
                     const grouped = {};
                     displayList.forEach(item => {
-                        if (!item.date) return;
-                        const dateParts = item.date.split('-');
-                        if (dateParts.length < 2) return;
-                        const year = dateParts[0];
-                        const month = parseInt(dateParts[1], 10).toString();
+                        const [year, month] = safeSplitDate(item.date);
                         if (!grouped[year]) grouped[year] = {};
                         if (!grouped[year][month]) grouped[year][month] = [];
                         grouped[year][month].push(item);
@@ -117,11 +105,9 @@ const DailyWord = () => {
                     setArchiveData(grouped);
 
                     if (displayList.length > 0) {
-                        const dateParts = displayList[0].date.split('-');
-                        if (dateParts.length >= 2) {
-                            setSelectedYear(dateParts[0]);
-                            setSelectedMonth(parseInt(dateParts[1], 10).toString());
-                        }
+                        const [year, month] = safeSplitDate(displayList[0].date);
+                        setSelectedYear(year);
+                        setSelectedMonth(parseInt(month, 10).toString());
                     }
                 }
             } catch (error) {

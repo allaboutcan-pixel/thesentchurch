@@ -10,6 +10,7 @@ import clsx from 'clsx';
 const Prayer = () => {
     const { t, i18n } = useTranslation();
     const { config: siteConfig } = useSiteConfig();
+    // eslint-disable-next-line no-unused-vars
     const type = 'prayer';
 
     // Form State

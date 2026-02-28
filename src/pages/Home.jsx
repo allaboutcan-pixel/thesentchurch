@@ -53,19 +53,19 @@ const Home = () => {
 
                 if (!isMounted) return;
 
-                if (liveSermons.length > 0) {
+                if (Array.isArray(liveSermons) && liveSermons.length > 0) {
                     // Safety check: extract ID for all sermons to handle malformed data
                     const cleanedSermons = liveSermons.map(s => {
-                        if (s.youtubeId && s.youtubeId.length > 11) {
+                        if (s && s.youtubeId && s.youtubeId.length > 11) {
                             const extractedId = getYoutubeId(s.youtubeId);
                             if (extractedId) return { ...s, youtubeId: extractedId };
                         }
                         return s;
                     });
-                    setLatestSermon(cleanedSermons[0]);
+                    setLatestSermon(cleanedSermons[0] || {});
                 }
 
-                if (liveDailyWords && liveDailyWords.length > 0) {
+                if (Array.isArray(liveDailyWords) && liveDailyWords.length > 0) {
                     // Use local date to match user's device time (fixes UTC/KST issues)
                     const d = new Date();
                     const year = d.getFullYear();
@@ -73,7 +73,7 @@ const Home = () => {
                     const day = String(d.getDate()).padStart(2, '0');
                     const todayStr = `${year}-${month}-${day}`;
                     // Find word exactly for today to support scheduling
-                    const todayWord = liveDailyWords.find(w => w.date === todayStr);
+                    const todayWord = liveDailyWords.find(w => w && w.date === todayStr);
 
                     // User Request: If it's Sunday (0) and no word for today, look for tomorrow (Monday)
                     let displayWord = todayWord;
@@ -81,12 +81,13 @@ const Home = () => {
                         const tomorrow = new Date(d);
                         tomorrow.setDate(d.getDate() + 1);
                         const tomStr = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
-                        displayWord = liveDailyWords.find(w => w.date === tomStr);
+                        displayWord = liveDailyWords.find(w => w && w.date === tomStr);
                     }
 
                     // If no word for today or tomorrow (e.g. general fallback), find the last available past word
                     // Important fallback: Always show something if data exists (sorted[0] is the most recent)
-                    const lastWord = liveDailyWords.filter(w => w.date < todayStr).sort((a, b) => new Date(b.date) - new Date(a.date))[0] || liveDailyWords[0];
+                    const validWords = liveDailyWords.filter(w => w && w.date);
+                    const lastWord = validWords.filter(w => w.date < todayStr).sort((a, b) => new Date(b.date) - new Date(a.date))[0] || validWords[0];
 
                     setLatestDailyWord(displayWord || lastWord || null);
                 }

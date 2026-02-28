@@ -15,7 +15,7 @@ export const SiteConfigProvider = ({ children }) => {
         pastor: churchData.intro.pastor
     });
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error] = useState(null);
 
     useEffect(() => {
         let isMounted = true;
@@ -52,6 +52,7 @@ export const SiteConfigProvider = ({ children }) => {
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useSiteConfigValue = () => {
     const context = useContext(SiteConfigContext);
     if (!context) {

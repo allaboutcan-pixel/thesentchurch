@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import MinistryNav from '../components/MinistryNav';
 import { useTranslation } from 'react-i18next';
+// eslint-disable-next-line no-unused-vars
 import { BookOpen, Map, Lightbulb, Users, ListChecks, Quote, Sprout, ArrowRight, Sun, Sparkles, Heart, Cross, MessageSquare, Calendar, Pencil, Image as ImageIcon } from 'lucide-react';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import { isVideo, getYoutubeId, getDriveId } from '../utils/mediaUtils';

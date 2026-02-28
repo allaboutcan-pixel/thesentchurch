@@ -6,18 +6,41 @@ import ErrorBoundary from './components/ErrorBoundary';
 
 import { SiteConfigProvider } from './context/SiteConfigContext';
 
+// Custom lazy loading function that forces a reload if a chunk fails to load
+const lazyWithRetry = (componentImport) =>
+  lazy(async () => {
+    const pageHasAlreadyBeenForceRefreshed = JSON.parse(
+      window.sessionStorage.getItem('page-has-been-force-refreshed') || 'false'
+    );
+
+    try {
+      const component = await componentImport();
+      window.sessionStorage.setItem('page-has-been-force-refreshed', 'false');
+      return component;
+    } catch (error) {
+      if (!pageHasAlreadyBeenForceRefreshed) {
+        // Assuming that the error is a ChunkLoadError due to new deployment
+        window.sessionStorage.setItem('page-has-been-force-refreshed', 'true');
+        window.location.reload();
+        // Return a promise that never resolves temporarily to halt render until reload completes
+        return new Promise(() => { });
+      }
+      throw error;
+    }
+  });
+
 // Lazy load pages for performance
-const Home = lazy(() => import('./pages/Home'));
-const About = lazy(() => import('./pages/About'));
-const Resources = lazy(() => import('./pages/Resources'));
-const Ministry = lazy(() => import('./pages/Ministry'));
-const TEE = lazy(() => import('./pages/TEE'));
-const BibleStudy = lazy(() => import('./pages/BibleStudy'));
-const TeamMinistry = lazy(() => import('./pages/TeamMinistry'));
-const Prayer = lazy(() => import('./pages/Prayer'));
-const Admin = lazy(() => import('./pages/Admin'));
-const DailyWord = lazy(() => import('./pages/DailyWord'));
-const ComingSoon = lazy(() => import('./pages/ComingSoon'));
+const Home = lazyWithRetry(() => import('./pages/Home'));
+const About = lazyWithRetry(() => import('./pages/About'));
+const Resources = lazyWithRetry(() => import('./pages/Resources'));
+const Ministry = lazyWithRetry(() => import('./pages/Ministry'));
+const TEE = lazyWithRetry(() => import('./pages/TEE'));
+const BibleStudy = lazyWithRetry(() => import('./pages/BibleStudy'));
+const TeamMinistry = lazyWithRetry(() => import('./pages/TeamMinistry'));
+const Prayer = lazyWithRetry(() => import('./pages/Prayer'));
+const Admin = lazyWithRetry(() => import('./pages/Admin'));
+const DailyWord = lazyWithRetry(() => import('./pages/DailyWord'));
+const ComingSoon = lazyWithRetry(() => import('./pages/ComingSoon'));
 
 // Loading Fallback Component
 const PageLoader = () => (

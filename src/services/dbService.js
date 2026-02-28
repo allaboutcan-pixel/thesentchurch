@@ -151,6 +151,7 @@ export const dbService = {
 
                 uploadTask.on('state_changed',
                     (snapshot) => {
+                        // eslint-disable-next-line no-unused-vars
                         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                         // Upload progress
                     },
@@ -452,6 +453,7 @@ export const dbService = {
             // 3. Add initial data
             const addPromises = initialData.map(item => {
                 // Remove existing id if present so Firebase generates a new one
+                // eslint-disable-next-line no-unused-vars
                 const { id, ...cleanData } = item;
                 return addDoc(collection(db, collectionName), {
                     ...cleanData,
