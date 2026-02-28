@@ -436,7 +436,7 @@ const resources = {
                 "location": "Location",
                 "worship": "Worship",
                 "worship_guide": "Service Guide",
-                "nextgen": "Kids/Youth",
+                "nextgen": "Kids/Youth Ministry",
                 "ministry": "Ministries",
                 "education": "Education",
                 "tee": "TEE",
@@ -574,11 +574,11 @@ const resources = {
                 "online_desc": "* This is a sacred morning prayer session held online."
             },
             "ministry": {
-                "title": "Kids/Youth",
+                "title": "Kids/Youth Ministry",
                 "subtitle": "“Therefore go and make disciples of all nations...” (Matthew 28:19)",
                 "learn_more": "Learn More",
                 "fold": "Close",
-                "sunday_school_title": "Kids/Youth",
+                "sunday_school_title": "Kids/Youth Ministry",
                 "sunday_school_description": "In our Sunday School, children grow in the truth of God’s Word, <br class='hidden md:block'/> are encouraged to follow Jesus faithfully, and are nurtured to <br class='hidden md:block'/> become lifelong disciples who serve Him with willing hearts.",
                 "sunday_school_subtitle": "“Train up a child in the way he should go, <br class='hidden md:block'/> even when he is old he will not depart from it.” <br class='hidden md:block'/> (Proverbs 22:6)",
                 "tsc_name": "The Sent Children (TSC)",
