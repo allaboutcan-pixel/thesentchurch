@@ -101,10 +101,7 @@ const Header = () => {
                                             <Link
                                                 key={idx}
                                                 to={sub.path}
-                                                className={clsx(
-                                                    "block px-5 py-3 text-gray-600 hover:bg-primary/5 hover:text-primary transition-colors border-b border-gray-50 last:border-0",
-                                                    (i18n.language === 'en' && sub.id === 'pastor') ? "text-[12px]" : "text-sm"
-                                                )}
+                                                className="block px-5 py-3 text-sm text-gray-600 hover:bg-primary/5 hover:text-primary transition-colors border-b border-gray-50 last:border-0"
                                             >
                                                 {(i18n.language === 'en' && sub.id === 'pastor')
                                                     ? "Senior Pastor’s Greeting"
@@ -215,10 +212,7 @@ const Header = () => {
                                                 <Link
                                                     key={idx}
                                                     to={sub.path}
-                                                    className={clsx(
-                                                        "block px-10 py-3 text-gray-500 hover:text-primary",
-                                                        (i18n.language === 'en' && sub.id === 'pastor') ? "text-[12px]" : "text-sm"
-                                                    )}
+                                                    className="block px-10 py-3 text-sm text-gray-500 hover:text-primary"
                                                     onClick={() => setIsOpen(false)}
                                                 >
                                                     • {(i18n.language === 'en' && sub.id === 'pastor')
