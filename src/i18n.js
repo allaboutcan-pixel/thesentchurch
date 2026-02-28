@@ -114,7 +114,7 @@ const resources = {
                 "past_columns_desc": "이남규 목사님의 신학 칼럼 보관함입니다.",
                 "no_content_date": "선택하신 날짜의 내용이 없습니다.",
                 "no_content_yet": "아직 등록된 내용이 없습니다.",
-                "first_step": "첫걸음",
+                "first_step": "문의하기",
                 "daily_word_popup_title": "오늘의 말씀",
                 "daily_word_popup_close": "오늘 하루 보지 않기",
                 "contact": {
