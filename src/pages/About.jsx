@@ -565,11 +565,14 @@ const About = () => {
 
                                 <div className="space-y-4">
                                     <div className="flex flex-col items-center gap-2 border-b border-gray-100 pb-4 uppercase">
-                                        <span className="text-gray-800 font-bold text-sm md:text-base whitespace-pre-line text-center leading-relaxed max-w-lg">
-                                            {i18n.language === 'en' && (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
-                                                ? (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn).split('\n').map(line => line.trim()).join('\n')
-                                                : t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim())}
-                                        </span>
+                                        <span
+                                            className="text-gray-800 font-bold text-sm md:text-base whitespace-pre-line text-center leading-relaxed max-w-lg"
+                                            dangerouslySetInnerHTML={{
+                                                __html: i18n.language === 'en' && (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
+                                                    ? (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn).split('\n').map(line => line.trim()).join('\n')
+                                                    : t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim())
+                                            }}
+                                        />
                                     </div>
                                     <div className="bg-gray-50 p-4 rounded-xl">
                                         <span className="block text-gray-400 text-xs mb-1">Zoom Link / ID</span>

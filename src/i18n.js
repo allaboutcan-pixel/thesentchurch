@@ -502,8 +502,8 @@ const resources = {
                 "quick_sunday": "Sunday Service | 2PM (Main)",
                 "quick_sunday_sub": "",
                 "quick_sunday_time": "2:00 PM",
-                "quick_morning": "Early Morning Service | 6:00 AM, Tuesday–Saturday",
-                "quick_morning_sub": "<span class='text-white/50 text-[11px] md:text-xs font-medium'>(1st and 2nd Weeks of the Month)</span>",
+                "quick_morning": "Early Morning Service | 6:00 AM (Online)",
+                "quick_morning_sub": "",
                 "quick_morning_desc1": "1st & 2nd week of month",
                 "quick_morning_desc2": "6:00 AM Online Zoom",
                 "quick_bulletin_link": "Weekly Bulletin",
@@ -705,7 +705,7 @@ const resources = {
             "중보기도 모임": "Intercessory Prayer Meeting",
             "교회 지하 1층": "Church B1 Floor",
             "자모실": "Nursing Room",
-            "매달 첫째 둘째주 6:00 AM": "1st & 2nd Week 6:00 AM",
+            "매달 첫째 둘째주 6:00 AM": "6:00 AM, Tuesday–Saturday\n<span class='text-gray-400 text-xs font-medium'>(1st and 2nd Weeks of the Month)</span>",
 
             // Additional Data Translations (from Screenshots)
             "1부 예배 (봉사자 예배)": "1st Service (Volunteer Service)",
