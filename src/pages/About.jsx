@@ -223,7 +223,7 @@ const About = () => {
 
                                     {/* Pastor History Section (Left Aligned) */}
                                     <div className="mt-40 pt-6 border-t border-gray-100">
-                                        <h4 className={clsx("font-bold text-blue-600 mb-3", i18n.language === 'en' ? "text-[11px] md:text-xs" : "text-sm")}>
+                                        <h4 className="font-bold text-blue-600 mb-4 text-base">
                                             {i18n.language === 'en' ? "About the Pastor" : t('about.pastor_history_title')}
                                         </h4>
                                         <ul className="space-y-1.5 pl-2">
