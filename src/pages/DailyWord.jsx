@@ -52,7 +52,11 @@ const DailyWord = () => {
                 if (!isMounted) return;
 
                 if (words.length > 0) {
-                    const sorted = [...words].sort((a, b) => new Date(b.date) - new Date(a.date));
+                    const sorted = [...words].sort((a, b) => {
+                        const dateA = a.date ? new Date(a.date) : new Date(0);
+                        const dateB = b.date ? new Date(b.date) : new Date(0);
+                        return dateB - dateA;
+                    });
                     const displayList = sorted.slice(0, 10);
                     setDailyWords(displayList);
 
@@ -77,6 +81,7 @@ const DailyWord = () => {
 
                     const grouped = {};
                     displayList.forEach(item => {
+                        if (!item || !item.date) return;
                         const [year, month] = safeSplitDate(item.date);
                         if (!grouped[year]) grouped[year] = {};
                         if (!grouped[year][month]) grouped[year][month] = [];
@@ -366,8 +371,13 @@ const DailyWord = () => {
                                             if (orderA !== -1 && orderB !== -1) return orderB - orderA;
                                             if (orderA !== -1) return -1;
                                             if (orderB !== -1) return 1;
-                                            return new Date(b.date) - new Date(a.date); // Descending
+
+                                            // Defensive null check for dates
+                                            const dateA = a.date ? new Date(a.date) : new Date(0);
+                                            const dateB = b.date ? new Date(b.date) : new Date(0);
+                                            return dateB - dateA; // Descending
                                         })
+                                        .filter(word => word && word.date) // <--- Safety guard
                                         .map((word) => (
                                             <div
                                                 key={word.id}
@@ -389,10 +399,10 @@ const DailyWord = () => {
                                                     {/* Card Badge UI - Mobile Compact */}
                                                     <div className="absolute top-2 left-2 md:top-6 md:left-6 flex items-center gap-1 md:gap-2">
                                                         <div className="bg-white/95 backdrop-blur-md text-primary w-6 h-6 md:w-10 md:h-10 rounded-lg md:rounded-xl flex items-center justify-center font-black text-xs md:text-lg shadow-sm md:shadow-lg">
-                                                            {getDayName(word.date)}
+                                                            {word?.date ? getDayName(word.date) : '-'}
                                                         </div>
                                                         <span className="hidden md:block bg-black/40 backdrop-blur-md text-white px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-widest border border-white/10">
-                                                            {word.date}
+                                                            {word?.date || 'Unknown'}
                                                         </span>
                                                     </div>
 
