@@ -261,8 +261,12 @@ const Worship = () => {
 
                                 <div className="space-y-6">
                                     <div className="flex justify-between items-center border-b border-gray-100 pb-4">
-                                        <span className="text-gray-500 font-medium">일정 (Schedule)</span>
-                                        <span className="text-primary font-bold text-lg whitespace-pre-line">{t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim())}</span>
+                                        <span className="font-black whitespace-pre-line">일정 (Schedule)</span>
+                                        <span className="text-primary font-bold text-lg whitespace-pre-line">
+                                            {i18n.language === 'en' && specialServices?.dawn?.scheduleEn
+                                                ? specialServices.dawn.scheduleEn
+                                                : t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim())}
+                                        </span>
                                     </div>
                                     <div className="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-primary/5">
                                         <span className="text-gray-500 font-medium">Zoom Link / ID</span>

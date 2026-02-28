@@ -58,8 +58,8 @@ const QuickLinks = () => {
                             <p className="text-white/70 text-xs font-bold tracking-[0.2em] uppercase mb-2">{item.subTitle}</p>
                         )}
                         <h3 className="text-lg md:text-xl text-white group-hover:text-accent transition-colors leading-tight flex flex-col gap-1">
-                            <span className="font-black">{item.title.split('|')[0].trim()}</span>
-                            <span className="text-sm md:text-base font-normal opacity-70">
+                            <span className="font-black whitespace-pre-line">{item.title.split('|')[0].trim()}</span>
+                            <span className="text-sm md:text-base font-normal opacity-70 whitespace-pre-line">
                                 {item.title.includes('|') ? item.title.split('|')[1].trim() : '\u00A0'}
                             </span>
                         </h3>
