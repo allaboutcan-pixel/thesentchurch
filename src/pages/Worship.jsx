@@ -261,7 +261,7 @@ const Worship = () => {
 
                                 <div className="space-y-6">
                                     <div className="flex flex-col items-center gap-4 border-b border-gray-100 pb-8">
-                                        <span className="text-primary font-black text-2xl md:text-3xl text-center uppercase tracking-wider">
+                                        <span className="text-gray-500 font-bold text-lg md:text-xl text-center uppercase tracking-wider">
                                             {i18n.language === 'en' ? 'Schedule' : '일정 (Schedule)'}
                                         </span>
                                         <span className="text-gray-600 font-medium text-lg md:text-xl whitespace-pre-line text-center leading-relaxed max-w-lg">

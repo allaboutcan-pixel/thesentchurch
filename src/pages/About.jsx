@@ -618,7 +618,7 @@ const About = () => {
 
                                 <div className="space-y-4">
                                     <div className="flex flex-col items-center gap-2 border-b border-gray-100 pb-4">
-                                        <span className="text-primary font-black text-xl md:text-2xl text-center uppercase tracking-wider">
+                                        <span className="text-gray-500 font-bold text-lg md:text-xl text-center uppercase tracking-wider">
                                             {i18n.language === 'en' ? 'Schedule' : '일정 (Schedule)'}
                                         </span>
                                         <span className="text-gray-600 font-medium text-sm md:text-base whitespace-pre-line text-center leading-relaxed max-w-lg">
