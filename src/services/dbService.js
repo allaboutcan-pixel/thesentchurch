@@ -176,9 +176,8 @@ export const dbService = {
         }
     },
 
-    // Generic Fetch
     fetchItems: async (collectionName, limitCount = 50) => {
-        // Fetch by date desc to ensure we get the latest items (and all items, regardless of whether they have orderIndex)
+        // Fetch by date desc to ensure we get the latest items
         const q = query(collection(db, collectionName), orderBy("date", "desc"), limit(limitCount));
         const querySnapshot = await getDocs(q);
         const items = querySnapshot.docs.map(doc => ({
@@ -186,16 +185,26 @@ export const dbService = {
             ...doc.data()
         }));
 
-        // Client-side sort: Items with explicit orderIndex go to top (asc), the rest follow date (desc)
+        // Client-side sort: 
+        // 1. For non-bulletin collections, prioritize explicit orderIndex (ascending: 0, 1, 2...)
+        // 2. For all collections, sort by date descending
         items.sort((a, b) => {
+            // For bulletins, we only care about the date (strict date sort)
+            if (collectionName === 'bulletins') {
+                return new Date(b.date) - new Date(a.date);
+            }
+
             const aHasIndex = typeof a.orderIndex === 'number';
             const bHasIndex = typeof b.orderIndex === 'number';
 
-            if (aHasIndex && bHasIndex) return a.orderIndex - b.orderIndex;
-            if (aHasIndex) return -1; // a (pinned) comes first
-            if (bHasIndex) return 1;  // b (pinned) comes first
-            // If neither has index, they are already sorted by date desc from the query
-            return 0;
+            if (aHasIndex && bHasIndex) {
+                if (a.orderIndex !== b.orderIndex) return a.orderIndex - b.orderIndex;
+                return new Date(b.date) - new Date(a.date);
+            }
+            if (aHasIndex) return -1;
+            if (bHasIndex) return 1;
+
+            return new Date(b.date) - new Date(a.date);
         });
 
         return items;

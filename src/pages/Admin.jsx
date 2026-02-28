@@ -504,10 +504,14 @@ const Admin = () => {
     const [pastorFile, setPastorFile] = useState(null);
 
     useEffect(() => {
-        loadData();
+        let isMounted = true;
+        loadData(isMounted);
+        return () => {
+            isMounted = false;
+        };
     }, []);
 
-    const loadData = async () => {
+    const loadData = async (isMounted = true) => {
         setIsLoading(true);
         try {
             const fbSermons = await dbService.getSermons();
@@ -519,6 +523,8 @@ const Admin = () => {
             // Sort calendar specifically if needed, though dbService does it
             const sortedCalendar = (fbCalendar || []).sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
             const fbConfig = await dbService.getSiteConfig();
+
+            if (!isMounted) return;
 
             // 만약 여기까지 에러 없이 도달했다면 파이어베이스 연결은 성공한 것입니다.
             setIsFirebaseConfigured(true);
@@ -824,16 +830,16 @@ const Admin = () => {
             }
         } catch (error) {
             console.error("Failed to load data:", error);
-            alert(`데이터 로딩 중 오류가 발생했습니다: ${error.message}`);
-            setIsFirebaseConfigured(false);
-            setSermons(sermonsInitialData);
-            setBulletins(bulletinsInitialData);
-            setGallery([]);
-            setColumns([]);
-            setDailyWords([]);
-            setCalendarEvents([]);
+            if (isMounted) alert(`데이터 로딩 중 오류가 발생했습니다: ${error.message}`);
+            if (isMounted) setIsFirebaseConfigured(false);
+            if (isMounted) setSermons(sermonsInitialData);
+            if (isMounted) setBulletins(bulletinsInitialData);
+            if (isMounted) setGallery([]);
+            if (isMounted) setColumns([]);
+            if (isMounted) setDailyWords([]);
+            if (isMounted) setCalendarEvents([]);
         }
-        setIsLoading(false);
+        if (isMounted) setIsLoading(false);
     };
 
     const handleLogin = (e) => {
@@ -971,34 +977,72 @@ const Admin = () => {
         }
     };
 
-    const handleMoveItem = async (index, direction, list, setList, collectionName) => {
+    const handleSortByDate = async (list, setList, collectionName) => {
         if (isLoading) return;
-        const newIndex = index + direction;
-        if (newIndex < 0 || newIndex >= list.length) return;
+        if (!window.confirm("모든 수동 순서를 초기화하고 최신 날짜순으로 정렬하시겠습니까?")) return;
 
-        const newList = [...list];
-        // Swap items
+        setIsLoading(true);
+        try {
+            // 1. Sort the current local list by date descending
+            const sortedList = [...list].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            // 2. Assign new orderIndex
+            const updatedList = sortedList.map((item, idx) => ({
+                ...item,
+                orderIndex: idx
+            }));
+
+            // 3. Update UI
+            setList(updatedList);
+
+            // 4. Save to Firestore (filter out items without IDs just in case)
+            const itemsToUpdate = updatedList.filter(item => item.id);
+            await dbService.updateOrder(collectionName, itemsToUpdate);
+
+            alert("최신순으로 정렬되었습니다.");
+        } catch (error) {
+            console.error("Sort by date failed:", error);
+            alert("정렬 저장에 실패했습니다.");
+            loadData();
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleMoveItem = async (index, direction, collectionName) => {
+        if (isLoading) return;
+
+        // Use functional state updates to avoid stale list closures
+        let listSetter;
+        let currentList;
+
+        if (collectionName === 'sermons') { listSetter = setSermons; currentList = sermons; }
+        else if (collectionName === 'bulletins') { listSetter = setBulletins; currentList = bulletins; }
+        else if (collectionName === 'columns') { listSetter = setColumns; currentList = columns; }
+        else return;
+
+        const newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= currentList.length) return;
+
+        const newList = [...currentList];
         [newList[index], newList[newIndex]] = [newList[newIndex], newList[index]];
 
-        // Re-assign orderIndex based on the NEW visual order
-        // We want the items at the top to have LOWER orderIndex (ascending sort)
-        // or HIGHER orderIndex (descending sort)?
-        // Our fetch query sorts by orderIndex ASC. So top item = 0, next = 1...
+        // Re-assign orderIndex
         const updatedList = newList.map((item, idx) => ({
             ...item,
             orderIndex: idx
         }));
 
-        // Optimistic UI update
-        setList(updatedList);
+        // Update local state immediately
+        listSetter(updatedList);
 
         try {
-            // Save to Firestore
-            // We only really need to update the two swapped items, but updating all ensures consistency if gaps exist
-            await dbService.updateOrder(collectionName, updatedList);
+            const itemsToUpdate = updatedList.filter(item => item.id);
+            if (itemsToUpdate.length > 0) {
+                await dbService.updateOrder(collectionName, itemsToUpdate);
+            }
         } catch (error) {
             console.error("Proposed order update failed, reverting", error);
-            // Revert on failure (reload data)
             loadData();
             alert("순서 변경 저장에 실패했습니다.");
         }
@@ -1033,7 +1077,8 @@ const Admin = () => {
                     savedItem = await Promise.race([dbService.updateSermon(editingId, sermonData), timeout]);
                     setSermons(sermons.map(s => s.id === editingId ? savedItem : s));
                 } else {
-                    savedItem = await Promise.race([dbService.addSermon(sermonData), timeout]);
+                    // For new items, assign orderIndex 0 to bring to top
+                    savedItem = await Promise.race([dbService.addSermon({ ...sermonData, orderIndex: 0 }), timeout]);
                     setSermons([savedItem, ...sermons]);
                 }
             } else if (activeTab === 'bulletins') {
@@ -1052,11 +1097,6 @@ const Admin = () => {
                     finalFileUrl2 = dbService.formatDriveLink(finalFileUrl2);
                 }
 
-                const isVideo = (url) => {
-                    if (!url) return false;
-                    return url.match(/\.(mp4|webm|ogg|mov)$|^data:video\//i) || url.includes('video');
-                };
-
                 const bulletinData = {
                     title: formData.title,
                     titleEn: formData.titleEn || '',
@@ -1069,6 +1109,7 @@ const Admin = () => {
                     savedItem = await Promise.race([dbService.updateBulletin(editingId, bulletinData), timeout]);
                     setBulletins(bulletins.map(b => b.id === editingId ? savedItem : b));
                 } else {
+                    // For bulletins, we use strict date sorting (newest first).
                     savedItem = await Promise.race([dbService.addBulletin(bulletinData), timeout]);
                     setBulletins([savedItem, ...bulletins]);
                 }
@@ -1150,7 +1191,8 @@ const Admin = () => {
                     savedItem = await Promise.race([dbService.updateColumn(editingId, columnData), timeout]);
                     setColumns(columns.map(c => c.id === editingId ? savedItem : c));
                 } else {
-                    savedItem = await Promise.race([dbService.addColumn(columnData), timeout]);
+                    // For new items, assign orderIndex 0 to bring to top
+                    savedItem = await Promise.race([dbService.addColumn({ ...columnData, orderIndex: 0 }), timeout]);
                     setColumns([savedItem, ...columns]);
                 }
             } else if (activeTab === 'calendar') {
@@ -1201,63 +1243,51 @@ const Admin = () => {
                 // This is necessary because many fields only update formData and not siteConfig directly
                 Object.keys(formData).forEach(key => {
                     // Skip media fields (handled separately below) and fields for other tabs (sermons, bulletins, etc.)
-                    const skipFields = ['title', 'date', 'preacher', 'youtubeId', 'fileUrl', 'fileUrl2', 'thumbnailUrl', 'type', 'staffName', 'staffRole', 'staffEmail', 'staffPhotoUrl', 'note', 'eventType', 'startDate', 'endDate'];
-                    if (!skipFields.includes(key) && formData[key] !== undefined) {
-                        currentConfig[key] = formData[key];
+                    if (!['heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage'].includes(key)) {
+                        // Special handling for nested pastor data if needed
+                        if (key.startsWith('pastor')) {
+                            const pastorKey = key.replace('pastor', '').toLowerCase();
+                            // history and historyEn are already updated directly in onChange handlers to be arrays
+                            if (pastorKey !== 'history' && pastorKey !== 'historyen') {
+                                currentConfig.pastor = { ...currentConfig.pastor, [pastorKey]: formData[key] };
+                            }
+                        } else {
+                            currentConfig[key] = formData[key];
+                        }
                     }
                 });
 
-                // Process ONLY media fields that might need upload or drive formatting
-                // These are fields that might have newly selected files in bannerFiles
-                const mediaFields = [
-                    'heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner',
-                    'missionBanner', 'prayerBanner', 'teeBanner', 'bibleBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage',
-                    'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image', 'pastorImage'
+                // Handle Banner Image Uploads
+                const bannerKeys = [
+                    'heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner',
+                    'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner',
+                    'teamBanner', 'prayerIntroImage', 'prayerRequestImage',
+                    'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image'
                 ];
 
-                for (const fieldName of mediaFields) {
-                    const localFile = bannerFiles[fieldName];
+                for (const key of bannerKeys) {
+                    const localFile = bannerFiles[key];
                     if (localFile) {
                         try {
                             const uploadedUrl = await Promise.race([dbService.uploadFile(localFile, 'banners'), timeout]);
-                            currentConfig[fieldName] = uploadedUrl;
+                            currentConfig[key] = uploadedUrl;
                         } catch (err) {
-                            console.error(`Error uploading banner ${fieldName}:`, err);
+                            console.error(`Error uploading banner ${key}:`, err);
                         }
-                    } else {
-                        const val = currentConfig[fieldName];
-                        if (typeof val === 'string' && val.includes('drive.google.com')) {
-                            if (isVideo(val)) {
-                                currentConfig[fieldName] = dbService.formatDriveVideo(val);
-                            } else {
-                                currentConfig[fieldName] = dbService.formatDriveImage(val);
-                            }
-                        }
+                    } else if (currentConfig[key] && currentConfig[key].includes('drive.google.com')) {
+                        // Always ensure Drive links are formatted correctly
+                        currentConfig[key] = dbService.formatDriveImage(currentConfig[key]);
                     }
                 }
 
-                // Process ministryItems (TSC/TSY)
-                if (currentConfig.ministryItems && currentConfig.ministryItems.length > 0) {
-                    const updatedMinistryItems = [...currentConfig.ministryItems];
-                    for (let i = 0; i < updatedMinistryItems.length; i++) {
-                        const fieldName = `ministry-${i}`;
-                        const localFile = bannerFiles[fieldName];
-                        if (localFile) {
-                            try {
-                                const uploadedUrl = await Promise.race([dbService.uploadFile(localFile, 'ministries'), timeout]);
-                                updatedMinistryItems[i] = { ...updatedMinistryItems[i], image: uploadedUrl };
-                            } catch (err) {
-                                console.error(`Error uploading ministry image ${fieldName}:`, err);
-                            }
-                        } else if (updatedMinistryItems[i].image && updatedMinistryItems[i].image.includes('drive.google.com')) {
-                            updatedMinistryItems[i] = { ...updatedMinistryItems[i], image: dbService.formatDriveImage(updatedMinistryItems[i].image) };
-                        }
-                    }
-                    currentConfig.ministryItems = updatedMinistryItems;
+                // Handle Pastor Image
+                if (staffFile) {
+                    const uploadedUrl = await Promise.race([dbService.uploadFile(staffFile, 'staff'), timeout]);
+                    currentConfig.pastor = { ...currentConfig.pastor, image: uploadedUrl };
                 }
 
-                // Process teamMinistryItems
-                if (currentConfig.teamMinistryItems && currentConfig.teamMinistryItems.length > 0) {
+                // Handle Team Ministry Items Media
+                if (currentConfig.teamMinistryItems) {
                     const updatedTeamItems = [...currentConfig.teamMinistryItems];
                     for (let i = 0; i < updatedTeamItems.length; i++) {
                         const fieldName = `team-${i}`;
@@ -1279,7 +1309,7 @@ const Admin = () => {
                 await Promise.race([dbService.updateSiteConfig(currentConfig), timeout]);
                 setSiteConfig({ ...currentConfig });
                 setBannerFiles({}); // Clear selected files after successful save
-                setPastorFile(null); // Clear pastor file after successful save
+                setStaffFile(null); // Clear pastor file staffFile after successful save
                 alert('✅ 모든 설정이 저장되었습니다!');
                 setShowAddForm(false);
                 setIsLoading(false);
@@ -2009,28 +2039,42 @@ const Admin = () => {
                     </div>
                     {isLoading && <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>}
                     {!showAddForm && activeTab !== 'site' && activeTab !== 'intro' && activeTab !== 'general' && activeTab !== 'worship' && activeTab !== 'prayer' && activeTab !== 'education_ministry' && activeTab !== 'location' && (
-                        <button
-                            onClick={() => {
-                                setEditingId(null);
-                                setFormData({
-                                    ...formData,
-                                    ministryItems: [], // This seems to be the target for dynamic list items
-                                    teamMinistryItems: [],
-                                    // ...
-                                    title: '', date: '', preacher: '', youtubeId: '', fileUrl: '', fileUrl2: '', category: '공지', content: '', important: false, type: 'image',
-                                    staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', thumbnailUrl: '',
-                                    note: '', eventType: 'default',
-                                    startDate: '', endDate: '', staffEnglishName: ''
-                                });
-                                setStaffFile(null);
-                                setFile(null);
-                                setFile2(null);
-                                setShowAddForm(true);
-                            }}
-                            className="bg-primary hover:bg-primary-dark text-white px-6 py-3.5 rounded-2xl font-bold transition-all shadow-xl shadow-primary/20 flex items-center gap-2 active:scale-95"
-                        >
-                            <Plus size={20} /> 새 항목 등록하기
-                        </button>
+                        <div className="flex gap-2">
+                            {(activeTab === 'sermons' || activeTab === 'columns') && (
+                                <button
+                                    onClick={() => {
+                                        const list = activeTab === 'sermons' ? sermons : columns;
+                                        const setList = activeTab === 'sermons' ? setSermons : setColumns;
+                                        const collectionName = activeTab === 'sermons' ? 'sermons' : 'columns';
+                                        handleSortByDate(list, setList, collectionName);
+                                    }}
+                                    className="bg-slate-100 hover:bg-slate-200 text-slate-600 px-6 py-3.5 rounded-2xl font-bold transition-all flex items-center gap-2 active:scale-95"
+                                >
+                                    <Clock size={20} /> 최신순 정렬
+                                </button>
+                            )}
+                            <button
+                                onClick={() => {
+                                    setEditingId(null);
+                                    setFormData({
+                                        ...formData,
+                                        ministryItems: [],
+                                        teamMinistryItems: [],
+                                        title: '', date: '', preacher: '', youtubeId: '', fileUrl: '', fileUrl2: '', category: '공지', content: '', important: false, type: 'image',
+                                        staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', thumbnailUrl: '',
+                                        note: '', eventType: 'default',
+                                        startDate: '', endDate: '', staffEnglishName: ''
+                                    });
+                                    setStaffFile(null);
+                                    setFile(null);
+                                    setFile2(null);
+                                    setShowAddForm(true);
+                                }}
+                                className="bg-primary hover:bg-primary-dark text-white px-6 py-3.5 rounded-2xl font-bold transition-all shadow-xl shadow-primary/20 flex items-center gap-2 active:scale-95"
+                            >
+                                <Plus size={20} /> 새 항목 등록하기
+                            </button>
+                        </div>
                     )}
                 </header>
 
@@ -4508,14 +4552,15 @@ const Admin = () => {
                                         {activeTab === 'sermons' && sermons.map((item, idx) => (
                                             <AdminTableRow
                                                 key={item.id || idx}
+                                                idx={idx}
                                                 date={item.date}
                                                 title={item.title}
                                                 subText={item.preacher}
                                                 onEdit={() => handleEdit(item, 'sermon')}
                                                 onDelete={() => handleDelete('sermon', item.id)}
                                                 link={item.link || (item.youtubeId ? `https://youtube.com/watch?v=${item.youtubeId}` : null)}
-                                                onMoveUp={() => handleMoveItem(idx, -1, sermons, setSermons, 'sermons')}
-                                                onMoveDown={() => handleMoveItem(idx, 1, sermons, setSermons, 'sermons')}
+                                                onMoveUp={() => handleMoveItem(idx, -1, 'sermons')}
+                                                onMoveDown={() => handleMoveItem(idx, 1, 'sermons')}
                                                 isFirst={idx === 0}
                                                 isLast={idx === sermons.length - 1}
                                             />
@@ -4523,14 +4568,13 @@ const Admin = () => {
                                         {activeTab === 'bulletins' && bulletins.map((item, idx) => (
                                             <AdminTableRow
                                                 key={item.id || idx}
+                                                idx={idx}
                                                 date={item.date}
                                                 title={item.title}
                                                 subText="PDF Bulletin"
                                                 onEdit={() => handleEdit(item, 'bulletin')}
                                                 onDelete={() => handleDelete('bulletin', item.id)}
                                                 link={item.fileUrl}
-                                                onMoveUp={() => handleMoveItem(idx, -1, bulletins, setBulletins, 'bulletins')}
-                                                onMoveDown={() => handleMoveItem(idx, 1, bulletins, setBulletins, 'bulletins')}
                                                 isFirst={idx === 0}
                                                 isLast={idx === bulletins.length - 1}
                                             />
@@ -4550,14 +4594,15 @@ const Admin = () => {
                                         {activeTab === 'columns' && columns.map((item, idx) => (
                                             <AdminTableRow
                                                 key={item.id || idx}
+                                                idx={idx}
                                                 date={item.date}
                                                 title={item.title}
                                                 subText={item.author || '이남규 목사'}
                                                 onEdit={() => handleEdit(item, 'column')}
                                                 onDelete={() => handleDelete('column', item.id)}
                                                 link={item.fileUrl}
-                                                onMoveUp={() => handleMoveItem(idx, -1, columns, setColumns, 'columns')}
-                                                onMoveDown={() => handleMoveItem(idx, 1, columns, setColumns, 'columns')}
+                                                onMoveUp={() => handleMoveItem(idx, -1, 'columns')}
+                                                onMoveDown={() => handleMoveItem(idx, 1, 'columns')}
                                                 isFirst={idx === 0}
                                                 isLast={idx === columns.length - 1}
                                             />
@@ -4571,14 +4616,15 @@ const Admin = () => {
                                 {activeTab === 'sermons' && sermons.map((item, idx) => (
                                     <AdminMobileCard
                                         key={item.id || idx}
+                                        idx={idx}
                                         date={item.date}
                                         title={item.title}
                                         subText={item.preacher}
                                         onEdit={() => handleEdit(item, 'sermon')}
                                         onDelete={() => handleDelete('sermon', item.id)}
                                         link={item.link || (item.youtubeId ? `https://youtube.com/watch?v=${item.youtubeId}` : null)}
-                                        onMoveUp={() => handleMoveItem(idx, -1, sermons, setSermons, 'sermons')}
-                                        onMoveDown={() => handleMoveItem(idx, 1, sermons, setSermons, 'sermons')}
+                                        onMoveUp={() => handleMoveItem(idx, -1, 'sermons')}
+                                        onMoveDown={() => handleMoveItem(idx, 1, 'sermons')}
                                         isFirst={idx === 0}
                                         isLast={idx === sermons.length - 1}
                                     />
@@ -4586,14 +4632,13 @@ const Admin = () => {
                                 {activeTab === 'bulletins' && bulletins.map((item, idx) => (
                                     <AdminMobileCard
                                         key={item.id || idx}
+                                        idx={idx}
                                         date={item.date}
                                         title={item.title}
                                         subText="PDF Bulletin"
                                         onEdit={() => handleEdit(item, 'bulletin')}
                                         onDelete={() => handleDelete('bulletin', item.id)}
                                         link={item.fileUrl}
-                                        onMoveUp={() => handleMoveItem(idx, -1, bulletins, setBulletins, 'bulletins')}
-                                        onMoveDown={() => handleMoveItem(idx, 1, bulletins, setBulletins, 'bulletins')}
                                         isFirst={idx === 0}
                                         isLast={idx === bulletins.length - 1}
                                     />
@@ -4612,14 +4657,15 @@ const Admin = () => {
                                 {activeTab === 'columns' && columns.map((item, idx) => (
                                     <AdminMobileCard
                                         key={item.id || idx}
+                                        idx={idx}
                                         date={item.date}
                                         title={item.title}
                                         subText={item.author || '이남규 목사'}
                                         onEdit={() => handleEdit(item, 'column')}
                                         onDelete={() => handleDelete('column', item.id)}
                                         link={item.fileUrl}
-                                        onMoveUp={() => handleMoveItem(idx, -1, columns, setColumns, 'columns')}
-                                        onMoveDown={() => handleMoveItem(idx, 1, columns, setColumns, 'columns')}
+                                        onMoveUp={() => handleMoveItem(idx, -1, 'columns')}
+                                        onMoveDown={() => handleMoveItem(idx, 1, 'columns')}
                                         isFirst={idx === 0}
                                         isLast={idx === columns.length - 1}
                                     />
@@ -4922,7 +4968,7 @@ const SidebarItem = ({ icon, label, active, onClick }) => (
     </button>
 );
 
-const AdminTableRow = React.memo(({ date, title, subText, tag, onEdit, onDelete, link, showView = true, onMoveUp, onMoveDown, isFirst, isLast }) => (
+const AdminTableRow = React.memo(({ idx, date, title, subText, tag, onEdit, onDelete, link, showView = true, onMoveUp, onMoveDown, isFirst, isLast }) => (
     <tr className="hover:bg-gray-50/50 transition-all group">
         <td className="px-4 md:px-8 py-5 md:py-7 whitespace-nowrap text-xs md:text-sm text-gray-400 font-mono font-bold">{date || '-'}</td>
         <td className="px-4 md:px-8 py-5 md:py-7">
@@ -4975,10 +5021,10 @@ const AdminTableRow = React.memo(({ date, title, subText, tag, onEdit, onDelete,
         </td>
     </tr>
 ), (prev, next) => {
-    return prev.date === next.date && prev.title === next.title && prev.subText === next.subText && prev.tag === next.tag && prev.link === next.link && prev.isFirst === next.isFirst && prev.isLast === next.isLast;
+    return prev.idx === next.idx && prev.date === next.date && prev.title === next.title && prev.subText === next.subText && prev.tag === next.tag && prev.link === next.link && prev.isFirst === next.isFirst && prev.isLast === next.isLast;
 });
 
-const AdminMobileCard = React.memo(({ date, title, subText, tag, onEdit, onDelete, link, onMoveUp, onMoveDown, isFirst, isLast }) => (
+const AdminMobileCard = React.memo(({ idx, date, title, subText, tag, onEdit, onDelete, link, onMoveUp, onMoveDown, isFirst, isLast }) => (
     <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm relative group">
         <div className="flex justify-between items-start mb-3">
             <span className="text-xs font-bold text-gray-400 font-mono bg-gray-50 px-2 py-1 rounded">{date || '-'}</span>
@@ -5022,7 +5068,7 @@ const AdminMobileCard = React.memo(({ date, title, subText, tag, onEdit, onDelet
         </div>
     </div>
 ), (prev, next) => {
-    return prev.date === next.date && prev.title === next.title && prev.subText === next.subText && prev.tag === next.tag && prev.link === next.link && prev.isFirst === next.isFirst && prev.isLast === next.isLast;
+    return prev.idx === next.idx && prev.date === next.date && prev.title === next.title && prev.subText === next.subText && prev.tag === next.tag && prev.link === next.link && prev.isFirst === next.isFirst && prev.isLast === next.isLast;
 });
 
 export default Admin;

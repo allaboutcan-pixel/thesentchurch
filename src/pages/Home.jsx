@@ -62,7 +62,7 @@ const Home = () => {
                         }
                         return s;
                     });
-                    setLatestSermon(cleanedSermons[0] || {});
+                    if (isMounted) setLatestSermon(cleanedSermons[0] || {});
                 }
 
                 if (Array.isArray(liveDailyWords) && liveDailyWords.length > 0) {
@@ -89,10 +89,10 @@ const Home = () => {
                     const validWords = liveDailyWords.filter(w => w && w.date);
                     const lastWord = validWords.filter(w => w.date < todayStr).sort((a, b) => new Date(b.date) - new Date(a.date))[0] || validWords[0];
 
-                    setLatestDailyWord(displayWord || lastWord || null);
+                    if (isMounted) setLatestDailyWord(displayWord || lastWord || null);
                 }
 
-                if (config) {
+                if (config && isMounted) {
                     if (config.heroImage) setHeroImage(config.heroImage);
 
                     // Multi-language support for Hero

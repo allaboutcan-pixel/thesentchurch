@@ -540,7 +540,9 @@ const Resources = () => {
                                         >
                                             <div className="flex items-center gap-3 overflow-hidden">
                                                 <div className="min-w-[30px] border-r border-slate-100 pr-3 flex justify-center">
-                                                    <span className="text-[10px] font-bold text-slate-400 tabular-nums">{item.date.split('-').slice(1).join('.')}</span>
+                                                    <span className="text-[10px] font-bold text-slate-400 tabular-nums">
+                                                        {item.date ? item.date.split('-').slice(1).join('.') : ''}
+                                                    </span>
                                                 </div>
                                                 <div className="min-w-0">
                                                     <h4 className="text-xs font-bold text-slate-600 group-hover:text-primary transition-colors truncate">
