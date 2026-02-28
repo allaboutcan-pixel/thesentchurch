@@ -214,7 +214,7 @@ const Prayer = () => {
                         <span className="inline-block px-4 py-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-sm font-bold tracking-widest uppercase rounded-full mb-6 backdrop-blur-sm shadow-sm">
                             {t('ministry.prayer.intro_title')}
                         </span>
-                        <h2 className="text-2xl md:text-4xl font-black text-blue-900 leading-[2.8]">
+                        <h2 className="text-xl md:text-3xl font-black text-blue-900 leading-[2.8]">
                             {t('ministry.prayer.intro_subtitle')}
                         </h2>
                     </div>
