@@ -899,7 +899,7 @@ const Admin = () => {
                 finalPhotoUrl = dbService.formatDriveImage(formData.staffPhotoUrl);
             }
 
-            const newStaffList;
+            let newStaffList;
             if (editingId) {
                 newStaffList = staffList.map(s => s.id === editingId ? {
                     ...s,
