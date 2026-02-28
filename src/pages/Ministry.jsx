@@ -37,14 +37,14 @@ const Ministry = () => {
                 {text.split('\n\n').map((paragraph, i) => (
                     <div key={i}>
                         {paragraph.split('\n').map((line, j) => {
-                            const isHeader = /^\s*(대상|사역\s*표어|사역\s*비전|Target|Motto|Vision)/i.test(line);
+                            const isHeader = /^\s*(대상|사역\s*표어|사역\s*비전|Target|Motto|Vision|Our Theme)/i.test(line);
                             return (
                                 <div key={j} className={clsx(isHeader && j > 0 && "mt-8", "block")}>
-                                    {line.split(/(\*\*.*?\*\*|대상|사역\s*표어|사역\s*비전|Target|Motto|Vision)/i).map((part, k) => {
+                                    {line.split(/(\*\*.*?\*\*|대상|사역\s*표어|사역\s*비전|Target|Motto|Vision|Our Theme)/i).map((part, k) => {
                                         if (part.startsWith('**') && part.endsWith('**')) {
                                             return <strong key={k}>{part.slice(2, -2)}</strong>;
                                         }
-                                        if (/^(대상|사역\s*표어|사역\s*비전|Target|Motto|Vision)$/i.test(part)) {
+                                        if (/^(대상|사역\s*표어|사역\s*비전|Target|Motto|Vision|Our Theme)$/i.test(part)) {
                                             return <span key={k} className="font-bold text-primary text-xl">{part}</span>;
                                         }
                                         return part;
