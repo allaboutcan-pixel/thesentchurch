@@ -386,6 +386,7 @@ const resources = {
                 "feature_3_desc": "성경을 처음 펴는 분부터 깊은 복음을 갈망하는 분까지 모두 가능합니다.",
                 "curriculum_title": "학습 여정 (Curriculum)",
                 "curriculum_subtitle": "이 과정은 요한복음의 핵심 구조를 중심으로 네 가지 주제로 전개됩니다.",
+                "curriculum_subtitle_mobile": "이 과정은 요한복음의 핵심 구조를 중심으로<br/>네 가지 주제로 전개됩니다.",
                 "key_events": "핵심 사건",
                 "learning_points": "학습 요점",
                 "theme1_title": "Theme 1. [성육신] 빛으로 찾아오시는 하나님",

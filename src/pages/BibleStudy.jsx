@@ -261,7 +261,8 @@ const BibleStudy = () => {
                 <div className="container mx-auto px-6 max-w-5xl">
                     <div className="text-center mb-40 px-4">
                         <h2 className="text-2xl md:text-3xl font-black text-slate-900 mb-8">{t('bible.curriculum_title')}</h2>
-                        <p className="text-base md:text-lg text-slate-500 font-medium mb-10 break-keep">{t('bible.curriculum_subtitle')}</p>
+                        <p className="md:hidden text-base md:text-lg text-slate-500 font-medium mb-10 break-keep" dangerouslySetInnerHTML={{ __html: t('bible.curriculum_subtitle_mobile') || t('bible.curriculum_subtitle') }} />
+                        <p className="hidden md:block text-base md:text-lg text-slate-500 font-medium mb-10 break-keep">{t('bible.curriculum_subtitle')}</p>
                         <div className="w-16 h-1.5 bg-blue-600 mx-auto rounded-full" />
                     </div>
 
