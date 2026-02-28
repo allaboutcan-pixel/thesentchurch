@@ -266,14 +266,14 @@ const Ministry = () => {
             <div className="bg-white pb-32 pt-12">
                 <div className="max-w-4xl mx-auto text-center px-4">
                     {/* Desktop Version: Keep as is */}
-                    <h2 className="hidden md:block text-2xl md:text-3xl font-black text-blue-500 mb-6 leading-relaxed whitespace-pre-line break-keep">
+                    <h2 className="hidden md:block text-3xl md:text-4xl font-black text-blue-900 mb-6 leading-relaxed whitespace-pre-line break-keep">
                         {i18n.language === 'en'
                             ? t('ministry.sunday_school_title')
                             : (siteConfig?.sundaySchoolTitle || t('ministry.sunday_school_title'))}
                     </h2>
                     {/* Mobile Version: Use translation with <br/> tags */}
                     <h2
-                        className="block md:hidden text-xl font-bold text-blue-500 mb-6 leading-relaxed whitespace-pre-line"
+                        className="block md:hidden text-2xl font-bold text-blue-900 mb-6 leading-relaxed whitespace-pre-line"
                         dangerouslySetInnerHTML={{
                             __html: i18n.language === 'en'
                                 ? t('ministry.sunday_school_title').replace(/\n/g, '<br/>')
