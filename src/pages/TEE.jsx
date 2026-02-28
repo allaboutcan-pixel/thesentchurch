@@ -1,5 +1,4 @@
 import React from 'react';
-// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { BookOpen, Target, Heart, CheckCircle2, Globe2, Leaf, Sprout, Award, Scroll, Quote, ExternalLink, Download } from 'lucide-react';
@@ -26,8 +25,6 @@ const TEE = () => {
     const titleFont = siteConfig?.[`${type}TitleFont`] || 'font-sans';
     const subtitleFont = siteConfig?.[`${type}SubtitleFont`] || 'font-sans';
     const titleColor = siteConfig?.[`${type}TitleColor`] || '#ffffff';
-    // eslint-disable-next-line
-    const subtitleColor = siteConfig?.[`${type}SubtitleColor`] || '#f8fafc';
     const subtitleItalic = siteConfig?.[`${type}SubtitleItalic`] || false;
     const titleWeight = siteConfig?.[`${type}TitleWeight`] || 'font-black';
     const titleItalic = siteConfig?.[`${type}TitleItalic`] || false;
