@@ -226,7 +226,7 @@ const Ministry = () => {
             </div>
 
             {/* Sunday School Introduction Section */}
-            <div className="bg-white pb-32 pt-12">
+            <div className="bg-white pb-32 pt-32">
                 <div className="max-w-4xl mx-auto text-center px-4">
                     {/* Desktop Version: Keep as is */}
                     {/* Desktop & Default Korean Title (siteConfig prioritized) */}
@@ -249,7 +249,7 @@ const Ministry = () => {
                     {i18n.language === 'en' ? (
                         t('ministry.sunday_school_description') && (
                             <p
-                                className="text-lg md:text-xl text-gray-600 font-medium leading-[1.8] break-keep whitespace-pre-line mb-8"
+                                className="text-lg md:text-xl text-gray-600 font-medium leading-[2] break-keep whitespace-pre-line mb-8"
                                 dangerouslySetInnerHTML={{ __html: t('ministry.sunday_school_description') }}
                             />
                         )
@@ -261,13 +261,13 @@ const Ministry = () => {
                             </p>
                             {/* Mobile Korean Description (with requested line breaks) */}
                             <p
-                                className="block md:hidden text-lg text-gray-600 font-medium leading-[1.8] mb-8"
+                                className="block md:hidden text-lg text-gray-600 font-medium leading-[2] mb-8"
                                 dangerouslySetInnerHTML={{ __html: t('ministry.sunday_school_desc_mobile') }}
                             />
                         </>
                     )}
                     <p
-                        className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep whitespace-pre-line"
+                        className="text-base md:text-lg text-gray-500 font-medium italic leading-[2] break-keep whitespace-pre-line"
                         dangerouslySetInnerHTML={{
                             __html: i18n.language === 'en'
                                 ? t('ministry.sunday_school_subtitle')
