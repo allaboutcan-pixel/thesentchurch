@@ -617,14 +617,27 @@ const About = () => {
                                 </div>
 
                                 <div className="space-y-4">
-                                    <div className="flex justify-between items-center border-b border-gray-50 pb-3">
-                                        <span className="text-gray-500 text-sm font-medium">{t('game_schedule', { defaultValue: 'Schedule' })}</span>
+                                    <div className="flex flex-col items-center text-center space-y-2 border-b border-gray-50 pb-4">
+                                        <span className="text-gray-500 text-lg font-bold">{t('game_schedule', { defaultValue: 'Schedule' })}</span>
                                         {/* Use t() for schedule text if it matches known constant. otherwise display as is */}
-                                        <span className="text-primary font-bold text-right">
-                                            {i18n.language === 'en' && (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
-                                                ? (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
-                                                : t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim())}
-                                        </span>
+                                        <div className="text-primary font-bold">
+                                            {(() => {
+                                                const scheduleText = i18n.language === 'en' && (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
+                                                    ? (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
+                                                    : t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim());
+
+                                                if (scheduleText?.includes(' / ')) {
+                                                    const parts = scheduleText.split(' / ');
+                                                    return (
+                                                        <div className="flex flex-col gap-1">
+                                                            <span>{parts[0]}</span>
+                                                            <span className="text-sm opacity-80">{parts[1]}</span>
+                                                        </div>
+                                                    );
+                                                }
+                                                return <span>{scheduleText}</span>;
+                                            })()}
+                                        </div>
                                     </div>
                                     <div className="bg-gray-50 p-4 rounded-xl">
                                         <span className="block text-gray-400 text-xs mb-1">Zoom Link / ID</span>
