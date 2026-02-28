@@ -188,7 +188,7 @@ const BibleStudy = () => {
                             </h2>
                         </div>
 
-                        <div className={clsx("text-sm md:text-base text-slate-500 word-keep break-keep font-medium max-w-2xl mx-auto", isEnglish ? "leading-[4.5]" : "leading-[3.5]")}>
+                        <div className={clsx("text-base md:text-base text-slate-500 word-keep break-keep font-medium max-w-2xl mx-auto", isEnglish ? "leading-[2.2] md:leading-[4.5]" : "leading-[3.5]")}>
                             <p dangerouslySetInnerHTML={{ __html: t('bible.intro_desc') }} />
                         </div>
 
