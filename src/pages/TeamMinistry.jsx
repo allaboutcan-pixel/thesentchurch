@@ -19,7 +19,15 @@ const iconMap = {
 
 const TeamMinistry = () => {
     const { t, i18n } = useTranslation();
-    const { config: siteConfig } = useSiteConfig();
+    const { config: siteConfig, loading } = useSiteConfig();
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-slate-50">
+                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
     const banner = siteConfig?.teamBanner || "/images/ministry_banner.jpg";
     const isEnglish = i18n.language.startsWith('en');

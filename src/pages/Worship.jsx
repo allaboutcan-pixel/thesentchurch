@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { dbService } from '../services/dbService';
 import churchData from '../data/church_data.json';
@@ -6,93 +6,51 @@ import { Video, Users, Clock, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { isVideo, getYoutubeId } from '../utils/mediaUtils';
 import clsx from 'clsx';
+import { useSiteConfigValue } from '../context/SiteConfigContext';
 
 const Worship = () => {
     const { t, i18n } = useTranslation();
-    const [headerBanner, setHeaderBanner] = useState("/images/worship_banner.jpg");
-    const [title, setTitle] = useState("");
-    const [subtitle, setSubtitle] = useState("");
-    const [titleFont, setTitleFont] = useState("font-sans");
-    const [subtitleFont, setSubtitleFont] = useState("font-sans");
-    const [titleColor, setTitleColor] = useState("#ffffff");
-    const [subtitleColor, setSubtitleColor] = useState("#ffffff");
-    const [titleItalic, setTitleItalic] = useState(false);
-    const [subtitleItalic, setSubtitleItalic] = useState(true);
-    const [titleWeight, setTitleWeight] = useState("font-bold");
-    const [subtitleWeight, setSubtitleWeight] = useState("font-medium");
-    const [titleSize, setTitleSize] = useState(48);
-    const [subtitleSize, setSubtitleSize] = useState(24);
-    const [overlayOpacity, setOverlayOpacity] = useState(40);
-    const [height, setHeight] = useState("medium");
-    const [bannerFit, setBannerFit] = useState("cover");
+    const { config, loading } = useSiteConfigValue();
 
-    // Dynamic Service Data
-    const [services, setServices] = useState(churchData.services || []);
-    const [specialServices, setSpecialServices] = useState(churchData.special_services || {});
-    const [otherMeetings, setOtherMeetings] = useState(churchData.other_meetings || []);
+    // Derived values from global config
+    const headerBanner = config.newsBanner || config.worshipBanner || "/images/worship_banner.jpg";
+    const height = config.newsHeight || config.worshipHeight || "medium";
+    const bannerFit = config.newsBannerFit || config.worshipBannerFit || "cover";
+    const overlayOpacity = config.newsOverlayOpacity !== undefined ? config.newsOverlayOpacity : (config.worshipOverlayOpacity !== undefined ? config.worshipOverlayOpacity : 40);
 
-    useEffect(() => {
-        let isMounted = true;
-        const fetchConfig = async () => {
-            const config = await dbService.getSiteConfig();
-            if (!isMounted) return;
+    const title = i18n.language === 'en' && (config.newsTitleEn || config.worshipTitleEn)
+        ? (config.newsTitleEn || config.worshipTitleEn)
+        : (config.newsTitle || config.worshipTitle);
 
-            if (config) {
-                if (config.newsBanner || config.worshipBanner) setHeaderBanner(config.newsBanner || config.worshipBanner);
+    const subtitle = i18n.language === 'en' && (config.newsSubtitleEn || config.worshipSubtitleEn)
+        ? (config.newsSubtitleEn || config.worshipSubtitleEn)
+        : (config.newsSubtitle || config.worshipSubtitle);
 
-                // Multi-language banner content
-                const titleVal = i18n.language === 'en' && (config.newsTitleEn || config.worshipTitleEn)
-                    ? (config.newsTitleEn || config.worshipTitleEn)
-                    : (config.newsTitle || config.worshipTitle);
-                const subtitleVal = i18n.language === 'en' && (config.newsSubtitleEn || config.worshipSubtitleEn)
-                    ? (config.newsSubtitleEn || config.worshipSubtitleEn)
-                    : (config.newsSubtitle || config.worshipSubtitle);
+    const titleFont = config.newsTitleFont || config.worshipTitleFont || "font-sans";
+    const subtitleFont = config.newsSubtitleFont || config.worshipSubtitleFont || "font-sans";
+    const titleColor = config.newsTitleColor || config.worshipTitleColor || "#ffffff";
+    const subtitleColor = config.newsSubtitleColor || config.worshipSubtitleColor || "#ffffff";
+    const titleItalic = config.newsTitleItalic !== undefined ? config.newsTitleItalic : (config.worshipTitleItalic !== undefined ? config.worshipTitleItalic : false);
+    const subtitleItalic = config.newsSubtitleItalic !== undefined ? config.newsSubtitleItalic : (config.worshipSubtitleItalic !== undefined ? config.worshipSubtitleItalic : true);
+    const titleWeight = config.newsTitleWeight || config.worshipTitleWeight || "font-bold";
+    const subtitleWeight = config.newsSubtitleWeight || config.worshipSubtitleWeight || "font-medium";
+    const titleSize = config.newsTitleSize || config.worshipTitleSize || 48;
+    const subtitleSize = config.newsSubtitleSize || config.worshipSubtitleSize || 24;
 
-                if (titleVal) setTitle(titleVal);
-                if (subtitleVal) setSubtitle(subtitleVal);
+    // Localized Service Data
+    const services = (config.services || churchData.services || []).map(s => ({
+        ...s,
+        name: i18n.language === 'en' && s.nameEn ? s.nameEn : s.name,
+        description: i18n.language === 'en' && s.descriptionEn ? s.descriptionEn : s.description
+    }));
 
-                if (config.newsTitleFont || config.worshipTitleFont) setTitleFont(config.newsTitleFont || config.worshipTitleFont);
-                if (config.newsSubtitleFont || config.worshipSubtitleFont) setSubtitleFont(config.newsSubtitleFont || config.worshipSubtitleFont);
-                if (config.newsTitleColor || config.worshipTitleColor) setTitleColor(config.newsTitleColor || config.worshipTitleColor);
-                if (config.newsSubtitleColor || config.worshipSubtitleColor) setSubtitleColor(config.newsSubtitleColor || config.worshipSubtitleColor);
-                if (config.newsTitleItalic !== undefined) setTitleItalic(config.newsTitleItalic);
-                else if (config.worshipTitleItalic !== undefined) setTitleItalic(config.worshipTitleItalic);
-                if (config.newsSubtitleItalic !== undefined) setSubtitleItalic(config.newsSubtitleItalic);
-                else if (config.worshipSubtitleItalic !== undefined) setSubtitleItalic(config.worshipSubtitleItalic);
+    const specialServices = config.specialServices || churchData.special_services || {};
 
-                if (config.newsTitleWeight || config.worshipTitleWeight) setTitleWeight(config.newsTitleWeight || config.worshipTitleWeight);
-                if (config.newsSubtitleWeight || config.worshipSubtitleWeight) setSubtitleWeight(config.newsSubtitleWeight || config.worshipSubtitleWeight);
-
-                if (config.newsTitleSize || config.worshipTitleSize) setTitleSize(config.newsTitleSize || config.worshipTitleSize);
-                if (config.newsSubtitleSize || config.worshipSubtitleSize) setSubtitleSize(config.newsSubtitleSize || config.worshipSubtitleSize);
-                if (config.newsOverlayOpacity !== undefined) setOverlayOpacity(config.newsOverlayOpacity);
-                else if (config.worshipOverlayOpacity !== undefined) setOverlayOpacity(config.worshipOverlayOpacity);
-                if (config.newsHeight || config.worshipHeight) setHeight(config.newsHeight || config.worshipHeight);
-                if (config.newsBannerFit || config.worshipBannerFit) setBannerFit(config.newsBannerFit || config.worshipBannerFit);
-
-                // Load and Localize Service Data
-                if (config.services) {
-                    const localizedServices = config.services.map(s => ({
-                        ...s,
-                        name: i18n.language === 'en' && s.nameEn ? s.nameEn : s.name,
-                        description: i18n.language === 'en' && s.descriptionEn ? s.descriptionEn : s.description
-                    }));
-                    setServices(localizedServices);
-                }
-                if (config.specialServices) setSpecialServices(config.specialServices); // Dawn uses t() in JSX or specific logic
-                if (config.otherMeetings) {
-                    const localizedMeetings = config.otherMeetings.map(m => ({
-                        ...m,
-                        name: i18n.language === 'en' && m.nameEn ? m.nameEn : m.name,
-                        location: i18n.language === 'en' && m.locationEn ? m.locationEn : m.location
-                    }));
-                    setOtherMeetings(localizedMeetings);
-                }
-            }
-        };
-        fetchConfig();
-        return () => { isMounted = false; };
-    }, [i18n.language]);
+    const otherMeetings = (config.otherMeetings || churchData.other_meetings || []).map(m => ({
+        ...m,
+        name: i18n.language === 'en' && m.nameEn ? m.nameEn : m.name,
+        location: i18n.language === 'en' && m.locationEn ? m.locationEn : m.location
+    }));
 
     // Handle hash navigation
     const { hash } = useLocation();
@@ -106,6 +64,14 @@ const Worship = () => {
             }
         }
     }, [hash]);
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-slate-50">
+                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen">

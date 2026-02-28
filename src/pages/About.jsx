@@ -12,26 +12,64 @@ import clsx from 'clsx';
 
 const About = () => {
     const { t, i18n } = useTranslation();
-    const { config } = useSiteConfig();
+    const { config, loading } = useSiteConfig();
     const location = useLocation();
-    const [headerBanner, setHeaderBanner] = useState("/images/about_banner.jpg");
-    const [title, setTitle] = useState(null);
-    const [subtitle, setSubtitle] = useState(null);
-    const [titleFont, setTitleFont] = useState("font-sans");
-    const [subtitleFont, setSubtitleFont] = useState("font-sans");
-    const [titleColor, setTitleColor] = useState("#ffffff");
-    const [subtitleColor, setSubtitleColor] = useState("#ffffff");
-    const [titleItalic, setTitleItalic] = useState(false);
-    const [subtitleItalic, setSubtitleItalic] = useState(false);
-    const [titleWeight, setTitleWeight] = useState("font-bold");
-    const [subtitleWeight, setSubtitleWeight] = useState("font-medium");
-    const [titleSize, setTitleSize] = useState(48);
-    const [subtitleSize, setSubtitleSize] = useState(24);
-    const [overlayOpacity, setOverlayOpacity] = useState(40);
-    const [height, setHeight] = useState("medium");
-    const [bannerFit, setBannerFit] = useState("cover");
 
-    // Force scroll to hash on mount/update with delay to handle layout shifts
+    // Derived values from global config
+    const headerBanner = config.aboutBanner || "/images/about_banner.jpg";
+    const height = config.aboutHeight || "medium";
+    const bannerFit = config.aboutBannerFit || "cover";
+    const overlayOpacity = config.aboutOverlayOpacity !== undefined ? config.aboutOverlayOpacity : 40;
+
+    const title = i18n.language === 'en' && config.aboutTitleEn ? config.aboutTitleEn : (config.aboutTitle || null);
+    const subtitle = i18n.language === 'en' && config.aboutSubtitleEn ? config.aboutSubtitleEn : (config.aboutSubtitle || null);
+
+    const titleFont = config.aboutTitleFont || "font-sans";
+    const subtitleFont = config.aboutSubtitleFont || "font-sans";
+    const titleColor = config.aboutTitleColor || "#ffffff";
+    const subtitleColor = config.aboutSubtitleColor || "#ffffff";
+    const titleItalic = config.aboutTitleItalic !== undefined ? config.aboutTitleItalic : false;
+    const subtitleItalic = config.aboutSubtitleItalic !== undefined ? config.aboutSubtitleItalic : false;
+    const titleWeight = config.aboutTitleWeight || "font-bold";
+    const subtitleWeight = config.aboutSubtitleWeight || "font-medium";
+    const titleSize = config.aboutTitleSize || 48;
+    const subtitleSize = config.aboutSubtitleSize || 24;
+
+    const aboutAffiliatedOrgs = i18n.language === 'en' && config.aboutAffiliatedOrgsEn ? config.aboutAffiliatedOrgsEn : config.aboutAffiliatedOrgs;
+
+    const staffList = (config.staff || churchData.intro.staff || []).map(s => ({
+        ...s,
+        name: i18n.language === 'en' && s.nameEn ? s.nameEn : s.name,
+        role: i18n.language === 'en' && s.roleEn ? s.roleEn : s.role
+    }));
+
+    const pastorInfo = {
+        ...churchData.intro.pastor,
+        ...config.pastor,
+        name: i18n.language === 'en' && config.pastor?.nameEn ? config.pastor.nameEn : (config.pastor?.name || churchData.intro.pastor.name),
+        role: i18n.language === 'en' && config.pastor?.roleEn ? config.pastor.roleEn : (config.pastor?.role || churchData.intro.pastor.role),
+        greeting: i18n.language === 'en' && config.pastor?.greetingEn ? config.pastor.greetingEn : (config.pastor?.greeting || churchData.intro.pastor.greeting),
+        history: i18n.language === 'en' && config.pastor?.historyEn ? config.pastor.historyEn : (config.pastor?.history || churchData.intro.pastor.history)
+    };
+
+    const services = config.services || churchData.services || [];
+    const specialServices = config.specialServices || churchData.special_services || {};
+    const otherMeetings = config.otherMeetings || churchData.other_meetings || [];
+
+    const locationConfig = {
+        ...churchData.general,
+        ...config.location,
+        address: i18n.language === 'en' && config.location?.addressEn ? config.location.addressEn : (config.location?.address || churchData.general.address),
+        phone: config.location?.phone || churchData.general.phone.join(', '),
+        mapEmbed: config.location?.mapEmbed || churchData.general.mapEmbed
+    };
+
+    // Images
+    const visionImage = "/images/vision_card_bg.jpg";
+    const missionImage = "https://drive.google.com/thumbnail?id=1K18zVZRrR2K-5i0SyjPQXtJbvvUwrd_9&sz=w2560";
+    const ministryImage = "https://drive.google.com/thumbnail?id=12jIhyqVtd5vn93bMb2fOy8n3teQZXZsN&sz=w2560";
+
+    // Scroll handlers
     useEffect(() => {
         if (location.hash) {
             const id = location.hash.replace('#', '');
@@ -40,104 +78,9 @@ const About = () => {
                 if (element) {
                     element.scrollIntoView({ behavior: 'smooth' });
                 }
-            }, 500); // 500ms delay to allow images/content to load
+            }, 500);
         }
-    }, [location]);
-    const visionImage = "/images/vision_card_bg.jpg";
-    const missionImage = "https://drive.google.com/thumbnail?id=1K18zVZRrR2K-5i0SyjPQXtJbvvUwrd_9&sz=w2560";
-    const ministryImage = "https://drive.google.com/thumbnail?id=12jIhyqVtd5vn93bMb2fOy8n3teQZXZsN&sz=w2560";
-    const [staffList, setStaffList] = useState(churchData.intro.staff || []);
-    const [pastorInfo, setPastorInfo] = useState(churchData.intro.pastor);
-
-    // Worship Section Data
-    const [services, setServices] = useState(churchData.services || []);
-    const [specialServices, setSpecialServices] = useState(churchData.special_services || {});
-    const [otherMeetings, setOtherMeetings] = useState(churchData.other_meetings || []);
-
-    // Location Section Data
-    const [locationConfig, setLocationConfig] = useState({
-        address: churchData.general.address,
-        phone: churchData.general.phone.join(', '),
-        ...churchData.general
-    });
-
-    const [aboutAffiliatedOrgs, setAboutAffiliatedOrgs] = useState(null);
-
-    useEffect(() => {
-        if (config) {
-            if (config.aboutBanner) setHeaderBanner(config.aboutBanner);
-
-            // Multi-language for Header
-            const titleVal = i18n.language === 'en' && config.aboutTitleEn ? config.aboutTitleEn : config.aboutTitle;
-            const subtitleVal = i18n.language === 'en' && config.aboutSubtitleEn ? config.aboutSubtitleEn : config.aboutSubtitle;
-
-            if (titleVal !== undefined) setTitle(titleVal);
-            if (subtitleVal !== undefined) setSubtitle(subtitleVal);
-
-            if (config.aboutTitleFont) setTitleFont(config.aboutTitleFont);
-            if (config.aboutSubtitleFont) setSubtitleFont(config.aboutSubtitleFont);
-            if (config.aboutTitleColor) setTitleColor(config.aboutTitleColor);
-            if (config.aboutSubtitleColor) setSubtitleColor(config.aboutSubtitleColor);
-            if (config.aboutTitleItalic !== undefined) setTitleItalic(config.aboutTitleItalic);
-            if (config.aboutSubtitleItalic !== undefined) setSubtitleItalic(config.aboutSubtitleItalic);
-            if (config.aboutTitleWeight) setTitleWeight(config.aboutTitleWeight);
-            if (config.aboutSubtitleWeight) setSubtitleWeight(config.aboutSubtitleWeight);
-            if (config.aboutTitleSize) setTitleSize(config.aboutTitleSize);
-            if (config.aboutSubtitleSize) setSubtitleSize(config.aboutSubtitleSize);
-            if (config.aboutOverlayOpacity !== undefined) setOverlayOpacity(config.aboutOverlayOpacity);
-            if (config.aboutHeight) setHeight(config.aboutHeight);
-            if (config.aboutBannerFit) setBannerFit(config.aboutBannerFit);
-
-            // Affiliated Organizations
-            const affVal = i18n.language === 'en' && config.aboutAffiliatedOrgsEn ? config.aboutAffiliatedOrgsEn : config.aboutAffiliatedOrgs;
-            if (affVal) setAboutAffiliatedOrgs(affVal);
-
-            if (config.staff) {
-                const localizedStaff = config.staff.map(s => ({
-                    ...s,
-                    name: i18n.language === 'en' && s.nameEn ? s.nameEn : s.name,
-                    role: i18n.language === 'en' && s.roleEn ? s.roleEn : s.role
-                }));
-                setStaffList(localizedStaff);
-            }
-
-            if (config.pastor) {
-                setPastorInfo(prev => ({
-                    ...prev,
-                    ...config.pastor,
-                    name: i18n.language === 'en' && config.pastor.nameEn ? config.pastor.nameEn : config.pastor.name,
-                    role: i18n.language === 'en' && config.pastor.roleEn ? config.pastor.roleEn : config.pastor.role,
-                    greeting: i18n.language === 'en' && config.pastor.greetingEn ? config.pastor.greetingEn : config.pastor.greeting,
-                    history: i18n.language === 'en' && config.pastor.historyEn ? config.pastor.historyEn : config.pastor.history
-                }));
-            }
-
-            // Worship Data
-            if (config.services) setServices(config.services);
-            if (config.specialServices) setSpecialServices(config.specialServices);
-            if (config.otherMeetings) setOtherMeetings(config.otherMeetings);
-
-            // Location Data
-            if (config.location) {
-                setLocationConfig(prev => ({
-                    ...prev,
-                    address: i18n.language === 'en' && config.location.addressEn ? config.location.addressEn : (config.location.address || prev.address),
-                    phone: config.location.phone || prev.phone,
-                    mapEmbed: config.location.mapEmbed || prev.mapEmbed
-                }));
-            }
-        }
-    }, [config, i18n.language]);
-
-    useEffect(() => {
-        if (location.hash) {
-            const id = location.hash.replace('#', '');
-            const element = document.getElementById(id);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    }, [location]);
+    }, [location.pathname, location.hash]);
 
     return (
         <div className="min-h-screen">

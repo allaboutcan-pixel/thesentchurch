@@ -28,10 +28,13 @@ export const SiteConfigProvider = ({ children }) => {
                 setConfig(prev => ({
                     ...prev,
                     ...siteConfig,
-                    // Ensure nested objects are merged correctly
-                    location: siteConfig.location || prev.location,
+                    services: siteConfig.services || prev.services,
+                    specialServices: siteConfig.specialServices || prev.specialServices,
+                    otherMeetings: siteConfig.otherMeetings || prev.otherMeetings,
+                    staff: siteConfig.staff || prev.staff,
+                    pastor: { ...prev.pastor, ...siteConfig.pastor },
                     social: { ...prev.social, ...siteConfig.social },
-                    pastor: { ...prev.pastor, ...siteConfig.pastor }
+                    location: { ...prev.location, ...siteConfig.location }
                 }));
             }
             setLoading(false);

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSiteConfig } from '../hooks/useSiteConfig';
 import { Link, useLocation } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 import { Download, Calendar, Image as ImageIcon, FileText, Play, X, ChevronRight, ChevronLeft, BookOpen, Quote, Music, Maximize, Bell } from 'lucide-react';
@@ -60,63 +61,34 @@ const Resources = () => {
         setPlayingSermonId(null);
     }, [activeTab, selectedSermonYear, selectedSermonMonth]);
 
-    const [headerBanner, setHeaderBanner] = useState("/images/sermons_banner.jpg");
-    const [title, setTitle] = useState("");
-    const [subtitle, setSubtitle] = useState("");
-    const [titleFont, setTitleFont] = useState("font-sans");
-    const [subtitleFont, setSubtitleFont] = useState("font-sans");
-    const [titleColor, setTitleColor] = useState("#ffffff");
-    const [subtitleColor, setSubtitleColor] = useState("#ffffff");
-    const [titleItalic, setTitleItalic] = useState(false);
-    const [subtitleItalic, setSubtitleItalic] = useState(true);
-    const [titleWeight, setTitleWeight] = useState("font-black");
-    const [subtitleWeight, setSubtitleWeight] = useState("font-medium");
-    const [titleSize, setTitleSize] = useState(48);
-    const [subtitleSize, setSubtitleSize] = useState(24);
-    const [overlayOpacity, setOverlayOpacity] = useState(40);
-    const [height, setHeight] = useState("medium");
-    const [bannerFit, setBannerFit] = useState("cover");
+    const { config: siteConfig, loading: configLoading } = useSiteConfig();
+    const prefix = location.pathname.startsWith('/news') ? 'news' : 'resources';
 
-    useEffect(() => {
-        let isMounted = true;
-        const fetchBanner = async () => {
-            const config = await dbService.getSiteConfig();
-            if (!isMounted) return;
+    if (configLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-slate-50">
+                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
-            if (config) {
-                const prefix = location.pathname.startsWith('/news') ? 'news' : 'resources';
-
-                if (config[`${prefix}Banner`]) setHeaderBanner(config[`${prefix}Banner`]);
-
-                // Multi-language banner content
-                const titleVal = i18n.language === 'en' && config[`${prefix}TitleEn`]
-                    ? config[`${prefix}TitleEn`]
-                    : config[`${prefix}Title`];
-                const subtitleVal = i18n.language === 'en' && config[`${prefix}SubtitleEn`]
-                    ? config[`${prefix}SubtitleEn`]
-                    : config[`${prefix}Subtitle`];
-
-                if (titleVal) setTitle(titleVal);
-                if (subtitleVal) setSubtitle(subtitleVal);
-
-                if (config[`${prefix}TitleFont`]) setTitleFont(config[`${prefix}TitleFont`]);
-                if (config[`${prefix}SubtitleFont`]) setSubtitleFont(config[`${prefix}SubtitleFont`]);
-                if (config[`${prefix}TitleColor`]) setTitleColor(config[`${prefix}TitleColor`]);
-                if (config[`${prefix}SubtitleColor`]) setSubtitleColor(config[`${prefix}SubtitleColor`]);
-                if (config[`${prefix}TitleItalic`] !== undefined) setTitleItalic(config[`${prefix}TitleItalic`]);
-                if (config[`${prefix}SubtitleItalic`] !== undefined) setSubtitleItalic(config[`${prefix}SubtitleItalic`]);
-                if (config[`${prefix}TitleWeight`]) setTitleWeight(config[`${prefix}TitleWeight`]);
-                if (config[`${prefix}SubtitleWeight`]) setSubtitleWeight(config[`${prefix}SubtitleWeight`]);
-                if (config[`${prefix}TitleSize`]) setTitleSize(config[`${prefix}TitleSize`]);
-                if (config[`${prefix}SubtitleSize`]) setSubtitleSize(config[`${prefix}SubtitleSize`]);
-                if (config[`${prefix}OverlayOpacity`] !== undefined) setOverlayOpacity(config[`${prefix}OverlayOpacity`]);
-                if (config[`${prefix}Height`]) setHeight(config[`${prefix}Height`]);
-                if (config[`${prefix}BannerFit`]) setBannerFit(config[`${prefix}BannerFit`]);
-            }
-        };
-        fetchBanner();
-        return () => { isMounted = false; };
-    }, [location.pathname, i18n.language]);
+    const headerBanner = siteConfig?.[`${prefix}Banner`] || "/images/sermons_banner.jpg";
+    const title = i18n.language.startsWith('en') && siteConfig?.[`${prefix}TitleEn`] ? siteConfig[`${prefix}TitleEn`] : siteConfig?.[`${prefix}Title`];
+    const subtitle = i18n.language.startsWith('en') && siteConfig?.[`${prefix}SubtitleEn`] ? siteConfig[`${prefix}SubtitleEn`] : siteConfig?.[`${prefix}Subtitle`];
+    const titleFont = siteConfig?.[`${prefix}TitleFont`] || "font-sans";
+    const subtitleFont = siteConfig?.[`${prefix}SubtitleFont`] || "font-sans";
+    const titleColor = siteConfig?.[`${prefix}TitleColor`] || "#ffffff";
+    const subtitleColor = siteConfig?.[`${prefix}SubtitleColor`] || "#ffffff";
+    const titleItalic = siteConfig?.[`${prefix}TitleItalic`] ?? false;
+    const subtitleItalic = siteConfig?.[`${prefix}SubtitleItalic`] ?? true;
+    const titleWeight = siteConfig?.[`${prefix}TitleWeight`] || "font-black";
+    const subtitleWeight = siteConfig?.[`${prefix}SubtitleWeight`] || "font-medium";
+    const titleSize = siteConfig?.[`${prefix}TitleSize`] || 48;
+    const subtitleSize = siteConfig?.[`${prefix}SubtitleSize`] || 24;
+    const overlayOpacity = siteConfig?.[`${prefix}OverlayOpacity`] ?? 40;
+    // eslint-disable-next-line no-unused-vars
+    const height = siteConfig?.[`${prefix}Height`] || "medium";
+    const bannerFit = siteConfig?.[`${prefix}BannerFit`] || "cover";
 
     const getPreviewSource = (url) => {
         if (!url) return null;

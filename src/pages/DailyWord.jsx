@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSiteConfig } from '../hooks/useSiteConfig';
 import { Calendar, ChevronRight, BookOpen, Quote, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,73 +15,55 @@ const DailyWord = () => {
     const [archiveData, setArchiveData] = useState({}); // { year: { month: [items] } }
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
     const [selectedMonth, setSelectedMonth] = useState((new Date().getMonth() + 1).toString());
-    const [headerBanner, setHeaderBanner] = useState("/images/sermons_banner.jpg");
-    const [title, setTitle] = useState("");
-    const [subtitle, setSubtitle] = useState("");
-    const [titleFont, setTitleFont] = useState("font-sans");
-    const [subtitleFont, setSubtitleFont] = useState("font-sans");
-    const [titleColor, setTitleColor] = useState("#ffffff");
-    const [subtitleColor, setSubtitleColor] = useState("#ffffff");
-    const [titleItalic, setTitleItalic] = useState(false);
-    const [subtitleItalic, setSubtitleItalic] = useState(true);
-    const [titleWeight, setTitleWeight] = useState("font-black");
-    const [subtitleWeight, setSubtitleWeight] = useState("font-medium");
-    const [titleSize, setTitleSize] = useState(48);
-    const [subtitleSize, setSubtitleSize] = useState(24);
-    const [overlayOpacity, setOverlayOpacity] = useState(40);
-    const [height, setHeight] = useState("medium");
-    const [bannerFit, setBannerFit] = useState("cover");
+    const { config: siteConfig, loading: configLoading } = useSiteConfig();
+    const prefix = 'resources'; // Unify with sermons/media page
+
+    if (configLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-slate-50">
+                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
+    const headerBanner = siteConfig?.[`${prefix}Banner`] || "/images/sermons_banner.jpg";
+    const title = i18n.language.startsWith('en') && siteConfig?.[`${prefix}TitleEn`] ? siteConfig[`${prefix}TitleEn`] : (siteConfig?.[`${prefix}Title`] || t('resources.daily_word_title'));
+    const subtitle = i18n.language.startsWith('en') && siteConfig?.[`${prefix}SubtitleEn`] ? siteConfig[`${prefix}SubtitleEn`] : (siteConfig?.[`${prefix}Subtitle`] || t('resources.daily_word_subtitle'));
+    const titleFont = siteConfig?.[`${prefix}TitleFont`] || "font-sans";
+    const subtitleFont = siteConfig?.[`${prefix}SubtitleFont`] || "font-sans";
+    const titleColor = siteConfig?.[`${prefix}TitleColor`] || "#ffffff";
+    const subtitleColor = siteConfig?.[`${prefix}SubtitleColor`] || "#ffffff";
+    const titleItalic = siteConfig?.[`${prefix}TitleItalic`] ?? false;
+    const subtitleItalic = siteConfig?.[`${prefix}SubtitleItalic`] ?? true;
+    const titleWeight = siteConfig?.[`${prefix}TitleWeight`] || "font-black";
+    const subtitleWeight = siteConfig?.[`${prefix}SubtitleWeight`] || "font-medium";
+    const titleSize = siteConfig?.[`${prefix}TitleSize`] || 48;
+    const subtitleSize = siteConfig?.[`${prefix}SubtitleSize`] || 24;
+    const overlayOpacity = siteConfig?.[`${prefix}OverlayOpacity`] ?? 40;
+    // eslint-disable-next-line no-unused-vars
+    const height = siteConfig?.[`${prefix}Height`] || "medium";
+    const bannerFit = siteConfig?.[`${prefix}BannerFit`] || "cover";
 
     useEffect(() => {
         let isMounted = true;
         const fetchData = async () => {
             try {
                 const words = await dbService.getDailyWords();
-                const config = await dbService.getSiteConfig();
-
                 if (!isMounted) return;
-
-                if (config) {
-                    const prefix = 'resources'; // Unify with sermons/media page
-                    if (config[`${prefix}Banner`]) setHeaderBanner(config[`${prefix}Banner`]);
-
-                    const titleVal = i18n.language.startsWith('en') && config[`${prefix}TitleEn`] ? config[`${prefix}TitleEn`] : config[`${prefix}Title`];
-                    const subtitleVal = i18n.language.startsWith('en') && config[`${prefix}SubtitleEn`] ? config[`${prefix}SubtitleEn`] : config[`${prefix}Subtitle`];
-                    if (titleVal) setTitle(titleVal);
-                    if (subtitleVal) setSubtitle(subtitleVal);
-                    if (config[`${prefix}TitleFont`]) setTitleFont(config[`${prefix}TitleFont`]);
-                    if (config[`${prefix}SubtitleFont`]) setSubtitleFont(config[`${prefix}SubtitleFont`]);
-                    if (config[`${prefix}TitleColor`]) setTitleColor(config[`${prefix}TitleColor`]);
-                    if (config[`${prefix}SubtitleColor`]) setSubtitleColor(config[`${prefix}SubtitleColor`]);
-                    if (config[`${prefix}TitleItalic`] !== undefined) setTitleItalic(config[`${prefix}TitleItalic`]);
-                    if (config[`${prefix}SubtitleItalic`] !== undefined) setSubtitleItalic(config[`${prefix}SubtitleItalic`]);
-                    if (config[`${prefix}TitleWeight`]) setTitleWeight(config[`${prefix}TitleWeight`]);
-                    if (config[`${prefix}SubtitleWeight`]) setSubtitleWeight(config[`${prefix}SubtitleWeight`]);
-                    if (config[`${prefix}TitleSize`]) setTitleSize(config[`${prefix}TitleSize`]);
-                    if (config[`${prefix}SubtitleSize`]) setSubtitleSize(config[`${prefix}SubtitleSize`]);
-                    if (config[`${prefix}OverlayOpacity`] !== undefined) setOverlayOpacity(config[`${prefix}OverlayOpacity`]);
-                    if (config[`${prefix}Height`]) setHeight(config[`${prefix}Height`]);
-                    if (config[`${prefix}BannerFit`]) setBannerFit(config[`${prefix}BannerFit`]);
-                }
 
                 if (words.length > 0) {
                     const sorted = [...words].sort((a, b) => new Date(b.date) - new Date(a.date));
-                    // The user registered 5 items per week and deletes old ones.
-                    // We increase this limit slightly to ensure all current week items are captured.
                     const displayList = sorted.slice(0, 10);
                     setDailyWords(displayList);
 
-                    // Use local date components to match user's device time (fixes UTC/KST/PST offset issues)
                     const d = new Date();
                     const year = d.getFullYear();
                     const month = String(d.getMonth() + 1).padStart(2, '0');
                     const day = String(d.getDate()).padStart(2, '0');
                     const todayStr = `${year}-${month}-${day}`;
 
-                    // Find word exactly for today to support scheduling
                     const todayWord = sorted.find(w => w.date === todayStr);
 
-                    // User Request: If it's Sunday (0) and no word for today, look for tomorrow (Monday)
                     let displayWord = todayWord;
                     if (!displayWord && d.getDay() === 0) {
                         const tomorrow = new Date(d);
@@ -89,10 +72,7 @@ const DailyWord = () => {
                         displayWord = sorted.find(w => w.date === tomStr);
                     }
 
-                    // If no word for today or tomorrow (e.g. general fallback), find the last available past word
-                    // Important: Always fallback to the most recent word (sorted[0]) if no match is found
                     const lastWord = sorted.find(w => w.date < todayStr) || sorted[0];
-
                     setLatestWord(displayWord || lastWord);
 
                     const grouped = {};

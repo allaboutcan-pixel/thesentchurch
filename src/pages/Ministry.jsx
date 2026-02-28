@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import MinistryNav from '../components/MinistryNav';
 import { dbService } from '../services/dbService';
 import churchData from '../data/church_data.json';
@@ -8,27 +8,55 @@ import { useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 
+import { useSiteConfigValue } from '../context/SiteConfigContext';
+
 const Ministry = () => {
     const { t, i18n } = useTranslation();
+    const { config, loading } = useSiteConfigValue();
     const location = useLocation();
-    const [headerBanner, setHeaderBanner] = useState("/images/ministry_banner.jpg");
-    const [title, setTitle] = useState("");
-    const [subtitle, setSubtitle] = useState("");
-    const [titleFont, setTitleFont] = useState("font-sans");
-    const [subtitleFont, setSubtitleFont] = useState("font-sans");
-    const [titleColor, setTitleColor] = useState("#ffffff");
-    const [subtitleColor, setSubtitleColor] = useState("#ffffff");
-    const [titleItalic, setTitleItalic] = useState(false);
-    const [subtitleItalic, setSubtitleItalic] = useState(true);
-    const [titleWeight, setTitleWeight] = useState("font-bold");
-    const [subtitleWeight, setSubtitleWeight] = useState("font-medium");
-    const [titleSize, setTitleSize] = useState(48);
-    const [subtitleSize, setSubtitleSize] = useState(18);
-    const [overlayOpacity, setOverlayOpacity] = useState(40);
-    const [height, setHeight] = useState("medium");
-    const [bannerFit, setBannerFit] = useState("cover");
-    const [ministryList, setMinistryList] = useState([]);
-    const [siteConfig, setSiteConfig] = useState(null);
+
+    // Derived values from global config
+    const headerBanner = config.ministryBanner || "/images/ministry_banner.jpg";
+    const height = config.ministryHeight || "medium";
+    const bannerFit = config.ministryBannerFit || "cover";
+    const overlayOpacity = config.ministryOverlayOpacity !== undefined ? config.ministryOverlayOpacity : 40;
+
+    const isEn = i18n.language === 'en' || i18n.language.startsWith('en-');
+    const title = isEn && config.ministryTitleEn ? config.ministryTitleEn : (config.ministryTitle || "");
+    const subtitle = isEn && config.ministrySubtitleEn ? config.ministrySubtitleEn : (config.ministrySubtitle || "");
+
+    const titleFont = config.ministryTitleFont || "font-sans";
+    const subtitleFont = config.ministrySubtitleFont || "font-sans";
+    const titleColor = config.ministryTitleColor || "#ffffff";
+    const subtitleColor = config.ministrySubtitleColor || "#ffffff";
+    const titleItalic = config.ministryTitleItalic !== undefined ? config.ministryTitleItalic : false;
+    const subtitleItalic = config.ministrySubtitleItalic !== undefined ? config.ministrySubtitleItalic : true;
+    const titleWeight = config.ministryTitleWeight || "font-bold";
+    const subtitleWeight = config.ministrySubtitleWeight || "font-medium";
+    const titleSize = config.ministryTitleSize || 48;
+    const subtitleSize = config.ministrySubtitleSize || 18;
+
+    const siteConfig = config; // Keep naming for compatibility in JSX
+
+    // Helper to filter items based on path
+    const getFilteredItems = (items) => {
+        const currentPath = location.pathname.split('/').pop();
+        if (currentPath === 'ministry') {
+            return items.filter(m => ['tsc', 'tsy'].includes(m.id));
+        } else if (currentPath === 'mission') {
+            return items.filter(m => m.id === 'mission_evangelism');
+        }
+        return items;
+    };
+
+    const currentItems = config.ministryItems || churchData.ministries;
+    const ministryList = getFilteredItems(currentItems.map(m => ({
+        ...m,
+        name: i18n.language === 'en' && m.nameEn ? m.nameEn : m.name,
+        target: i18n.language === 'en' && m.targetEn ? m.targetEn : m.target,
+        description: i18n.language === 'en' && m.descriptionEn ? m.descriptionEn : m.description,
+        detail: i18n.language === 'en' && m.detailEn ? m.detailEn : m.detail
+    })));
 
     const formatDetail = (text) => {
         if (!text) return null;
@@ -58,12 +86,9 @@ const Ministry = () => {
         );
     };
 
-
     useEffect(() => {
         // Scroll to section based on URL path (e.g. /ministry/tsc)
-        const path = location.pathname.split('/').pop(); // Get last segment 'tsc', 'tsy', 'tee', 'team'
-
-        // Map of URL paths to section IDs
+        const path = location.pathname.split('/').pop();
         const pathMap = {
             'ministry': 'nextgen',
             'tee': 'tee',
@@ -71,11 +96,9 @@ const Ministry = () => {
             'mission': 'mission_evangelism',
             'prayer': 'prayer'
         };
-
         const targetId = pathMap[path] || 'nextgen';
 
         if (path && (path === 'tsc' || path === 'tsy' || path === 'mission' || path === 'tee' || path === 'team')) {
-            // Slight delay to ensure DOM is ready
             setTimeout(() => {
                 const element = document.getElementById(targetId);
                 if (element) {
@@ -85,73 +108,13 @@ const Ministry = () => {
         }
     }, [location.pathname]);
 
-    useEffect(() => {
-        // Helper to filter items based on path
-        const getFilteredItems = (items) => {
-            const currentPath = location.pathname.split('/').pop();
-            if (currentPath === 'ministry') {
-                return items.filter(m => ['tsc', 'tsy'].includes(m.id));
-            } else if (currentPath === 'mission') {
-                return items.filter(m => m.id === 'mission_evangelism');
-            }
-            return items;
-        };
-
-        let isMounted = true;
-        const fetchBanner = async () => {
-            const config = await dbService.getSiteConfig();
-            if (!isMounted) return;
-
-            if (config) {
-                if (isMounted) setSiteConfig(config);
-                if (config.ministryBanner) setHeaderBanner(config.ministryBanner);
-
-                // Multi-language banner content
-                const isEn = i18n.language === 'en' || i18n.language.startsWith('en-');
-                const titleVal = isEn && config.ministryTitleEn ? config.ministryTitleEn : (!isEn ? config.ministryTitle : null);
-                const subtitleVal = isEn && config.ministrySubtitleEn ? config.ministrySubtitleEn : (!isEn ? config.ministrySubtitle : null);
-
-                setTitle(titleVal || "");
-                setSubtitle(subtitleVal || "");
-
-                if (config.ministryTitleFont) setTitleFont(config.ministryTitleFont);
-                if (config.ministrySubtitleFont) setSubtitleFont(config.ministrySubtitleFont);
-                if (config.ministryTitleColor) setTitleColor(config.ministryTitleColor);
-                if (config.ministrySubtitleColor) setSubtitleColor(config.ministrySubtitleColor);
-                if (config.ministryTitleItalic !== undefined) setTitleItalic(config.ministryTitleItalic);
-                if (config.ministrySubtitleItalic !== undefined) setSubtitleItalic(config.ministrySubtitleItalic);
-                if (config.ministryTitleWeight) setTitleWeight(config.ministryTitleWeight);
-                if (config.ministrySubtitleWeight) setSubtitleWeight(config.ministrySubtitleWeight);
-                if (config.ministryTitleSize) setTitleSize(config.ministryTitleSize);
-                if (config.ministrySubtitleSize) setSubtitleSize(config.ministrySubtitleSize);
-                if (config.ministryOverlayOpacity !== undefined) setOverlayOpacity(config.ministryOverlayOpacity);
-                if (config.ministryHeight) setHeight(config.ministryHeight);
-                if (config.ministryBannerFit) setBannerFit(config.ministryBannerFit);
-
-                const currentItems = config.ministryItems || churchData.ministries;
-                const localizedItems = currentItems.map(m => ({
-                    ...m,
-                    name: i18n.language === 'en' && m.nameEn ? m.nameEn : m.name,
-                    target: i18n.language === 'en' && m.targetEn ? m.targetEn : m.target,
-                    description: i18n.language === 'en' && m.descriptionEn ? m.descriptionEn : m.description,
-                    detail: i18n.language === 'en' && m.detailEn ? m.detailEn : m.detail
-                }));
-                setMinistryList(getFilteredItems(localizedItems));
-            } else {
-                // Fallback if no config
-                const localizedItems = churchData.ministries.map(m => ({
-                    ...m,
-                    name: i18n.language === 'en' && m.nameEn ? m.nameEn : m.name,
-                    target: i18n.language === 'en' && m.targetEn ? m.targetEn : m.target,
-                    description: i18n.language === 'en' && m.descriptionEn ? m.descriptionEn : m.description,
-                    detail: i18n.language === 'en' && m.detailEn ? m.detailEn : m.detail
-                }));
-                setMinistryList(getFilteredItems(localizedItems));
-            }
-        };
-        fetchBanner();
-        return () => { isMounted = false; };
-    }, [i18n.language, location.pathname]);
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-slate-50">
+                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[#efebe9]">

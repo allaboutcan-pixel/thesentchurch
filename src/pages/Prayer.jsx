@@ -9,9 +9,17 @@ import clsx from 'clsx';
 
 const Prayer = () => {
     const { t, i18n } = useTranslation();
-    const { config: siteConfig } = useSiteConfig();
+    const { config: siteConfig, loading } = useSiteConfig();
     // eslint-disable-next-line no-unused-vars
     const type = 'prayer';
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-slate-50">
+                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
     // Form State
     const [isModalOpen, setIsModalOpen] = useState(false);
