@@ -242,14 +242,16 @@ const BibleStudy = () => {
                         {t('bible.theo_diff_title')}
                     </h2>
                     <div className="space-y-8 text-slate-600 leading-loose text-base md:text-lg font-medium break-keep">
-                        <p>
-                            <p dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text1') }} />
-                        </p>
+                        <div className="md:hidden" dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text1_mobile') || t('bible.theo_diff_text1') }} />
+                        <div className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text1') }} />
+
                         <div className="w-full h-px bg-slate-200 my-8"></div>
-                        <p className="text-slate-600 leading-relaxed mb-6" dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text2') }} />
-                        <p>
-                            <p dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text3') }} />
-                        </p>
+
+                        <div className="md:hidden" dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text2_mobile') || t('bible.theo_diff_text2') }} />
+                        <div className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text2') }} />
+
+                        <div className="md:hidden" dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text3_mobile') || t('bible.theo_diff_text3') }} />
+                        <div className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text3') }} />
                     </div>
                 </div>
             </section>
