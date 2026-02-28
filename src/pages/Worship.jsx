@@ -260,11 +260,8 @@ const Worship = () => {
                                 </div>
 
                                 <div className="space-y-6">
-                                    <div className="flex flex-col items-center gap-4 border-b border-gray-100 pb-8">
-                                        <span className="text-gray-500 font-bold text-lg md:text-xl text-center uppercase tracking-wider">
-                                            {i18n.language === 'en' ? 'Schedule' : '일정 (Schedule)'}
-                                        </span>
-                                        <span className="text-gray-600 font-medium text-lg md:text-xl whitespace-pre-line text-center leading-relaxed max-w-lg">
+                                    <div className="flex flex-col items-center gap-4 border-b border-gray-100 pb-8 uppercase">
+                                        <span className="text-primary font-black text-lg md:text-xl whitespace-pre-line text-center leading-relaxed max-w-lg">
                                             {i18n.language === 'en' && (specialServices?.dawn?.scheduleEn || siteConfig?.specialServices?.dawn?.scheduleEn)
                                                 ? (specialServices?.dawn?.scheduleEn || siteConfig?.specialServices?.dawn?.scheduleEn).split('\n').map(line => line.trim()).join('\n')
                                                 : t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim())}

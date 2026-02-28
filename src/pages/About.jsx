@@ -617,11 +617,8 @@ const About = () => {
                                 </div>
 
                                 <div className="space-y-4">
-                                    <div className="flex flex-col items-center gap-2 border-b border-gray-100 pb-4">
-                                        <span className="text-gray-500 font-bold text-lg md:text-xl text-center uppercase tracking-wider">
-                                            {i18n.language === 'en' ? 'Schedule' : '일정 (Schedule)'}
-                                        </span>
-                                        <span className="text-gray-600 font-medium text-sm md:text-base whitespace-pre-line text-center leading-relaxed max-w-lg">
+                                    <div className="flex flex-col items-center gap-2 border-b border-gray-100 pb-4 uppercase">
+                                        <span className="text-primary font-black text-sm md:text-base whitespace-pre-line text-center leading-relaxed max-w-lg">
                                             {i18n.language === 'en' && (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
                                                 ? (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn).split('\n').map(line => line.trim()).join('\n')
                                                 : t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim())}
