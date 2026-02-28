@@ -475,7 +475,7 @@ const resources = {
                 "hero_subtitle": "The Church of the Sent",
                 "btn_worship": "Worship Info",
                 "btn_sermons": "Sunday Service",
-                "btn_location": "Find Us",
+                "btn_location": "Location",
                 "quick_sermon": "Latest Sermon",
                 "quick_bulletin": "Weekly Bulletin",
                 "quick_location": "Location",
@@ -683,7 +683,7 @@ const resources = {
                 "banner_subtitle": "Sharing the Word and Grace"
             },
             "location": {
-                "title": "Find Us",
+                "title": "Location",
                 "subtitle": "Information on how to visit The Church of the Sent.",
                 "address_label": "Church Address",
                 "contact_label": "Contact Us",
