@@ -87,7 +87,7 @@ const DailyWord = () => {
                     if (displayList.length > 0) {
                         const [year, month] = safeSplitDate(displayList[0].date);
                         setSelectedYear(year);
-                        setSelectedMonth(parseInt(month, 10).toString());
+                        setSelectedMonth(month);
                     }
                 }
             } catch (error) {
