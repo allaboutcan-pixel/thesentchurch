@@ -22,13 +22,18 @@ export const safeSplitDate = (dateStr) => {
     if (parts.length < 3) {
         // Handle cases like "2024-03" or just "2024"
         const now = new Date();
-        const year = parts[0] || now.getFullYear().toString();
-        const month = parts[1] || (now.getMonth() + 1).toString().padStart(2, '0');
-        const day = parts[2] || "01";
+        const year = parts[0] ? parts[0].toString() : now.getFullYear().toString();
+        const month = parts[1] ? parts[1].toString().padStart(2, '0') : (now.getMonth() + 1).toString().padStart(2, '0');
+        const day = parts[2] ? parts[2].toString().padStart(2, '0') : "01";
         return [year, month, day];
     }
 
-    return parts;
+    // Ensure padding even if dateStr was poorly formatted like "2024-3-1"
+    return [
+        parts[0].toString(),
+        parts[1].toString().padStart(2, '0'),
+        parts[2].toString().padStart(2, '0')
+    ];
 };
 
 /**
