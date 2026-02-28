@@ -188,7 +188,7 @@ const BibleStudy = () => {
                             </h2>
                         </div>
 
-                        <div className={clsx("text-base md:text-base text-slate-500 word-keep break-keep font-medium max-w-2xl mx-auto", isEnglish ? "leading-[2.2] md:leading-[4.5]" : "leading-[3.5]")}>
+                        <div className={clsx("text-base md:text-xl text-slate-500 word-keep break-keep font-medium max-w-2xl mx-auto", isEnglish ? "leading-[2.2] md:leading-[2.5]" : "leading-[3.5]")}>
                             <p dangerouslySetInnerHTML={{ __html: t('bible.intro_desc') }} />
                         </div>
 
@@ -232,7 +232,7 @@ const BibleStudy = () => {
                         </div>
                         {t('bible.theo_diff_title')}
                     </h2>
-                    <div className="space-y-8 text-slate-600 leading-loose text-lg font-medium break-keep">
+                    <div className="space-y-8 text-slate-600 leading-loose text-base md:text-lg font-medium break-keep">
                         <p>
                             <p dangerouslySetInnerHTML={{ __html: t('bible.theo_diff_text1') }} />
                         </p>
