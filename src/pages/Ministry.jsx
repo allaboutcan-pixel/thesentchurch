@@ -247,26 +247,37 @@ const Ministry = () => {
 
                     {/* Description Section */}
                     {i18n.language === 'en' ? (
-                        t('ministry.sunday_school_description') && (
+                        (siteConfig?.sundaySchoolDescriptionEn || t('ministry.sunday_school_description')) && (
                             <p
                                 className="text-lg md:text-xl text-gray-600 font-medium leading-[2] break-keep whitespace-pre-line mb-8"
-                                dangerouslySetInnerHTML={{ __html: t('ministry.sunday_school_description') }}
+                                dangerouslySetInnerHTML={{ __html: siteConfig?.sundaySchoolDescriptionEn || t('ministry.sunday_school_description') }}
                             />
                         )
                     ) : (
                         <>
                             {/* Desktop Korean Description */}
                             <p className="hidden md:block text-lg md:text-xl text-gray-600 font-medium leading-[1.8] break-keep whitespace-pre-line mb-8">
-                                {t('ministry.sunday_school_description')}
+                                {siteConfig?.sundaySchoolDescription || t('ministry.sunday_school_description')}
                             </p>
                             {/* Mobile Korean Description (with requested line breaks) */}
                             <p
                                 className="block md:hidden text-lg text-gray-600 font-medium leading-[2] mb-8"
-                                dangerouslySetInnerHTML={{ __html: t('ministry.sunday_school_desc_mobile') }}
+                                dangerouslySetInnerHTML={{
+                                    __html: siteConfig?.sundaySchoolDescription
+                                        ? siteConfig.sundaySchoolDescription.replace(/\n/g, '<br/>')
+                                        : t('ministry.sunday_school_desc_mobile')
+                                }}
                             />
                         </>
                     )}
-
+                    <p
+                        className="text-base md:text-lg text-gray-500 font-medium italic leading-[2] break-keep whitespace-pre-line"
+                        dangerouslySetInnerHTML={{
+                            __html: i18n.language === 'en'
+                                ? t('ministry.sunday_school_subtitle')
+                                : (window.innerWidth < 768 ? `"${t('ministry.sunday_school_subtitle_mobile') || t('ministry.sunday_school_subtitle')}"` : `"${siteConfig?.sundaySchoolSubtitle || t('ministry.sunday_school_subtitle')}"`)
+                        }}
+                    />
                 </div>
             </div>
 

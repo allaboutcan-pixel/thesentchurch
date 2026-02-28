@@ -626,6 +626,8 @@ const Admin = () => {
                     sundaySchoolTitleEn: fbConfig.sundaySchoolTitleEn || '',
                     sundaySchoolSubtitle: fbConfig.sundaySchoolSubtitle || '',
                     sundaySchoolSubtitleEn: fbConfig.sundaySchoolSubtitleEn || '',
+                    sundaySchoolDescription: fbConfig.sundaySchoolDescription || '',
+                    sundaySchoolDescriptionEn: fbConfig.sundaySchoolDescriptionEn || '',
 
                     resourcesBanner: fbConfig.resourcesBanner || '',
                     resourcesTitle: fbConfig.resourcesTitle || '',
@@ -1331,7 +1333,8 @@ const Admin = () => {
                     title: '', titleEn: '', date: '', preacher: '', preacherEn: '', youtubeId: '', fileUrl: '', fileUrl2: '', type: 'image',
                     staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', thumbnailUrl: '',
                     note: '', eventType: 'default',
-                    startDate: '', endDate: '', staffEnglishName: '', staffEnglishRole: '', staffHistoryEn: ''
+                    startDate: '', endDate: '', staffEnglishName: '', staffEnglishRole: '', staffHistoryEn: '',
+                    sundaySchoolDescription: '', sundaySchoolDescriptionEn: ''
                 });
             }
             alert('성공적으로 저장되었습니다!');
@@ -3232,9 +3235,24 @@ const Admin = () => {
                                         </div>
                                         <div className="space-y-4">
                                             <div className="space-y-2">
-                                                <label className="text-sm font-bold text-gray-600 ml-1">주일학교 상세 설명 (Korean)</label>
+                                                <label className="text-sm font-bold text-gray-600 ml-1">주일학교 상세 설명 (Main Description - Korean)</label>
                                                 <textarea
                                                     className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium h-32 resize-none"
+                                                    placeholder="우리 Sunday School은 아이들이 말씀 안에서..."
+                                                    value={formData.sundaySchoolDescription || ''}
+                                                    onChange={(e) => {
+                                                        const val = e.target.value;
+                                                        setFormData(prev => ({ ...prev, sundaySchoolDescription: val }));
+                                                        setSiteConfig(prev => ({ ...prev, sundaySchoolDescription: val }));
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-gray-600 ml-1">주일학교 말씀/소제목 (Verse/Subtitle - Korean)</label>
+                                                <input
+                                                    type="text"
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium"
+                                                    placeholder="마땅히 행할 길을 아이에게 가르치라... (잠 22:6)"
                                                     value={formData.sundaySchoolSubtitle || ''}
                                                     onChange={(e) => {
                                                         const val = e.target.value;
@@ -3244,10 +3262,24 @@ const Admin = () => {
                                                 />
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="text-sm font-bold text-blue-500 ml-1">Sunday School Subtitle (English)</label>
+                                                <label className="text-sm font-bold text-blue-500 ml-1">Sunday School Description (English)</label>
                                                 <textarea
                                                     className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium h-32 resize-none text-blue-600"
                                                     placeholder="Enter English description..."
+                                                    value={formData.sundaySchoolDescriptionEn || ''}
+                                                    onChange={(e) => {
+                                                        const val = e.target.value;
+                                                        setFormData(prev => ({ ...prev, sundaySchoolDescriptionEn: val }));
+                                                        setSiteConfig(prev => ({ ...prev, sundaySchoolDescriptionEn: val }));
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <label className="text-sm font-bold text-blue-500 ml-1">Sunday School Subtitle (English)</label>
+                                                <input
+                                                    type="text"
+                                                    className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium text-blue-600"
+                                                    placeholder="Train up a child... (Proverbs 22:6)"
                                                     value={formData.sundaySchoolSubtitleEn || ''}
                                                     onChange={(e) => {
                                                         const val = e.target.value;
