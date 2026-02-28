@@ -79,7 +79,11 @@ const Header = () => {
                                 )}
                             >
                                 <span className="leading-tight flex items-center gap-1">
-                                    {t(`nav.${item.id}`)}
+                                    {(i18n.language === 'en' && item.id === 'guide' && config?.aboutTitleEn)
+                                        ? config.aboutTitleEn
+                                        : (i18n.language === 'en' && (item.id === 'prayer' || item.path === '/ministry/prayer') && config?.prayerTitleEn)
+                                            ? config.prayerTitleEn
+                                            : t(`nav.${item.id}`)}
                                     {item.subItems && (
                                         <ChevronDown size={10} className="group-hover/menu:rotate-180 transition-transform" />
                                     )}
@@ -99,9 +103,11 @@ const Header = () => {
                                                 to={sub.path}
                                                 className="block px-5 py-3 text-sm text-gray-600 hover:bg-primary/5 hover:text-primary transition-colors border-b border-gray-50 last:border-0"
                                             >
-                                                {(i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn && !config.prayerTitleEn.toLowerCase().includes("built on prayer"))
-                                                    ? config.prayerTitleEn
-                                                    : t(`nav.${sub.id || sub.path.split('/').pop()}`)}
+                                                {(i18n.language === 'en' && sub.id === 'pastor')
+                                                    ? "About the Pastor"
+                                                    : (i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn && !config.prayerTitleEn.toLowerCase().includes("built on prayer"))
+                                                        ? config.prayerTitleEn
+                                                        : t(`nav.${sub.id || sub.path.split('/').pop()}`)}
                                             </Link>
                                         ))}
                                     </div>
@@ -176,9 +182,11 @@ const Header = () => {
                                         }}
                                     >
                                         <span className="text-sm">
-                                            {(i18n.language === 'en' && (item.id === 'prayer' || item.path === '/ministry/prayer') && config?.prayerTitleEn)
-                                                ? config.prayerTitleEn
-                                                : t(`nav.${item.id}`)}
+                                            {(i18n.language === 'en' && item.id === 'guide' && config?.aboutTitleEn)
+                                                ? config.aboutTitleEn
+                                                : (i18n.language === 'en' && (item.id === 'prayer' || item.path === '/ministry/prayer') && config?.prayerTitleEn)
+                                                    ? config.prayerTitleEn
+                                                    : t(`nav.${item.id}`)}
                                         </span>
                                     </Link>
 
@@ -207,9 +215,11 @@ const Header = () => {
                                                     className="block px-10 py-3 text-sm text-gray-500 hover:text-primary"
                                                     onClick={() => setIsOpen(false)}
                                                 >
-                                                    • {(i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn && !config.prayerTitleEn.toLowerCase().includes("built on prayer"))
-                                                        ? config.prayerTitleEn
-                                                        : t(`nav.${sub.id || sub.path.split('/').pop()}`)}
+                                                    • {(i18n.language === 'en' && sub.id === 'pastor')
+                                                        ? "About the Pastor"
+                                                        : (i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn && !config.prayerTitleEn.toLowerCase().includes("built on prayer"))
+                                                            ? config.prayerTitleEn
+                                                            : t(`nav.${sub.id || sub.path.split('/').pop()}`)}
                                                 </Link>
                                             ))}
                                         </div>

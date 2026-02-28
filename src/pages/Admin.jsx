@@ -798,6 +798,16 @@ const Admin = () => {
                     prayerPastorTopicsEn: fbConfig.prayerPastorTopicsEn || '',
                     prayerChurchTopicsEn: fbConfig.prayerChurchTopicsEn || '',
                     prayerChurchTopics2026En: fbConfig.prayerChurchTopics2026En || '',
+
+                    // Pastor fields
+                    pastorName: fbConfig.pastor?.name || '',
+                    pastorNameEn: fbConfig.pastor?.nameEn || '',
+                    pastorRole: fbConfig.pastor?.role || '',
+                    pastorRoleEn: fbConfig.pastor?.roleEn || '',
+                    pastorGreeting: fbConfig.pastor?.greeting || '',
+                    pastorGreetingEn: fbConfig.pastor?.greetingEn || '',
+                    pastorHistory: Array.isArray(fbConfig.pastor?.history) ? fbConfig.pastor.history.join('\n') : (fbConfig.pastor?.history || ''),
+                    pastorHistoryEn: Array.isArray(fbConfig.pastor?.historyEn) ? fbConfig.pastor.historyEn.join('\n') : (fbConfig.pastor?.historyEn || ''),
                     prayerCommonTopicsEn: fbConfig.prayerCommonTopicsEn || '',
                 }));
                 setColumns(fbColumns || []);
@@ -1202,7 +1212,7 @@ const Admin = () => {
                 const mediaFields = [
                     'heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner',
                     'missionBanner', 'prayerBanner', 'teeBanner', 'bibleBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage',
-                    'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image'
+                    'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image', 'pastorImage'
                 ];
 
                 for (const fieldName of mediaFields) {
@@ -4155,7 +4165,11 @@ const Admin = () => {
                                             className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
                                             placeholder="기본값: 교회 소개"
                                             value={siteConfig.aboutTitle ?? ''}
-                                            onChange={(e) => setSiteConfig({ ...siteConfig, aboutTitle: e.target.value })}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setSiteConfig({ ...siteConfig, aboutTitle: val });
+                                                setFormData(prev => ({ ...prev, aboutTitle: val }));
+                                            }}
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -4165,7 +4179,11 @@ const Admin = () => {
                                             className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
                                             placeholder="기본값: 사도행전 16장 31절..."
                                             value={siteConfig.aboutSubtitle ?? ''}
-                                            onChange={(e) => setSiteConfig({ ...siteConfig, aboutSubtitle: e.target.value })}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setSiteConfig({ ...siteConfig, aboutSubtitle: val });
+                                                setFormData(prev => ({ ...prev, aboutSubtitle: val }));
+                                            }}
                                         />
                                     </div>
                                     {/* English Titles for Intro */}
@@ -4176,7 +4194,11 @@ const Admin = () => {
                                             className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
                                             placeholder="Default: About Us"
                                             value={siteConfig.aboutTitleEn ?? ''}
-                                            onChange={(e) => setSiteConfig({ ...siteConfig, aboutTitleEn: e.target.value })}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setSiteConfig({ ...siteConfig, aboutTitleEn: val });
+                                                setFormData(prev => ({ ...prev, aboutTitleEn: val }));
+                                            }}
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -4186,7 +4208,11 @@ const Admin = () => {
                                             className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
                                             placeholder="Default: Acts 16:31..."
                                             value={siteConfig.aboutSubtitleEn ?? ''}
-                                            onChange={(e) => setSiteConfig({ ...siteConfig, aboutSubtitleEn: e.target.value })}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setSiteConfig({ ...siteConfig, aboutSubtitleEn: val });
+                                                setFormData(prev => ({ ...prev, aboutSubtitleEn: val }));
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -4199,11 +4225,15 @@ const Admin = () => {
                                         <input
                                             type="text"
                                             className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                            value={siteConfig.pastor?.name || ''}
-                                            onChange={(e) => setSiteConfig({
-                                                ...siteConfig,
-                                                pastor: { ...siteConfig.pastor, name: e.target.value }
-                                            })}
+                                            value={formData.pastorName || ''}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, pastorName: val }));
+                                                setSiteConfig(prev => ({
+                                                    ...prev,
+                                                    pastor: { ...prev.pastor, name: val }
+                                                }));
+                                            }}
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -4211,11 +4241,15 @@ const Admin = () => {
                                         <input
                                             type="text"
                                             className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                            value={siteConfig.pastor?.nameEn || ''}
-                                            onChange={(e) => setSiteConfig({
-                                                ...siteConfig,
-                                                pastor: { ...siteConfig.pastor, nameEn: e.target.value }
-                                            })}
+                                            value={formData.pastorNameEn || ''}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, pastorNameEn: val }));
+                                                setSiteConfig(prev => ({
+                                                    ...prev,
+                                                    pastor: { ...prev.pastor, nameEn: val }
+                                                }));
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -4225,11 +4259,15 @@ const Admin = () => {
                                         <input
                                             type="text"
                                             className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                            value={siteConfig.pastor?.role || ''}
-                                            onChange={(e) => setSiteConfig({
-                                                ...siteConfig,
-                                                pastor: { ...siteConfig.pastor, role: e.target.value }
-                                            })}
+                                            value={formData.pastorRole || ''}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, pastorRole: val }));
+                                                setSiteConfig(prev => ({
+                                                    ...prev,
+                                                    pastor: { ...prev.pastor, role: val }
+                                                }));
+                                            }}
                                         />
                                     </div>
                                     <div className="space-y-2">
@@ -4237,11 +4275,15 @@ const Admin = () => {
                                         <input
                                             type="text"
                                             className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                            value={siteConfig.pastor?.roleEn || ''}
-                                            onChange={(e) => setSiteConfig({
-                                                ...siteConfig,
-                                                pastor: { ...siteConfig.pastor, roleEn: e.target.value }
-                                            })}
+                                            value={formData.pastorRoleEn || ''}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, pastorRoleEn: val }));
+                                                setSiteConfig(prev => ({
+                                                    ...prev,
+                                                    pastor: { ...prev.pastor, roleEn: val }
+                                                }));
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -4249,25 +4291,33 @@ const Admin = () => {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-500 ml-1">인사말 내용 (Korean Greeting)</label>
+                                    <label className="text-sm font-bold text-gray-600 ml-1">인사말 (Korean Greeting)</label>
                                     <textarea
                                         className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-48"
-                                        value={siteConfig.pastor?.greeting || ''}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            pastor: { ...siteConfig.pastor, greeting: e.target.value }
-                                        })}
+                                        value={formData.pastorGreeting || ''}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            setFormData(prev => ({ ...prev, pastorGreeting: val }));
+                                            setSiteConfig(prev => ({
+                                                ...prev,
+                                                pastor: { ...prev.pastor, greeting: val }
+                                            }));
+                                        }}
                                     />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-bold text-blue-500 ml-1">English Greeting</label>
                                     <textarea
                                         className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-48"
-                                        value={siteConfig.pastor?.greetingEn || ''}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            pastor: { ...siteConfig.pastor, greetingEn: e.target.value }
-                                        })}
+                                        value={formData.pastorGreetingEn || ''}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            setFormData(prev => ({ ...prev, pastorGreetingEn: val }));
+                                            setSiteConfig(prev => ({
+                                                ...prev,
+                                                pastor: { ...prev.pastor, greetingEn: val }
+                                            }));
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -4278,23 +4328,33 @@ const Admin = () => {
                                     <textarea
                                         className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-32"
                                         placeholder="서울신학대학교 졸업&#13;&#10;기둥교회 부목사"
-                                        value={Array.isArray(siteConfig.pastor?.history) ? siteConfig.pastor.history.join('\n') : (siteConfig.pastor?.history || '')}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            pastor: { ...siteConfig.pastor, history: e.target.value.split('\n').filter(line => line.trim() !== '') }
-                                        })}
+                                        value={formData.pastorHistory || ''}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            const historyArray = val.split('\n').filter(line => line.trim() !== '');
+                                            setFormData(prev => ({ ...prev, pastorHistory: val }));
+                                            setSiteConfig(prev => ({
+                                                ...prev,
+                                                pastor: { ...prev.pastor, history: historyArray }
+                                            }));
+                                        }}
                                     />
                                 </div>
                                 <div className="space-y-2">
                                     <label className="text-sm font-bold text-blue-500 ml-1">English Biography - New lines for bullets</label>
                                     <textarea
                                         className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none h-32"
-                                        placeholder="Graduate of Seoul Theological University&#13;&#10;Assistant Pastor at Pillar Church"
-                                        value={Array.isArray(siteConfig.pastor?.historyEn) ? siteConfig.pastor.historyEn.join('\n') : (siteConfig.pastor?.historyEn || '')}
-                                        onChange={(e) => setSiteConfig({
-                                            ...siteConfig,
-                                            pastor: { ...siteConfig.pastor, historyEn: e.target.value.split('\n').filter(line => line.trim() !== '') }
-                                        })}
+                                        placeholder="Graduated from Seoul Theological University&#13;&#10;Associate Pastor at Pillar Church"
+                                        value={formData.pastorHistoryEn || ''}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            const historyArray = val.split('\n').filter(line => line.trim() !== '');
+                                            setFormData(prev => ({ ...prev, pastorHistoryEn: val }));
+                                            setSiteConfig(prev => ({
+                                                ...prev,
+                                                pastor: { ...prev.pastor, historyEn: historyArray }
+                                            }));
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -4308,7 +4368,11 @@ const Admin = () => {
                                         className="w-full p-4 bg-white border border-emerald-100 rounded-2xl focus:ring-2 focus:ring-emerald-500/10 outline-none h-32 resize-none"
                                         placeholder="예: 대한예수교복음교회(KEC)&#13;&#10;세계복음연맹(WEA) 정회원"
                                         value={siteConfig.aboutAffiliatedOrgs || ''}
-                                        onChange={(e) => setSiteConfig({ ...siteConfig, aboutAffiliatedOrgs: e.target.value })}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            setSiteConfig({ ...siteConfig, aboutAffiliatedOrgs: val });
+                                            setFormData(prev => ({ ...prev, aboutAffiliatedOrgs: val }));
+                                        }}
                                     />
                                 </div>
                                 <div className="space-y-4">
@@ -4319,7 +4383,11 @@ const Admin = () => {
                                         className="w-full p-4 bg-white border border-blue-100 rounded-2xl focus:ring-2 focus:ring-blue-500/10 outline-none h-32 resize-none text-blue-600"
                                         placeholder="e.g., Korea Evangelical Church (KEC)&#13;&#10;Member of WEA"
                                         value={siteConfig.aboutAffiliatedOrgsEn || ''}
-                                        onChange={(e) => setSiteConfig({ ...siteConfig, aboutAffiliatedOrgsEn: e.target.value })}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            setSiteConfig({ ...siteConfig, aboutAffiliatedOrgsEn: val });
+                                            setFormData(prev => ({ ...prev, aboutAffiliatedOrgsEn: val }));
+                                        }}
                                     />
                                 </div>
                             </div>
