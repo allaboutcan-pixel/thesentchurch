@@ -185,7 +185,7 @@ const About = () => {
                 <div className="container mx-auto px-4">
                     <div className="max-w-5xl mx-auto">
                         <div className="mb-32 text-center">
-                            <h2 className="text-4xl font-bold text-primary">{t('about.pastor_title')}</h2>
+                            <h2 className={clsx("font-bold text-primary", i18n.language === 'en' ? "text-2xl md:text-3xl" : "text-3xl md:text-4xl")}>{t('about.pastor_title')}</h2>
                             <div className="w-16 h-1.5 bg-accent mt-12 rounded-full mx-auto" />
                         </div>
 
@@ -223,8 +223,8 @@ const About = () => {
 
                                     {/* Pastor History Section (Left Aligned) */}
                                     <div className="mt-40 pt-6 border-t border-gray-100">
-                                        <h4 className="text-sm font-bold text-blue-600 mb-3">
-                                            {i18n.language === 'en' ? 'About the Pastor' : t('about.pastor_history_title')}
+                                        <h4 className={clsx("font-bold text-blue-600 mb-3", i18n.language === 'en' ? "text-[11px] md:text-xs" : "text-sm")}>
+                                            {i18n.language === 'en' ? "Senior Pastor’s Greeting" : t('about.pastor_history_title')}
                                         </h4>
                                         <ul className="space-y-1.5 pl-2">
                                             {(i18n.language === 'en' && pastorInfo.historyEn ?
@@ -357,10 +357,10 @@ const About = () => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Affiliated Organizations Section */}
-            <section id="affiliated_orgs" className="py-32 bg-gray-50 scroll-mt-24">
+            < section id="affiliated_orgs" className="py-32 bg-gray-50 scroll-mt-24" >
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold text-primary">{t('about.affiliated_orgs_title')}</h2>
@@ -446,11 +446,11 @@ const About = () => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
 
             {/* Staff Section */}
-            <section id="staff" className="py-32 scroll-mt-24">
+            < section id="staff" className="py-32 scroll-mt-24" >
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold text-primary">{t('about.staff_title')}</h2>
@@ -499,10 +499,10 @@ const About = () => {
                         ))}
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Worship Guide Section */}
-            <section id="worship" className="py-32 bg-gray-50 scroll-mt-24">
+            < section id="worship" className="py-32 bg-gray-50 scroll-mt-24" >
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold text-primary">{t('worship.title')}</h2>
@@ -646,10 +646,10 @@ const About = () => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Location Section */}
-            <section id="location" className="py-20 scroll-mt-24">
+            < section id="location" className="py-20 scroll-mt-24" >
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl font-bold text-primary">{t('location.title')}</h2>
@@ -750,8 +750,8 @@ const About = () => {
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </section >
+        </div >
     );
 };
 

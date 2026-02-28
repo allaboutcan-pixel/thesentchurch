@@ -101,10 +101,13 @@ const Header = () => {
                                             <Link
                                                 key={idx}
                                                 to={sub.path}
-                                                className="block px-5 py-3 text-sm text-gray-600 hover:bg-primary/5 hover:text-primary transition-colors border-b border-gray-50 last:border-0"
+                                                className={clsx(
+                                                    "block px-5 py-3 text-gray-600 hover:bg-primary/5 hover:text-primary transition-colors border-b border-gray-50 last:border-0",
+                                                    (i18n.language === 'en' && sub.id === 'pastor') ? "text-[12px]" : "text-sm"
+                                                )}
                                             >
                                                 {(i18n.language === 'en' && sub.id === 'pastor')
-                                                    ? "About the Pastor"
+                                                    ? "Senior Pastor’s Greeting"
                                                     : (i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn && !config.prayerTitleEn.toLowerCase().includes("built on prayer"))
                                                         ? config.prayerTitleEn
                                                         : t(`nav.${sub.id || sub.path.split('/').pop()}`)}
@@ -212,11 +215,14 @@ const Header = () => {
                                                 <Link
                                                     key={idx}
                                                     to={sub.path}
-                                                    className="block px-10 py-3 text-sm text-gray-500 hover:text-primary"
+                                                    className={clsx(
+                                                        "block px-10 py-3 text-gray-500 hover:text-primary",
+                                                        (i18n.language === 'en' && sub.id === 'pastor') ? "text-[12px]" : "text-sm"
+                                                    )}
                                                     onClick={() => setIsOpen(false)}
                                                 >
                                                     • {(i18n.language === 'en' && sub.id === 'pastor')
-                                                        ? "About the Pastor"
+                                                        ? "Senior Pastor’s Greeting"
                                                         : (i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn && !config.prayerTitleEn.toLowerCase().includes("built on prayer"))
                                                             ? config.prayerTitleEn
                                                             : t(`nav.${sub.id || sub.path.split('/').pop()}`)}
