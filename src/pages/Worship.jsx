@@ -230,12 +230,14 @@ const Worship = () => {
                                                 "text-5xl font-black tracking-tighter",
                                                 isSpecial ? "text-white" : "text-primary"
                                             )}>{service.time}</span>
-                                            {service.description && (
-                                                <p className={clsx(
-                                                    "mt-4 font-medium leading-relaxed",
-                                                    isSpecial ? "text-white/90" : "text-gray-500"
-                                                )}>{t(service.description?.trim())}</p>
-                                            )}
+                                            <p className={clsx(
+                                                "mt-4 font-medium leading-relaxed",
+                                                isSpecial ? "text-white/90" : "text-gray-500"
+                                            )}>
+                                                {i18n.language === 'en' && service.descriptionEn
+                                                    ? service.descriptionEn
+                                                    : t(service.description?.trim())}
+                                            </p>
                                         </div>
                                         <div className={clsx(
                                             "h-1 w-12 mt-6 group-hover:w-24 transition-all duration-500 rounded-full",
@@ -261,7 +263,7 @@ const Worship = () => {
 
                                 <div className="space-y-6">
                                     <div className="flex flex-col items-center gap-4 border-b border-gray-100 pb-8 uppercase">
-                                        <span className="text-primary font-black text-lg md:text-xl whitespace-pre-line text-center leading-relaxed max-w-lg">
+                                        <span className="text-gray-800 font-bold text-lg md:text-xl whitespace-pre-line text-center leading-relaxed max-w-lg">
                                             {i18n.language === 'en' && (specialServices?.dawn?.scheduleEn || siteConfig?.specialServices?.dawn?.scheduleEn)
                                                 ? (specialServices?.dawn?.scheduleEn || siteConfig?.specialServices?.dawn?.scheduleEn).split('\n').map(line => line.trim()).join('\n')
                                                 : t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim())}
