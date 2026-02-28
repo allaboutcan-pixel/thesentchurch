@@ -201,7 +201,7 @@ const resources = {
             },
 
             "worship": {
-                "title": "예배 안내",
+                "title": "Service Guide",
                 "verse": "\"하나님은 영이시니 예배하는 자가 영과 진리로 예배할지니라\"",
                 "sunday_service": "주일 예배",
                 "dawn_service": "새벽 예배",
@@ -565,7 +565,7 @@ const resources = {
                 "header_verse_fallback": "\"Believe in the Lord Jesus, and you will be saved—you and your household.\" (Acts 16:31)",
             },
             "worship": {
-                "title": "Worship",
+                "title": "Service Guide",
                 "verse": "\"God is spirit, and his worshipers must worship in the Spirit and in truth.\"",
                 "sunday_service": "Sunday Service",
                 "dawn_service": "Dawn Service",

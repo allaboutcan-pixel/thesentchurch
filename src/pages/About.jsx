@@ -242,7 +242,6 @@ const About = () => {
                 <div className="container mx-auto px-4">
                     <div className="max-w-5xl mx-auto">
                         <div className="mb-32 text-center">
-                            <span className="text-accent font-bold tracking-wider text-sm uppercase mb-2 block">{t('about.pastor_label')}</span>
                             <h2 className="text-4xl font-bold text-primary">{t('about.pastor_title')}</h2>
                             <div className="w-16 h-1.5 bg-accent mt-12 rounded-full mx-auto" />
                         </div>
@@ -306,7 +305,6 @@ const About = () => {
             <section id="intro" className="py-32 overflow-hidden scroll-mt-24">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
-                        <span className="text-accent font-bold tracking-wider text-sm uppercase mb-2 block">{t('about.intro_label')}</span>
                         <h2 className="text-3xl font-bold text-primary">{t('about.intro_title')}</h2>
                         <div className="w-16 h-1 bg-accent mx-auto mt-6 rounded-full" />
                     </div>
@@ -422,7 +420,6 @@ const About = () => {
             <section id="affiliated_orgs" className="py-32 bg-gray-50 scroll-mt-24">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
-                        <span className="text-accent font-bold tracking-wider text-sm uppercase mb-2 block">{t('about.affiliated_orgs_label')}</span>
                         <h2 className="text-3xl font-bold text-primary">{t('about.affiliated_orgs_title')}</h2>
                         <div className="w-16 h-1 bg-accent mx-auto mt-6" />
                     </div>
@@ -513,7 +510,6 @@ const About = () => {
             <section id="staff" className="py-32 scroll-mt-24">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
-                        <span className="text-accent font-bold tracking-wider text-sm uppercase mb-2 block">{t('about.staff_label')}</span>
                         <h2 className="text-3xl font-bold text-primary">{t('about.staff_title')}</h2>
                         <div className="w-16 h-1 bg-accent mx-auto mt-6" />
                     </div>
@@ -566,7 +562,6 @@ const About = () => {
             <section id="worship" className="py-32 bg-gray-50 scroll-mt-24">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
-                        <span className="text-accent font-bold tracking-wider text-sm uppercase mb-2 block">WORSHIP</span>
                         <h2 className="text-3xl font-bold text-primary">{t('worship.title')}</h2>
                         <div className="w-16 h-1 bg-accent mx-auto mt-6" />
                         <p className="mt-4 text-gray-500 max-w-2xl mx-auto">{t('worship.verse')}</p>
@@ -712,7 +707,6 @@ const About = () => {
             <section id="location" className="py-20 scroll-mt-24">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
-                        <span className="text-accent font-bold tracking-wider text-sm uppercase mb-2 block">LOCATION</span>
                         <h2 className="text-3xl font-bold text-primary">{t('location.title')}</h2>
                         <div className="w-16 h-1 bg-accent mx-auto mt-6" />
                     </div>
