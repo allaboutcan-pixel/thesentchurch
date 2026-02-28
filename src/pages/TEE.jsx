@@ -143,8 +143,10 @@ const TEE = () => {
                             {t('tee.intro_title')}
                         </h2>
                         <div className="space-y-8 text-sm md:text-lg text-slate-600 leading-[2.5] word-keep break-keep">
-                            <p dangerouslySetInnerHTML={{ __html: t('tee.intro_desc') }} />
-                            <p dangerouslySetInnerHTML={{ __html: t('tee.intro_subdesc') }} />
+                            <p className="md:hidden" dangerouslySetInnerHTML={{ __html: t('tee.intro_desc_mobile') || t('tee.intro_desc') }} />
+                            <p className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('tee.intro_desc') }} />
+                            <p className="md:hidden" dangerouslySetInnerHTML={{ __html: t('tee.intro_subdesc_mobile') || t('tee.intro_subdesc') }} />
+                            <p className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('tee.intro_subdesc') }} />
                         </div>
 
                         {/* Bible Verse Box - Book Design */}
@@ -235,7 +237,8 @@ const TEE = () => {
                                 <h3 className="text-xl font-bold text-slate-800">{t('tee.core_goal_title')}</h3>
                             </div>
                             <div className="text-slate-700 leading-loose text-lg space-y-4">
-                                <p dangerouslySetInnerHTML={{ __html: t('tee.core_goal_desc') }} />
+                                <p className="md:hidden" dangerouslySetInnerHTML={{ __html: t('tee.core_goal_desc_mobile') || t('tee.core_goal_desc') }} />
+                                <p className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('tee.core_goal_desc') }} />
                             </div>
                         </motion.div>
                     </div>

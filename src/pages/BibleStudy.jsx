@@ -197,7 +197,8 @@ const BibleStudy = () => {
                         </div>
 
                         <div className={clsx("text-base md:text-xl text-slate-500 word-keep break-keep font-medium max-w-2xl mx-auto", isEnglish ? "leading-[2.2] md:leading-[2.5]" : "leading-[3.5]")}>
-                            <p dangerouslySetInnerHTML={{ __html: t('bible.intro_desc') }} />
+                            <p className="md:hidden" dangerouslySetInnerHTML={{ __html: t('bible.intro_desc_mobile') || t('bible.intro_desc') }} />
+                            <p className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('bible.intro_desc') }} />
                         </div>
 
                         {/* Book Styled Card for Main Message */}
