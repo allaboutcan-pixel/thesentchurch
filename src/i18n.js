@@ -436,7 +436,7 @@ const resources = {
                 "location": "Location",
                 "worship": "Worship",
                 "worship_guide": "Service Guide",
-                "nextgen": "Kids/Youth Ministry",
+                "nextgen": "Kids/Youth",
                 "ministry": "Ministries",
                 "education": "Education",
                 "tee": "TEE",
@@ -574,7 +574,7 @@ const resources = {
                 "online_desc": "* This is a sacred morning prayer session held online."
             },
             "ministry": {
-                "title": "Kids/Youth Ministry",
+                "title": "Kids/Youth",
                 "subtitle": "“Therefore go and make disciples of all nations...” (Matthew 28:19)",
                 "learn_more": "Learn More",
                 "fold": "Close",
