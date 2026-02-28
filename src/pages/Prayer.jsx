@@ -68,7 +68,7 @@ const Prayer = () => {
 
     const banner = siteConfig?.prayerBanner || "/images/ministry_banner.jpg";
     const isEn = i18n.language === 'en' || i18n.language.startsWith('en-');
-    const bannerTitle = (isEn && siteConfig?.prayerTitleEn) ? siteConfig.prayerTitleEn : (isEn ? (siteConfig?.prayerTitleEn || t('nav.prayer')) : (siteConfig?.prayerTitle || t('nav.prayer')));
+    const bannerTitle = (isEn && siteConfig?.prayerTitleEn) ? siteConfig.prayerTitleEn : (isEn ? t('ministry.prayer.title') : (siteConfig?.prayerTitle || t('nav.prayer')));
     const bannerSubtitle = (isEn && siteConfig?.prayerSubtitleEn) ? siteConfig.prayerSubtitleEn : (isEn ? (siteConfig?.prayerSubtitleEn || t('ministry.prayer.subtitle')) : (siteConfig?.prayerSubtitle || t('ministry.prayer.subtitle')));
 
     const bannerFit = siteConfig?.prayerBannerFit || 'cover';

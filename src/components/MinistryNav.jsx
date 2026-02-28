@@ -48,8 +48,8 @@ const MinistryNav = ({ active, category = 'education' }) => {
                         active={active === item.id}
                         icon={item.icon}
                         label={
-                            (i18n.language === 'en' && item.id === 'prayer' && config?.prayerTitleEn)
-                                ? config.prayerTitleEn
+                            (i18n.language.startsWith('en') && item.id === 'prayer')
+                                ? t('ministry.prayer.title')
                                 : t(`nav.${item.id}`)
                         }
                     />
