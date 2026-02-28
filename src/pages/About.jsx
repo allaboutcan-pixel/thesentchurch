@@ -564,13 +564,19 @@ const About = () => {
                                 </div>
 
                                 <div className="space-y-4">
-                                    <div className="flex flex-col items-center gap-2 border-b border-gray-100 pb-4 uppercase">
+                                    <div className="flex flex-col items-center gap-2 border-b border-gray-100 pb-4">
                                         <span
                                             className="text-gray-800 font-bold text-sm md:text-base whitespace-pre-line text-center leading-relaxed max-w-lg"
                                             dangerouslySetInnerHTML={{
-                                                __html: i18n.language === 'en' && (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
-                                                    ? (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn).split('\n').map(line => line.trim()).join('\n')
-                                                    : t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim())
+                                                __html: (() => {
+                                                    const rawText = i18n.language === 'en' && (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
+                                                        ? (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
+                                                        : t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim());
+                                                    return rawText.split('\n')
+                                                        .map(line => line.trim())
+                                                        .join('\n')
+                                                        .replace(/\((.*?)\)/g, '<span class="text-gray-400 text-[11px] md:text-sm font-medium block mt-1">($1)</span>');
+                                                })()
                                             }}
                                         />
                                     </div>

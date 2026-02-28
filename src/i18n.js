@@ -705,7 +705,7 @@ const resources = {
             "중보기도 모임": "Intercessory Prayer Meeting",
             "교회 지하 1층": "Church B1 Floor",
             "자모실": "Nursing Room",
-            "매달 첫째 둘째주 6:00 AM": "6:00 AM, Tuesday–Saturday\n<span class='text-gray-400 text-xs font-medium'>(1st and 2nd Weeks of the Month)</span>",
+            "매달 첫째 둘째주 6:00 AM": "6:00 AM, Tuesday–Saturday\n(1st and 2nd Weeks of the Month)",
 
             // Additional Data Translations (from Screenshots)
             "1부 예배 (봉사자 예배)": "1st Service (Volunteer Service)",
