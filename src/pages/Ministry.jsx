@@ -221,8 +221,8 @@ const Ministry = () => {
                         titleItalic && "italic"
                     )}
                         style={{
-                            color: titleColor,
-                            fontSize: titleSize ? `${titleSize}px` : undefined
+                            color: (title === 'Next Generation' || !title) ? '#1e3a8a' : titleColor,
+                            fontSize: titleSize ? `${Math.min(titleSize, 40)}px` : '2.5rem'
                         }}
                     >
                         {title || t('ministry.title')}
