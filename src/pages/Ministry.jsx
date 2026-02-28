@@ -268,7 +268,7 @@ const Ministry = () => {
                     {/* Desktop Version: Keep as is */}
                     <h2 className="hidden md:block text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line break-keep">
                         {i18n.language === 'en'
-                            ? (siteConfig?.sundaySchoolTitleEn || t('ministry.sunday_school_title'))
+                            ? t('ministry.sunday_school_title')
                             : (siteConfig?.sundaySchoolTitle || t('ministry.sunday_school_title'))}
                     </h2>
                     {/* Mobile Version: Use translation with <br/> tags */}
@@ -276,13 +276,13 @@ const Ministry = () => {
                         className="block md:hidden text-xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line"
                         dangerouslySetInnerHTML={{
                             __html: i18n.language === 'en'
-                                ? (siteConfig?.sundaySchoolTitleEn || t('ministry.sunday_school_title')).replace(/\n/g, '<br/>')
+                                ? t('ministry.sunday_school_title').replace(/\n/g, '<br/>')
                                 : (siteConfig?.sundaySchoolTitle || t('ministry.sunday_school_desc_mobile')).replace(/\n/g, '<br/>')
                         }}
                     />
                     <p className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep whitespace-pre-line">
                         "{i18n.language === 'en'
-                            ? (siteConfig?.sundaySchoolSubtitleEn || t('ministry.sunday_school_subtitle'))
+                            ? t('ministry.sunday_school_subtitle')
                             : (siteConfig?.sundaySchoolSubtitle || t('ministry.sunday_school_subtitle'))}"
                     </p>
                 </div>
