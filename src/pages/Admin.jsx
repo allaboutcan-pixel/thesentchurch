@@ -3804,7 +3804,7 @@ const Admin = () => {
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-sm font-bold text-blue-500 ml-1">Dawn Service Schedule (English)</label>
+                                            <label className="text-sm font-bold text-blue-500 ml-1">Early Morning Service Schedule (English)</label>
                                             <input
                                                 type="text"
                                                 className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
