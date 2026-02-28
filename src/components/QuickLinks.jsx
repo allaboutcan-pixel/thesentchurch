@@ -57,11 +57,11 @@ const QuickLinks = () => {
                         {item.subTitle && (
                             <p className="text-white/70 text-xs font-bold tracking-[0.2em] uppercase mb-2">{item.subTitle}</p>
                         )}
-                        <h3 className="text-2xl text-white group-hover:text-accent transition-colors leading-tight">
-                            <span className="font-black">{item.title.split('|')[0]}</span>
+                        <h3 className="text-xl md:text-2xl text-white group-hover:text-accent transition-colors leading-tight flex flex-col gap-1">
+                            <span className="font-black">{item.title.split('|')[0].trim()}</span>
                             {item.title.includes('|') && (
-                                <span className="ml-2 text-base font-normal opacity-70">
-                                    {item.title.split('|')[1]}
+                                <span className="text-sm md:text-base font-normal opacity-70">
+                                    {item.title.split('|')[1].trim()}
                                 </span>
                             )}
                         </h3>
