@@ -598,7 +598,7 @@ const resources = {
                 "prayer_desc": "We believe God will work through our prayers.",
                 "prayer_detail": "Our church is a community that prays for one another.\n\nWe invite you to share the prayer requests below and join us in prayer wherever you are.\n\nWe believe that as we pray together, God is at work among us.",
                 "prayer": {
-                    "title": "A Church Built on Prayer",
+                    "title": "Intercessory Prayer",
                     "subtitle": "We believe God will work through our prayers.",
                     "intro_title": "About Intercessory Prayer",
                     "intro_subtitle": "Introduction to Intercessory Prayer",
