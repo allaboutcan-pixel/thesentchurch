@@ -489,6 +489,16 @@ const Admin = () => {
 
         // English fields for general items
         titleEn: '', preacherEn: '', contentEn: '', authorEn: '', staffEnglishRole: '', staffHistoryEn: '',
+        heroTitleEn: '', heroSubtitleEn: '',
+        aboutTitleEn: '', aboutSubtitleEn: '',
+        newsTitleEn: '', newsSubtitleEn: '',
+        ministryTitleEn: '', ministrySubtitleEn: '',
+        prayerTopicsTitleEn: '', prayerTopicsSubtitleEn: '',
+        bibleTitleEn: '', bibleSubtitleEn: '',
+        missionTitleEn: '', missionSubtitleEn: '',
+        resourcesTitleEn: '', resourcesSubtitleEn: '',
+        teeTitleEn: '', teeSubtitleEn: '',
+        teamTitleEn: '', teamSubtitleEn: '',
     });
 
     const [pastorFile, setPastorFile] = useState(null);
@@ -769,9 +779,13 @@ const Admin = () => {
                     aboutTitleEn: fbConfig.aboutTitleEn || '', aboutSubtitleEn: fbConfig.aboutSubtitleEn || '',
                     newsTitleEn: fbConfig.newsTitleEn || '', newsSubtitleEn: fbConfig.newsSubtitleEn || '',
                     ministryTitleEn: fbConfig.ministryTitleEn || '', ministrySubtitleEn: fbConfig.ministrySubtitleEn || '',
+                    prayerTopicsTitleEn: fbConfig.prayerTopicsTitleEn || '', prayerTopicsSubtitleEn: fbConfig.prayerTopicsSubtitleEn || '',
+                    bibleTitleEn: fbConfig.bibleTitleEn || '', bibleSubtitleEn: fbConfig.bibleSubtitleEn || '',
+                    missionTitleEn: fbConfig.missionTitleEn || '', missionSubtitleEn: fbConfig.missionSubtitleEn || '',
+                    resourcesTitleEn: fbConfig.resourcesTitleEn || '', resourcesSubtitleEn: fbConfig.resourcesSubtitleEn || '',
+                    teeTitleEn: fbConfig.teeTitleEn || '', teeSubtitleEn: fbConfig.teeSubtitleEn || '',
+                    teamTitleEn: fbConfig.teamTitleEn || '', teamSubtitleEn: fbConfig.teamSubtitleEn || '',
 
-                    prayerTopicsTitleEn: fbConfig.prayerTopicsTitleEn || '',
-                    prayerTopicsSubtitleEn: fbConfig.prayerTopicsSubtitleEn || '',
                     prayerCoreValuesTitle: fbConfig.prayerCoreValuesTitle || '',
                     prayerCoreValuesTitleEn: fbConfig.prayerCoreValuesTitleEn || '',
                     prayerGoalsTitle: fbConfig.prayerGoalsTitle || '',
