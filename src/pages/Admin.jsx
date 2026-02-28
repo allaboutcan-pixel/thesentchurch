@@ -3789,9 +3789,8 @@ const Admin = () => {
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
                                             <label className="text-sm font-bold text-gray-600 ml-1">새벽기도 일정 (Korean)</label>
-                                            <input
-                                                type="text"
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
+                                            <textarea
+                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium min-h-[100px]"
                                                 value={siteConfig.specialServices?.dawn?.schedule || ''}
                                                 placeholder="예: 매달 첫째 둘째주 6:00 AM"
                                                 onChange={(e) => setSiteConfig({
@@ -3805,9 +3804,8 @@ const Admin = () => {
                                         </div>
                                         <div className="space-y-2">
                                             <label className="text-sm font-bold text-blue-500 ml-1">Early Morning Service Schedule (English)</label>
-                                            <input
-                                                type="text"
-                                                className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium"
+                                            <textarea
+                                                className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-orange-500/10 outline-none font-medium min-h-[100px]"
                                                 value={siteConfig.specialServices?.dawn?.scheduleEn || ''}
                                                 placeholder="e.g., 1st & 2nd Saturday 6:00 AM"
                                                 onChange={(e) => setSiteConfig({
