@@ -266,20 +266,25 @@ const Ministry = () => {
             <div className="bg-white pb-32 pt-12">
                 <div className="max-w-4xl mx-auto text-center px-4">
                     {/* Desktop Version: Keep as is */}
-                    <h2 className="hidden md:block text-xl md:text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line break-keep">
+                    <h2 className="hidden md:block text-3xl md:text-4xl font-black text-gray-800 mb-6 leading-relaxed whitespace-pre-line break-keep">
                         {i18n.language === 'en'
                             ? t('ministry.sunday_school_title')
                             : (siteConfig?.sundaySchoolTitle || t('ministry.sunday_school_title'))}
                     </h2>
                     {/* Mobile Version: Use translation with <br/> tags */}
                     <h2
-                        className="block md:hidden text-xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line"
+                        className="block md:hidden text-2xl font-bold text-gray-800 mb-6 leading-relaxed whitespace-pre-line"
                         dangerouslySetInnerHTML={{
                             __html: i18n.language === 'en'
                                 ? t('ministry.sunday_school_title').replace(/\n/g, '<br/>')
                                 : (siteConfig?.sundaySchoolTitle || t('ministry.sunday_school_desc_mobile')).replace(/\n/g, '<br/>')
                         }}
                     />
+                    {i18n.language === 'en' && t('ministry.sunday_school_description') && (
+                        <p className="text-lg md:text-xl text-gray-600 font-medium leading-relaxed break-keep whitespace-pre-line mb-8">
+                            {t('ministry.sunday_school_description')}
+                        </p>
+                    )}
                     <p className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep whitespace-pre-line">
                         "{i18n.language === 'en'
                             ? t('ministry.sunday_school_subtitle')

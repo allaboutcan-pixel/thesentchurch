@@ -572,11 +572,12 @@ const resources = {
                 "online_desc": "* This is a sacred morning prayer session held online."
             },
             "ministry": {
-                "title": "Sent by God, into the world",
+                "title": "Next Generation",
                 "subtitle": "“Therefore go and make disciples of all nations...” (Matthew 28:19)",
                 "learn_more": "Learn More",
                 "fold": "Close",
-                "sunday_school_title": "In our Sunday School, children grow in the truth of God’s Word,\nare encouraged to follow Jesus faithfully, and are nurtured to become\nlifelong disciples who serve Him with willing hearts.",
+                "sunday_school_title": "Next Generation",
+                "sunday_school_description": "In our Sunday School, children grow in the truth of God’s Word, are encouraged to follow Jesus faithfully, and are nurtured to become lifelong disciples who serve Him with willing hearts.",
                 "sunday_school_subtitle": "“Train up a child in the way he should go; even when he is old he will not depart from it.” (Proverbs 22:6)",
                 "tsc_name": "The Sent Children (TSC)",
                 "tsc_target": "K - Gr.7",
