@@ -211,7 +211,7 @@ const Prayer = () => {
                 <div className="mb-20 animate-fade-in-up">
                     {/* Top: Center Title */}
                     <div className="text-center mb-32">
-                        <span className="inline-block px-4 py-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-sm font-bold tracking-widest uppercase rounded-full mb-10 backdrop-blur-sm shadow-sm">
+                        <span className="inline-block px-4 py-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-sm font-bold tracking-widest uppercase rounded-full mb-16 backdrop-blur-sm shadow-sm">
                             {t('ministry.prayer.intro_title')}
                         </span>
                         <h2 className="text-xl md:text-3xl font-black text-blue-900 leading-[2.8]">
