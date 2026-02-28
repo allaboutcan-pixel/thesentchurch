@@ -162,11 +162,10 @@ const Resources = () => {
                     });
                     setArchiveData(grouped);
 
-                    // Safeguard initial selections
                     if (sorted[0]) {
                         const [ly, lm] = safeSplitDate(sorted[0].date);
                         setSelectedYear(ly);
-                        setSelectedMonth(parseInt(lm, 10).toString());
+                        setSelectedMonth(lm);
                     }
                 }
 
@@ -198,7 +197,7 @@ const Resources = () => {
                     if (cleanedSermons[0]) {
                         const [ly, lm] = safeSplitDate(cleanedSermons[0].date);
                         setSelectedSermonYear(ly);
-                        setSelectedSermonMonth(parseInt(lm, 10).toString());
+                        setSelectedSermonMonth(lm);
                     }
                 }
 
@@ -220,7 +219,7 @@ const Resources = () => {
                     if (sorted[0]) {
                         const [ly, lm] = safeSplitDate(sorted[0].date);
                         setSelectedColumnYear(ly);
-                        setSelectedColumnMonth(parseInt(lm, 10).toString());
+                        setSelectedColumnMonth(lm);
                     }
                 }
 
