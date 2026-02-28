@@ -266,14 +266,7 @@ const Ministry = () => {
                             />
                         </>
                     )}
-                    <p
-                        className="text-base md:text-lg text-gray-500 font-medium italic leading-[2] break-keep whitespace-pre-line"
-                        dangerouslySetInnerHTML={{
-                            __html: i18n.language === 'en'
-                                ? t('ministry.sunday_school_subtitle')
-                                : (window.innerWidth < 768 ? `"${t('ministry.sunday_school_subtitle_mobile') || t('ministry.sunday_school_subtitle')}"` : `"${siteConfig?.sundaySchoolSubtitle || t('ministry.sunday_school_subtitle')}"`)
-                        }}
-                    />
+
                 </div>
             </div>
 
