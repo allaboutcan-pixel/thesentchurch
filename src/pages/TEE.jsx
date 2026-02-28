@@ -236,7 +236,7 @@ const TEE = () => {
                                 </div>
                                 <h3 className="text-xl font-bold text-slate-800">{t('tee.core_goal_title')}</h3>
                             </div>
-                            <div className="text-slate-700 leading-loose text-lg space-y-4 text-left pl-4 md:pl-6">
+                            <div className="text-slate-700 leading-loose text-lg space-y-4 text-left pl-10 md:pl-12">
                                 <p className="md:hidden" dangerouslySetInnerHTML={{ __html: t('tee.core_goal_desc_mobile') || t('tee.core_goal_desc') }} />
                                 <p className="hidden md:block" dangerouslySetInnerHTML={{ __html: t('tee.core_goal_desc') }} />
                             </div>
