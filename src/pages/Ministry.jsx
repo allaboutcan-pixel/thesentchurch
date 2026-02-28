@@ -37,14 +37,14 @@ const Ministry = () => {
                 {text.split('\n\n').map((paragraph, i) => (
                     <div key={i}>
                         {paragraph.split('\n').map((line, j) => {
-                            const isHeader = /^\s*(대상|사역\s*표어|사역\s*비전|Target|Motto|Vision)/i.test(line);
+                            const isHeader = /^\s*(대상|사역\s*표어|사역\s*비전|Target|Motto|Vision|\[Our\s*Theme\]|Our\s*Theme)/i.test(line);
                             return (
                                 <div key={j} className={clsx(isHeader && j > 0 && "mt-8", "block")}>
-                                    {line.split(/(\*\*.*?\*\*|대상|사역\s*표어|사역\s*비전|Target|Motto|Vision)/i).map((part, k) => {
+                                    {line.split(/(\*\*.*?\*\*|대상|사역\s*표어|사역\s*비전|Target|Motto|Vision|\[Our\s*Theme\]|Our\s*Theme)/i).map((part, k) => {
                                         if (part.startsWith('**') && part.endsWith('**')) {
                                             return <strong key={k}>{part.slice(2, -2)}</strong>;
                                         }
-                                        if (/^(대상|사역\s*표어|사역\s*비전|Target|Motto|Vision)$/i.test(part)) {
+                                        if (/^(대상|사역\s*표어|사역\s*비전|Target|Motto|Vision|\[Our\s*Theme\]|Our\s*Theme)$/i.test(part)) {
                                             return <span key={k} className="font-bold text-primary text-xl">{part}</span>;
                                         }
                                         return part;
@@ -267,14 +267,14 @@ const Ministry = () => {
                 <div className="max-w-4xl mx-auto text-center px-4">
                     {/* Desktop Version: Keep as is */}
                     {/* Desktop & Default Korean Title (siteConfig prioritized) */}
-                    <h2 className="hidden md:block text-3xl md:text-4xl font-black text-blue-900 mb-6 leading-relaxed whitespace-pre-line break-keep">
+                    <h2 className="hidden md:block text-2xl md:text-3xl font-black text-blue-900 mb-6 leading-relaxed whitespace-pre-line break-keep">
                         {i18n.language === 'en'
                             ? t('ministry.sunday_school_title')
                             : (siteConfig?.sundaySchoolTitle || t('ministry.sunday_school_title'))}
                     </h2>
                     {/* Mobile Title: Same as desktop source but may have separate styling */}
                     <h2
-                        className="block md:hidden text-2xl font-bold text-blue-900 mb-6 leading-relaxed"
+                        className="block md:hidden text-xl font-bold text-blue-900 mb-6 leading-relaxed"
                         dangerouslySetInnerHTML={{
                             __html: i18n.language === 'en'
                                 ? t('ministry.sunday_school_title').replace(/\n/g, '<br/>')
@@ -286,19 +286,19 @@ const Ministry = () => {
                     {i18n.language === 'en' ? (
                         t('ministry.sunday_school_description') && (
                             <p
-                                className="text-lg md:text-xl text-gray-600 font-medium leading-relaxed break-keep whitespace-pre-line mb-8"
+                                className="text-lg md:text-xl text-gray-600 font-medium leading-[1.8] break-keep whitespace-pre-line mb-8"
                                 dangerouslySetInnerHTML={{ __html: t('ministry.sunday_school_description') }}
                             />
                         )
                     ) : (
                         <>
                             {/* Desktop Korean Description */}
-                            <p className="hidden md:block text-lg md:text-xl text-gray-600 font-medium leading-relaxed break-keep whitespace-pre-line mb-8">
+                            <p className="hidden md:block text-lg md:text-xl text-gray-600 font-medium leading-[1.8] break-keep whitespace-pre-line mb-8">
                                 {t('ministry.sunday_school_description')}
                             </p>
                             {/* Mobile Korean Description (with requested line breaks) */}
                             <p
-                                className="block md:hidden text-lg text-gray-600 font-medium leading-relaxed mb-8"
+                                className="block md:hidden text-lg text-gray-600 font-medium leading-[1.8] mb-8"
                                 dangerouslySetInnerHTML={{ __html: t('ministry.sunday_school_desc_mobile') }}
                             />
                         </>
