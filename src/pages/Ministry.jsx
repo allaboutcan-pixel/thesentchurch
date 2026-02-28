@@ -281,15 +281,19 @@ const Ministry = () => {
                         }}
                     />
                     {i18n.language === 'en' && t('ministry.sunday_school_description') && (
-                        <p className="text-lg md:text-xl text-gray-600 font-medium leading-relaxed break-keep whitespace-pre-line mb-8">
-                            {t('ministry.sunday_school_description')}
-                        </p>
+                        <p
+                            className="text-lg md:text-xl text-gray-600 font-medium leading-relaxed break-keep whitespace-pre-line mb-8"
+                            dangerouslySetInnerHTML={{ __html: t('ministry.sunday_school_description') }}
+                        />
                     )}
-                    <p className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep whitespace-pre-line">
-                        "{i18n.language === 'en'
-                            ? t('ministry.sunday_school_subtitle')
-                            : (siteConfig?.sundaySchoolSubtitle || t('ministry.sunday_school_subtitle'))}"
-                    </p>
+                    <p
+                        className="text-base md:text-lg text-gray-500 font-medium italic leading-relaxed break-keep whitespace-pre-line"
+                        dangerouslySetInnerHTML={{
+                            __html: i18n.language === 'en'
+                                ? `"${t('ministry.sunday_school_subtitle')}"`
+                                : `"${siteConfig?.sundaySchoolSubtitle || t('ministry.sunday_school_subtitle')}"`
+                        }}
+                    />
                 </div>
             </div>
 
