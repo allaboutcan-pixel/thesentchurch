@@ -249,7 +249,7 @@ const BibleStudy = () => {
             < section className="py-32 bg-white" >
                 <div className="container mx-auto px-6 max-w-5xl">
                     <div className="text-center mb-40 px-4">
-                        <h2 className="text-3xl md:text-5xl font-black text-slate-900 mb-8">{t('bible.curriculum_title')}</h2>
+                        <h2 className="text-2xl md:text-4xl font-black text-slate-900 mb-8">{t('bible.curriculum_title')}</h2>
                         <p className="text-base md:text-lg text-slate-500 font-medium mb-10 break-keep">{t('bible.curriculum_subtitle')}</p>
                         <div className="w-16 h-1.5 bg-blue-600 mx-auto rounded-full" />
                     </div>
