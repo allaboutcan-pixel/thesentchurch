@@ -572,8 +572,11 @@ const About = () => {
                                                     const rawText = i18n.language === 'en' && (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
                                                         ? (specialServices?.dawn?.scheduleEn || config?.specialServices?.dawn?.scheduleEn)
                                                         : t((specialServices?.dawn?.schedule || churchData.special_services?.dawn?.schedule)?.trim());
+
+                                                    if (!rawText || typeof rawText !== 'string') return '';
+
                                                     return rawText.split('\n')
-                                                        .map(line => line.trim())
+                                                        .map(line => (line || '').trim())
                                                         .join('\n')
                                                         .replace(/\((.*?)\)/g, '<span class="text-gray-400 text-[11px] md:text-sm font-medium block mt-1">($1)</span>');
                                                 })()

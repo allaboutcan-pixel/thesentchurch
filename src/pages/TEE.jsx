@@ -333,7 +333,7 @@ const TEE = () => {
                             >
                                 <div className="text-4xl font-black text-blue-200 mb-3">{item.letter}</div>
                                 <h4 className="text-lg font-bold text-slate-700 mb-2">
-                                    {(item.title && item.title.includes('–')) ? item.title.split('–')[1].trim() : item.title}
+                                    {(item.title && typeof item.title === 'string' && item.title.includes('–')) ? item.title.split('–')[1].trim() : (item.title || '')}
                                 </h4>
                                 <p className="text-sm text-slate-500 break-keep leading-relaxed">{item.desc}</p>
                             </motion.div>

@@ -541,7 +541,7 @@ const Resources = () => {
                                             <div className="flex items-center gap-3 overflow-hidden">
                                                 <div className="min-w-[30px] border-r border-slate-100 pr-3 flex justify-center">
                                                     <span className="text-[10px] font-bold text-slate-400 tabular-nums">
-                                                        {item.date ? item.date.split('-').slice(1).join('.') : ''}
+                                                        {item.date ? item.date.split?.('-')?.slice?.(1)?.join?.('.') : ''}
                                                     </span>
                                                 </div>
                                                 <div className="min-w-0">
@@ -718,8 +718,8 @@ const Resources = () => {
                                                     <span className="text-[10px] font-bold text-slate-400 tabular-nums">
                                                         {(() => {
                                                             if (!item.date) return "";
-                                                            const p = item.date.split('-');
-                                                            if (i18n.language.startsWith('en')) return item.date.substring(5); // MM-DD
+                                                            const p = item.date.split?.('-') || [];
+                                                            if (i18n.language.startsWith('en')) return item.date.substring?.(5) || ""; // MM-DD
                                                             return p.length >= 3 ? `${parseInt(p[1], 10)}.${parseInt(p[2], 10)}` : item.date;
                                                         })()}
                                                     </span>

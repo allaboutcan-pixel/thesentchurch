@@ -409,7 +409,7 @@ const DailyWord = () => {
                                                     {/* Mobile Title Overlay */}
                                                     <div className="absolute bottom-2 left-2 right-2 md:hidden">
                                                         <h4 className="font-bold text-white text-[10px] line-clamp-2 drop-shadow-md">
-                                                            {word.verse?.includes('하나님의 한구절') ? word.verse.split('하나님의 한구절')[1]?.trim() : (word.verse || word.title)}
+                                                            {word.verse?.includes?.('하나님의 한구절') ? word.verse.split?.('하나님의 한구절')[1]?.trim() : (word.verse || word.title)}
                                                         </h4>
                                                     </div>
                                                 </div>
@@ -417,7 +417,7 @@ const DailyWord = () => {
                                                 {/* Desktop Content */}
                                                 <div className="hidden md:flex p-3 flex-grow flex-col text-center justify-between">
                                                     <h4 className="font-bold text-primary text-[11px] md:text-sm mb-2 line-clamp-1 mt-1 transition-all">
-                                                        {word.verse?.includes('하나님의 한구절') ? word.verse.split('하나님의 한구절')[1]?.trim() : (word.verse || word.title)}
+                                                        {word.verse?.includes?.('하나님의 한구절') ? word.verse.split?.('하나님의 한구절')[1]?.trim() : (word.verse || word.title)}
                                                     </h4>
 
                                                     <div className="flex justify-center mb-1">
