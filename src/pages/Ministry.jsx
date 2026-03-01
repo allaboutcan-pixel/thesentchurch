@@ -66,7 +66,7 @@ const Ministry = () => {
     const formatDetail = (text) => {
         if (!text) return null;
         return (
-            <div className="mt-8 pt-6 border-t border-gray-100 text-gray-700 space-y-6 animate-fade-in text-lg leading-[2.5]">
+            <div className="mt-8 pt-6 border-t border-gray-100 text-gray-700 space-y-6 animate-fade-in text-base md:text-lg leading-relaxed">
                 {text.split('\n\n').map((paragraph, i) => (
                     <div key={i}>
                         {paragraph.split('\n').map((line, j) => {
@@ -78,7 +78,7 @@ const Ministry = () => {
                                             return <strong key={k}>{part.slice(2, -2)}</strong>;
                                         }
                                         if (/^(대상|사역\s*표어|사역\s*비전|Target|Motto|Vision|Our\s*Theme)$/i.test(part)) {
-                                            return <span key={k} className="font-bold text-primary text-xl">{part}</span>;
+                                            return <span key={k} className="font-bold text-primary text-lg md:text-xl">{part}</span>;
                                         }
                                         return part;
                                     })}
@@ -368,13 +368,13 @@ const Ministry = () => {
                                         <div className="w-full lg:w-1/2 space-y-8">
                                             <div>
                                                 <div className={clsx(
-                                                    "inline-block px-4 py-1.5 rounded-full text-sm font-bold tracking-widest uppercase mb-4 shadow-sm",
+                                                    "inline-block px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-4 shadow-sm",
                                                     "bg-green-50 border border-green-200 text-green-600"
                                                 )}>
                                                     {displayTarget}
                                                 </div>
                                                 <h2 className={clsx(
-                                                    "text-3xl md:text-4xl font-black tracking-tight mb-6",
+                                                    "text-2xl md:text-3xl font-black tracking-tight mb-6",
                                                     isBrownBg ? "text-blue-900" : "text-gray-900"
                                                 )}>
                                                     {displayName}
@@ -386,7 +386,7 @@ const Ministry = () => {
                                             </div>
 
                                             <p className={clsx(
-                                                "text-lg md:text-xl leading-relaxed font-medium",
+                                                "text-base md:text-lg leading-relaxed font-medium",
                                                 isBrownBg ? "text-stone-600" : "text-gray-600"
                                             )}>
                                                 {displayDesc}
