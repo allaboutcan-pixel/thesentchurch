@@ -227,7 +227,7 @@ const Resources = () => {
                 if (liveNotices.length > 0) setNotices(liveNotices);
 
             } catch (error) {
-                console.warn("Failed to fetch some resources in parallel:", error);
+                console.warn("Resources: Failed to fetch some data in parallel", error);
             }
         };
 
@@ -299,11 +299,11 @@ const Resources = () => {
                         titleItalic && "italic"
                     )}
                         style={{
-                            color: titleColor,
+                            color: titleColor || '#ffffff',
                             fontSize: titleSize ? (titleSize > 32 ? 'clamp(24px, 8vw, 48px)' : `${titleSize}px`) : undefined
                         }}
                     >
-                        {title || t('resources.banner_title')}
+                        {title || t('resources.banner_title') || ""}
                     </h1>
                     <div className="w-12 h-1 bg-accent mx-auto mb-4 md:mb-8 rounded-full animate-fade-in-up delay-75 md:w-20 md:h-1.5" />
                     <h2 className={clsx(
@@ -313,11 +313,11 @@ const Resources = () => {
                         subtitleItalic && "italic"
                     )}
                         style={{
-                            color: subtitleColor,
+                            color: subtitleColor || '#ffffff',
                             fontSize: subtitleSize ? (subtitleSize > 20 ? 'clamp(16px, 4vw, 24px)' : `${subtitleSize}px`) : undefined
                         }}
                     >
-                        {subtitle || t('resources.banner_subtitle')}
+                        {subtitle || t('resources.banner_subtitle') || ""}
                     </h2>
                 </div>
             </section>
@@ -418,7 +418,7 @@ const Resources = () => {
                                                 <span className="text-white/40 text-sm font-medium">{latestSermon.date}</span>
                                             </div>
                                             <h2 className="text-sm md:text-xl font-black text-white mb-2 leading-tight truncate">
-                                                {(i18n.language === 'en' && latestSermon.titleEn) ? latestSermon.titleEn : latestSermon.title}
+                                                {((i18n.language === 'en' && latestSermon.titleEn) ? latestSermon.titleEn : (latestSermon.title || "")) || ""}
                                             </h2>
                                             <div className="flex items-center gap-2 text-white/60">
                                                 <div className="w-6 h-6 bg-white/5 rounded-full flex items-center justify-center">

@@ -12,7 +12,11 @@ class ErrorBoundary extends React.Component {
     }
 
     componentDidCatch(error, errorInfo) {
-        console.error("Uncaught error:", error, errorInfo);
+        // Log to console for better diagnostics
+        console.group("🔴 ErrorBoundary Caught an Error");
+        console.error("Error Object:", error);
+        console.error("Error Info:", errorInfo);
+        console.groupEnd();
     }
 
     render() {
@@ -39,10 +43,15 @@ class ErrorBoundary extends React.Component {
                         <RefreshCcw size={18} />
                         페이지 새로고침
                     </button>
-                    {process.env.NODE_ENV === 'development' && (
-                        <pre className="mt-8 p-4 bg-red-50 text-red-800 rounded-lg text-xs text-left overflow-auto max-w-2xl w-full border border-red-100">
-                            {this.state.error && this.state.error.toString()}
-                        </pre>
+                    {(import.meta.env?.DEV) && (
+                        <div className="mt-8 w-full max-w-2xl text-left">
+                            <p className="text-[10px] font-bold text-slate-400 uppercase mb-2">Debug Info (Dev Only)</p>
+                            <pre className="p-4 bg-red-50 text-red-800 rounded-lg text-xs overflow-auto border border-red-100 shadow-inner">
+                                {this.state.error && this.state.error.toString()}
+                                {"\n\nStack Trace:\n"}
+                                {this.state.error && this.state.error.stack}
+                            </pre>
+                        </div>
                     )}
                 </div>
             );

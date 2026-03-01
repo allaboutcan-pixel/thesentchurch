@@ -47,8 +47,14 @@ const Home = () => {
             try {
                 // Fetch in parallel for better performance
                 const [liveSermons, liveDailyWords] = await Promise.all([
-                    dbService.getSermons(),
-                    dbService.fetchItems('daily_word', 7) // Enough context to find today's word
+                    dbService.getSermons().catch(err => {
+                        console.warn("Home: Failed to fetch sermons", err);
+                        return [];
+                    }),
+                    dbService.fetchItems('daily_word', 7).catch(err => {
+                        console.warn("Home: Failed to fetch daily_word", err);
+                        return [];
+                    })
                 ]);
 
                 if (!isMounted) return;
@@ -56,12 +62,12 @@ const Home = () => {
                 if (Array.isArray(liveSermons) && liveSermons.length > 0) {
                     // Safety check: extract ID for all sermons to handle malformed data
                     const cleanedSermons = liveSermons.map(s => {
-                        if (s && s.youtubeId && s.youtubeId.length > 11) {
+                        if (s && typeof s.youtubeId === 'string' && s.youtubeId.length > 11) {
                             const extractedId = getYoutubeId(s.youtubeId);
                             if (extractedId) return { ...s, youtubeId: extractedId };
                         }
                         return s;
-                    });
+                    }).filter(Boolean); // Remove any nulls if map logic changed
                     if (isMounted) setLatestSermon(cleanedSermons[0] || {});
                 }
 
@@ -143,9 +149,10 @@ const Home = () => {
             if (ytId) return `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
 
             // Google Drive handling
-            if (heroImage.includes('drive.google.com')) {
+            const imageStr = String(heroImage);
+            if (imageStr.includes('drive.google.com')) {
                 // If it's strictly an image (thumbnail), just return it
-                if (heroImage.includes('thumbnail')) return heroImage;
+                if (imageStr.includes('thumbnail')) return imageStr;
 
                 // If it's a video (or generic drive link), try to get the thumbnail as poster
                 const driveId = getDriveId(heroImage);

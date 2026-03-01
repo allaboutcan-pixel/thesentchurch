@@ -902,9 +902,10 @@ i18n
     .use(LanguageDetector)
     .init({
         resources,
+        lng: 'ko', // Forced default language
         fallbackLng: 'ko',
         detection: {
-            order: ['localStorage', 'cookie'],
+            order: ['localStorage', 'cookie', 'navigator'],
             caches: ['localStorage']
         },
         interpolation: {
