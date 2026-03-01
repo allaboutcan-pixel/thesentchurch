@@ -238,7 +238,7 @@ const Resources = () => {
     return (
         <div className="min-h-screen">
             {/* Header with Banner */}
-            <section className="relative w-full flex items-center justify-center overflow-hidden h-[50vh] md:h-[75vh]">
+            <section className="relative w-full flex items-center justify-center overflow-hidden h-[40vh] md:h-[75vh]">
                 {/* Background Image Container - Easy to replace later */}
                 <div className={clsx(
                     "absolute inset-0 z-0 pointer-events-none",
@@ -380,9 +380,9 @@ const Resources = () => {
 
                 {/* Sunday Sermon Content (Playlist Style) */}
                 {activeTab === 'sermon' && (
-                    <div className="space-y-24 pb-40 animate-fade-in">
+                    <div className="space-y-12 md:space-y-24 pb-20 md:pb-40 animate-fade-in">
                         {/* Featured Player & Recent List */}
-                        <div className="flex flex-col lg:flex-row items-center gap-24 max-w-[1200px] mx-auto transition-all bg-transparent">
+                        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-24 max-w-[1200px] mx-auto transition-all bg-transparent">
                             {/* Main Player */}
                             <div className="lg:w-[65%] lg:pt-16">
                                 {latestSermon ? (
@@ -417,7 +417,7 @@ const Resources = () => {
                                                 <span className="bg-accent/20 text-accent px-3 py-1 rounded-full text-[11px] font-black tracking-widest uppercase">{t('resources.latest_sermon')}</span>
                                                 <span className="text-white/40 text-sm font-medium">{latestSermon.date}</span>
                                             </div>
-                                            <h2 className="text-xl md:text-2xl font-black text-white mb-3 leading-tight truncate">
+                                            <h2 className="text-lg md:text-xl font-black text-white mb-3 leading-tight truncate">
                                                 {(i18n.language === 'en' && latestSermon.titleEn) ? latestSermon.titleEn : latestSermon.title}
                                             </h2>
                                             <div className="flex items-center gap-2 text-white/60">

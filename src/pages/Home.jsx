@@ -291,7 +291,7 @@ const Home = () => {
 
 
             {/* Sermon Section */}
-            <section className="py-24">
+            <section className="py-12 md:py-24">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-2xl md:text-3xl font-bold text-primary mt-2">{t('home.media_title')}</h2>
@@ -329,12 +329,12 @@ const Home = () => {
                                 </>
                             )}
                         </div>
-                        <div className="mt-16 text-center flex flex-col md:flex-row md:items-center justify-between gap-4 px-4">
+                        <div className="mt-8 md:mt-16 text-center flex flex-col md:flex-row md:items-center justify-between gap-4 px-4">
                             <div>
                                 <p className="text-accent font-black text-base mb-4 tracking-wide uppercase">
                                     {latestSermon.date} • {(i18n.language === 'en' && latestSermon.preacherEn) ? latestSermon.preacherEn : (latestSermon.preacher || t('home.preacher_default'))}
                                 </p>
-                                <h3 className="text-primary text-base md:text-xl font-black leading-snug truncate">
+                                <h3 className="text-primary text-sm md:text-lg font-black leading-snug truncate">
                                     {(i18n.language === 'en' && latestSermon.titleEn) ? latestSermon.titleEn : (latestSermon.title || t('home.latest_word'))}
                                 </h3>
                             </div>
