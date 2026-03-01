@@ -335,7 +335,7 @@ const DailyWord = () => {
                                             : "bg-slate-100 text-slate-400 hover:bg-slate-200"
                                     )}
                                 >
-                                    {year}년
+                                    {year}{i18n.language.startsWith('ko') ? '년' : ''}
                                 </button>
                             ))}
                         </div>
@@ -355,7 +355,7 @@ const DailyWord = () => {
                                             : "bg-slate-100 text-slate-500 hover:bg-slate-200"
                                     )}
                                 >
-                                    {month}월
+                                    {month}{i18n.language.startsWith('ko') ? '월' : ''}
                                 </button>
                             ))}
                         </div>
@@ -422,7 +422,7 @@ const DailyWord = () => {
 
                                                     <div className="flex justify-center mb-1">
                                                         <span className="px-4 py-1.5 bg-slate-50 text-slate-400 font-bold text-[10px] uppercase tracking-widest rounded-full group-hover:bg-primary group-hover:text-white transition-all transform border border-slate-100">
-                                                            말씀 보기
+                                                            {i18n.language.startsWith('en') ? 'View Word' : '말씀 보기'}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -434,7 +434,7 @@ const DailyWord = () => {
                                     <div className="bg-slate-50 p-8 rounded-full">
                                         <BookOpen size={48} className="opacity-20" />
                                     </div>
-                                    <p className="font-bold">이 달의 말씀 기록이 없습니다.</p>
+                                    <p className="font-bold">{i18n.language.startsWith('en') ? 'No word records for this month.' : '이 달의 말씀 기록이 없습니다.'}</p>
                                 </div>
                             )}
                         </div>

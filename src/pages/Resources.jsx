@@ -839,9 +839,9 @@ const Resources = () => {
                             <div className="border-b-4 border-slate-100 pb-6 space-y-4">
                                 <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
                                     <FileText size={28} className="text-primary" />
-                                    지난 신학 칼럼 보기
+                                    {t('home.past_columns')}
                                 </h3>
-                                <p className="text-slate-400 font-medium text-sm mt-1 italic">이남규 목사님의 신학 칼럼 보관함입니다.</p>
+                                <p className="text-slate-400 font-medium text-sm mt-1 italic">{t('home.past_columns_desc')}</p>
                             </div>
 
                             <div className="flex flex-wrap gap-2">
