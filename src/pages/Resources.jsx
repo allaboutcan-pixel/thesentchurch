@@ -238,7 +238,7 @@ const Resources = () => {
     return (
         <div className="min-h-screen">
             {/* Header with Banner */}
-            <section className="relative w-full flex items-center justify-center overflow-hidden h-[25vh] md:h-[75vh]">
+            <section className="relative w-full flex items-center justify-center overflow-hidden h-[18vh] md:h-[75vh]">
                 {/* Background Image Container - Easy to replace later */}
                 <div className={clsx(
                     "absolute inset-0 z-0 pointer-events-none",
@@ -293,19 +293,19 @@ const Resources = () => {
                 {/* Banner Content */}
                 <div className="relative z-10 container mx-auto px-4 text-center">
                     <h1 className={clsx(
-                        "mb-4 md:mb-8 animate-fade-in-up break-keep",
+                        "mb-2 md:mb-8 animate-fade-in-up",
                         titleWeight,
                         titleFont,
                         titleItalic && "italic"
                     )}
                         style={{
                             color: titleColor,
-                            fontSize: titleSize ? `${titleSize}px` : undefined
+                            fontSize: titleSize ? (titleSize > 32 ? 'clamp(24px, 8vw, 48px)' : `${titleSize}px`) : undefined
                         }}
                     >
                         {title || t('resources.banner_title')}
                     </h1>
-                    <div className="w-20 h-1.5 bg-accent mx-auto mb-8 rounded-full animate-fade-in-up delay-75" />
+                    <div className="w-12 h-1 bg-accent mx-auto mb-4 md:mb-8 rounded-full animate-fade-in-up delay-75 md:w-20 md:h-1.5" />
                     <h2 className={clsx(
                         "tracking-wide opacity-90 animate-fade-in-up delay-100",
                         subtitleWeight,
@@ -314,7 +314,7 @@ const Resources = () => {
                     )}
                         style={{
                             color: subtitleColor,
-                            fontSize: subtitleSize ? `${subtitleSize}px` : undefined
+                            fontSize: subtitleSize ? (subtitleSize > 20 ? 'clamp(16px, 4vw, 24px)' : `${subtitleSize}px`) : undefined
                         }}
                     >
                         {subtitle || t('resources.banner_subtitle')}
@@ -380,9 +380,9 @@ const Resources = () => {
 
                 {/* Sunday Sermon Content (Playlist Style) */}
                 {activeTab === 'sermon' && (
-                    <div className="space-y-12 md:space-y-24 pb-20 md:pb-40 animate-fade-in">
+                    <div className="space-y-8 md:space-y-24 pb-20 md:pb-40 animate-fade-in">
                         {/* Featured Player & Recent List */}
-                        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-24 max-w-[1200px] mx-auto transition-all bg-transparent">
+                        <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-24 max-w-[1200px] mx-auto transition-all bg-transparent">
                             {/* Main Player */}
                             <div className="lg:w-[65%] lg:pt-16">
                                 {latestSermon ? (
@@ -412,12 +412,12 @@ const Resources = () => {
                                                 </>
                                             )}
                                         </div>
-                                        <div className="p-4 md:p-5">
+                                        <div className="p-3 md:p-5">
                                             <div className="flex items-center gap-3 mb-2">
-                                                <span className="bg-accent/20 text-accent px-3 py-1 rounded-full text-[11px] font-black tracking-widest uppercase">{t('resources.latest_sermon')}</span>
+                                                <span className="bg-accent/20 text-accent px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase">{t('resources.latest_sermon')}</span>
                                                 <span className="text-white/40 text-sm font-medium">{latestSermon.date}</span>
                                             </div>
-                                            <h2 className="text-base md:text-xl font-black text-white mb-3 leading-tight truncate">
+                                            <h2 className="text-sm md:text-xl font-black text-white mb-2 leading-tight truncate">
                                                 {(i18n.language === 'en' && latestSermon.titleEn) ? latestSermon.titleEn : latestSermon.title}
                                             </h2>
                                             <div className="flex items-center gap-2 text-white/60">
