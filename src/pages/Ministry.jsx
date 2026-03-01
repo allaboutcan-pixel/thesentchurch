@@ -254,7 +254,7 @@ const Ministry = () => {
                     {i18n.language === 'en' ? (
                         (siteConfig?.sundaySchoolDescriptionEn || t('ministry.sunday_school_description')) && (
                             <p
-                                className="text-lg md:text-xl text-gray-600 font-medium leading-[2] break-keep whitespace-pre-line mb-8"
+                                className="text-sm md:text-xl text-gray-600 font-medium leading-[2] break-keep whitespace-pre-line mb-8"
                                 dangerouslySetInnerHTML={{ __html: siteConfig?.sundaySchoolDescriptionEn || t('ministry.sunday_school_description') }}
                             />
                         )
@@ -266,7 +266,7 @@ const Ministry = () => {
                             </p>
                             {/* Mobile Korean Description (with requested line breaks) */}
                             <p
-                                className="block md:hidden text-lg text-gray-600 font-medium leading-[2] mb-8"
+                                className="block md:hidden text-sm text-gray-600 font-medium leading-[2] mb-8"
                                 dangerouslySetInnerHTML={{
                                     __html: siteConfig?.sundaySchoolDescription
                                         ? siteConfig.sundaySchoolDescription.replace(/\n/g, '<br/>')
@@ -276,10 +276,10 @@ const Ministry = () => {
                         </>
                     )}
                     <p
-                        className="text-base md:text-lg text-gray-500 font-medium italic leading-[2] break-keep whitespace-pre-line"
+                        className="text-xs md:text-lg text-gray-500 font-medium italic leading-[2] break-keep whitespace-pre-line"
                         dangerouslySetInnerHTML={{
                             __html: i18n.language === 'en'
-                                ? (siteConfig?.sundaySchoolSubtitleEn || t('ministry.subtitle_verse'))
+                                ? (siteConfig?.sundaySchoolSubtitleEn || t('ministry.sunday_school_subtitle_mobile') || t('ministry.sunday_school_subtitle'))
                                 : (window.innerWidth < 768
                                     ? `"${siteConfig?.sundaySchoolSubtitle || t('ministry.sunday_school_subtitle_mobile') || t('ministry.sunday_school_subtitle')}"`
                                     : `"${siteConfig?.sundaySchoolSubtitle || t('ministry.sunday_school_subtitle')}"`)
