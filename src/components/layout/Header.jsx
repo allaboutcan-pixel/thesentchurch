@@ -79,9 +79,9 @@ const Header = () => {
                                 )}
                             >
                                 <span className="leading-tight flex items-center gap-1">
-                                    {(i18n.language === 'en' && item.id === 'guide' && config?.aboutTitleEn)
+                                    {(i18n.language === 'en' && item.id === 'guide' && typeof config?.aboutTitleEn === 'string')
                                         ? config.aboutTitleEn
-                                        : (i18n.language === 'en' && (item.id === 'prayer' || item.path === '/ministry/prayer') && config?.prayerTitleEn)
+                                        : (i18n.language === 'en' && (item.id === 'prayer' || item.path === '/ministry/prayer') && typeof config?.prayerTitleEn === 'string')
                                             ? config.prayerTitleEn
                                             : t(`nav.${item.id}`)}
                                     {item.subItems && (
@@ -105,7 +105,7 @@ const Header = () => {
                                             >
                                                 {(i18n.language === 'en' && sub.id === 'pastor')
                                                     ? "Senior Pastor’s Greeting"
-                                                    : (i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn && !config.prayerTitleEn.toLowerCase().includes("built on prayer"))
+                                                    : (i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && typeof config?.prayerTitleEn === 'string' && !config.prayerTitleEn.toLowerCase().includes("built on prayer"))
                                                         ? config.prayerTitleEn
                                                         : t(`nav.${sub.id || sub.path.split('/').pop()}`)}
                                             </Link>
@@ -182,9 +182,9 @@ const Header = () => {
                                         }}
                                     >
                                         <span className="text-sm">
-                                            {(i18n.language === 'en' && item.id === 'guide' && config?.aboutTitleEn)
+                                            {(i18n.language === 'en' && item.id === 'guide' && typeof config?.aboutTitleEn === 'string')
                                                 ? config.aboutTitleEn
-                                                : (i18n.language === 'en' && (item.id === 'prayer' || item.path === '/ministry/prayer') && config?.prayerTitleEn)
+                                                : (i18n.language === 'en' && (item.id === 'prayer' || item.path === '/ministry/prayer') && typeof config?.prayerTitleEn === 'string')
                                                     ? config.prayerTitleEn
                                                     : t(`nav.${item.id}`)}
                                         </span>
@@ -217,7 +217,7 @@ const Header = () => {
                                                 >
                                                     • {(i18n.language === 'en' && sub.id === 'pastor')
                                                         ? "Senior Pastor’s Greeting"
-                                                        : (i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && config?.prayerTitleEn && !config.prayerTitleEn.toLowerCase().includes("built on prayer"))
+                                                        : (i18n.language === 'en' && (sub.id === 'prayer' || sub.path === '/ministry/prayer') && typeof config?.prayerTitleEn === 'string' && !config.prayerTitleEn.toLowerCase().includes("built on prayer"))
                                                             ? config.prayerTitleEn
                                                             : t(`nav.${sub.id || sub.path.split('/').pop()}`)}
                                                 </Link>

@@ -22,8 +22,13 @@ const Ministry = () => {
     const overlayOpacity = config.ministryOverlayOpacity !== undefined ? config.ministryOverlayOpacity : 40;
 
     const isEn = i18n.language === 'en' || i18n.language.startsWith('en-');
-    const title = isEn && config.ministryTitleEn ? config.ministryTitleEn : (config.ministryTitle || "");
-    const subtitle = isEn && config.ministrySubtitleEn ? config.ministrySubtitleEn : (config.ministrySubtitle || "");
+    const title = isEn
+        ? (config.ministryTitleEn || t('nav.education'))
+        : (config.ministryTitle || t('nav.education'));
+
+    const subtitle = isEn
+        ? (config.ministrySubtitleEn || "")
+        : (config.ministrySubtitle || "");
 
     const titleFont = config.ministryTitleFont || "font-sans";
     const subtitleFont = config.ministrySubtitleFont || "font-sans";
@@ -52,10 +57,10 @@ const Ministry = () => {
     const currentItems = config.ministryItems || churchData.ministries;
     const ministryList = getFilteredItems(currentItems.map(m => ({
         ...m,
-        name: i18n.language === 'en' && m.nameEn ? m.nameEn : m.name,
-        target: i18n.language === 'en' && m.targetEn ? m.targetEn : m.target,
-        description: i18n.language === 'en' && m.descriptionEn ? m.descriptionEn : m.description,
-        detail: i18n.language === 'en' && m.detailEn ? m.detailEn : m.detail
+        name: isEn ? (m.nameEn || m.name) : m.name,
+        target: isEn ? (m.targetEn || m.target) : m.target,
+        description: isEn ? (m.descriptionEn || m.description) : m.description,
+        detail: isEn ? (m.detailEn || m.detail) : m.detail
     })));
 
     const formatDetail = (text) => {

@@ -95,12 +95,12 @@ const Home = () => {
                 if (config && isMounted) {
                     if (config.heroImage) setHeroImage(config.heroImage);
 
-                    // Multi-language support for Hero
-                    const title = i18n.language === 'en' && config.heroTitleEn ? config.heroTitleEn : config.heroTitle;
-                    const subtitle = i18n.language === 'en' && config.heroSubtitleEn ? config.heroSubtitleEn : config.heroSubtitle;
+                    // Multi-language support for Hero with safety guards
+                    const title = i18n.language === 'en' && config.heroTitleEn ? config.heroTitleEn : (config.heroTitle || "");
+                    const subtitle = i18n.language === 'en' && config.heroSubtitleEn ? config.heroSubtitleEn : (config.heroSubtitle || "");
 
-                    if (title) setHeroTitle(title);
-                    if (subtitle) setHeroSubtitle(subtitle);
+                    setHeroTitle(title);
+                    setHeroSubtitle(subtitle);
 
                     if (config.heroTitleColor) setHeroTitleColor(config.heroTitleColor);
                     if (config.heroSubtitleColor) setHeroSubtitleColor(config.heroSubtitleColor);
@@ -122,7 +122,7 @@ const Home = () => {
                     if (config.youtubeUrl) setYoutubeUrl(config.youtubeUrl);
                 }
             } catch (e) {
-                if (isMounted) console.warn("Could not fetch live content, using defaults.");
+                if (isMounted) console.warn("Could not fetch live content, using defaults.", e);
             }
         };
         fetchLiveContent();
@@ -180,7 +180,7 @@ const Home = () => {
             )}>
                 <div className={clsx(
                     "absolute inset-0 z-0",
-                    heroImage?.includes('drive.google.com') && "hero-video-mask"
+                    (typeof heroImage === 'string' && heroImage.includes('drive.google.com')) && "hero-video-mask"
                 )}>
                     {/* 1. Poster Layer (Visible until video loads) */}
                     {posterUrl && ( // Removed DEFAULT_HERO_IMAGE fallback here
@@ -224,7 +224,7 @@ const Home = () => {
                             ) : (
                                 <video
                                     key={heroImage}
-                                    src={heroImage.includes('drive.google.com') ? dbService.formatDriveVideo(heroImage) : heroImage}
+                                    src={(typeof heroImage === 'string' && heroImage.includes('drive.google.com')) ? dbService.formatDriveVideo(heroImage) : heroImage}
                                     className={clsx(
                                         "w-full h-full transition-all",
                                         heroBannerFit === 'contain' ? "object-contain" : "object-cover"
@@ -340,7 +340,7 @@ const Home = () => {
                             </div>
                             <a
                                 href={(() => {
-                                    if (!youtubeUrl) return "https://www.youtube.com/@churchofthesent7763";
+                                    if (!youtubeUrl || typeof youtubeUrl !== 'string') return "https://www.youtube.com/@churchofthesent7763";
                                     if (youtubeUrl.startsWith('http')) return youtubeUrl;
                                     return `https://${youtubeUrl}`;
                                 })()}
