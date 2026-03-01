@@ -262,9 +262,7 @@ const Ministry = () => {
                             <p
                                 className="block md:hidden text-sm text-gray-600 font-medium leading-[2] mb-8"
                                 dangerouslySetInnerHTML={{
-                                    __html: siteConfig?.sundaySchoolDescriptionEn
-                                        ? siteConfig.sundaySchoolDescriptionEn.replace(/\n/g, '<br/>')
-                                        : t('ministry.sunday_school_desc_mobile')
+                                    __html: t('ministry.sunday_school_desc_mobile') || (siteConfig?.sundaySchoolDescriptionEn && siteConfig.sundaySchoolDescriptionEn.replace(/\n/g, '<br/>'))
                                 }}
                             />
                         </>
@@ -296,9 +294,7 @@ const Ministry = () => {
                             <p
                                 className="block md:hidden text-xs text-gray-500 font-medium italic leading-[2] break-keep whitespace-pre-line"
                                 dangerouslySetInnerHTML={{
-                                    __html: siteConfig?.sundaySchoolSubtitleEn
-                                        ? siteConfig.sundaySchoolSubtitleEn.replace(/\n/g, '<br/>')
-                                        : t('ministry.sunday_school_subtitle_mobile')
+                                    __html: t('ministry.sunday_school_subtitle_mobile') || (siteConfig?.sundaySchoolSubtitleEn && siteConfig.sundaySchoolSubtitleEn.replace(/\n/g, '<br/>'))
                                 }}
                             />
                         </>
