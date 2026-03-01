@@ -252,12 +252,22 @@ const Ministry = () => {
 
                     {/* Description Section */}
                     {i18n.language === 'en' ? (
-                        (siteConfig?.sundaySchoolDescriptionEn || t('ministry.sunday_school_description')) && (
+                        <>
+                            {/* Desktop English Description */}
                             <p
-                                className="text-sm md:text-xl text-gray-600 font-medium leading-[2] break-keep whitespace-pre-line mb-8"
+                                className="hidden md:block text-lg md:text-xl text-gray-600 font-medium leading-[1.8] break-keep whitespace-pre-line mb-8"
                                 dangerouslySetInnerHTML={{ __html: siteConfig?.sundaySchoolDescriptionEn || t('ministry.sunday_school_description') }}
                             />
-                        )
+                            {/* Mobile English Description (with requested line breaks) */}
+                            <p
+                                className="block md:hidden text-sm text-gray-600 font-medium leading-[2] mb-8"
+                                dangerouslySetInnerHTML={{
+                                    __html: siteConfig?.sundaySchoolDescriptionEn
+                                        ? siteConfig.sundaySchoolDescriptionEn.replace(/\n/g, '<br/>')
+                                        : t('ministry.sunday_school_desc_mobile')
+                                }}
+                            />
+                        </>
                     ) : (
                         <>
                             {/* Desktop Korean Description */}
@@ -275,16 +285,33 @@ const Ministry = () => {
                             />
                         </>
                     )}
-                    <p
-                        className="text-xs md:text-lg text-gray-500 font-medium italic leading-[2] break-keep whitespace-pre-line"
-                        dangerouslySetInnerHTML={{
-                            __html: i18n.language === 'en'
-                                ? (siteConfig?.sundaySchoolSubtitleEn || t('ministry.sunday_school_subtitle_mobile') || t('ministry.sunday_school_subtitle'))
-                                : (window.innerWidth < 768
+                    {i18n.language === 'en' ? (
+                        <>
+                            {/* Desktop English Subtitle */}
+                            <p
+                                className="hidden md:block text-lg text-gray-500 font-medium italic leading-[2] break-keep whitespace-pre-line"
+                                dangerouslySetInnerHTML={{ __html: siteConfig?.sundaySchoolSubtitleEn || t('ministry.sunday_school_subtitle') }}
+                            />
+                            {/* Mobile English Subtitle */}
+                            <p
+                                className="block md:hidden text-xs text-gray-500 font-medium italic leading-[2] break-keep whitespace-pre-line"
+                                dangerouslySetInnerHTML={{
+                                    __html: siteConfig?.sundaySchoolSubtitleEn
+                                        ? siteConfig.sundaySchoolSubtitleEn.replace(/\n/g, '<br/>')
+                                        : t('ministry.sunday_school_subtitle_mobile')
+                                }}
+                            />
+                        </>
+                    ) : (
+                        <p
+                            className="text-xs md:text-lg text-gray-500 font-medium italic leading-[2] break-keep whitespace-pre-line"
+                            dangerouslySetInnerHTML={{
+                                __html: window.innerWidth < 768
                                     ? `"${siteConfig?.sundaySchoolSubtitle || t('ministry.sunday_school_subtitle_mobile') || t('ministry.sunday_school_subtitle')}"`
-                                    : `"${siteConfig?.sundaySchoolSubtitle || t('ministry.sunday_school_subtitle')}"`)
-                        }}
-                    />
+                                    : `"${siteConfig?.sundaySchoolSubtitle || t('ministry.sunday_school_subtitle')}"`
+                            }}
+                        />
+                    )}
                 </div>
             </div>
 
