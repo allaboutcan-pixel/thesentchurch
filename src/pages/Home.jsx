@@ -334,7 +334,7 @@ const Home = () => {
                                 <p className="text-accent font-black text-base mb-4 tracking-wide uppercase">
                                     {latestSermon.date} • {(i18n.language === 'en' && latestSermon.preacherEn) ? latestSermon.preacherEn : (latestSermon.preacher || t('home.preacher_default'))}
                                 </p>
-                                <h3 className="text-primary text-lg md:text-2xl font-black leading-snug">
+                                <h3 className="text-primary text-base md:text-xl font-black leading-snug truncate">
                                     {(i18n.language === 'en' && latestSermon.titleEn) ? latestSermon.titleEn : (latestSermon.title || t('home.latest_word'))}
                                 </h3>
                             </div>

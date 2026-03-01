@@ -417,7 +417,7 @@ const Resources = () => {
                                                 <span className="bg-accent/20 text-accent px-3 py-1 rounded-full text-[11px] font-black tracking-widest uppercase">{t('resources.latest_sermon')}</span>
                                                 <span className="text-white/40 text-sm font-medium">{latestSermon.date}</span>
                                             </div>
-                                            <h2 className="text-2xl md:text-3xl font-black text-white mb-3 leading-tight">
+                                            <h2 className="text-xl md:text-2xl font-black text-white mb-3 leading-tight truncate">
                                                 {(i18n.language === 'en' && latestSermon.titleEn) ? latestSermon.titleEn : latestSermon.title}
                                             </h2>
                                             <div className="flex items-center gap-2 text-white/60">
