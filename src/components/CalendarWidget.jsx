@@ -194,34 +194,38 @@ const CalendarWidget = () => {
                     ))}
                 </div>
 
-                {/* Selected Day Info (Simple Overlay/Line Instead of Sidebar) */}
-                {mainEvent && (
-                    <div className="mt-8 p-6 bg-slate-50/50 rounded-3xl border border-gray-100 animate-fade-in flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div className="flex items-center gap-6">
-                            <div className="p-4 bg-white rounded-2xl shadow-sm">
-                                <Info size={24} className="text-accent" />
+                {/* Selected Day Info (All events) */}
+                {selectedEvents.length > 0 && (
+                    <div className="mt-8 space-y-4 animate-fade-in">
+                        {selectedEvents.map((event, idx) => (
+                            <div key={event.id || idx} className="p-6 bg-slate-50/50 rounded-3xl border border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
+                                <div className="flex items-center gap-6">
+                                    <div className="p-4 bg-white rounded-2xl shadow-sm">
+                                        <Info size={24} className={clsx(event.type === 'special' ? "text-accent" : "text-primary")} />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xl font-bold text-primary">{isEn && event.titleEn ? event.titleEn : event.title}</h4>
+                                        <p className="text-sm text-gray-500 font-bold">
+                                            {(() => {
+                                                const d = parseDateLocal(event.startDate);
+                                                return `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}.`;
+                                            })()}
+                                            {event.endDate && event.endDate !== event.startDate && (() => {
+                                                const d = parseDateLocal(event.endDate);
+                                                return ` - ${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}.`;
+                                            })()}
+                                        </p>
+                                    </div>
+                                </div>
+                                {event.note && (
+                                    <div className="max-w-md border-l-2 border-accent/20 pl-4">
+                                        <p className="text-sm text-gray-500 leading-relaxed italic font-medium">
+                                            {isEn && event.noteEn ? event.noteEn : event.note}
+                                        </p>
+                                    </div>
+                                )}
                             </div>
-                            <div>
-                                <h4 className="text-xl font-bold text-primary">{isEn && mainEvent.titleEn ? mainEvent.titleEn : mainEvent.title}</h4>
-                                <p className="text-sm text-gray-500 font-bold">
-                                    {(() => {
-                                        const d = parseDateLocal(mainEvent.startDate);
-                                        return `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}.`;
-                                    })()}
-                                    {mainEvent.endDate && mainEvent.endDate !== mainEvent.startDate && (() => {
-                                        const d = parseDateLocal(mainEvent.endDate);
-                                        return ` - ${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}.`;
-                                    })()}
-                                </p>
-                            </div>
-                        </div>
-                        {mainEvent.note && (
-                            <div className="max-w-md border-l-2 border-accent/20 pl-4">
-                                <p className="text-sm text-gray-500 leading-relaxed italic font-medium">
-                                    {isEn && mainEvent.noteEn ? mainEvent.noteEn : mainEvent.note}
-                                </p>
-                            </div>
-                        )}
+                        ))}
                     </div>
                 )}
             </div>
