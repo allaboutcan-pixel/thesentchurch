@@ -1,4 +1,28 @@
 {
+    "redirects": [
+        {
+            "source": "/(.*)",
+            "has": [
+                {
+                    "type": "host",
+                    "value": "thesentchurch-fws9.vercel.app"
+                }
+            ],
+            "destination": "https://thesentchurch.ca/$1",
+            "permanent": true
+        },
+        {
+            "source": "/(.*)",
+            "has": [
+                {
+                    "type": "host",
+                    "value": "thesentchurch.vercel.app"
+                }
+            ],
+            "destination": "https://thesentchurch.ca/$1",
+            "permanent": true
+        }
+    ],
     "rewrites": [
         {
             "source": "/(.*)",
