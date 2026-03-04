@@ -9,6 +9,7 @@ import { useSiteConfig } from '../hooks/useSiteConfig';
 import { isVideo, getYoutubeId, getDriveId } from '../utils/mediaUtils';
 import QuickLinks from '../components/QuickLinks';
 import CalendarWidget from '../components/CalendarWidget';
+import SEO from '../components/SEO';
 import clsx from 'clsx';
 
 // Lazy load the popup to reduce initial bundle size
@@ -174,6 +175,17 @@ const Home = () => {
 
     return (
         <div className="min-h-screen">
+            <SEO
+                path="/"
+                structuredData={{
+                    "@context": "https://schema.org",
+                    "@type": "Church",
+                    "name": i18n.language === 'ko' ? "보내심을 받은 생명의소리 교회" : "The Church of the Sent",
+                    "description": i18n.language === 'ko'
+                        ? "밴쿠버 랭리에 위치한 보내심을 받은 생명의소리 교회. 문화적 기독교를 벗고 성서적 기독교로 나아가는 공동체입니다."
+                        : "The Church of the Sent located in Langley, Vancouver. Moving from cultural Christianity to biblical Christianity."
+                }}
+            />
             <Suspense fallback={null}>
                 <DailyWordPopup word={latestDailyWord} />
             </Suspense>

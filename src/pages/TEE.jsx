@@ -5,6 +5,7 @@ import { BookOpen, Target, Heart, CheckCircle2, Globe2, Leaf, Sprout, Award, Scr
 import MinistryNav from '../components/MinistryNav';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import clsx from 'clsx';
+import SEO from '../components/SEO';
 
 const TEE = () => {
     const { t, i18n } = useTranslation();
@@ -63,6 +64,11 @@ const TEE = () => {
 
     return (
         <div className="flex flex-col w-full min-h-screen bg-[#fdfbf7] font-sans text-slate-800">
+            <SEO
+                title={bannerTitle || t('tee.banner_title')}
+                description={bannerSubtitle || (i18n.language === 'ko' ? "보내심을 받은 생명의소리 교회 TEE(Theological Education by Extension) 성경 공부 안내입니다." : "TEE (Theological Education by Extension) bible study guide for The Church of the Sent.")}
+                path="/ministry/tee"
+            />
             {/* Hero Section */}
             <div className={heroHeightClass}>
                 <div className="absolute inset-0 z-0">

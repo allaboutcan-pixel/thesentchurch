@@ -24,4 +24,20 @@
     <loc>https://thesentchurch.ca/sermons/daily</loc>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://thesentchurch.ca/ministry/tee</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thesentchurch.ca/ministry/bible</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thesentchurch.ca/ministry/team</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thesentchurch.ca/ministry/prayer</loc>
+    <priority>0.7</priority>
+  </url>
 </urlset>

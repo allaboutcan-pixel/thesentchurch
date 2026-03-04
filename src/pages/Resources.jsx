@@ -10,6 +10,7 @@ import { dbService } from '../services/dbService';
 import { isVideo, getYoutubeId } from '../utils/mediaUtils';
 import { safeSplitDate } from '../utils/dateUtils';
 import CalendarWidget from '../components/CalendarWidget';
+import SEO from '../components/SEO';
 
 const Resources = () => {
     const { t, i18n } = useTranslation();
@@ -237,6 +238,11 @@ const Resources = () => {
 
     return (
         <div className="min-h-screen">
+            <SEO
+                title={title || t('nav.news')}
+                description={subtitle || (i18n.language === 'ko' ? "보내심을 받은 생명의소리 교회 설보, 주보, 교회 소식 및 갤러리입니다." : "Sermons, bulletins, church news, and gallery for The Church of the Sent.")}
+                path={prefix === 'news' ? '/news' : '/resources'}
+            />
             {/* Header with Banner */}
             <section className="relative w-full flex items-center justify-center overflow-hidden h-[18vh] md:h-[75vh]">
                 {/* Background Image Container - Easy to replace later */}

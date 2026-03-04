@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { isVideo, getYoutubeId } from '../utils/mediaUtils';
 import { useLocation } from 'react-router-dom';
 import clsx from 'clsx';
+import SEO from '../components/SEO';
 import { motion } from 'framer-motion';
 
 import { useSiteConfigValue } from '../context/SiteConfigContext';
@@ -123,6 +124,11 @@ const Ministry = () => {
 
     return (
         <div className="min-h-screen bg-[#efebe9]">
+            <SEO
+                title={title || t('nav.education')}
+                description={subtitle || (i18n.language === 'ko' ? "보내심을 받은 생명의소리 교회 교육 및 사역 안내입니다." : "Education and ministry guide for The Church of the Sent.")}
+                path="/ministry"
+            />
             {/* Header with Banner */}
             <div className={clsx(
                 "relative flex items-center justify-center overflow-hidden",

@@ -6,6 +6,7 @@ import { useSiteConfig } from '../hooks/useSiteConfig';
 import churchData from '../data/church_data.json';
 import MinistryNav from '../components/MinistryNav';
 import clsx from 'clsx';
+import SEO from '../components/SEO';
 
 const iconMap = {
     Users,
@@ -58,6 +59,11 @@ const TeamMinistry = () => {
 
     return (
         <div className="min-h-screen bg-[#efebe9]">
+            <SEO
+                title={title || t('team_ministry.title')}
+                description={subtitle || (i18n.language === 'ko' ? "보내심을 받은 생명의소리 교회 팀 사역 및 각 부서별 안내입니다." : "Team ministries and department guide for The Church of the Sent.")}
+                path="/ministry/team"
+            />
             {/* Hero Section */}
             <div className="relative h-[50vh] md:h-[75vh] flex items-center justify-center overflow-hidden">
                 <div

@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { dbService } from '../services/dbService';
 import { getDayName, safeSplitDate } from '../utils/dateUtils';
+import SEO from '../components/SEO';
 
 const DailyWord = () => {
     const { t, i18n } = useTranslation();
@@ -105,6 +106,11 @@ const DailyWord = () => {
 
     return (
         <div className="min-h-screen bg-white">
+            <SEO
+                title={title || t('nav.daily_word')}
+                description={subtitle || (i18n.language === 'ko' ? "보내심을 받은 생명의소리 교회 오늘의 말씀입니다." : "Daily word for The Church of the Sent.")}
+                path="/sermons/daily"
+            />
             {/* Header Banner */}
             <section className="relative w-full flex items-center justify-center overflow-hidden h-[50vh] md:h-[75vh]">
                 <div className="absolute inset-0 z-0">

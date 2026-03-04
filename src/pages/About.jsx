@@ -8,6 +8,7 @@ import { dbService } from '../services/dbService';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import { useLocation } from 'react-router-dom';
 import { isVideo, getYoutubeId } from '../utils/mediaUtils';
+import SEO from '../components/SEO';
 import clsx from 'clsx';
 
 const About = () => {
@@ -84,6 +85,11 @@ const About = () => {
 
     return (
         <div className="min-h-screen">
+            <SEO
+                title={t('nav.guide')}
+                description={i18n.language === 'ko' ? "보내심을 받은 생명의소리 교회 소개, 교역자 인사말, 예배 안내 및 오시는 길입니다." : "Introduction, pastor's greeting, worship guide, and directions for The Church of the Sent."}
+                path="/about"
+            />
             {/* Header */}
             <div className={clsx(
                 "relative flex items-center justify-center overflow-hidden",

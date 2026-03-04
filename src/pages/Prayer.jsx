@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import MinistryNav from '../components/MinistryNav';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import clsx from 'clsx';
+import SEO from '../components/SEO';
 
 const Prayer = () => {
     const { t, i18n } = useTranslation();
@@ -146,6 +147,11 @@ const Prayer = () => {
 
     return (
         <div className="flex flex-col w-full min-h-screen bg-[#efebe9] font-sans text-slate-800">
+            <SEO
+                title={bannerTitle || t('nav.prayer')}
+                description={bannerSubtitle || (i18n.language === 'ko' ? "보내심을 받은 생명의소리 교회 중보기도 사역 안내 및 기도 요청입니다." : "Intercessory prayer ministry and prayer requests for The Church of the Sent.")}
+                path="/ministry/prayer"
+            />
             {/* Hero Section */}
             <div className={heroHeightClass}>
                 <div className="absolute inset-0 z-0">

@@ -8,6 +8,7 @@ import { useSiteConfig } from '../hooks/useSiteConfig';
 import { isVideo, getYoutubeId, getDriveId } from '../utils/mediaUtils';
 import { Play } from 'lucide-react';
 import clsx from 'clsx';
+import SEO from '../components/SEO';
 
 const BibleStudy = () => {
     const { t, i18n } = useTranslation();
@@ -114,6 +115,11 @@ const BibleStudy = () => {
 
     return (
         <div className="flex flex-col w-full min-h-screen bg-[#fdfbf7] font-sans text-slate-800 pb-20">
+            <SEO
+                title={bannerTitle || t('bible.banner_title')}
+                description={bannerSubtitle || (i18n.language === 'ko' ? "보내심을 받은 생명의소리 교회 성경 공부 지침 및 커리큘럼 안내입니다." : "Bible study guide and curriculum for The Church of the Sent.")}
+                path="/ministry/bible"
+            />
             {/* Hero Section */}
             <div className={heroHeightClass}>
                 <div className="absolute inset-0 z-0">
