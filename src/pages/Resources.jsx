@@ -1156,10 +1156,20 @@ const Resources = () => {
                             )}
                         </div>
                         {selectedVideo.type !== 'audio' && (
-                            <div className="mt-6 text-white text-center font-bold text-lg">
+                            <div className="mt-6 text-white text-center font-bold text-lg px-4 w-full truncate">
                                 {(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
                             </div>
                         )}
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedVideo(null);
+                            }}
+                            className="mt-6 px-8 py-3 bg-white/10 text-white rounded-full font-bold text-sm hover:bg-white/20 transition-all active:scale-95 flex items-center justify-center gap-2"
+                        >
+                            <X size={18} />
+                            {i18n.language === 'en' ? 'Close' : '닫기'}
+                        </button>
                     </div>
                 )
             }
