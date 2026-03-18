@@ -1077,7 +1077,7 @@ const Resources = () => {
             {
                 selectedVideo && (
                     <div
-                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/95 backdrop-blur-sm animate-fade-in"
+                        className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4 bg-black/95 backdrop-blur-sm animate-fade-in"
                         onClick={() => setSelectedVideo(null)}
                     >
                         <button
@@ -1089,8 +1089,10 @@ const Resources = () => {
 
                         <div
                             className={clsx(
-                                "w-full max-w-5xl bg-black rounded-2xl overflow-hidden shadow-2xl relative",
-                                selectedVideo.type === 'audio' ? "aspect-auto p-12 bg-white" : "aspect-video"
+                                "w-full max-w-5xl rounded-2xl overflow-hidden relative",
+                                selectedVideo.type === 'image' ? "bg-transparent" : "bg-black shadow-2xl",
+                                selectedVideo.type === 'audio' ? "aspect-auto p-12 bg-white" : 
+                                selectedVideo.type === 'image' ? "aspect-auto h-auto max-h-[85vh] flex justify-center items-center" : "aspect-video"
                             )}
                             onClick={(e) => e.stopPropagation()}
                         >
@@ -1115,7 +1117,7 @@ const Resources = () => {
                             ) : selectedVideo.type === 'image' ? (
                                 <img
                                     src={selectedVideo.url}
-                                    className="w-full h-full object-contain"
+                                    className="max-w-full max-h-[85vh] object-contain rounded-xl"
                                     alt={(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
                                 />
                             ) : isVideo(selectedVideo.url) ? (
@@ -1152,13 +1154,12 @@ const Resources = () => {
                                     title={(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
                                 ></iframe>
                             )}
-                            <div className={clsx(
-                                "absolute left-0 right-0 text-center font-bold",
-                                selectedVideo.type === 'audio' ? "hidden" : "bottom-[-40px] text-white"
-                            )}>
+                        </div>
+                        {selectedVideo.type !== 'audio' && (
+                            <div className="mt-6 text-white text-center font-bold text-lg">
                                 {(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
                             </div>
-                        </div>
+                        )}
                     </div>
                 )
             }
