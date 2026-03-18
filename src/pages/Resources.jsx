@@ -966,7 +966,7 @@ const Resources = () => {
                                     <div key={img.id || idx} className="flex flex-col group">
                                         <div
                                             className="relative aspect-video rounded-xl overflow-hidden cursor-pointer bg-slate-50 shadow-sm hover:shadow-xl transition-all border border-gray-100"
-                                            onClick={() => (img.type === 'video' || img.type === 'audio') && setSelectedVideo(img)}
+                                            onClick={() => setSelectedVideo(img)}
                                         >
                                             {img.type === 'audio' ? (
                                                 <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 to-white text-primary">
@@ -1112,6 +1112,12 @@ const Resources = () => {
                                         className="w-full max-w-md"
                                     />
                                 </div>
+                            ) : selectedVideo.type === 'image' ? (
+                                <img
+                                    src={selectedVideo.url}
+                                    className="w-full h-full object-contain"
+                                    alt={(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
+                                />
                             ) : isVideo(selectedVideo.url) ? (
                                 <video
                                     src={selectedVideo.url}
