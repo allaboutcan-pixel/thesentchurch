@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, ArrowRight, Youtube } from 'lucide-react';
+import { Play, ArrowRight, Youtube, Bell } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import churchData from '../data/church_data.json';
 import sermonsInitialData from '../data/sermons.json';
@@ -21,6 +21,7 @@ const Home = () => {
     // ... items ...
     const [latestSermon, setLatestSermon] = useState(sermonsInitialData[0] || {});
     const [latestDailyWord, setLatestDailyWord] = useState(null);
+    const [recentUpdates, setRecentUpdates] = useState([]);
     const [heroImage, setHeroImage] = useState("");
     const [isVideoLoaded, setIsVideoLoaded] = useState(false);
     const [heroTitle, setHeroTitle] = useState("");
@@ -47,7 +48,7 @@ const Home = () => {
         const fetchLiveContent = async () => {
             try {
                 // Fetch in parallel for better performance
-                const [liveSermons, liveDailyWords] = await Promise.all([
+                const [liveSermons, liveDailyWords, liveBulletins, liveColumns, liveGallery] = await Promise.all([
                     dbService.getSermons().catch(err => {
                         console.warn("Home: Failed to fetch sermons", err);
                         return [];
@@ -55,7 +56,10 @@ const Home = () => {
                     dbService.fetchItems('daily_word', 7).catch(err => {
                         console.warn("Home: Failed to fetch daily_word", err);
                         return [];
-                    })
+                    }),
+                    dbService.getBulletins().catch(() => []),
+                    dbService.getColumns().catch(() => []),
+                    dbService.getGallery().catch(() => [])
                 ]);
 
                 if (!isMounted) return;
@@ -97,6 +101,24 @@ const Home = () => {
                     const lastWord = validWords.filter(w => w.date < todayStr).sort((a, b) => new Date(b.date) - new Date(a.date))[0] || validWords[0];
 
                     if (isMounted) setLatestDailyWord(displayWord || lastWord || null);
+                }
+
+                if (isMounted) {
+                    const allUpdates = [
+                        ...(Array.isArray(liveSermons) ? liveSermons : []).map(item => ({ ...item, type: 'sermon', typeLabel: i18n.language === 'en' ? 'Sermon' : '설교' })),
+                        ...(Array.isArray(liveBulletins) ? liveBulletins : []).map(item => ({ ...item, type: 'bulletin', typeLabel: i18n.language === 'en' ? 'Bulletin' : '주보' })),
+                        ...(Array.isArray(liveColumns) ? liveColumns : []).map(item => ({ ...item, type: 'column', typeLabel: i18n.language === 'en' ? 'Column' : '신학 칼럼' })),
+                        ...(Array.isArray(liveGallery) ? liveGallery : []).map(item => ({ ...item, type: 'gallery', typeLabel: i18n.language === 'en' ? 'Gallery' : '갤러리' }))
+                    ];
+
+                    // Sort by date descending safely
+                    allUpdates.sort((a, b) => {
+                        const dateA = new Date(a.date || a.createdAt || Date.now());
+                        const dateB = new Date(b.date || b.createdAt || Date.now());
+                        return dateB - dateA;
+                    });
+
+                    setRecentUpdates(allUpdates.slice(0, 5));
                 }
 
                 if (config && isMounted) {
@@ -395,11 +417,58 @@ const Home = () => {
             {/* Church Calendar Section */}
             <section className="py-20 bg-secondary">
                 <div id="calendar" className="container mx-auto px-4 scroll-mt-24">
-                    <div className="max-w-6xl mx-auto">
+                    <div className="max-w-7xl mx-auto">
                         <div className="flex items-center justify-between border-b-2 border-slate-100 pb-4 mb-8">
                             <h3 className="text-2xl font-black text-primary">{t('home.calendar_title')}</h3>
                         </div>
-                        <CalendarWidget />
+                        
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                            <div className="lg:col-span-2">
+                                <CalendarWidget />
+                            </div>
+                            
+                            <div className="lg:col-span-1 bg-white rounded-[32px] p-5 shadow-2xl shadow-primary/5 border border-gray-50 h-full flex flex-col justify-between">
+                                <h4 className="text-lg font-black text-primary mb-4 flex items-center gap-2 shrink-0">
+                                    <Bell size={18} className="text-accent" />
+                                    {i18n.language === 'en' ? 'Recent Updates' : '최근 업데이트된 내용'}
+                                </h4>
+                                <div className="space-y-2 flex-grow flex flex-col justify-center">
+                                    {recentUpdates.length > 0 ? recentUpdates.map((item, idx) => (
+                                        <Link 
+                                            key={idx} 
+                                            to={
+                                                item.type === 'sermon' ? '/sermons' :
+                                                item.type === 'bulletin' ? '/news/bulletin' :
+                                                item.type === 'column' ? '/news/column' :
+                                                item.type === 'gallery' ? '/news/gallery' : '/news'
+                                            }
+                                            state={{ openItem: JSON.parse(JSON.stringify(item)) }}
+                                            className="block p-2.5 rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-sm transition-all group"
+                                        >
+                                            <div className="flex justify-between items-center mb-1.5">
+                                                <span className={clsx(
+                                                    "text-[9px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider",
+                                                    item.type === 'sermon' ? "bg-red-50 text-red-500" :
+                                                    item.type === 'bulletin' ? "bg-blue-50 text-blue-500" :
+                                                    item.type === 'column' ? "bg-green-50 text-green-500" :
+                                                    "bg-purple-50 text-purple-500"
+                                                )}>
+                                                    {item.typeLabel}
+                                                </span>
+                                                <span className="text-[10px] font-bold text-gray-400">{item.date?.substring?.(0,10) || ""}</span>
+                                            </div>
+                                            <h5 className="font-bold text-[13px] text-gray-800 group-hover:text-primary transition-colors line-clamp-1">
+                                                {(i18n.language === 'en' && item.titleEn) ? item.titleEn : item.title}
+                                            </h5>
+                                        </Link>
+                                    )) : (
+                                        <div className="flex flex-col items-center justify-center h-40 text-gray-400">
+                                            <p className="font-medium text-sm">{i18n.language === 'en' ? 'No recent updates' : '업데이트된 내용이 없습니다.'}</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

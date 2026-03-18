@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSiteConfig } from '../hooks/useSiteConfig';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 import { Download, Calendar, Image as ImageIcon, FileText, Play, X, ChevronRight, ChevronLeft, BookOpen, Quote, Music, Maximize, Bell } from 'lucide-react';
 import clsx from 'clsx';
@@ -15,6 +15,8 @@ import SEO from '../components/SEO';
 const Resources = () => {
     const { t, i18n } = useTranslation();
     const location = useLocation();
+    const navigate = useNavigate();
+    const isClearingState = useRef(false);
     const [activeTab, setActiveTab] = useState('sermon');
     // eslint-disable-next-line no-unused-vars
     const [bulletins, setBulletins] = useState(bulletinsInitialData);
@@ -114,6 +116,35 @@ const Resources = () => {
         };
 
         requestAnimationFrame(scrollToTop);
+
+        if (isClearingState.current) {
+            isClearingState.current = false;
+            return;
+        }
+
+        // Handle specific item opening from Recent Updates link
+        if (location.state?.openItem) {
+            const item = location.state.openItem;
+            setActiveTab(item.type);
+            
+            // Allow state to settle, then open specific modal/interaction
+            setTimeout(() => {
+                if (item.type === 'sermon') {
+                    if (item.youtubeId) setPlayingSermonId(item.id);
+                } else if (item.type === 'bulletin') {
+                    setSelectedArchiveBulletin(item);
+                } else if (item.type === 'column') {
+                    setSelectedArchiveColumn(item);
+                } else if (item.type === 'gallery') {
+                    setSelectedVideo(item);
+                }
+            }, 150);
+
+            // Clean up history state using React Router
+            isClearingState.current = true;
+            navigate(location.pathname, { replace: true, state: {} });
+            return;
+        }
 
         if (location.pathname.includes('gallery')) {
             setActiveTab('gallery');
