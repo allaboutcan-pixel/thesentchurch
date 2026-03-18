@@ -125,17 +125,18 @@ const Resources = () => {
         // Handle specific item opening from Recent Updates link
         if (location.state?.openItem) {
             const item = location.state.openItem;
-            setActiveTab(item.type);
+            const itemCategory = item.category || item.type;
+            setActiveTab(itemCategory);
             
             // Allow state to settle, then open specific modal/interaction
             setTimeout(() => {
-                if (item.type === 'sermon') {
+                if (itemCategory === 'sermon') {
                     if (item.youtubeId) setPlayingSermonId(item.id);
-                } else if (item.type === 'bulletin') {
+                } else if (itemCategory === 'bulletin') {
                     setSelectedArchiveBulletin(item);
-                } else if (item.type === 'column') {
+                } else if (itemCategory === 'column') {
                     setSelectedArchiveColumn(item);
-                } else if (item.type === 'gallery') {
+                } else if (itemCategory === 'gallery') {
                     setSelectedVideo(item);
                 }
             }, 150);

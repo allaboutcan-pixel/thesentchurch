@@ -105,10 +105,10 @@ const Home = () => {
 
                 if (isMounted) {
                     const allUpdates = [
-                        ...(Array.isArray(liveSermons) ? liveSermons : []).map(item => ({ ...item, type: 'sermon', typeLabel: i18n.language === 'en' ? 'Sermon' : '설교' })),
-                        ...(Array.isArray(liveBulletins) ? liveBulletins : []).map(item => ({ ...item, type: 'bulletin', typeLabel: i18n.language === 'en' ? 'Bulletin' : '주보' })),
-                        ...(Array.isArray(liveColumns) ? liveColumns : []).map(item => ({ ...item, type: 'column', typeLabel: i18n.language === 'en' ? 'Column' : '신학 칼럼' })),
-                        ...(Array.isArray(liveGallery) ? liveGallery : []).map(item => ({ ...item, type: 'gallery', typeLabel: i18n.language === 'en' ? 'Gallery' : '갤러리' }))
+                        ...(Array.isArray(liveSermons) ? liveSermons : []).map(item => ({ ...item, category: 'sermon', typeLabel: i18n.language === 'en' ? 'Sermon' : '설교' })),
+                        ...(Array.isArray(liveBulletins) ? liveBulletins : []).map(item => ({ ...item, category: 'bulletin', typeLabel: i18n.language === 'en' ? 'Bulletin' : '주보' })),
+                        ...(Array.isArray(liveColumns) ? liveColumns : []).map(item => ({ ...item, category: 'column', typeLabel: i18n.language === 'en' ? 'Column' : '신학 칼럼' })),
+                        ...(Array.isArray(liveGallery) ? liveGallery : []).map(item => ({ ...item, category: 'gallery', typeLabel: i18n.language === 'en' ? 'Gallery' : '갤러리' }))
                     ];
 
                     // Sort by date descending safely
@@ -437,10 +437,10 @@ const Home = () => {
                                         <Link 
                                             key={idx} 
                                             to={
-                                                item.type === 'sermon' ? '/sermons' :
-                                                item.type === 'bulletin' ? '/news/bulletin' :
-                                                item.type === 'column' ? '/news/column' :
-                                                item.type === 'gallery' ? '/news/gallery' : '/news'
+                                                item.category === 'sermon' ? '/sermons' :
+                                                item.category === 'bulletin' ? '/news/bulletin' :
+                                                item.category === 'column' ? '/news/column' :
+                                                item.category === 'gallery' ? '/news/gallery' : '/news'
                                             }
                                             state={{ openItem: JSON.parse(JSON.stringify(item)) }}
                                             className="block p-2.5 rounded-xl border border-gray-100 hover:border-primary/30 hover:shadow-sm transition-all group"
@@ -448,9 +448,9 @@ const Home = () => {
                                             <div className="flex justify-between items-center mb-1.5">
                                                 <span className={clsx(
                                                     "text-[9px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider",
-                                                    item.type === 'sermon' ? "bg-red-50 text-red-500" :
-                                                    item.type === 'bulletin' ? "bg-blue-50 text-blue-500" :
-                                                    item.type === 'column' ? "bg-green-50 text-green-500" :
+                                                    item.category === 'sermon' ? "bg-red-50 text-red-500" :
+                                                    item.category === 'bulletin' ? "bg-blue-50 text-blue-500" :
+                                                    item.category === 'column' ? "bg-green-50 text-green-500" :
                                                     "bg-purple-50 text-purple-500"
                                                 )}>
                                                     {item.typeLabel}
