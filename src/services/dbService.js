@@ -189,22 +189,19 @@ export const dbService = {
         // 1. For non-bulletin collections, prioritize explicit orderIndex (ascending: 0, 1, 2...)
         // 2. For all collections, sort by date descending
         items.sort((a, b) => {
-            // For bulletins, we only care about the date (strict date sort)
-            if (collectionName === 'bulletins') {
-                return new Date(b.date) - new Date(a.date);
-            }
+            // 1. Sort by date descending (Newest first)
+            const dateDiff = new Date(b.date || 0) - new Date(a.date || 0);
+            if (dateDiff !== 0) return dateDiff;
 
-            const aHasIndex = typeof a.orderIndex === 'number';
-            const bHasIndex = typeof b.orderIndex === 'number';
+            // 2. Sort by orderIndex ascending (0, 1, 2...)
+            const aIndex = typeof a.orderIndex === 'number' ? a.orderIndex : 999;
+            const bIndex = typeof b.orderIndex === 'number' ? b.orderIndex : 999;
+            if (aIndex !== bIndex) return aIndex - bIndex;
 
-            if (aHasIndex && bHasIndex) {
-                if (a.orderIndex !== b.orderIndex) return a.orderIndex - b.orderIndex;
-                return new Date(b.date) - new Date(a.date);
-            }
-            if (aHasIndex) return -1;
-            if (bHasIndex) return 1;
-
-            return new Date(b.date) - new Date(a.date);
+            // 3. Fallback to createdAt descending (Newest first)
+            const timeA = a.createdAt?.seconds ? a.createdAt.seconds * 1000 : new Date(a.createdAt || 0).getTime();
+            const timeB = b.createdAt?.seconds ? b.createdAt.seconds * 1000 : new Date(b.createdAt || 0).getTime();
+            return timeB - timeA;
         });
 
         return items;

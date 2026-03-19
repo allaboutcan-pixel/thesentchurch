@@ -220,9 +220,16 @@ const Resources = () => {
                     const groupsMap = new Map();
                     // Sort all items by date desc first
                     const sortedGallery = [...liveGallery].sort((a, b) => {
-                        const dateDiff = new Date(b.date) - new Date(a.date);
+                        const dateDiff = new Date(b.date || 0) - new Date(a.date || 0);
                         if (dateDiff !== 0) return dateDiff;
-                        return (a.orderIndex || 0) - (b.orderIndex || 0);
+
+                        const aIndex = typeof a.orderIndex === 'number' ? a.orderIndex : 999;
+                        const bIndex = typeof b.orderIndex === 'number' ? b.orderIndex : 999;
+                        if (aIndex !== bIndex) return aIndex - bIndex;
+
+                        const timeA = a.createdAt?.seconds ? a.createdAt.seconds * 1000 : new Date(a.createdAt || 0).getTime();
+                        const timeB = b.createdAt?.seconds ? b.createdAt.seconds * 1000 : new Date(b.createdAt || 0).getTime();
+                        return timeB - timeA;
                     });
                     
                     sortedGallery.forEach(item => {
