@@ -1040,7 +1040,7 @@ const Resources = () => {
                                                 <div className="w-full h-full relative">
                                                     <iframe
                                                         src={dbService.formatDriveLink(mainImg.url)}
-                                                        className="w-full h-full object-cover pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity"
+                                                        className="w-full h-full object-contain pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity"
                                                         title={group.title}
                                                         tabIndex="-1"
                                                     />
@@ -1247,7 +1247,7 @@ const Resources = () => {
                                 >
                                     <img 
                                         src={item.thumbnailUrl || (item.type === 'video' ? getPreviewSource(item.url) : item.url)} 
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-contain"
                                         alt={`Thumbnail ${idx}`}
                                     />
                                     {item.type === 'video' && (

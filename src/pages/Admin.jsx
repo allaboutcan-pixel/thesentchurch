@@ -250,7 +250,7 @@ const BannerManager = React.memo(({ label, value, fieldName, onChange, bannerFil
                             <video
                                 key={mediaUrl}
                                 src={mediaUrl}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-contain"
                                 muted
                                 autoPlay
                                 loop
@@ -262,7 +262,7 @@ const BannerManager = React.memo(({ label, value, fieldName, onChange, bannerFil
                             <img
                                 src={mediaUrl}
                                 alt="Preview"
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
                                 onError={(e) => {
                                     e.target.style.display = 'none';
                                     e.target.parentElement.innerHTML = '<div class="flex flex-col items-center gap-2 text-slate-300"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-image"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg><span class="text-[9px] font-bold uppercase">이미지를 불러올 수 없습니다</span></div>';
