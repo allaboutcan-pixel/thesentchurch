@@ -1117,7 +1117,7 @@ const Admin = () => {
                     setBulletins([savedItem, ...bulletins]);
                 }
             } else if (activeTab === 'gallery') {
-                const processGalleryItem = async (singleFile, singleUrl) => {
+                const processGalleryItem = async (singleFile, singleUrl, index = 0) => {
                     let finalUrl = singleUrl || '';
                     let detectedType = formData.type;
 
@@ -1152,7 +1152,8 @@ const Admin = () => {
                         date: formData.date,
                         url: finalUrl,
                         thumbnailUrl: finalThumbnailUrl,
-                        type: detectedType
+                        type: detectedType,
+                        orderIndex: index
                     };
                 };
 
@@ -1175,14 +1176,14 @@ const Admin = () => {
                 const newItems = [];
                 if (galleryFiles.length > 0) {
                     for (let i = 0; i < galleryFiles.length; i++) {
-                        const newItem = await Promise.race([processGalleryItem(galleryFiles[i], ''), timeout]);
+                        const newItem = await Promise.race([processGalleryItem(galleryFiles[i], '', i), timeout]);
                         const saved = await Promise.race([dbService.addGalleryItem(newItem), timeout]);
                         newItems.push(saved);
                     }
                 } else if (formData.fileUrl.trim()) {
                     const urls = formData.fileUrl.split('\n').map(u => u.trim()).filter(u => u !== '');
-                    for (const url of urls) {
-                        const newItem = await Promise.race([processGalleryItem(null, url), timeout]);
+                    for (let i = 0; i < urls.length; i++) {
+                        const newItem = await Promise.race([processGalleryItem(null, urls[i], i), timeout]);
                         const saved = await Promise.race([dbService.addGalleryItem(newItem), timeout]);
                         newItems.push(saved);
                     }

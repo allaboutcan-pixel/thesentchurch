@@ -219,7 +219,11 @@ const Resources = () => {
                     
                     const groupsMap = new Map();
                     // Sort all items by date desc first
-                    const sortedGallery = [...liveGallery].sort((a, b) => new Date(b.date) - new Date(a.date));
+                    const sortedGallery = [...liveGallery].sort((a, b) => {
+                        const dateDiff = new Date(b.date) - new Date(a.date);
+                        if (dateDiff !== 0) return dateDiff;
+                        return (a.orderIndex || 0) - (b.orderIndex || 0);
+                    });
                     
                     sortedGallery.forEach(item => {
                         const groupKey = `${item.date}_${item.title}`;
