@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
@@ -60,20 +61,19 @@ const Resources = () => {
     // Filter sermons for the grid
     const featuredSermons = sermons.slice(0, 5);
 
-    useEffect(() => {
-        setPlayingSermonId(null);
-    }, [activeTab, selectedSermonYear, selectedSermonMonth]);
+    const scrollToTop = () => {
+        window.scrollTo(0, 0);
+        setTimeout(() => window.scrollTo(0, 0), 100);
+    };
 
     const { config: siteConfig, loading: configLoading } = useSiteConfig();
-    const prefix = location.pathname.startsWith('/news') ? 'news' : 'resources';
+    const [galleryGroups, setGalleryGroups] = useState([]);
+    const [selectedGalleryGroup, setSelectedGalleryGroup] = useState(null);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [direction, setDirection] = useState(0);
 
-    if (configLoading) {
-        return (
-            <div className="flex items-center justify-center min-h-screen bg-slate-50">
-                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-            </div>
-        );
-    }
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
+    const prefix = location.pathname.startsWith('/news') ? 'news' : 'resources';
 
     const headerBanner = siteConfig?.[`${prefix}Banner`] || "/images/sermons_banner.jpg";
     const title = i18n.language.startsWith('en') && siteConfig?.[`${prefix}TitleEn`] ? siteConfig[`${prefix}TitleEn`] : siteConfig?.[`${prefix}Title`];
@@ -93,6 +93,29 @@ const Resources = () => {
     const height = siteConfig?.[`${prefix}Height`] || "medium";
     const bannerFit = siteConfig?.[`${prefix}BannerFit`] || "cover";
 
+    const variants = {
+        enter: (direction) => ({
+            x: direction > 0 ? 500 : -500,
+            opacity: 0
+        }),
+        center: {
+            zIndex: 1,
+            x: 0,
+            opacity: 1
+        },
+        exit: (direction) => ({
+            zIndex: 0,
+            x: direction < 0 ? 500 : -500,
+            opacity: 0
+        })
+    };
+
+    const paginate = (newDirection) => {
+        if (!selectedGalleryGroup) return;
+        setDirection(newDirection);
+        setCurrentImageIndex((prevIndex) => (prevIndex + newDirection + selectedGalleryGroup.items.length) % selectedGalleryGroup.items.length);
+    };
+
     const getPreviewSource = (url) => {
         if (!url) return null;
         const ytId = getYoutubeId(url);
@@ -108,61 +131,49 @@ const Resources = () => {
     };
 
     useEffect(() => {
-        // More robust scroll to top for mobile navigation
-        const scrollToTop = () => {
-            window.scrollTo(0, 0);
-            // Double-check after a short delay for layout shifts
-            setTimeout(() => window.scrollTo(0, 0), 100);
-        };
+        setPlayingSermonId(null);
+    }, [activeTab, selectedSermonYear, selectedSermonMonth]);
 
-        requestAnimationFrame(scrollToTop);
+    // Initialize tab based on pathname
+    useEffect(() => {
+        if (location.pathname.includes('gallery')) setActiveTab('gallery');
+        else if (location.pathname.includes('column')) setActiveTab('column');
+        else if (location.pathname.includes('calendar')) setActiveTab('calendar');
+        else if (location.pathname.includes('bulletin')) setActiveTab('bulletin');
+        else if (location.pathname.includes('sermon') || location.pathname.includes('/sermons')) setActiveTab('sermon');
+        else if (location.pathname.includes('news') || location.pathname.includes('/news')) setActiveTab('bulletin');
+    }, [location.pathname]);
 
-        if (isClearingState.current) {
-            isClearingState.current = false;
-            return;
-        }
+    // Handle opening specific items from route state
+    useEffect(() => {
+        if (!isDataLoaded || !location.state?.openItem || isClearingState.current) return;
 
-        // Handle specific item opening from Recent Updates link
-        if (location.state?.openItem) {
-            const item = location.state.openItem;
-            const itemCategory = item.category || item.type;
-            setActiveTab(itemCategory);
-            
-            // Allow state to settle, then open specific modal/interaction
-            setTimeout(() => {
-                if (itemCategory === 'sermon') {
-                    if (item.youtubeId) setPlayingSermonId(item.id);
-                } else if (itemCategory === 'bulletin') {
-                    setSelectedArchiveBulletin(item);
-                } else if (itemCategory === 'column') {
-                    setSelectedArchiveColumn(item);
-                } else if (itemCategory === 'gallery') {
+        const item = location.state.openItem;
+        const itemCategory = item.category || item.type;
+        setActiveTab(itemCategory);
+
+        setTimeout(() => {
+            if (itemCategory === 'sermon') {
+                if (item.youtubeId) setPlayingSermonId(item.id);
+            } else if (itemCategory === 'bulletin') {
+                setSelectedArchiveBulletin(item);
+            } else if (itemCategory === 'column') {
+                setSelectedArchiveColumn(item);
+            } else if (itemCategory === 'gallery') {
+                const group = galleryGroups.find(g => g.date === item.date && g.title === item.title);
+                if (group) {
+                    setSelectedGalleryGroup(group);
+                    const idx = group.items.findIndex(i => i.id === item.id);
+                    setCurrentImageIndex(idx >= 0 ? idx : 0);
+                } else {
                     setSelectedVideo(item);
                 }
-            }, 150);
+            }
+        }, 150);
 
-            // Clean up history state using React Router
-            isClearingState.current = true;
-            navigate(location.pathname, { replace: true, state: {} });
-            return;
-        }
-
-        if (location.pathname.includes('gallery')) {
-            setActiveTab('gallery');
-        } else if (location.pathname.includes('column')) {
-            setActiveTab('column');
-        } else if (location.pathname.includes('calendar')) {
-            setActiveTab('calendar');
-        } else if (location.pathname.includes('bulletin')) {
-            setActiveTab('bulletin');
-        } else if (location.pathname.includes('sermon') || location.pathname.includes('/sermons')) {
-            setActiveTab('sermon');
-        } else if (location.pathname.includes('news') || location.pathname.includes('/news')) {
-            setActiveTab('bulletin'); // Default to bulletin for News
-        } else {
-            setActiveTab('sermon'); // Default to sermon
-        }
-    }, [location]);
+        isClearingState.current = true;
+        navigate(location.pathname, { replace: true, state: {} });
+    }, [isDataLoaded, location.state, galleryGroups, navigate, location.pathname]);
 
     useEffect(() => {
         let isMounted = true;
@@ -202,8 +213,30 @@ const Resources = () => {
                     }
                 }
 
-                // Process Gallery
-                setGalleryItems(liveGallery);
+                // Process Gallery - Group by date and title
+                if (liveGallery.length > 0) {
+                    setGalleryItems(liveGallery);
+                    
+                    const groupsMap = new Map();
+                    // Sort all items by date desc first
+                    const sortedGallery = [...liveGallery].sort((a, b) => new Date(b.date) - new Date(a.date));
+                    
+                    sortedGallery.forEach(item => {
+                        const groupKey = `${item.date}_${item.title}`;
+                        if (!groupsMap.has(groupKey)) {
+                            groupsMap.set(groupKey, {
+                                id: item.id,
+                                date: item.date,
+                                title: item.title,
+                                titleEn: item.titleEn,
+                                items: []
+                            });
+                        }
+                        groupsMap.get(groupKey).items.push(item);
+                    });
+                    
+                    setGalleryGroups(Array.from(groupsMap.values()));
+                }
 
                 // Process Sermons
                 if (liveSermons.length > 0) {
@@ -259,6 +292,7 @@ const Resources = () => {
                 // Process Notices
                 if (liveNotices.length > 0) setNotices(liveNotices);
 
+                setIsDataLoaded(true);
             } catch (error) {
                 console.warn("Resources: Failed to fetch some data in parallel", error);
             }
@@ -267,6 +301,14 @@ const Resources = () => {
         fetchData();
         return () => { isMounted = false; };
     }, []);
+
+    if (configLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-slate-50">
+                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen">
@@ -970,107 +1012,61 @@ const Resources = () => {
                             <p className="text-slate-400 font-medium text-sm mt-1 italic">{t('resources.gallery_subtitle')}</p>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
-                            {galleryItems.map((img, idx) => {
-                                // 1. Prioritize manually uploaded thumbnail
-                                let thumbnailUrl = img.thumbnailUrl || img.url;
+                            {galleryGroups.map((group, idx) => {
+                                const mainImg = group.items[0];
+                                let thumbnailUrl = mainImg.thumbnailUrl || mainImg.url;
 
-                                // 2. Auto-extraction fallback if no manual thumbnail exists
-                                if (!img.thumbnailUrl && img.type === 'video') {
-                                    if (img.url.includes('youtube.com') || img.url.includes('youtu.be')) {
-                                        const ytId = img.url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?/]+)/)?.[1];
-                                        if (ytId) {
-                                            thumbnailUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
-                                        }
-                                    } else if (img.url.includes('drive.google.com')) {
-                                        const driveMatch = img.url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
-                                            img.url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
-                                            img.url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-
-                                        const driveId = driveMatch ? driveMatch[1] : null;
-                                        if (driveId) {
-                                            // Using authuser=0 and sz=w800 for better balancing of quality/speed
-                                            thumbnailUrl = `https://drive.google.com/thumbnail?authuser=0&sz=w800&id=${driveId}`;
-                                        }
+                                if (!mainImg.thumbnailUrl && mainImg.type === 'video') {
+                                    if (mainImg.url.includes('youtube.com') || mainImg.url.includes('youtu.be')) {
+                                        const ytId = mainImg.url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?/]+)/)?.[1];
+                                        if (ytId) thumbnailUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
                                     }
+                                } else if (!mainImg.thumbnailUrl && mainImg.url.includes('drive.google.com')) {
+                                    const idMatch = mainImg.url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || mainImg.url.match(/\/d\/([a-zA-Z0-9_-]+)/) || mainImg.url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+                                    if (idMatch && idMatch[1]) thumbnailUrl = `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w1000`;
                                 }
 
                                 return (
-                                    <div key={img.id || idx} className="flex flex-col group">
-                                        <div
-                                            className="relative aspect-video rounded-xl overflow-hidden cursor-pointer bg-slate-50 shadow-sm hover:shadow-xl transition-all border border-gray-100"
-                                            onClick={() => setSelectedVideo(img)}
-                                        >
-                                            {img.type === 'audio' ? (
-                                                <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-indigo-50 to-white text-primary">
-                                                    <Music size={32} className="opacity-30 mb-2" />
-                                                    <div className="absolute inset-0 flex items-center justify-center bg-indigo-500/0 group-hover:bg-indigo-500/5 transition-colors">
-                                                        <div className="w-10 h-10 bg-indigo-500 text-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                                                            <Play size={16} fill="currentColor" />
-                                                        </div>
-                                                    </div>
+                                    <div
+                                        key={idx}
+                                        className="relative aspect-video rounded-xl overflow-hidden cursor-pointer bg-slate-50 shadow-sm hover:shadow-xl transition-all border border-gray-100 group"
+                                        onClick={() => {
+                                            setSelectedGalleryGroup(group);
+                                            setCurrentImageIndex(0);
+                                        }}
+                                    >
+                                        <div className="w-full h-full relative">
+                                            {mainImg.type === 'video' && mainImg.url.includes('drive.google.com') ? (
+                                                <div className="w-full h-full relative">
+                                                    <iframe
+                                                        src={dbService.formatDriveLink(mainImg.url)}
+                                                        className="w-full h-full object-cover pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity"
+                                                        title={group.title}
+                                                        tabIndex="-1"
+                                                    />
+                                                    <div className="absolute inset-0 z-10 bg-transparent" />
                                                 </div>
                                             ) : (
-                                                <div className="group relative w-full h-full">
-                                                    {/* Special handling for Drive Videos (Use iframe for reliable preview) */}
-                                                    {(img.type === 'video' && img.url.includes('drive.google.com')) ? (
-                                                        <div className="w-full h-full relative">
-                                                            <iframe
-                                                                src={dbService.formatDriveLink(img.url)}
-                                                                className="w-full h-full object-cover pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity"
-                                                                title={img.title}
-                                                                tabIndex="-1"
-                                                            />
-                                                            {/* Overlay to capture clicks for modal */}
-                                                            <div className="absolute inset-0 z-10 bg-transparent" />
-                                                        </div>
-                                                    ) : (
-                                                        /* Standard handling for YouTube/Images */
-                                                        <div className="group relative w-full h-full">
-                                                            {img.type === 'video' ? (
-                                                                <div className="w-full h-full relative">
-                                                                    {getPreviewSource(img.url) ? (
-                                                                        <img
-                                                                            src={getPreviewSource(img.url)}
-                                                                            alt={img.title}
-                                                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                                                            loading="lazy"
-                                                                        />
-                                                                    ) : (
-                                                                        <video
-                                                                            src={`${img.url}#t=0.001`}
-                                                                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                                                            preload="metadata"
-                                                                            onLoadedMetadata={(e) => {
-                                                                                e.target.currentTime = 0.001;
-                                                                            }}
-                                                                        />
-                                                                    )}
-                                                                </div>
-                                                            ) : (
-                                                                <img
-                                                                    src={thumbnailUrl}
-                                                                    alt={(i18n.language === 'en' && img.titleEn) ? img.titleEn : img.title}
-                                                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                                                    loading="lazy"
-                                                                    onError={(e) => {
-                                                                        e.target.style.display = 'none';
-                                                                        const fallback = e.target.parentElement.querySelector('.thumbnail-fallback');
-                                                                        if (fallback) fallback.style.display = 'flex';
-                                                                    }}
-                                                                />
-                                                            )}
-                                                        </div>
-                                                    )}
+                                                <div className="w-full h-full overflow-hidden">
+                                                    <img
+                                                        src={thumbnailUrl}
+                                                        alt={(i18n.language === 'en' && group.titleEn) ? group.titleEn : group.title}
+                                                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                                                        loading="lazy"
+                                                    />
                                                 </div>
                                             )}
 
-                                            {/* Fallback for broken thumbnails */}
-                                            <div className="thumbnail-fallback hidden absolute inset-0 flex-col items-center justify-center bg-slate-100 text-slate-300">
-                                                <Play size={32} className="opacity-20 mb-2" />
-                                                <span className="text-[10px] font-bold uppercase tracking-tight text-center px-4">미리보기를<br />불러올 수 없습니다</span>
-                                            </div>
+                                            {/* Count Badge for Albums */}
+                                            {group.items.length > 1 && (
+                                                <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg text-[10px] font-black text-white border border-white/20 z-20 flex items-center gap-1.5 shadow-lg">
+                                                    <ImageIcon size={10} />
+                                                    {group.items.length}
+                                                </div>
+                                            )}
 
-                                            {img.type === 'video' && (
+                                            {/* Video Indicator */}
+                                            {group.items.some(i => i.type === 'video') && (
                                                 <div className="absolute inset-0 flex items-center justify-center bg-black/5 group-hover:bg-black/20 transition-colors">
                                                     <div className="w-10 h-10 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/50 group-hover:scale-110 transition-transform shadow-lg">
                                                         <Play size={16} fill="currentColor" />
@@ -1078,17 +1074,18 @@ const Resources = () => {
                                                 </div>
                                             )}
 
-                                            {/* Clean Hover Overlay for Title */}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                                                <p className="text-white text-xs font-bold truncate">
-                                                    {(i18n.language === 'en' && img.titleEn) ? img.titleEn : img.title}
+                                            {/* Title Overlay */}
+                                            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <p className="text-white text-[11px] font-bold truncate">
+                                                    {(i18n.language === 'en' && group.titleEn) ? group.titleEn : group.title}
                                                 </p>
+                                                <p className="text-white/60 text-[9px] mt-0.5">{group.date}</p>
                                             </div>
                                         </div>
                                     </div>
                                 );
                             })}
-                            {galleryItems.length === 0 && (
+                            {galleryGroups.length === 0 && (
                                 <div className="col-span-full py-20 text-center text-gray-400 font-medium font-sans">
                                     아직 등록된 사진이나 영상이 없습니다.
                                 </div>
@@ -1105,106 +1102,188 @@ const Resources = () => {
                 )}
             </div>
 
-            {/* Video Modal Player */}
-            {
-                selectedVideo && (
-                    <div
-                        className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4 bg-black/95 backdrop-blur-sm animate-fade-in"
-                        onClick={() => setSelectedVideo(null)}
-                    >
-                        <button
-                            className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors"
-                            onClick={() => setSelectedVideo(null)}
-                        >
-                            <X size={32} />
-                        </button>
 
-                        <div
-                            className={clsx(
-                                "w-full max-w-5xl rounded-2xl overflow-hidden relative",
-                                selectedVideo.type === 'image' ? "bg-transparent" : "bg-black shadow-2xl",
-                                selectedVideo.type === 'audio' ? "aspect-auto p-12 bg-white" : 
-                                selectedVideo.type === 'image' ? "aspect-auto h-auto max-h-[85vh] flex justify-center items-center" : "aspect-video"
-                            )}
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            {selectedVideo.type === 'audio' ? (
-                                <div className="flex flex-col items-center gap-8 py-4">
-                                    <div className="w-32 h-32 bg-primary/5 rounded-full flex items-center justify-center text-primary animate-pulse">
-                                        <Music size={64} />
-                                    </div>
-                                    <div className="text-center">
-                                        <h3 className="text-2xl font-black text-primary mb-2">
-                                            {(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
-                                        </h3>
-                                        <p className="text-gray-400 font-medium">{selectedVideo.date}</p>
-                                    </div>
-                                    <audio
-                                        src={selectedVideo.url}
-                                        controls
-                                        autoPlay
-                                        className="w-full max-w-md"
-                                    />
-                                </div>
-                            ) : selectedVideo.type === 'image' ? (
-                                <img
-                                    src={selectedVideo.url}
-                                    className="max-w-full max-h-[85vh] object-contain rounded-xl"
-                                    alt={(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
-                                />
-                            ) : isVideo(selectedVideo.url) ? (
-                                <video
-                                    src={selectedVideo.url}
-                                    controls
-                                    autoPlay
-                                    className="w-full h-full"
-                                />
-                            ) : (
-                                <iframe
-                                    src={(() => {
-                                        let url = selectedVideo.url;
-                                        // Convert YouTube to HD Embed if needed
-                                        if (url && (url.includes('youtube.com') || url.includes('youtu.be'))) {
-                                            const ytId = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?/]+)/)?.[1];
-                                            if (ytId) {
-                                                url = `https://www.youtube.com/embed/${ytId}?autoplay=1&vq=hd1080`;
-                                            }
-                                        } else if (url && url.includes('drive.google.com')) {
-                                            // Ensure Drive link is in preview/HD mode
-                                            if (!url.includes('/preview')) {
-                                                const driveId = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
-                                                    url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
-                                                    url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-                                                if (driveId) url = `https://drive.google.com/file/d/${driveId[1]}/preview`;
-                                            }
-                                        }
-                                        return url;
-                                    })()}
-                                    className="w-full h-full border-none"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                    title={(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
-                                ></iframe>
-                            )}
-                        </div>
-                        {selectedVideo.type !== 'audio' && (
-                            <div className="mt-6 text-white text-center font-bold text-lg px-4 w-full truncate">
-                                {(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
-                            </div>
+            {/* Video/Album Modal Viewer */}
+            {(selectedVideo || selectedGalleryGroup) && (
+                <div
+                    className="fixed inset-0 z-[100] flex flex-col items-center justify-center p-4 bg-black/95 backdrop-blur-sm animate-fade-in"
+                    onClick={() => {
+                        setSelectedVideo(null);
+                        setSelectedGalleryGroup(null);
+                    }}
+                >
+                    <button
+                        className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-[110]"
+                        onClick={() => {
+                            setSelectedVideo(null);
+                            setSelectedGalleryGroup(null);
+                        }}
+                    >
+                        <X size={32} />
+                    </button>
+
+                    {/* Content Slideshow */}
+                    <div 
+                        className={clsx(
+                            "relative w-full max-w-6xl flex items-center justify-center overflow-hidden h-full",
+                            (selectedGalleryGroup?.items[currentImageIndex]?.type === 'audio' || selectedVideo?.type === 'audio') ? "aspect-auto p-12 bg-white rounded-2xl" : 
+                            (selectedGalleryGroup?.items[currentImageIndex]?.type === 'image' || selectedVideo?.type === 'image') ? "aspect-auto h-[60vh] md:h-[80vh]" : "aspect-video"
                         )}
+                        onClick={e => e.stopPropagation()}
+                    >
+                        {/* Group Navigation */}
+                        {selectedGalleryGroup && selectedGalleryGroup.items.length > 1 && (
+                            <>
+                                <button
+                                    className="absolute left-4 z-20 w-12 h-12 bg-black/20 hover:bg-black/40 text-white rounded-full flex items-center justify-center transition-all backdrop-blur-sm border border-white/10"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        paginate(-1);
+                                    }}
+                                >
+                                    <ChevronLeft size={32} />
+                                </button>
+                                <button
+                                    className="absolute right-4 z-20 w-12 h-12 bg-black/20 hover:bg-black/40 text-white rounded-full flex items-center justify-center transition-all backdrop-blur-sm border border-white/10"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        paginate(1);
+                                    }}
+                                >
+                                    <ChevronRight size={32} />
+                                </button>
+                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/50 px-4 py-1.5 rounded-full text-white/80 text-[10px] font-black z-20 border border-white/10">
+                                    {(currentImageIndex + 1).toString().padStart(2, '0')} / {selectedGalleryGroup.items.length.toString().padStart(2, '0')}
+                                </div>
+                            </>
+                        )}
+
+                        <AnimatePresence initial={false} custom={direction} mode="wait">
+                            <motion.div
+                                key={currentImageIndex}
+                                custom={direction}
+                                variants={variants}
+                                initial="enter"
+                                animate="center"
+                                exit="exit"
+                                transition={{
+                                    x: { type: "spring", stiffness: 300, damping: 30 },
+                                    opacity: { duration: 0.2 }
+                                }}
+                                className="absolute inset-0 flex items-center justify-center w-full h-full"
+                            >
+                                {(() => {
+                                    const item = selectedGalleryGroup ? selectedGalleryGroup.items[currentImageIndex] : selectedVideo;
+                                    if (!item) return null;
+
+                                    if (item.type === 'audio') {
+                                        return (
+                                            <div className="flex flex-col items-center gap-8 py-4">
+                                                <div className="w-32 h-32 bg-primary/5 rounded-full flex items-center justify-center text-primary animate-pulse">
+                                                    <Music size={64} />
+                                                </div>
+                                                <div className="text-center">
+                                                    <h3 className="text-2xl font-black text-primary mb-2">
+                                                        {(i18n.language === 'en' && item.titleEn) ? item.titleEn : item.title}
+                                                    </h3>
+                                                    <p className="text-gray-400 font-medium">{item.date}</p>
+                                                </div>
+                                                <audio src={item.url} controls autoPlay className="w-full max-w-md" />
+                                            </div>
+                                        );
+                                    } else if (item.type === 'image') {
+                                        return (
+                                            <img
+                                                src={item.url}
+                                                className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
+                                                alt={selectedGalleryGroup ? selectedGalleryGroup.title : item.title}
+                                            />
+                                        );
+                                    } else if (isVideo(item.url)) {
+                                        return (
+                                            <video src={item.url} controls autoPlay className="w-full h-full rounded-xl" />
+                                        );
+                                    } else {
+                                        return (
+                                            <iframe
+                                                src={(() => {
+                                                    let url = item.url;
+                                                    if (url && (url.includes('youtube.com') || url.includes('youtu.be'))) {
+                                                        const ytId = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?/]+)/)?.[1];
+                                                        if (ytId) url = `https://www.youtube.com/embed/${ytId}?autoplay=1&vq=hd1080`;
+                                                    } else if (url && url.includes('drive.google.com')) {
+                                                        const driveId = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+                                                        if (driveId) url = `https://drive.google.com/file/d/${driveId[1]}/preview`;
+                                                    }
+                                                    return url;
+                                                })()}
+                                                className="w-full h-full border-none rounded-xl"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowFullScreen
+                                                title={selectedGalleryGroup ? selectedGalleryGroup.title : item.title}
+                                            ></iframe>
+                                        );
+                                    }
+                                })()}
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
+
+                    {/* Thumbnail Strip */}
+                    {selectedGalleryGroup && selectedGalleryGroup.items.length > 1 && (
+                        <div className="mt-8 flex items-center justify-center gap-2 overflow-x-auto pb-4 max-w-full px-4 scrollbar-hide">
+                            {selectedGalleryGroup.items.map((item, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setDirection(idx > currentImageIndex ? 1 : -1);
+                                        setCurrentImageIndex(idx);
+                                    }}
+                                    className={clsx(
+                                        "w-16 h-10 md:w-20 md:h-12 rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 relative group",
+                                        currentImageIndex === idx ? "border-primary scale-110 shadow-lg z-10" : "border-white/10 opacity-40 hover:opacity-100"
+                                    )}
+                                >
+                                    <img 
+                                        src={item.thumbnailUrl || (item.type === 'video' ? getPreviewSource(item.url) : item.url)} 
+                                        className="w-full h-full object-cover"
+                                        alt={`Thumbnail ${idx}`}
+                                    />
+                                    {item.type === 'video' && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                                            <Play size={12} fill="white" className="text-white" />
+                                        </div>
+                                    )}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Meta info below slideshow */}
+                    <div className="mt-8 text-center text-white space-y-2 pointer-events-none">
+                        <h3 className="text-2xl font-black">
+                            {selectedGalleryGroup ? (
+                                (i18n.language === 'en' && selectedGalleryGroup.titleEn) ? selectedGalleryGroup.titleEn : selectedGalleryGroup.title
+                            ) : (
+                                (i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title
+                            )}
+                        </h3>
+                        <p className="text-white/40 font-bold tracking-widest">{selectedGalleryGroup ? selectedGalleryGroup.date : selectedVideo.date}</p>
                         <button
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedVideo(null);
+                                setSelectedGalleryGroup(null);
                             }}
-                            className="mt-6 px-8 py-3 bg-white/10 text-white rounded-full font-bold text-sm hover:bg-white/20 transition-all active:scale-95 flex items-center justify-center gap-2"
+                            className="mt-6 px-8 py-3 bg-white/10 text-white rounded-full font-bold text-sm hover:bg-white/20 transition-all active:scale-95 flex items-center justify-center gap-2 pointer-events-auto mx-auto"
                         >
                             <X size={18} />
                             {i18n.language === 'en' ? 'Close' : '닫기'}
                         </button>
                     </div>
-                )
-            }
+                </div>
+            )}
 
             {/* Column Modal Viewer */}
             {
@@ -1293,8 +1372,7 @@ const Resources = () => {
                             </div>
                         </div>
                     </div>
-                )
-            }
+                )}
 
             {/* Bulletin Modal Viewer */}
             {

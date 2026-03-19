@@ -110,7 +110,18 @@ const Home = () => {
                             .map(item => ({ ...item, category: 'sermon', typeLabel: i18n.language === 'en' ? 'Sermon' : '설교' })),
                         ...(Array.isArray(liveBulletins) ? liveBulletins : []).map(item => ({ ...item, category: 'bulletin', typeLabel: i18n.language === 'en' ? 'Bulletin' : '주보' })),
                         ...(Array.isArray(liveColumns) ? liveColumns : []).map(item => ({ ...item, category: 'column', typeLabel: i18n.language === 'en' ? 'Column' : '신학 칼럼' })),
-                        ...(Array.isArray(liveGallery) ? liveGallery : []).map(item => ({ ...item, category: 'gallery', typeLabel: i18n.language === 'en' ? 'Gallery' : '갤러리' }))
+                        ...(Array.isArray(liveGallery) ? (() => {
+                            const groups = [];
+                            const seen = new Set();
+                            [...liveGallery].sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(item => {
+                                const key = `${item.date}_${item.title}`;
+                                if (!seen.has(key)) {
+                                    seen.add(key);
+                                    groups.push({ ...item, category: 'gallery', typeLabel: i18n.language === 'en' ? 'Gallery' : '갤러리' });
+                                }
+                            });
+                            return groups;
+                        })() : [])
                     ];
 
                     // Sort by date descending safely

@@ -314,6 +314,7 @@ const Admin = () => {
     const [isFirebaseConfigured, setIsFirebaseConfigured] = useState(false);
     const [showAddForm, setShowAddForm] = useState(false);
     const [file, setFile] = useState(null);
+    const [galleryFiles, setGalleryFiles] = useState([]);
     const [file2, setFile2] = useState(null);
     const [thumbnailFile, setThumbnailFile] = useState(null);
     const [staffFile, setStaffFile] = useState(null);
@@ -1116,55 +1117,83 @@ const Admin = () => {
                     setBulletins([savedItem, ...bulletins]);
                 }
             } else if (activeTab === 'gallery') {
-                let finalUrl = formData.fileUrl;
-                let detectedType = formData.type;
+                const processGalleryItem = async (singleFile, singleUrl) => {
+                    let finalUrl = singleUrl || '';
+                    let detectedType = formData.type;
 
-                if (file) {
-                    finalUrl = await Promise.race([dbService.uploadFile(file, 'gallery'), timeout]);
-                    // Auto-detect type from file
-                    if (file.type.startsWith('video/')) detectedType = 'video';
-                    else if (file.type.startsWith('audio/')) detectedType = 'audio';
-                    else detectedType = 'image';
-                } else if (finalUrl) {
-                    // Standardize external link
-                    if (finalUrl.includes('drive.google.com')) {
-                        finalUrl = dbService.formatDriveImage(finalUrl);
+                    if (singleFile) {
+                        finalUrl = await dbService.uploadFile(singleFile, 'gallery');
+                        if (singleFile.type.startsWith('video/')) detectedType = 'video';
+                        else if (singleFile.type.startsWith('audio/')) detectedType = 'audio';
+                        else detectedType = 'image';
+                    } else if (finalUrl) {
+                        if (finalUrl.includes('drive.google.com')) {
+                            finalUrl = dbService.formatDriveImage(finalUrl);
+                        }
+                        if (finalUrl.includes('youtube.com') || finalUrl.includes('youtu.be') || finalUrl.match(/\.(mp4|webm|ogg|mov)$/i)) {
+                            detectedType = 'video';
+                        }
                     }
-                    // Auto-detection from URL
-                    if (finalUrl.includes('youtube.com') || finalUrl.includes('youtu.be') || finalUrl.match(/\.(mp4|webm|ogg|mov)$/i)) {
-                        detectedType = 'video';
+
+                    let finalThumbnailUrl = formData.thumbnailUrl || '';
+                    if (thumbnailFile) {
+                        finalThumbnailUrl = await dbService.uploadFile(thumbnailFile, 'gallery_thumbnails');
+                    } else if (finalThumbnailUrl) {
+                        finalThumbnailUrl = dbService.formatDriveImage(finalThumbnailUrl);
                     }
-                }
+                    if (!finalThumbnailUrl && detectedType === 'video' && finalUrl.includes('youtube.com')) {
+                        const vidId = extractYoutubeId(finalUrl);
+                        finalThumbnailUrl = `https://img.youtube.com/vi/${vidId}/hqdefault.jpg`;
+                    }
 
-                let finalThumbnailUrl = formData.thumbnailUrl || '';
-                if (thumbnailFile) {
-                    finalThumbnailUrl = await Promise.race([dbService.uploadFile(thumbnailFile, 'gallery_thumbnails'), timeout]);
-                } else if (finalThumbnailUrl) {
-                    finalThumbnailUrl = dbService.formatDriveImage(finalThumbnailUrl);
-                }
-
-                // Final fallback for missing thumbnail for videos
-                if (!finalThumbnailUrl && detectedType === 'video' && finalUrl.includes('youtube.com')) {
-                    const vidId = extractYoutubeId(finalUrl);
-                    finalThumbnailUrl = `https://img.youtube.com/vi/${vidId}/hqdefault.jpg`;
-                }
-
-                const newItem = {
-                    title: formData.title,
-                    titleEn: formData.titleEn || '',
-                    date: formData.date,
-                    url: finalUrl,
-                    thumbnailUrl: finalThumbnailUrl,
-                    type: detectedType
+                    return {
+                        title: formData.title,
+                        titleEn: formData.titleEn || '',
+                        date: formData.date,
+                        url: finalUrl,
+                        thumbnailUrl: finalThumbnailUrl,
+                        type: detectedType
+                    };
                 };
 
+                let filteredGallery = [...gallery];
                 if (editingId) {
-                    savedItem = await Promise.race([dbService.updateGalleryItem(editingId, newItem), timeout]);
-                    setGallery(gallery.map(g => g.id === editingId ? savedItem : g));
-                } else {
-                    savedItem = await Promise.race([dbService.addGalleryItem(newItem), timeout]);
-                    setGallery([savedItem, ...gallery]);
+                    const originalItem = gallery.find(g => g.id === editingId);
+                    if (originalItem) {
+                        const albumItems = gallery.filter(g => g.title === originalItem.title && g.date === originalItem.date);
+                        for (const item of albumItems) {
+                            try {
+                                await dbService.deleteGalleryItem(item.id);
+                            } catch (e) {
+                                console.error("Error deleting old gallery item:", e);
+                            }
+                        }
+                        filteredGallery = gallery.filter(g => !albumItems.some(ai => ai.id === g.id));
+                    }
                 }
+
+                const newItems = [];
+                if (galleryFiles.length > 0) {
+                    for (let i = 0; i < galleryFiles.length; i++) {
+                        const newItem = await Promise.race([processGalleryItem(galleryFiles[i], ''), timeout]);
+                        const saved = await Promise.race([dbService.addGalleryItem(newItem), timeout]);
+                        newItems.push(saved);
+                    }
+                } else if (formData.fileUrl.trim()) {
+                    const urls = formData.fileUrl.split('\n').map(u => u.trim()).filter(u => u !== '');
+                    for (const url of urls) {
+                        const newItem = await Promise.race([processGalleryItem(null, url), timeout]);
+                        const saved = await Promise.race([dbService.addGalleryItem(newItem), timeout]);
+                        newItems.push(saved);
+                    }
+                } else {
+                    const newItem = await Promise.race([processGalleryItem(null, ''), timeout]);
+                    const saved = await Promise.race([dbService.addGalleryItem(newItem), timeout]);
+                    newItems.push(saved);
+                }
+                
+                // Single unified state update to avoid batching issues
+                setGallery([...newItems, ...filteredGallery]);
             } else if (activeTab === 'columns') {
                 let finalFileUrl = formData.fileUrl;
                 if (file) {
@@ -1320,6 +1349,7 @@ const Admin = () => {
             setShowAddForm(false);
             setEditingId(null);
             setFile(null);
+            setGalleryFiles([]);
             setFile2(null);
             setThumbnailFile(null);
             setStaffFile(null);
@@ -1408,15 +1438,20 @@ const Admin = () => {
             setFile(null);
             setFile2(null);
         } else if (type === 'gallery') {
+            const albumItems = gallery.filter(g => g.title === item.title && g.date === item.date);
+            const allUrls = albumItems.map(g => g.url).join('\n');
+
             setFormData({
                 ...formData,
                 title: item.title,
+                titleEn: item.titleEn || '',
                 date: item.date,
-                fileUrl: item.url || '',
+                fileUrl: allUrls,
                 thumbnailUrl: item.thumbnailUrl || '',
                 type: item.type || 'image'
             });
             setFile(null);
+            setGalleryFiles([]);
             setThumbnailFile(null);
         } else if (type === 'sermon') {
             setFormData({
@@ -2319,10 +2354,9 @@ const Admin = () => {
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-500 ml-1">이미지 또는 영상 링크 (URL)</label>
-                                            <input
-                                                type="url"
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
+                                            <label className="text-sm font-bold text-gray-500 ml-1">이미지 또는 영상 링크 (URL) - 여러 개 입력 시 줄바꿈으로 구분</label>
+                                            <textarea
+                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans h-32 resize-none"
                                                 placeholder="https://..."
                                                 value={formData.fileUrl}
                                                 onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
@@ -2356,35 +2390,73 @@ const Admin = () => {
                                             </div>
 
                                             <div className="space-y-2 opacity-80">
-                                                <label className="text-xs font-bold text-gray-400 uppercase ml-1">
-                                                    {formData.type === 'audio' ? '음악 파일 직접 업로드' : '메인 파일 직접 업로드 (사진인 경우)'}
+                                                <label htmlFor="gallery-file-upload" className="text-xs font-bold text-gray-400 uppercase ml-1 cursor-pointer">
+                                                    {formData.type === 'audio' ? '음악 파일 직접 업로드' : '메인 파일 직접 업로드 (사진인 경우 다중선택 가능)'}
                                                 </label>
                                                 <div className="relative group">
                                                     <input
                                                         type="file"
+                                                        multiple
+                                                        id="gallery-file-upload"
                                                         accept={formData.type === 'audio' ? 'audio/*' : (formData.type === 'video' ? 'video/*' : 'image/*')}
                                                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                                                        onChange={(e) => setFile(e.target.files[0])}
+                                                        onChange={(e) => setGalleryFiles(Array.from(e.target.files))}
                                                     />
                                                     <div className={clsx(
                                                         "w-full border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center transition-all",
-                                                        file ? "border-emerald-200 bg-emerald-50" : "border-gray-200 bg-gray-50 group-hover:border-primary/30"
+                                                        galleryFiles.length > 0 ? "border-emerald-200 bg-emerald-50" : "border-gray-200 bg-gray-50 group-hover:border-primary/30"
                                                     )}>
-                                                        {file ? (
+                                                        {galleryFiles.length > 0 ? (
                                                             <div className="flex flex-col items-center">
                                                                 <Check size={16} className="text-emerald-600 mb-1" />
-                                                                <span className="text-[10px] font-bold text-emerald-700 truncate max-w-[150px]">{file.name}</span>
+                                                                <span className="text-[10px] font-bold text-emerald-700 truncate max-w-[150px]">
+                                                                    {galleryFiles.length === 1 ? galleryFiles[0].name : `${galleryFiles.length}개의 파일 선택됨`}
+                                                                </span>
                                                             </div>
                                                         ) : (
                                                             <div className="flex flex-col items-center gap-1 text-center">
                                                                 <Upload size={20} className="text-gray-400" />
                                                                 <span className="text-[10px] font-bold text-gray-400">
-                                                                    {formData.type === 'audio' ? '음악 파일 선택' : (formData.type === 'video' ? '영상 파일 선택' : '사진 파일 선택')}
+                                                                    {formData.type === 'audio' ? '음악 파일 선택' : (formData.type === 'video' ? '영상 파일 선택' : '사진 다중 선택')}
                                                                 </span>
                                                             </div>
                                                         )}
                                                     </div>
                                                 </div>
+
+                                                {/* File Preview Area */}
+                                                {galleryFiles.length > 0 && (
+                                                    <div className="mt-6 grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
+                                                        {galleryFiles.map((file, idx) => (
+                                                            <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-gray-100 group shadow-sm">
+                                                                {file.type.startsWith('image/') ? (
+                                                                    <img 
+                                                                        src={URL.createObjectURL(file)} 
+                                                                        className="w-full h-full object-cover" 
+                                                                        alt="Preview" 
+                                                                        onLoad={(e) => URL.revokeObjectURL(e.target.src)}
+                                                                    />
+                                                                ) : (
+                                                                    <div className="w-full h-full bg-slate-50 flex items-center justify-center text-slate-400">
+                                                                        {file.type.startsWith('video/') ? <Video size={24} /> : <FileText size={24} />}
+                                                                    </div>
+                                                                )}
+                                                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => setGalleryFiles(prev => prev.filter((_, i) => i !== idx))}
+                                                                        className="bg-red-500 text-white rounded-full p-1.5 hover:scale-110 transition-transform shadow-lg"
+                                                                    >
+                                                                        <X size={14} />
+                                                                    </button>
+                                                                </div>
+                                                                <div className="absolute bottom-0 inset-x-0 bg-black/60 px-1.5 py-0.5">
+                                                                    <p className="text-[8px] text-white font-medium truncate">{file.name}</p>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
 
@@ -4612,17 +4684,44 @@ const Admin = () => {
                                             />
                                         ))}
 
-                                        {activeTab === 'gallery' && gallery.map((item, idx) => (
-                                            <AdminTableRow
-                                                key={item.id || idx}
-                                                date={item.date}
-                                                title={item.title}
-                                                subText={item.type === 'video' ? 'Video' : item.type === 'audio' ? 'Audio' : 'Image'}
-                                                onEdit={() => handleEdit(item, 'gallery')}
-                                                onDelete={() => handleDelete('gallery', item.id)}
-                                                link={item.url}
-                                            />
-                                        ))}
+                                        {activeTab === 'gallery' && (() => {
+                                            const groups = gallery.reduce((acc, item) => {
+                                                const key = `${item.date}_${item.title}`;
+                                                if (!acc[key]) {
+                                                    acc[key] = { ...item, items: [item] };
+                                                } else {
+                                                    acc[key].items.push(item);
+                                                }
+                                                return acc;
+                                            }, {});
+                                            
+                                            return Object.values(groups).map((group, idx) => (
+                                                <AdminTableRow
+                                                    key={group.id || idx}
+                                                    date={group.date}
+                                                    title={group.title}
+                                                    subText={`${group.items.length} ${group.type === 'video' ? 'Video' : group.type === 'audio' ? 'Audio' : 'Image'}(s)`}
+                                                    onEdit={() => handleEdit(group.items[0], 'gallery')}
+                                                    onDelete={async () => {
+                                                        if (window.confirm(`'${group.title}' 그룹의 모든 항목(${group.items.length}개)을 삭제하시겠습니까?`)) {
+                                                            setIsLoading(true);
+                                                            try {
+                                                                for (const item of group.items) {
+                                                                    await dbService.deleteGalleryItem(item.id);
+                                                                }
+                                                                setGallery(prev => prev.filter(g => !group.items.some(gi => gi.id === g.id)));
+                                                                alert('삭제되었습니다.');
+                                                            } catch (e) {
+                                                                alert('삭제 중 오류가 발생했습니다.');
+                                                            } finally {
+                                                                setIsLoading(false);
+                                                            }
+                                                        }
+                                                    }}
+                                                    link={group.items[0].url}
+                                                />
+                                            ));
+                                        })()}
                                         {activeTab === 'columns' && columns.map((item, idx) => (
                                             <AdminTableRow
                                                 key={item.id || idx}
@@ -4675,17 +4774,44 @@ const Admin = () => {
                                         isLast={idx === bulletins.length - 1}
                                     />
                                 ))}
-                                {activeTab === 'gallery' && gallery.map((item, idx) => (
-                                    <AdminMobileCard
-                                        key={item.id || idx}
-                                        date={item.date}
-                                        title={item.title}
-                                        subText={item.type === 'video' ? 'Video' : item.type === 'audio' ? 'Audio' : 'Image'}
-                                        onEdit={() => handleEdit(item, 'gallery')}
-                                        onDelete={() => handleDelete('gallery', item.id)}
-                                        link={item.url}
-                                    />
-                                ))}
+                                {activeTab === 'gallery' && (() => {
+                                    const groups = gallery.reduce((acc, item) => {
+                                        const key = `${item.date}_${item.title}`;
+                                        if (!acc[key]) {
+                                            acc[key] = { ...item, items: [item] };
+                                        } else {
+                                            acc[key].items.push(item);
+                                        }
+                                        return acc;
+                                    }, {});
+                                    
+                                    return Object.values(groups).map((group, idx) => (
+                                        <AdminMobileCard
+                                            key={group.id || idx}
+                                            date={group.date}
+                                            title={group.title}
+                                            subText={`${group.items.length} ${group.type === 'video' ? 'Video' : group.type === 'audio' ? 'Audio' : 'Image'}(s)`}
+                                            onEdit={() => handleEdit(group.items[0], 'gallery')}
+                                            onDelete={async () => {
+                                                if (window.confirm(`'${group.title}' 그룹의 모든 항목(${group.items.length}개)을 삭제하시겠습니까?`)) {
+                                                    setIsLoading(true);
+                                                    try {
+                                                        for (const item of group.items) {
+                                                            await dbService.deleteGalleryItem(item.id);
+                                                        }
+                                                        setGallery(prev => prev.filter(g => !group.items.some(gi => gi.id === g.id)));
+                                                        alert('삭제되었습니다.');
+                                                    } catch (e) {
+                                                        alert('삭제 중 오류가 발생했습니다.');
+                                                    } finally {
+                                                        setIsLoading(false);
+                                                    }
+                                                }
+                                            }}
+                                            link={group.items[0].url}
+                                        />
+                                    ));
+                                })()}
                                 {activeTab === 'columns' && columns.map((item, idx) => (
                                     <AdminMobileCard
                                         key={item.id || idx}
