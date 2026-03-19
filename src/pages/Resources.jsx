@@ -1125,9 +1125,9 @@ const Resources = () => {
                     {/* Content Slideshow */}
                     <div 
                         className={clsx(
-                            "relative w-full max-w-6xl flex items-center justify-center overflow-hidden h-full",
+                            "relative w-full max-w-6xl flex items-center justify-center h-full",
                             (selectedGalleryGroup?.items[currentImageIndex]?.type === 'audio' || selectedVideo?.type === 'audio') ? "aspect-auto p-12 bg-white rounded-2xl" : 
-                            (selectedGalleryGroup?.items[currentImageIndex]?.type === 'image' || selectedVideo?.type === 'image') ? "aspect-auto h-[60vh] md:h-[80vh]" : "aspect-video"
+                            (selectedGalleryGroup?.items[currentImageIndex]?.type === 'image' || selectedVideo?.type === 'image') ? "aspect-auto min-h-[40vh] max-h-[85vh]" : "aspect-video"
                         )}
                         onClick={e => e.stopPropagation()}
                     >
