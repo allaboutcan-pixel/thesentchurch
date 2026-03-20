@@ -29,8 +29,8 @@ const SEO = ({
         : siteName;
 
     const defaultDescription = i18n.language === 'ko'
-        ? '밴쿠버 랭리에 위치한 보내심을 받은 생명의소리 교회 (The Church of the Sent). 문화적 기독교를 벗고 성서적 기독교로 나아가는 한인 공동체입니다.'
-        : 'The Church of the Sent located in Langley, Vancouver. A Korean community moving from cultural Christianity to biblical Christianity.';
+        ? '밴쿠버 랭리 "보내심을 받은 생명의소리 교회". 주일예배: 1부 1:00 PM(봉사자), 2부 2:00 PM(대예배). 성서적 기독교를 향해 나아가는 공동체입니다.'
+        : 'The Church of the Sent in Langley. Sunday Service: 1:00 PM & 2:00 PM. A biblical Christian community.';
 
     const metaDescription = description || defaultDescription;
     const canonicalUrl = `https://thesentchurch.ca${path}`;
@@ -65,16 +65,14 @@ const SEO = ({
         "url": "https://thesentchurch.ca/",
         "name": siteName,
         "publisher": { "@id": "https://thesentchurch.ca/#organization" },
-        /*
         "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://thesentchurch.ca/search?q={search_term_string}",
-          "query-input": "required name=search_term_string"
+            "@type": "SearchAction",
+            "target": "https://thesentchurch.ca/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
         }
-        */
     };
 
-    // Site Navigation Elements (Help Google understand the menu)
+    // Site Navigation Elements (Help Google understand the menu structure for Sitelinks)
     const navigationData = {
         "@context": "https://schema.org",
         "@type": "ItemList",
@@ -82,32 +80,38 @@ const SEO = ({
             {
                 "@type": "SiteNavigationElement",
                 "position": 1,
-                "name": t('nav.home') || 'Home',
-                "url": "https://thesentchurch.ca/"
-            },
-            {
-                "@type": "SiteNavigationElement",
-                "position": 2,
                 "name": t('nav.guide') || 'About',
                 "url": "https://thesentchurch.ca/about"
             },
             {
                 "@type": "SiteNavigationElement",
+                "position": 2,
+                "name": t('nav.staff') || '섬기는 사람들',
+                "url": "https://thesentchurch.ca/about#staff"
+            },
+            {
+                "@type": "SiteNavigationElement",
                 "position": 3,
-                "name": t('nav.sermons_word') || 'Sermons',
-                "url": "https://thesentchurch.ca/sermons"
+                "name": t('nav.worship_guide') || '예배 안내',
+                "url": "https://thesentchurch.ca/about#worship"
             },
             {
                 "@type": "SiteNavigationElement",
                 "position": 4,
-                "name": t('nav.education') || 'Education',
-                "url": "https://thesentchurch.ca/ministry"
+                "name": t('nav.sunday_sermon') || '주일예배 말씀',
+                "url": "https://thesentchurch.ca/sermons"
             },
             {
                 "@type": "SiteNavigationElement",
                 "position": 5,
-                "name": t('nav.news') || 'News',
-                "url": "https://thesentchurch.ca/news"
+                "name": '주보 보기',
+                "url": "https://thesentchurch.ca/news/bulletin"
+            },
+            {
+                "@type": "SiteNavigationElement",
+                "position": 6,
+                "name": t('nav.prayer') || '중보기도',
+                "url": "https://thesentchurch.ca/ministry/prayer"
             }
         ]
     };
