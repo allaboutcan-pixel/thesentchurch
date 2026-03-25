@@ -1230,9 +1230,11 @@ const Admin = () => {
             } else if (activeTab === 'calendar') {
                 const eventData = {
                     title: formData.title,
+                    titleEn: formData.titleEn || '',
                     startDate: formData.startDate || formData.date,
                     endDate: formData.endDate || formData.startDate || formData.date,
                     note: formData.note || '',
+                    noteEn: formData.noteEn || '',
                     type: formData.eventType || 'default'
                 };
 
@@ -2182,6 +2184,26 @@ const Admin = () => {
                                             required
                                             value={formData.endDate}
                                             onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-gray-500 ml-1">메모 (Note - 선택사항)</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                                            placeholder="일정에 대한 간단한 설명"
+                                            value={formData.note || ''}
+                                            onChange={(e) => setFormData({ ...formData, note: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-blue-500 ml-1">English Note</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
+                                            placeholder="Brief description in English"
+                                            value={formData.noteEn || ''}
+                                            onChange={(e) => setFormData({ ...formData, noteEn: e.target.value })}
                                         />
                                     </div>
                                 </>

@@ -22,26 +22,33 @@ const Home = () => {
     const [latestSermon, setLatestSermon] = useState(sermonsInitialData[0] || {});
     const [latestDailyWord, setLatestDailyWord] = useState(null);
     const [recentUpdates, setRecentUpdates] = useState([]);
-    const [heroImage, setHeroImage] = useState("");
     const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-    const [heroTitle, setHeroTitle] = useState("");
-    const [heroSubtitle, setHeroSubtitle] = useState("");
-    const [heroTitleSize, setHeroTitleSize] = useState(64);
-    const [heroSubtitleSize, setHeroSubtitleSize] = useState(24);
-    const [heroTitleColor, setHeroTitleColor] = useState("#FFFFFF");
-    const [heroSubtitleColor, setHeroSubtitleColor] = useState("#FFFFFF");
-    const [youtubeUrl, setYoutubeUrl] = useState("");
-    const [heroTitleItalic, setHeroTitleItalic] = useState(false);
-    const [heroSubtitleItalic, setHeroSubtitleItalic] = useState(false);
-    const [heroTitleWeight, setHeroTitleWeight] = useState("font-bold");
-    const [heroSubtitleWeight, setHeroSubtitleWeight] = useState("font-medium");
-    const [heroTitleFont, setHeroTitleFont] = useState("font-sans");
-    const [heroSubtitleFont, setHeroSubtitleFont] = useState("font-sans");
-    const [heroOverlayOpacity, setHeroOverlayOpacity] = useState(50);
-    const [heroHeight, setHeroHeight] = useState("full");
-    const [heroBannerFit, setHeroBannerFit] = useState("cover");
     const { config, loading: configLoading } = useSiteConfig();
     const { t, i18n } = useTranslation();
+
+    // Derive hero config directly from config (like About.jsx / Ministry.jsx) so
+    // that admin changes are reflected immediately without waiting for a DB refetch.
+    const heroImage = config.heroImage || "";
+    const youtubeUrl = (() => {
+        if (!config.youtubeUrl || typeof config.youtubeUrl !== 'string') return "https://www.youtube.com/@churchofthesent7763";
+        if (config.youtubeUrl.startsWith('http')) return config.youtubeUrl;
+        return `https://${config.youtubeUrl}`;
+    })();
+    const heroTitle = i18n.language === 'en' && config.heroTitleEn ? config.heroTitleEn : (config.heroTitle || "");
+    const heroSubtitle = i18n.language === 'en' && config.heroSubtitleEn ? config.heroSubtitleEn : (config.heroSubtitle || "");
+    const heroTitleSize = config.heroTitleSize || 64;
+    const heroSubtitleSize = config.heroSubtitleSize || 24;
+    const heroTitleColor = config.heroTitleColor || "#FFFFFF";
+    const heroSubtitleColor = config.heroSubtitleColor || "#FFFFFF";
+    const heroTitleItalic = config.heroTitleItalic !== undefined ? config.heroTitleItalic : false;
+    const heroSubtitleItalic = config.heroSubtitleItalic !== undefined ? config.heroSubtitleItalic : false;
+    const heroTitleWeight = config.heroTitleWeight || "font-bold";
+    const heroSubtitleWeight = config.heroSubtitleWeight || "font-medium";
+    const heroTitleFont = config.heroTitleFont || config.titleFont || "font-sans";
+    const heroSubtitleFont = config.heroSubtitleFont || config.subtitleFont || "font-sans";
+    const heroOverlayOpacity = config.heroOverlayOpacity !== undefined ? config.heroOverlayOpacity : (config.overlayOpacity !== undefined ? config.overlayOpacity : 50);
+    const heroHeight = config.heroHeight || "full";
+    const heroBannerFit = config.heroBannerFit || "cover";
 
     useEffect(() => {
         let isMounted = true;
@@ -132,36 +139,6 @@ const Home = () => {
                     });
 
                     setRecentUpdates(allUpdates.slice(0, 5));
-                }
-
-                if (config && isMounted) {
-                    if (config.heroImage) setHeroImage(config.heroImage);
-
-                    // Multi-language support for Hero with safety guards
-                    const title = i18n.language === 'en' && config.heroTitleEn ? config.heroTitleEn : (config.heroTitle || "");
-                    const subtitle = i18n.language === 'en' && config.heroSubtitleEn ? config.heroSubtitleEn : (config.heroSubtitle || "");
-
-                    setHeroTitle(title);
-                    setHeroSubtitle(subtitle);
-
-                    if (config.heroTitleColor) setHeroTitleColor(config.heroTitleColor);
-                    if (config.heroSubtitleColor) setHeroSubtitleColor(config.heroSubtitleColor);
-                    if (config.heroTitleItalic !== undefined) setHeroTitleItalic(config.heroTitleItalic);
-                    if (config.heroSubtitleItalic !== undefined) setHeroSubtitleItalic(config.heroSubtitleItalic);
-                    if (config.heroTitleSize) setHeroTitleSize(config.heroTitleSize);
-                    if (config.heroSubtitleSize) setHeroSubtitleSize(config.heroSubtitleSize);
-                    if (config.heroTitleFont) setHeroTitleFont(config.heroTitleFont);
-                    else if (config.titleFont) setHeroTitleFont(config.titleFont);
-
-                    if (config.heroSubtitleFont) setHeroSubtitleFont(config.heroSubtitleFont);
-                    else if (config.subtitleFont) setHeroSubtitleFont(config.subtitleFont);
-
-                    if (config.heroOverlayOpacity !== undefined) setHeroOverlayOpacity(config.heroOverlayOpacity);
-                    else if (config.overlayOpacity !== undefined) setHeroOverlayOpacity(config.overlayOpacity);
-
-                    if (config.heroHeight) setHeroHeight(config.heroHeight);
-                    if (config.heroBannerFit) setHeroBannerFit(config.heroBannerFit);
-                    if (config.youtubeUrl) setYoutubeUrl(config.youtubeUrl);
                 }
             } catch (e) {
                 if (isMounted) console.warn("Could not fetch live content, using defaults.", e);
@@ -393,11 +370,7 @@ const Home = () => {
                                 </h3>
                             </div>
                             <a
-                                href={(() => {
-                                    if (!youtubeUrl || typeof youtubeUrl !== 'string') return "https://www.youtube.com/@churchofthesent7763";
-                                    if (youtubeUrl.startsWith('http')) return youtubeUrl;
-                                    return `https://${youtubeUrl}`;
-                                })()}
+                                href={youtubeUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex flex-col items-center gap-1.5 text-primary/60 hover:text-red-600 transition-all group px-4 py-3 rounded-2xl hover:bg-red-50"
