@@ -78,13 +78,17 @@ export const formatFacebookLink = (url) => {
     if (!isMobile) return url;
 
     try {
+        // Find if the original URL already has a group context to reuse
+        const groupMatch = url.match(/groups\/([a-zA-Z0-9.-]+)\//);
+        const groupName = (groupMatch && groupMatch[1]) ? groupMatch[1] : 'thesentchurch';
+
         // 1. Detect "photo" links with a "pcb" set (Post Cluster ID)
         // Example: https://www.facebook.com/photo?fbid=...&set=pcb.26549997914636669
         const pcbMatch = url.match(/[?&]set=pcb\.([0-9]+)/);
         if (pcbMatch && pcbMatch[1]) {
-            // Using the "Share" format is often the most public-friendly way to avoid the login wall
-            // while still providing the full post context for swiping
-            return `https://www.facebook.com/share/p/${pcbMatch[1]}/`;
+            // Using a standard Group-Post link is the most reliable way to trigger "Universal Links"
+            // that open the Facebook APP directly on iOS and Android.
+            return `https://www.facebook.com/groups/${groupName}/posts/${pcbMatch[1]}/`;
         }
 
         // 2. Detect "album" links
