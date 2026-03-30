@@ -72,11 +72,6 @@ export const formatFacebookLink = (url) => {
     if (!url || typeof url !== 'string') return url;
     if (!url.includes('facebook.com')) return url;
 
-    // Detect if the user is on a desktop/PC environment
-    // We do NOT transform URLs for PC to ensure perfect consistency with what the user entered
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (!isMobile) return url;
-
     try {
         // Find if the original URL already has a group context to reuse
         const groupMatch = url.match(/groups\/([a-zA-Z0-9.-]+)\//);
