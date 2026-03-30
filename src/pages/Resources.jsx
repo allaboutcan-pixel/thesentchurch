@@ -1373,6 +1373,9 @@ const Resources = () => {
                                     {selectedArchiveColumn?.facebookUrl ? (
                                         <a
                                             href={selectedArchiveColumn.facebookUrl.startsWith('http') ? selectedArchiveColumn.facebookUrl : `https://${selectedArchiveColumn.facebookUrl}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={() => setSelectedArchiveColumn(null)}
                                             className="w-full py-2 md:py-3 bg-white/10 text-white rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm hover:bg-white/20 transition-all col-span-1 flex items-center justify-center"
                                         >
                                             {i18n.language.startsWith('en') ? 'Close' : '닫기'}
@@ -1418,6 +1421,9 @@ const Resources = () => {
                             {selectedArchiveColumn?.facebookUrl ? (
                                 <a
                                     href={selectedArchiveColumn.facebookUrl.startsWith('http') ? selectedArchiveColumn.facebookUrl : `https://${selectedArchiveColumn.facebookUrl}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={() => setSelectedArchiveColumn(null)}
                                     className="absolute top-6 right-6 z-50 bg-white/10 hover:bg-white text-white hover:text-slate-900 p-2 rounded-full transition-all"
                                 >
                                     <X size={24} />
