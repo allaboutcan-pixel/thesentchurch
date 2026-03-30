@@ -711,9 +711,9 @@ const Resources = () => {
                                     </div>
 
                                     {/* Responsive Viewer (Preview) */}
-                                    <div className="w-full lg:w-[65%] space-y-2 lg:space-y-6">
+                                    <div className="w-full lg:w-[65%] space-y-4 lg:space-y-6 flex flex-col items-center">
                                         {latestBulletin.fileUrl2 && (
-                                            <div className="flex bg-white/5 p-1 rounded-full lg:rounded-2xl w-fit border border-white/10 mx-auto lg:mx-0 mt-3 lg:mt-0">
+                                            <div className="flex bg-white/5 p-1 rounded-full lg:rounded-2xl w-fit border border-white/10">
                                                 <button
                                                     onClick={() => setActivePage(1)}
                                                     className={clsx(
@@ -734,11 +734,11 @@ const Resources = () => {
                                                 </button>
                                             </div>
                                         )}
-                                        <div className="w-full h-full lg:h-auto aspect-[4/5] lg:aspect-[16/10] lg:bg-white lg:rounded-[2rem] overflow-hidden lg:border lg:border-white/10 relative lg:shadow-2xl">
-                                            <div className="w-full h-full overflow-hidden">
+                                        <div className="w-full aspect-[4/5] lg:aspect-auto lg:h-[600px] xl:h-[800px] lg:bg-white lg:rounded-[2rem] overflow-hidden lg:border lg:border-white/10 relative lg:shadow-2xl">
+                                            <div className="w-full h-full">
                                                 <iframe
                                                     src={dbService.formatDriveLink(activePage === 1 ? latestBulletin.fileUrl : latestBulletin.fileUrl2)}
-                                                    className="w-full h-full lg:h-auto transition-opacity bulletin-preview-iframe"
+                                                    className="w-full h-full transition-opacity bulletin-preview-iframe"
                                                     title="Latest Bulletin Preview"
                                                     loading="lazy"
                                                 ></iframe>
@@ -914,8 +914,8 @@ const Resources = () => {
                                     </div>
 
                                     {/* Responsive Viewer (Preview) */}
-                                    <div className="lg:w-[65%] w-full space-y-6">
-                                        <div className="aspect-[16/10] bg-white/5 rounded-[2rem] overflow-hidden border border-white/10 relative shadow-2xl">
+                                    <div className="w-full lg:w-[65%] space-y-0 lg:space-y-6">
+                                        <div className="w-full aspect-[4/5] lg:aspect-[1/1] xl:aspect-video lg:h-auto lg:bg-white/5 lg:rounded-[2rem] overflow-hidden lg:border lg:border-white/10 relative lg:shadow-2xl">
                                             {latestColumn.fileType === 'video' ? (
                                                 <iframe
                                                     src={(() => {
@@ -925,7 +925,7 @@ const Resources = () => {
                                                         if (url.includes('drive.google.com')) return dbService.formatDriveLink(url);
                                                         return url;
                                                     })()}
-                                                    className="w-full h-full border-none opacity-80 hover:opacity-100 transition-opacity"
+                                                    className="w-full h-full min-h-[500px] border-none opacity-80 hover:opacity-100 transition-opacity"
                                                     title={(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
                                                     allowFullScreen
                                                 ></iframe>
@@ -939,7 +939,7 @@ const Resources = () => {
                                             ) : (
                                                 <iframe
                                                     src={dbService.formatDriveLink(latestColumn.fileUrl)}
-                                                    className="w-full h-full border-none opacity-80 hover:opacity-100 transition-opacity"
+                                                    className="w-full h-full min-h-[600px] lg:min-h-[800px] border-none opacity-80 hover:opacity-100 transition-opacity"
                                                     title={(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
                                                 ></iframe>
                                             )}
