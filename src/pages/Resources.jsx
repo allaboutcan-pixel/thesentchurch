@@ -687,10 +687,10 @@ const Resources = () => {
                                                     setActiveArchivePage(activePage);
                                                     setIsBulletinFullScreen(true);
                                                 }}
-                                                className="col-span-1 lg:w-auto w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white text-slate-900 rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-slate-100 transition-all shadow-lg lg:hover:scale-105 lg:active:scale-95"
+                                                className="col-span-2 lg:w-auto w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white text-slate-900 rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-slate-100 transition-all shadow-lg lg:hover:scale-105 lg:active:scale-95"
                                             >
                                                 <Maximize size={14} className="lg:w-4 lg:h-4" />
-                                                전체 화면으로 보기
+                                                {i18n.language.startsWith('en') ? 'View Full Screen' : '전체 화면으로 보기'}
                                             </button>
                                             <a
                                                 href={dbService.formatDriveDownloadLink(latestBulletin.fileUrl)}
@@ -698,8 +698,15 @@ const Resources = () => {
                                                 className="col-span-1 lg:w-auto w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20"
                                             >
                                                 <Download size={14} className="lg:w-4 lg:h-4" />
-                                                파일 다운로드
+                                                {i18n.language.startsWith('en') ? 'Download File' : '파일 다운로드'}
                                             </a>
+                                            <button
+                                                onClick={() => setLatestBulletin(null)}
+                                                className="col-span-1 lg:w-auto w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/10 lg:bg-white/10 text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/20 transition-all"
+                                            >
+                                                <X size={14} className="lg:w-4 lg:h-4" />
+                                                {i18n.language.startsWith('en') ? 'Close' : '닫기'}
+                                            </button>
                                         </div>
                                     </div>
 
@@ -891,11 +898,18 @@ const Resources = () => {
                                             <a
                                                 href={dbService.formatDriveDownloadLink(latestColumn.fileUrl)}
                                                 download
-                                                className={`${latestColumn.facebookUrl ? 'col-span-2' : 'col-span-1'} w-full lg:w-auto py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20`}
+                                                className="col-span-1 w-full lg:w-auto py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20"
                                             >
                                                 <Download size={14} className="lg:w-4 lg:h-4" />
                                                 {t('resources.download')}
                                             </a>
+                                            <button
+                                                onClick={() => setLatestColumn(null)}
+                                                className="col-span-1 lg:w-auto w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/10 lg:bg-white/10 text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/20 transition-all"
+                                            >
+                                                <X size={14} className="lg:w-4 lg:h-4" />
+                                                {i18n.language.startsWith('en') ? 'Close' : '닫기'}
+                                            </button>
                                         </div>
                                     </div>
 
@@ -1370,13 +1384,14 @@ const Resources = () => {
                                         className="w-full py-2.5 md:py-4 bg-white/5 text-white/60 rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm hover:bg-white/10 hover:text-white transition-all flex items-center justify-center gap-1.5 md:gap-3 col-span-1"
                                     >
                                         <Download size={14} />
-                                        파일 다운로드
+                                        {i18n.language.startsWith('en') ? 'Download File' : '파일 다운로드'}
                                     </a>
                                     <button
                                         onClick={() => setSelectedArchiveColumn(null)}
                                         className="w-full py-2.5 md:py-4 bg-white/10 text-white rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm hover:bg-white/20 transition-all col-span-1"
                                     >
-                                        닫기
+                                        <X size={14} className="lg:w-4 lg:h-4" />
+                                        {i18n.language.startsWith('en') ? 'Close' : '닫기'}
                                     </button>
                                 </div>
                             </div>
@@ -1451,7 +1466,7 @@ const Resources = () => {
                                         className="col-span-1 lg:col-span-1 w-full py-2.5 md:py-4 bg-white text-slate-900 rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm flex items-center justify-center gap-1.5 md:gap-3 hover:bg-slate-100 transition-all shadow-lg active:scale-[0.98]"
                                     >
                                         <Maximize size={14} />
-                                        전체 화면으로 보기
+                                        {i18n.language.startsWith('en') ? 'View Full Screen' : '전체 화면으로 보기'}
                                     </button>
                                     <a
                                         href={dbService.formatDriveDownloadLink(selectedArchiveBulletin.fileUrl)}
@@ -1459,13 +1474,14 @@ const Resources = () => {
                                         className="w-full py-2.5 md:py-4 bg-white/5 text-white/60 rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm hover:bg-white/10 hover:text-white transition-all flex items-center justify-center gap-1.5 md:gap-3 col-span-1"
                                     >
                                         <Download size={14} />
-                                        파일 다운로드
+                                        {i18n.language.startsWith('en') ? 'Download File' : '파일 다운로드'}
                                     </a>
                                     <button
                                         onClick={() => setSelectedArchiveBulletin(null)}
                                         className="w-full col-span-2 lg:col-span-1 py-2.5 md:py-4 bg-white/10 text-white rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm hover:bg-white/20 transition-all"
                                     >
-                                        닫기
+                                        <X size={14} className="lg:w-4 lg:h-4" />
+                                        {i18n.language.startsWith('en') ? 'Close' : '닫기'}
                                     </button>
                                 </div>
                             </div>
