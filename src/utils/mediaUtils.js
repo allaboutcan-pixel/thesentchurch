@@ -77,8 +77,8 @@ export const formatFacebookLink = (url) => {
         // Example: https://www.facebook.com/photo?fbid=...&set=pcb.26549997914636669
         const pcbMatch = url.match(/[?&]set=pcb\.([0-9]+)/);
         if (pcbMatch && pcbMatch[1]) {
-            // Reformatting to facebook.com/[ID] is the most reliable "deep link" to a post
-            return `https://www.facebook.com/${pcbMatch[1]}`;
+            // Using permalink.php is extremely robust for both mobile app deep-linking and browser navigation
+            return `https://www.facebook.com/permalink.php?story_fbid=${pcbMatch[1]}`;
         }
 
         // 2. Detect "album" links
@@ -87,6 +87,9 @@ export const formatFacebookLink = (url) => {
         if (albumMatch && albumMatch[1]) {
             return `https://www.facebook.com/media/set/?set=a.${albumMatch[1]}`;
         }
+
+        // 3. Prevent potentially broken shortened URLs that might fail on mobile
+        // If the URL is already a direct link or something we don't recognize, keep it as is.
     } catch (e) {
         console.warn("mediaUtils: Error formatting Facebook link", e);
     }
