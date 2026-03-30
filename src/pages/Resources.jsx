@@ -1145,16 +1145,6 @@ const Resources = () => {
                         setSelectedGalleryGroup(null);
                     }}
                 >
-                    <button
-                        className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-[110]"
-                        onClick={() => {
-                            setSelectedVideo(null);
-                            setSelectedGalleryGroup(null);
-                        }}
-                    >
-                        <X size={32} />
-                    </button>
-
                     {/* Content Slideshow */}
                     <div 
                         className={clsx(
@@ -1309,14 +1299,22 @@ const Resources = () => {
                                 setSelectedVideo(null);
                                 setSelectedGalleryGroup(null);
                             }}
-                            className="mt-6 px-8 py-3 bg-white/10 text-white rounded-full font-bold text-sm hover:bg-white/20 transition-all active:scale-95 flex items-center justify-center gap-2 pointer-events-auto mx-auto"
+                            className="mt-6 py-2 md:py-3 px-8 bg-white/10 text-white rounded-full font-bold text-sm hover:bg-white/20 transition-all active:scale-95 flex items-center justify-center gap-2 pointer-events-auto mx-auto"
                         >
-                            <X size={18} />
                             {i18n.language === 'en' ? 'Close' : '닫기'}
                         </button>
+                        </div>
+                        <button
+                            className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-[110]"
+                            onClick={() => {
+                                setSelectedVideo(null);
+                                setSelectedGalleryGroup(null);
+                            }}
+                        >
+                            <X size={32} />
+                        </button>
                     </div>
-                </div>
-            )}
+                )}
 
             {/* Column Modal Viewer */}
             {
@@ -1329,13 +1327,6 @@ const Resources = () => {
                             className="w-full max-w-5xl bg-slate-900 rounded-3xl lg:rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-white/10 flex flex-col lg:flex-row h-[90vh] lg:h-auto lg:max-h-none"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <button
-                                className="absolute top-6 right-6 z-20 bg-white/10 hover:bg-white text-white hover:text-slate-900 p-2 rounded-full transition-all"
-                                onClick={() => setSelectedArchiveColumn(null)}
-                            >
-                                <X size={24} />
-                            </button>
-
                             {/* Info Section */}
                             <div className="lg:w-1/3 p-5 md:p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center gap-3 md:gap-8 shrink-0">
                                 <div>
@@ -1351,12 +1342,12 @@ const Resources = () => {
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-2 md:gap-3 py-2 md:py-4">
+                                <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 md:gap-3 py-2 md:py-4">
                                     <a
                                         href={dbService.formatDriveLink(selectedArchiveColumn.fileUrl)}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className={`${selectedArchiveColumn.facebookUrl ? 'col-span-1' : 'col-span-2 lg:col-span-1'} w-full py-2 md:py-3 bg-white text-slate-900 rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm flex items-center justify-center gap-1.5 md:gap-3 hover:bg-slate-100 transition-all`}
+                                        className={`${selectedArchiveColumn.facebookUrl ? 'col-span-1' : 'col-span-2 lg:col-span-1'} w-full py-2 md:py-3 bg-white text-slate-900 rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm flex items-center justify-center gap-1.5 md:gap-3 hover:bg-slate-100 transition-all shadow-lg active:scale-95`}
                                     >
                                         <BookOpen size={14} />
                                         {i18n.language.startsWith('en') ? 'View Larger' : '전체 화면으로 보기'}
@@ -1366,7 +1357,7 @@ const Resources = () => {
                                             href={selectedArchiveColumn.facebookUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="w-full py-2 md:py-3 bg-[#1877F2] text-white rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm flex items-center justify-center gap-1.5 md:gap-3 hover:bg-[#1877F2]/90 transition-all hover:scale-[0.98] col-span-1"
+                                            className="w-full py-2 md:py-3 bg-[#1877F2] text-white rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm flex items-center justify-center gap-1.5 md:gap-3 hover:bg-[#1877F2]/90 transition-all shadow-lg active:scale-95 col-span-1"
                                         >
                                             <ExternalLink size={14} />
                                             {i18n.language.startsWith('en') ? 'Original Article' : '원문 바로가기'}
@@ -1382,9 +1373,8 @@ const Resources = () => {
                                     </a>
                                     <button
                                         onClick={() => setSelectedArchiveColumn(null)}
-                                        className="w-full py-2 md:py-3 bg-white/10 text-white rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm hover:bg-white/20 transition-all col-span-1"
+                                        className="w-full py-2 md:py-3 bg-white/10 text-white rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm hover:bg-white/20 transition-all col-span-1 flex items-center justify-center"
                                     >
-                                        <X size={14} className="lg:w-4 lg:h-4" />
                                         {i18n.language.startsWith('en') ? 'Close' : '닫기'}
                                     </button>
                                 </div>
@@ -1417,6 +1407,12 @@ const Resources = () => {
                                     ></iframe>
                                 )}
                             </div>
+                            <button
+                                className="absolute top-6 right-6 z-50 bg-white/10 hover:bg-white text-white hover:text-slate-900 p-2 rounded-full transition-all"
+                                onClick={() => setSelectedArchiveColumn(null)}
+                            >
+                                <X size={24} />
+                            </button>
                         </div>
                     </div>
                 )}
@@ -1432,15 +1428,6 @@ const Resources = () => {
                             className="w-full max-w-5xl bg-slate-900 rounded-3xl lg:rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-white/10 flex flex-col lg:flex-row h-[90vh] lg:h-auto lg:max-h-none"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <button
-                                className="absolute top-6 right-6 z-20 bg-white/10 hover:bg-red-500 text-white p-3 rounded-full transition-all backdrop-blur-md shadow-lg"
-                                onClick={() => setSelectedArchiveBulletin(null)}
-                                title="닫기"
-                            >
-                                <X size={24} />
-                            </button>
-
-
                             {/* Info Section */}
                             <div className="lg:w-1/3 p-5 md:p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center gap-3 md:gap-8 shrink-0">
                                 <div>
@@ -1454,10 +1441,10 @@ const Resources = () => {
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-2 lg:flex lg:flex-col gap-2 md:gap-3 pt-1 md:pt-4">
+                                <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 md:gap-3 pt-1 md:pt-4">
                                     <button
                                         onClick={() => setIsBulletinFullScreen(true)}
-                                        className="col-span-1 lg:col-span-1 w-full py-2 md:py-3 bg-white text-slate-900 rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm flex items-center justify-center gap-1.5 md:gap-3 hover:bg-slate-100 transition-all shadow-lg active:scale-[0.98]"
+                                        className="col-span-1 w-full py-2 md:py-3 bg-white text-slate-900 rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm flex items-center justify-center gap-1.5 md:gap-3 hover:bg-slate-100 transition-all shadow-lg active:scale-[0.98]"
                                     >
                                         <Maximize size={14} />
                                         {i18n.language.startsWith('en') ? 'View Full Screen' : '전체 화면으로 보기'}
@@ -1465,16 +1452,15 @@ const Resources = () => {
                                     <a
                                         href={dbService.formatDriveDownloadLink(selectedArchiveBulletin.fileUrl)}
                                         download
-                                        className="w-full py-2 md:py-3 bg-white/5 text-white/60 rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm hover:bg-white/10 hover:text-white transition-all flex items-center justify-center gap-1.5 md:gap-3 col-span-1"
+                                        className="col-span-1 w-full py-2 md:py-3 bg-white/5 text-white/60 rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm hover:bg-white/10 hover:text-white transition-all flex items-center justify-center gap-1.5 md:gap-3"
                                     >
                                         <Download size={14} />
                                         {i18n.language.startsWith('en') ? 'Download File' : '파일 다운로드'}
                                     </a>
                                     <button
                                         onClick={() => setSelectedArchiveBulletin(null)}
-                                        className="w-full col-span-2 lg:col-span-1 py-2 md:py-3 bg-white/10 text-white rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm hover:bg-white/20 transition-all"
+                                        className="col-span-2 lg:col-span-1 w-full py-2 md:py-3 bg-white/10 text-white rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm hover:bg-white/20 transition-all flex items-center justify-center"
                                     >
-                                        <X size={14} className="lg:w-4 lg:h-4" />
                                         {i18n.language.startsWith('en') ? 'Close' : '닫기'}
                                     </button>
                                 </div>
@@ -1529,6 +1515,13 @@ const Resources = () => {
                                     ></iframe>
                                 </div>
                             </div>
+                            <button
+                                className="absolute top-6 right-6 z-50 bg-white/10 hover:bg-red-500 text-white p-3 rounded-full transition-all backdrop-blur-md shadow-lg"
+                                onClick={() => setSelectedArchiveBulletin(null)}
+                                title="닫기"
+                            >
+                                <X size={24} />
+                            </button>
                         </div>
                     </div>
                 )}
