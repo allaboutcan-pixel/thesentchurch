@@ -82,7 +82,7 @@ const Prayer = () => {
 
     const bannerFit = siteConfig?.prayerBannerFit || 'cover';
     const overlayOpacity = siteConfig?.prayerOverlayOpacity || 40;
-    const height = siteConfig?.prayerHeight || 'medium';
+    const height = siteConfig?.prayerHeight || siteConfig?.prayerHeroHeight || siteConfig?.heroHeight || 'large';
 
     const titleFont = siteConfig?.prayerTitleFont || 'font-sans';
     const subtitleFont = siteConfig?.prayerSubtitleFont || 'font-sans';

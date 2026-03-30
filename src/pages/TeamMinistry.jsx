@@ -57,6 +57,8 @@ const TeamMinistry = () => {
         ? siteConfig.teamMinistryItems
         : (churchData.team_ministries || []);
 
+    const height = siteConfig?.teamHeroHeight || siteConfig?.heroHeight || 'large';
+
     return (
         <div className="min-h-screen bg-[#efebe9]">
             <SEO

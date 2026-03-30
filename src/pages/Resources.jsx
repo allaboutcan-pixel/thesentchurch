@@ -88,10 +88,9 @@ const Resources = () => {
     const subtitleWeight = siteConfig?.[`${prefix}SubtitleWeight`] || "font-medium";
     const titleSize = siteConfig?.[`${prefix}TitleSize`] || 48;
     const subtitleSize = siteConfig?.[`${prefix}SubtitleSize`] || 24;
-    const overlayOpacity = siteConfig?.[`${prefix}OverlayOpacity`] ?? 40;
-    // eslint-disable-next-line no-unused-vars
-    const height = siteConfig?.[`${prefix}Height`] || "medium";
-    const bannerFit = siteConfig?.[`${prefix}BannerFit`] || "cover";
+    const overlayOpacity = siteConfig?.[`${prefix}OverlayOpacity`] ?? siteConfig?.overlayOpacity ?? 40;
+    const height = siteConfig?.[`${prefix}Height`] || siteConfig?.[`${prefix}HeroHeight`] || siteConfig?.heroHeight || "large";
+    const bannerFit = siteConfig?.[`${prefix}BannerFit`] || siteConfig?.bannerFit || "cover";
 
     const variants = {
         enter: (direction) => ({

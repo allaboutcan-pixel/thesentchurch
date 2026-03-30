@@ -13,15 +13,6 @@ const Worship = () => {
     const { config, loading } = useSiteConfigValue();
 
     // Derived values from global config
-    const headerBanner = config.newsBanner || config.worshipBanner || "/images/worship_banner.jpg";
-    const height = config.newsHeight || config.worshipHeight || "medium";
-    const bannerFit = config.newsBannerFit || config.worshipBannerFit || "cover";
-    const overlayOpacity = config.newsOverlayOpacity !== undefined ? config.newsOverlayOpacity : (config.worshipOverlayOpacity !== undefined ? config.worshipOverlayOpacity : 40);
-
-    const title = i18n.language === 'en' && (config.newsTitleEn || config.worshipTitleEn)
-        ? (config.newsTitleEn || config.worshipTitleEn)
-        : (config.newsTitle || config.worshipTitle);
-
     const subtitle = i18n.language === 'en' && (config.newsSubtitleEn || config.worshipSubtitleEn)
         ? (config.newsSubtitleEn || config.worshipSubtitleEn)
         : (config.newsSubtitle || config.worshipSubtitle);

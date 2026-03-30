@@ -18,7 +18,7 @@ const About = () => {
 
     // Derived values from global config
     const headerBanner = config.aboutBanner || "/images/about_banner.jpg";
-    const height = config.aboutHeight || "medium";
+    const height = config.aboutHeight || config.aboutHeroHeight || config.heroHeight || "large";
     const bannerFit = config.aboutBannerFit || "cover";
     const overlayOpacity = config.aboutOverlayOpacity !== undefined ? config.aboutOverlayOpacity : 40;
 
