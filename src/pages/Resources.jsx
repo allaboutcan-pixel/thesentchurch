@@ -695,18 +695,11 @@ const Resources = () => {
                                             <a
                                                 href={dbService.formatDriveDownloadLink(latestBulletin.fileUrl)}
                                                 download
-                                                className="col-span-1 w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20"
+                                                className="col-span-2 w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20"
                                             >
                                                 <Download size={14} className="lg:w-4 lg:h-4" />
                                                 {i18n.language.startsWith('en') ? 'Download File' : '파일 다운로드'}
                                             </a>
-                                            <button
-                                                onClick={() => scrollToTop()}
-                                                className="col-span-1 w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/10 lg:bg-white/10 text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/20 transition-all"
-                                            >
-                                                <X size={14} className="lg:w-4 lg:h-4" />
-                                                {i18n.language.startsWith('en') ? 'Close' : '닫기'}
-                                            </button>
                                         </div>
                                     </div>
 
@@ -898,18 +891,11 @@ const Resources = () => {
                                             <a
                                                 href={dbService.formatDriveDownloadLink(latestColumn.fileUrl)}
                                                 download
-                                                className="col-span-1 w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20"
+                                                className={`${latestColumn.facebookUrl ? 'col-span-2' : 'col-span-2'} w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20`}
                                             >
                                                 <Download size={14} className="lg:w-4 lg:h-4" />
                                                 {t('resources.download')}
                                             </a>
-                                            <button
-                                                onClick={() => scrollToTop()}
-                                                className="col-span-1 w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/10 lg:bg-white/10 text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/20 transition-all"
-                                            >
-                                                <X size={14} className="lg:w-4 lg:h-4" />
-                                                {i18n.language.startsWith('en') ? 'Close' : '닫기'}
-                                            </button>
                                         </div>
                                     </div>
 
