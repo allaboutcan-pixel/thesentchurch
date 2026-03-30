@@ -664,51 +664,53 @@ const Resources = () => {
                 {activeTab === 'bulletin' && (
                     <div className="space-y-24 pb-24 animate-fade-in">
                         {latestBulletin ? (
-                            <div className="bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 max-w-[1400px] mx-auto transition-all">
-                                <div className="p-8 md:p-14 flex flex-col lg:flex-row gap-12 items-center">
-                                    <div className="lg:w-[35%] text-white space-y-6">
-                                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/20 text-accent rounded-full text-[10px] font-black tracking-widest uppercase">
-                                            <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-                                            {t('resources.latest_bulletin')}
+                            <div className="bg-slate-900 rounded-3xl lg:rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 max-w-5xl lg:max-w-[1400px] mx-auto transition-all">
+                                <div className="flex flex-col lg:flex-row items-center lg:gap-12 p-0 lg:p-14">
+                                    <div className="w-full lg:w-[35%] p-5 md:p-8 lg:p-0 border-b lg:border-b-0 border-white/10 flex flex-col justify-center gap-3 lg:gap-6 shrink-0">
+                                        <div className="space-y-1 lg:space-y-6 text-white w-full">
+                                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/20 text-accent rounded-full text-[10px] lg:text-[10px] font-black tracking-widest uppercase mb-1 lg:mb-0">
+                                                <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+                                                {t('resources.latest_bulletin')}
+                                            </div>
+                                            <h2 className="text-lg md:text-3xl lg:text-4xl font-black text-white leading-tight mb-1 lg:mb-0 line-clamp-2 lg:line-clamp-none">
+                                                {(i18n.language === 'en' && latestBulletin.titleEn) ? latestBulletin.titleEn : latestBulletin.title}
+                                            </h2>
+                                            <div className="flex items-center gap-3 lg:gap-2 text-white/40 text-xs flex-row md:text-lg lg:text-sm font-medium">
+                                                <Calendar size={14} className="text-accent lg:w-4 lg:h-4" />
+                                                {latestBulletin.date || ""}
+                                            </div>
                                         </div>
-                                        <h2 className="text-2xl md:text-4xl font-black leading-tight text-white">
-                                            {(i18n.language === 'en' && latestBulletin.titleEn) ? latestBulletin.titleEn : latestBulletin.title}
-                                        </h2>
-                                        <div className="flex items-center gap-3 text-white/60 text-sm font-medium">
-                                            <Calendar size={16} className="text-accent" />
-                                            {latestBulletin.date || ""}
-                                        </div>
-                                        <div className="flex flex-wrap gap-2 pt-2">
+                                        <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-2 md:gap-3 lg:gap-2 pt-1 lg:pt-2 w-full">
                                             <button
                                                 onClick={() => {
                                                     setSelectedArchiveBulletin(latestBulletin);
                                                     setActiveArchivePage(activePage);
                                                     setIsBulletinFullScreen(true);
                                                 }}
-                                                className="px-6 py-3 bg-white text-slate-900 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-100 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-white/5 text-sm"
+                                                className="col-span-1 lg:w-auto w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white text-slate-900 rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-slate-100 transition-all shadow-lg lg:hover:scale-105 lg:active:scale-95"
                                             >
-                                                <BookOpen size={16} />
-                                                {t('resources.view_larger')}
+                                                <Maximize size={14} className="lg:w-4 lg:h-4" />
+                                                전체 화면으로 보기
                                             </button>
                                             <a
                                                 href={dbService.formatDriveDownloadLink(latestBulletin.fileUrl)}
                                                 download
-                                                className="px-6 py-3 bg-white/10 text-white rounded-xl font-bold flex items-center gap-2 hover:bg-white/20 transition-all border border-white/20 text-sm"
+                                                className="col-span-1 lg:w-auto w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20"
                                             >
-                                                <Download size={16} />
-                                                {t('resources.download')}
+                                                <Download size={14} className="lg:w-4 lg:h-4" />
+                                                파일 다운로드
                                             </a>
                                         </div>
                                     </div>
 
                                     {/* Responsive Viewer (Preview) */}
-                                    <div className="lg:w-[65%] w-full space-y-6">
+                                    <div className="w-full lg:w-[65%] space-y-2 lg:space-y-6">
                                         {latestBulletin.fileUrl2 && (
-                                            <div className="flex bg-white/5 p-1 rounded-2xl w-fit border border-white/10 mx-auto lg:mx-0">
+                                            <div className="flex bg-white/5 p-1 rounded-full lg:rounded-2xl w-fit border border-white/10 mx-auto lg:mx-0 mt-3 lg:mt-0">
                                                 <button
                                                     onClick={() => setActivePage(1)}
                                                     className={clsx(
-                                                        "px-6 py-2 rounded-xl text-xs font-black transition-all",
+                                                        "px-4 lg:px-6 py-1.5 lg:py-2 rounded-full lg:rounded-xl text-[10px] lg:text-xs font-black transition-all",
                                                         activePage === 1 ? "bg-white text-primary shadow-lg" : "text-white/40 hover:text-white"
                                                     )}
                                                 >
@@ -717,7 +719,7 @@ const Resources = () => {
                                                 <button
                                                     onClick={() => setActivePage(2)}
                                                     className={clsx(
-                                                        "px-6 py-2 rounded-xl text-xs font-black transition-all",
+                                                        "px-4 lg:px-6 py-1.5 lg:py-2 rounded-full lg:rounded-xl text-[10px] lg:text-xs font-black transition-all",
                                                         activePage === 2 ? "bg-white text-primary shadow-lg" : "text-white/40 hover:text-white"
                                                     )}
                                                 >
@@ -725,11 +727,11 @@ const Resources = () => {
                                                 </button>
                                             </div>
                                         )}
-                                        <div className="aspect-[16/10] rounded-[2rem] overflow-hidden border border-white/10 relative shadow-2xl bg-white">
+                                        <div className="w-full h-full lg:h-auto aspect-[4/5] lg:aspect-[16/10] lg:bg-white lg:rounded-[2rem] overflow-hidden lg:border lg:border-white/10 relative lg:shadow-2xl">
                                             <div className="w-full h-full overflow-hidden">
                                                 <iframe
                                                     src={dbService.formatDriveLink(activePage === 1 ? latestBulletin.fileUrl : latestBulletin.fileUrl2)}
-                                                    className="w-full transition-opacity bulletin-preview-iframe"
+                                                    className="w-full h-full lg:h-auto transition-opacity bulletin-preview-iframe"
                                                     title="Latest Bulletin Preview"
                                                     loading="lazy"
                                                 ></iframe>
@@ -844,33 +846,36 @@ const Resources = () => {
                 {activeTab === 'column' && (
                     <div className="space-y-24 pb-24 animate-fade-in">
                         {latestColumn ? (
-                            <div className="bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 max-w-[1400px] mx-auto transition-all">
-                                <div className="p-8 md:p-14 flex flex-col lg:flex-row gap-12 items-center">
-                                    <div className="lg:w-[35%] text-white space-y-6">
-                                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/20 text-accent rounded-full text-[10px] font-black tracking-widest uppercase">
-                                            <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-                                            {t('resources.latest_column')}
-                                        </div>
-                                        <h2 className="text-2xl md:text-4xl font-black leading-tight text-white">
-                                            {(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
-                                        </h2>
-                                        <div className="flex flex-col gap-1">
-                                            <div className="flex items-center gap-3 text-white/60 text-sm font-medium">
-                                                <Calendar size={16} className="text-accent" />
-                                                {latestColumn.date || ""}
+                            <div className="bg-slate-900 rounded-3xl lg:rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 max-w-5xl lg:max-w-[1400px] mx-auto transition-all">
+                                <div className="flex flex-col lg:flex-row items-center lg:gap-12 p-0 lg:p-14">
+                                    <div className="w-full lg:w-[35%] p-5 md:p-8 lg:p-0 border-b lg:border-b-0 border-white/10 flex flex-col justify-center gap-3 lg:gap-6 shrink-0">
+                                        <div className="space-y-1 lg:space-y-6 text-white w-full">
+                                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/20 text-accent rounded-full text-[10px] lg:text-[10px] font-black tracking-widest uppercase mb-1 lg:mb-0">
+                                                <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+                                                {t('resources.latest_column')}
                                             </div>
-                                            <div className="text-white/80 font-bold">
-                                                {t('resources.author_prefix')}{(i18n.language === 'en' && latestColumn.authorEn) ? latestColumn.authorEn : (latestColumn.author || (i18n.language.startsWith('en') ? 'Pastor Namgyu Lee' : '이남규 목사'))}
+                                            <h2 className="text-lg md:text-3xl lg:text-4xl font-black text-white leading-tight mb-1 lg:mb-0 line-clamp-2 lg:line-clamp-none">
+                                                {(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
+                                            </h2>
+                                            <div className="flex items-center gap-3 lg:flex-col lg:items-start lg:gap-1">
+                                                <p className="text-white/40 text-xs md:text-lg lg:text-sm font-medium">
+                                                    <Calendar size={14} className="text-accent inline mr-1 lg:w-4 lg:h-4 lg:mr-2" />
+                                                    {latestColumn.date || ""}
+                                                </p>
+                                                <p className="text-white/80 text-xs md:text-base lg:text-base font-bold">
+                                                    {t('resources.author_prefix')}{(i18n.language === 'en' && latestColumn.authorEn) ? latestColumn.authorEn : (latestColumn.author || (i18n.language.startsWith('en') ? 'Pastor Namgyu Lee' : '이남규 목사'))}
+                                                </p>
                                             </div>
                                         </div>
-                                        <div className="flex flex-wrap gap-2 pt-2">
+
+                                        <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-2 md:gap-3 lg:gap-2 pt-1 lg:pt-2 w-full">
                                             <a
                                                 href={dbService.formatDriveLink(latestColumn.fileUrl)}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="px-6 py-3 bg-white text-slate-900 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-100 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-white/5 text-sm"
+                                                className={`${latestColumn.facebookUrl ? 'col-span-1' : 'col-span-2'} lg:w-auto w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white text-slate-900 rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-slate-100 transition-all shadow-lg lg:hover:scale-105 lg:active:scale-95`}
                                             >
-                                                <BookOpen size={16} />
+                                                <BookOpen size={14} className="lg:w-4 lg:h-4" />
                                                 {t('resources.view_larger')}
                                             </a>
                                             {latestColumn.facebookUrl && (
@@ -878,7 +883,7 @@ const Resources = () => {
                                                     href={latestColumn.facebookUrl}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="px-6 py-3 bg-[#1877F2] text-white rounded-xl font-bold flex items-center gap-2 hover:bg-[#1877F2]/90 transition-all shadow-lg active:scale-95 text-sm"
+                                                    className="w-full lg:w-auto py-2.5 md:py-4 lg:py-3 lg:px-6 bg-[#1877F2] text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-[#1877F2]/90 transition-all shadow-lg lg:active:scale-95 col-span-1"
                                                 >
                                                     {i18n.language.startsWith('en') ? 'Original Article' : '원문 바로가기'}
                                                 </a>
@@ -886,9 +891,9 @@ const Resources = () => {
                                             <a
                                                 href={dbService.formatDriveDownloadLink(latestColumn.fileUrl)}
                                                 download
-                                                className="px-6 py-3 bg-white/10 text-white rounded-xl font-bold flex items-center gap-2 hover:bg-white/20 transition-all border border-white/20 text-sm"
+                                                className={`${latestColumn.facebookUrl ? 'col-span-2' : 'col-span-1'} w-full lg:w-auto py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20`}
                                             >
-                                                <Download size={16} />
+                                                <Download size={14} className="lg:w-4 lg:h-4" />
                                                 {t('resources.download')}
                                             </a>
                                         </div>
