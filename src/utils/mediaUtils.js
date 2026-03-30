@@ -72,13 +72,19 @@ export const formatFacebookLink = (url) => {
     if (!url || typeof url !== 'string') return url;
     if (!url.includes('facebook.com')) return url;
 
+    // Detect if the user is on a desktop/PC environment
+    // We do NOT transform URLs for PC to ensure perfect consistency with what the user entered
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (!isMobile) return url;
+
     try {
         // 1. Detect "photo" links with a "pcb" set (Post Cluster ID)
         // Example: https://www.facebook.com/photo?fbid=...&set=pcb.26549997914636669
         const pcbMatch = url.match(/[?&]set=pcb\.([0-9]+)/);
         if (pcbMatch && pcbMatch[1]) {
-            // Using permalink.php is extremely robust for both mobile app deep-linking and browser navigation
-            return `https://www.facebook.com/permalink.php?story_fbid=${pcbMatch[1]}`;
+            // Using the "Share" format is often the most public-friendly way to avoid the login wall
+            // while still providing the full post context for swiping
+            return `https://www.facebook.com/share/p/${pcbMatch[1]}/`;
         }
 
         // 2. Detect "album" links
@@ -87,12 +93,11 @@ export const formatFacebookLink = (url) => {
         if (albumMatch && albumMatch[1]) {
             return `https://www.facebook.com/media/set/?set=a.${albumMatch[1]}`;
         }
-
-        // 3. Prevent potentially broken shortened URLs that might fail on mobile
-        // If the URL is already a direct link or something we don't recognize, keep it as is.
     } catch (e) {
         console.warn("mediaUtils: Error formatting Facebook link", e);
     }
 
+    // Default: Return the original URL if we can't safely transform it.
+    // This is the safest way to avoid the Facebook login wall for specialized links.
     return url;
 };
