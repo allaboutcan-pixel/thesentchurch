@@ -482,6 +482,7 @@ const Admin = () => {
         prayerChurchTopics2026En: '',
 
         author: '', fileType: 'pdf',
+        facebookUrl: '',
         note: '', eventType: 'default',
         startDate: '', endDate: '',
 
@@ -1216,6 +1217,7 @@ const Admin = () => {
                     authorEn: formData.authorEn || '',
                     fileUrl: finalFileUrl,
                     fileType: formData.fileType || 'pdf',
+                    facebookUrl: formData.facebookUrl || '',
                     link: formData.fileUrl // Keep original link for reference
                 };
 
@@ -1367,7 +1369,7 @@ const Admin = () => {
                     staffName: '', staffRole: '', staffEmail: '', staffPhotoUrl: '', thumbnailUrl: '',
                     note: '', eventType: 'default',
                     startDate: '', endDate: '', staffEnglishName: '', staffEnglishRole: '', staffHistoryEn: '',
-                    sundaySchoolDescription: '', sundaySchoolDescriptionEn: ''
+                    sundaySchoolDescription: '', sundaySchoolDescriptionEn: '', facebookUrl: ''
                 });
             }
             alert('성공적으로 저장되었습니다!');
@@ -1472,7 +1474,8 @@ const Admin = () => {
                 date: item.date,
                 author: item.author || '',
                 fileUrl: item.fileUrl || '',
-                fileType: item.fileType || 'pdf'
+                fileType: item.fileType || 'pdf',
+                facebookUrl: item.facebookUrl || ''
             });
             setFile(null);
         } else if (type === 'calendar') {
@@ -2572,6 +2575,17 @@ const Admin = () => {
                                             placeholder={formData.fileType === 'video' ? "https://www.youtube.com/watch?v=..." : "https://drive.google.com/..."}
                                             value={formData.fileUrl}
                                             onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
+                                        />
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <label className="text-sm font-bold text-blue-500 ml-1">페이스북 원본 링크 (Facebook URL)</label>
+                                        <input
+                                            type="url"
+                                            className="w-full p-4 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
+                                            placeholder="https://www.facebook.com/..."
+                                            value={formData.facebookUrl}
+                                            onChange={(e) => setFormData({ ...formData, facebookUrl: e.target.value })}
                                         />
                                     </div>
 

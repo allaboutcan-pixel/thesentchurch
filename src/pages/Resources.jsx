@@ -873,6 +873,16 @@ const Resources = () => {
                                                 <BookOpen size={16} />
                                                 {t('resources.view_larger')}
                                             </a>
+                                            {latestColumn.facebookUrl && (
+                                                <a
+                                                    href={latestColumn.facebookUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="px-6 py-3 bg-[#1877F2] text-white rounded-xl font-bold flex items-center gap-2 hover:bg-[#1877F2]/90 transition-all shadow-lg active:scale-95 text-sm"
+                                                >
+                                                    원문 바로가기
+                                                </a>
+                                            )}
                                             <a
                                                 href={dbService.formatDriveDownloadLink(latestColumn.fileUrl)}
                                                 download
@@ -1337,6 +1347,16 @@ const Resources = () => {
 
                                         전체 화면으로 보기
                                     </a>
+                                    {selectedArchiveColumn.facebookUrl && (
+                                        <a
+                                            href={selectedArchiveColumn.facebookUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="w-full py-4 bg-[#1877F2] text-white rounded-2xl font-black text-sm flex items-center justify-center gap-3 hover:bg-[#1877F2]/90 transition-all hover:scale-[0.98]"
+                                        >
+                                            원문 바로가기
+                                        </a>
+                                    )}
                                     <a
                                         href={dbService.formatDriveDownloadLink(selectedArchiveColumn.fileUrl)}
                                         download
