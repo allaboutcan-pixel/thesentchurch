@@ -57,7 +57,7 @@ const TeamMinistry = () => {
         ? siteConfig.teamMinistryItems
         : (churchData.team_ministries || []);
 
-    const height = siteConfig?.teamHeroHeight || siteConfig?.heroHeight || 'large';
+    const height = siteConfig?.teamHeroHeight || siteConfig?.heroHeight || 'medium';
 
     return (
         <div className="min-h-screen bg-[#efebe9]">
@@ -69,7 +69,7 @@ const TeamMinistry = () => {
             {/* Hero Section */}
             <div className={clsx(
                 "relative flex items-center justify-center overflow-hidden",
-                height === 'full' ? "h-screen" :
+                height === 'full' ? "h-[60vh] md:h-[85vh]" :
                     height === 'large' ? "h-[60vh] md:h-[85vh]" :
                         height === 'medium' ? "h-[50vh] md:h-[75vh]" :
                             "h-[40vh] md:h-[50vh]"
