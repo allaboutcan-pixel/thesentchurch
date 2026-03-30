@@ -880,7 +880,7 @@ const Resources = () => {
                                                     rel="noopener noreferrer"
                                                     className="px-6 py-3 bg-[#1877F2] text-white rounded-xl font-bold flex items-center gap-2 hover:bg-[#1877F2]/90 transition-all shadow-lg active:scale-95 text-sm"
                                                 >
-                                                    원문 바로가기
+                                                    {i18n.language.startsWith('en') ? 'Original Article' : '원문 바로가기'}
                                                 </a>
                                             )}
                                             <a
@@ -1354,7 +1354,7 @@ const Resources = () => {
                                             rel="noopener noreferrer"
                                             className="w-full py-4 bg-[#1877F2] text-white rounded-2xl font-black text-sm flex items-center justify-center gap-3 hover:bg-[#1877F2]/90 transition-all hover:scale-[0.98]"
                                         >
-                                            원문 바로가기
+                                            {i18n.language.startsWith('en') ? 'Original Article' : '원문 바로가기'}
                                         </a>
                                     )}
                                     <a
