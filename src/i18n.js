@@ -792,7 +792,7 @@ const resources = {
                 "intro_desc": "We build up the body of Christ by serving with the gifts God has given each of us. <br class='hidden md:block' /> We invite you to step into a place of ministry where even small acts of <br class='hidden md:block' /> service come together to bear beautiful and lasting fruit.",
                 "intro_badge": "Team Ministry",
                 "cta_title": "Invitation to Serve",
-                "cta_desc": "If you wish to serve the church with the talents God has given you,<br />please knock on the door of any team at any time.",
+                "cta_desc": "If you would like to serve the church with the gifts God has given you,<br />please feel free to join any ministry team at any time.",
                 "cta_button": "Apply for Ministry"
             },
             "bible": {
