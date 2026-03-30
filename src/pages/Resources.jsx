@@ -701,7 +701,7 @@ const Resources = () => {
                                                 {i18n.language.startsWith('en') ? 'Download File' : '파일 다운로드'}
                                             </a>
                                             <button
-                                                onClick={() => navigate('/')}
+                                                onClick={() => scrollToTop()}
                                                 className="col-span-1 w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/10 lg:bg-white/10 text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/20 transition-all"
                                             >
                                                 <X size={14} className="lg:w-4 lg:h-4" />
@@ -904,7 +904,7 @@ const Resources = () => {
                                                 {t('resources.download')}
                                             </a>
                                             <button
-                                                onClick={() => navigate('/')}
+                                                onClick={() => scrollToTop()}
                                                 className="col-span-1 w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/10 lg:bg-white/10 text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/20 transition-all"
                                             >
                                                 <X size={14} className="lg:w-4 lg:h-4" />
