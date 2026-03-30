@@ -69,10 +69,10 @@ const TeamMinistry = () => {
             {/* Hero Section */}
             <div className={clsx(
                 "relative flex items-center justify-center overflow-hidden",
-                height === 'full' ? "h-[60vh] md:h-[85vh]" :
-                    height === 'large' ? "h-[60vh] md:h-[85vh]" :
-                        height === 'medium' ? "h-[50vh] md:h-[75vh]" :
-                            "h-[40vh] md:h-[50vh]"
+                height === 'full' ? "h-[55vh] md:h-[75vh]" :
+                    height === 'large' ? "h-[55vh] md:h-[75vh]" :
+                        height === 'medium' ? "h-[45vh] md:h-[65vh]" :
+                            "h-[35vh] md:h-[50vh]"
             )}>
                 <div
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] scale-105"
