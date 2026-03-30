@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import bulletinsInitialData from '../data/bulletins.json';
 import { dbService } from '../services/dbService';
-import { isVideo, getYoutubeId } from '../utils/mediaUtils';
+import { isVideo, getYoutubeId, formatFacebookLink } from '../utils/mediaUtils';
 import { safeSplitDate } from '../utils/dateUtils';
 import CalendarWidget from '../components/CalendarWidget';
 import SEO from '../components/SEO';
@@ -885,7 +885,7 @@ const Resources = () => {
                                             </a>
                                             {latestColumn.facebookUrl && (
                                                 <a
-                                                    href={latestColumn.facebookUrl}
+                                                    href={formatFacebookLink(latestColumn.facebookUrl)}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="w-full col-span-1 py-2 md:py-2.5 lg:py-2.5 lg:px-6 bg-[#1877F2] text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-[#1877F2]/90 transition-all shadow-lg lg:active:scale-95"
@@ -1353,7 +1353,7 @@ const Resources = () => {
                                     </a>
                                     {selectedArchiveColumn.facebookUrl && (
                                         <a
-                                            href={selectedArchiveColumn.facebookUrl}
+                                            href={formatFacebookLink(selectedArchiveColumn.facebookUrl)}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="w-full py-2 md:py-3 bg-[#1877F2] text-white rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm flex items-center justify-center gap-1.5 md:gap-3 hover:bg-[#1877F2]/90 transition-all shadow-lg active:scale-95 col-span-1"

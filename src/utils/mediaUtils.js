@@ -59,3 +59,37 @@ export const getDriveId = (url) => {
         url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
     return match ? match[1] : null;
 };
+
+/**
+ * Formats Facebook URLs to be more robust for mobile navigation.
+ * Specifically converts single-photo links within a post into full post links
+ * to ensure "Swipe" functionality works on mobile devices.
+ * 
+ * @param {string} url - The original Facebook URL
+ * @returns {string} - The optimized URL
+ */
+export const formatFacebookLink = (url) => {
+    if (!url || typeof url !== 'string') return url;
+    if (!url.includes('facebook.com')) return url;
+
+    try {
+        // 1. Detect "photo" links with a "pcb" set (Post Cluster ID)
+        // Example: https://www.facebook.com/photo?fbid=...&set=pcb.26549997914636669
+        const pcbMatch = url.match(/[?&]set=pcb\.([0-9]+)/);
+        if (pcbMatch && pcbMatch[1]) {
+            // Reformatting to facebook.com/[ID] is the most reliable "deep link" to a post
+            return `https://www.facebook.com/${pcbMatch[1]}`;
+        }
+
+        // 2. Detect "album" links
+        // Example: https://www.facebook.com/photo?fbid=...&set=a.123456789
+        const albumMatch = url.match(/[?&]set=a\.([0-9]+)/);
+        if (albumMatch && albumMatch[1]) {
+            return `https://www.facebook.com/media/set/?set=a.${albumMatch[1]}`;
+        }
+    } catch (e) {
+        console.warn("mediaUtils: Error formatting Facebook link", e);
+    }
+
+    return url;
+};
