@@ -1314,7 +1314,7 @@ const Resources = () => {
                         onClick={() => setSelectedArchiveColumn(null)}
                     >
                         <div
-                            className="w-full max-w-5xl bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-white/10 flex flex-col lg:flex-row"
+                            className="w-full max-w-5xl bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-white/10 flex flex-col lg:flex-row max-h-[90vh] md:max-h-none overflow-y-auto lg:overflow-visible"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <button
@@ -1325,24 +1325,24 @@ const Resources = () => {
                             </button>
 
                             {/* Info Section */}
-                            <div className="lg:w-1/3 p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center gap-8">
+                            <div className="lg:w-1/3 p-6 md:p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center gap-4 md:gap-8 shrink-0">
                                 <div>
-                                    <div className="text-accent font-black tracking-widest text-xs mb-4 uppercase">Pastoral Column</div>
-                                    <h3 className="text-3xl font-black text-white leading-tight mb-4">
+                                    <div className="text-accent font-black tracking-widest text-[10px] md:text-xs mb-2 md:mb-4 uppercase">Pastoral Column</div>
+                                    <h3 className="text-xl md:text-3xl font-black text-white leading-tight mb-2 md:mb-4">
                                         {(i18n.language === 'en' && selectedArchiveColumn.titleEn) ? selectedArchiveColumn.titleEn : selectedArchiveColumn.title}
                                     </h3>
-                                    <p className="text-white/40 text-lg font-medium">{selectedArchiveColumn.date}</p>
-                                    <p className="text-white/60 font-bold mt-2">
+                                    <p className="text-white/40 text-sm md:text-lg font-medium">{selectedArchiveColumn.date}</p>
+                                    <p className="text-white/60 text-sm md:text-base font-bold mt-1 md:mt-2">
                                         {t('resources.author_prefix')} {(i18n.language === 'en' && selectedArchiveColumn.authorEn) ? selectedArchiveColumn.authorEn : (selectedArchiveColumn.author || (i18n.language.startsWith('en') ? 'Pastor Namgyu Lee' : '이남규 목사'))}
                                     </p>
                                 </div>
 
-                                <div className="flex flex-col gap-3 pt-4">
+                                <div className="grid grid-cols-2 lg:flex lg:flex-col gap-2 md:gap-3 pt-2 md:pt-4">
                                     <a
                                         href={dbService.formatDriveLink(selectedArchiveColumn.fileUrl)}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-full py-4 bg-white text-slate-900 rounded-2xl font-black text-sm flex items-center justify-center gap-3 hover:bg-slate-100 transition-all"
+                                        className={`${selectedArchiveColumn.facebookUrl ? 'col-span-2 lg:col-span-1' : 'col-span-2 lg:col-span-1'} w-full py-3 md:py-4 bg-white text-slate-900 rounded-2xl font-black text-xs md:text-sm flex items-center justify-center gap-2 md:gap-3 hover:bg-slate-100 transition-all`}
                                     >
 
                                         전체 화면으로 보기
@@ -1352,7 +1352,7 @@ const Resources = () => {
                                             href={selectedArchiveColumn.facebookUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="w-full py-4 bg-[#1877F2] text-white rounded-2xl font-black text-sm flex items-center justify-center gap-3 hover:bg-[#1877F2]/90 transition-all hover:scale-[0.98]"
+                                            className="w-full py-3 md:py-4 bg-[#1877F2] text-white rounded-2xl font-black text-xs md:text-sm flex items-center justify-center gap-2 md:gap-3 hover:bg-[#1877F2]/90 transition-all hover:scale-[0.98] lg:col-span-1 col-span-2"
                                         >
                                             {i18n.language.startsWith('en') ? 'Original Article' : '원문 바로가기'}
                                         </a>
@@ -1360,14 +1360,14 @@ const Resources = () => {
                                     <a
                                         href={dbService.formatDriveDownloadLink(selectedArchiveColumn.fileUrl)}
                                         download
-                                        className="w-full py-4 bg-white/5 text-white/60 rounded-2xl font-black text-sm hover:bg-white/10 hover:text-white transition-all flex items-center justify-center gap-3"
+                                        className="w-full py-3 md:py-4 bg-white/5 text-white/60 rounded-2xl font-black text-xs md:text-sm hover:bg-white/10 hover:text-white transition-all flex items-center justify-center gap-2 md:gap-3"
                                     >
-                                        <Download size={18} />
+                                        <Download size={16} />
                                         파일 다운로드
                                     </a>
                                     <button
                                         onClick={() => setSelectedArchiveColumn(null)}
-                                        className="w-full py-4 bg-white/10 text-white rounded-2xl font-black text-sm hover:bg-white/20 transition-all"
+                                        className="w-full py-3 md:py-4 bg-white/10 text-white rounded-2xl font-black text-xs md:text-sm hover:bg-white/20 transition-all"
                                     >
                                         닫기
                                     </button>
@@ -1375,7 +1375,7 @@ const Resources = () => {
                             </div>
 
                             {/* Preview Section */}
-                            <div className="flex-grow bg-slate-900 aspect-square lg:aspect-auto flex items-center justify-center">
+                            <div className="flex-grow bg-slate-900 min-h-[50vh] lg:min-h-0 aspect-[4/5] lg:aspect-auto flex items-center justify-center">
                                 {selectedArchiveColumn.fileType === 'video' ? (
                                     <iframe
                                         src={(() => {
@@ -1413,7 +1413,7 @@ const Resources = () => {
                         onClick={() => setSelectedArchiveBulletin(null)}
                     >
                         <div
-                            className="w-full max-w-5xl bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-white/10 flex flex-col lg:flex-row"
+                            className="w-full max-w-5xl bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-white/10 flex flex-col lg:flex-row max-h-[90vh] md:max-h-none overflow-y-auto lg:overflow-visible"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <button
@@ -1426,37 +1426,37 @@ const Resources = () => {
 
 
                             {/* Info Section */}
-                            <div className="lg:w-1/3 p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center gap-8">
+                            <div className="lg:w-1/3 p-6 md:p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center gap-4 md:gap-8 shrink-0">
                                 <div>
-                                    <div className="text-accent font-black tracking-widest text-xs mb-4 uppercase">Weekly Bulletin</div>
-                                    <h3 className="text-3xl font-black text-white leading-tight mb-4">
+                                    <div className="text-accent font-black tracking-widest text-[10px] md:text-xs mb-2 md:mb-4 uppercase">Weekly Bulletin</div>
+                                    <h3 className="text-xl md:text-3xl font-black text-white leading-tight mb-2 md:mb-4">
                                         {(i18n.language === 'en' && selectedArchiveBulletin.titleEn) ? selectedArchiveBulletin.titleEn : selectedArchiveBulletin.title}
                                     </h3>
-                                    <div className="flex items-center gap-2 text-white/40 text-lg font-medium">
-                                        <Calendar size={20} className="text-accent" />
+                                    <div className="flex items-center gap-2 text-white/40 text-sm md:text-lg font-medium">
+                                        <Calendar size={16} className="text-accent" />
                                         {selectedArchiveBulletin.date}
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col gap-3 pt-4">
+                                <div className="grid grid-cols-2 lg:flex lg:flex-col gap-2 md:gap-3 pt-2 md:pt-4">
                                     <button
                                         onClick={() => setIsBulletinFullScreen(true)}
-                                        className="w-full py-4 bg-white text-slate-900 rounded-2xl font-black text-sm flex items-center justify-center gap-3 hover:bg-slate-100 transition-all shadow-lg active:scale-[0.98]"
+                                        className="col-span-2 lg:col-span-1 w-full py-3 md:py-4 bg-white text-slate-900 rounded-2xl font-black text-xs md:text-sm flex items-center justify-center gap-2 md:gap-3 hover:bg-slate-100 transition-all shadow-lg active:scale-[0.98]"
                                     >
-                                        <Maximize size={18} />
+                                        <Maximize size={16} />
                                         전체 화면으로 보기
                                     </button>
                                     <a
                                         href={dbService.formatDriveDownloadLink(selectedArchiveBulletin.fileUrl)}
                                         download
-                                        className="w-full py-4 bg-white/5 text-white/60 rounded-2xl font-black text-sm hover:bg-white/10 hover:text-white transition-all flex items-center justify-center gap-3"
+                                        className="w-full py-3 md:py-4 bg-white/5 text-white/60 rounded-2xl font-black text-xs md:text-sm hover:bg-white/10 hover:text-white transition-all flex items-center justify-center gap-2 md:gap-3"
                                     >
-                                        <Download size={18} />
+                                        <Download size={16} />
                                         파일 다운로드
                                     </a>
                                     <button
                                         onClick={() => setSelectedArchiveBulletin(null)}
-                                        className="w-full py-4 bg-white/10 text-white rounded-2xl font-black text-sm hover:bg-white/20 transition-all"
+                                        className="w-full py-3 md:py-4 bg-white/10 text-white rounded-2xl font-black text-xs md:text-sm hover:bg-white/20 transition-all"
                                     >
                                         닫기
                                     </button>
@@ -1464,7 +1464,7 @@ const Resources = () => {
                             </div>
 
                             {/* Preview Section */}
-                            <div className="flex-grow bg-slate-900 aspect-square lg:aspect-auto flex flex-col items-center justify-center relative group">
+                            <div className="flex-grow bg-slate-900 min-h-[50vh] lg:min-h-0 aspect-[4/5] lg:aspect-auto flex flex-col items-center justify-center relative group">
 
 
                                 {selectedArchiveBulletin.fileUrl2 && (
