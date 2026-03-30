@@ -329,7 +329,13 @@ const Resources = () => {
                 path={prefix === 'news' ? '/news' : '/resources'}
             />
             {/* Header with Banner */}
-            <section className="relative w-full flex items-center justify-center overflow-hidden h-[18vh] md:h-[75vh]">
+            <section className={clsx(
+                "relative w-full flex items-center justify-center overflow-hidden",
+                height === 'full' ? "h-screen" :
+                    height === 'large' ? "h-[60vh] md:h-[85vh]" :
+                        height === 'medium' ? "h-[50vh] md:h-[75vh]" :
+                            "h-[40vh] md:h-[50vh]"
+            )}>
                 {/* Background Image Container - Easy to replace later */}
                 <div className={clsx(
                     "absolute inset-0 z-0 pointer-events-none",

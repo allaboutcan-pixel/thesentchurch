@@ -65,7 +65,13 @@ const TeamMinistry = () => {
                 path="/ministry/team"
             />
             {/* Hero Section */}
-            <div className="relative h-[50vh] md:h-[75vh] flex items-center justify-center overflow-hidden">
+            <div className={clsx(
+                "relative flex items-center justify-center overflow-hidden",
+                height === 'full' ? "h-screen" :
+                    height === 'large' ? "h-[60vh] md:h-[85vh]" :
+                        height === 'medium' ? "h-[50vh] md:h-[75vh]" :
+                            "h-[40vh] md:h-[50vh]"
+            )}>
                 <div
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] scale-105"
                     style={{ backgroundImage: `url(${banner})` }}

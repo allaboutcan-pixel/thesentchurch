@@ -205,9 +205,9 @@ const Home = () => {
             <section className={clsx(
                 "relative flex items-center justify-center overflow-hidden bg-black", // Changed to bg-black for cleaner transitions
                 heroHeight === 'full' ? "h-screen" :
-                    heroHeight === 'large' ? "h-[85vh]" :
-                        heroHeight === 'medium' ? "h-[75vh]" :
-                            "h-[50vh]"
+                    heroHeight === 'large' ? "h-[60vh] md:h-[85vh]" :
+                        heroHeight === 'medium' ? "h-[50vh] md:h-[75vh]" :
+                            "h-[40vh] md:h-[50vh]"
             )}>
                 <div className={clsx(
                     "absolute inset-0 z-0",

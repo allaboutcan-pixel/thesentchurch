@@ -133,9 +133,9 @@ const Ministry = () => {
             <div className={clsx(
                 "relative flex items-center justify-center overflow-hidden",
                 height === 'full' ? "h-screen" :
-                    height === 'large' ? "h-[85vh]" :
-                        height === 'medium' ? "h-[75vh]" :
-                            "h-[50vh]"
+                    height === 'large' ? "h-[60vh] md:h-[85vh]" :
+                        height === 'medium' ? "h-[50vh] md:h-[75vh]" :
+                            "h-[40vh] md:h-[50vh]"
             )}>
                 <div className={clsx(
                     "absolute inset-0 z-0 pointer-events-none",
