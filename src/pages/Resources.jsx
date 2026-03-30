@@ -680,14 +680,14 @@ const Resources = () => {
                                                 {latestBulletin.date || ""}
                                             </div>
                                         </div>
-                                        <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-2 md:gap-3 lg:gap-2 pt-1 lg:pt-2 w-full">
+                                        <div className="grid grid-cols-2 gap-2 md:gap-3 lg:gap-3 pt-1 lg:pt-2 w-full">
                                             <button
                                                 onClick={() => {
                                                     setSelectedArchiveBulletin(latestBulletin);
                                                     setActiveArchivePage(activePage);
                                                     setIsBulletinFullScreen(true);
                                                 }}
-                                                className="col-span-2 lg:w-auto w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white text-slate-900 rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-slate-100 transition-all shadow-lg lg:hover:scale-105 lg:active:scale-95"
+                                                className="col-span-2 w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white text-slate-900 rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-slate-100 transition-all shadow-lg lg:hover:scale-105 lg:active:scale-95"
                                             >
                                                 <Maximize size={14} className="lg:w-4 lg:h-4" />
                                                 {i18n.language.startsWith('en') ? 'View Full Screen' : '전체 화면으로 보기'}
@@ -695,14 +695,14 @@ const Resources = () => {
                                             <a
                                                 href={dbService.formatDriveDownloadLink(latestBulletin.fileUrl)}
                                                 download
-                                                className="col-span-1 lg:w-auto w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20"
+                                                className="col-span-1 w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20"
                                             >
                                                 <Download size={14} className="lg:w-4 lg:h-4" />
                                                 {i18n.language.startsWith('en') ? 'Download File' : '파일 다운로드'}
                                             </a>
                                             <button
                                                 onClick={() => navigate('/')}
-                                                className="col-span-1 lg:w-auto w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/10 lg:bg-white/10 text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/20 transition-all"
+                                                className="col-span-1 w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/10 lg:bg-white/10 text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/20 transition-all"
                                             >
                                                 <X size={14} className="lg:w-4 lg:h-4" />
                                                 {i18n.language.startsWith('en') ? 'Close' : '닫기'}
@@ -711,9 +711,9 @@ const Resources = () => {
                                     </div>
 
                                     {/* Responsive Viewer (Preview) */}
-                                    <div className="w-full lg:w-[65%] space-y-4 lg:space-y-6 flex flex-col items-center">
+                                    <div className="lg:w-[65%] w-full space-y-4 lg:space-y-6 flex flex-col items-center">
                                         {latestBulletin.fileUrl2 && (
-                                            <div className="flex bg-white/5 p-1 rounded-full lg:rounded-2xl w-fit border border-white/10">
+                                            <div className="flex bg-white/5 p-1 rounded-full lg:rounded-2xl w-fit border border-white/10 mx-auto lg:mx-0 mt-3 lg:mt-0">
                                                 <button
                                                     onClick={() => setActivePage(1)}
                                                     className={clsx(
@@ -734,11 +734,11 @@ const Resources = () => {
                                                 </button>
                                             </div>
                                         )}
-                                        <div className="w-full aspect-[4/5] lg:aspect-auto lg:h-[600px] xl:h-[800px] lg:bg-white lg:rounded-[2rem] overflow-hidden lg:border lg:border-white/10 relative lg:shadow-2xl">
-                                            <div className="w-full h-full">
+                                        <div className="w-full aspect-[4/5] lg:aspect-[16/10] bg-white rounded-[2rem] overflow-hidden border border-white/10 relative shadow-2xl">
+                                            <div className="w-full h-full overflow-hidden">
                                                 <iframe
                                                     src={dbService.formatDriveLink(activePage === 1 ? latestBulletin.fileUrl : latestBulletin.fileUrl2)}
-                                                    className="w-full h-full transition-opacity bulletin-preview-iframe"
+                                                    className="w-full transition-opacity bulletin-preview-iframe"
                                                     title="Latest Bulletin Preview"
                                                     loading="lazy"
                                                 ></iframe>
@@ -875,12 +875,12 @@ const Resources = () => {
                                             </div>
                                         </div>
 
-                                        <div className="grid grid-cols-2 lg:flex lg:flex-wrap gap-2 md:gap-3 lg:gap-2 pt-1 lg:pt-2 w-full">
+                                        <div className="grid grid-cols-2 gap-2 md:gap-3 lg:gap-3 pt-1 lg:pt-2 w-full">
                                             <a
                                                 href={dbService.formatDriveLink(latestColumn.fileUrl)}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className={`${latestColumn.facebookUrl ? 'col-span-1' : 'col-span-2'} lg:w-auto w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white text-slate-900 rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-slate-100 transition-all shadow-lg lg:hover:scale-105 lg:active:scale-95`}
+                                                className={`${latestColumn.facebookUrl ? 'col-span-1' : 'col-span-2'} w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white text-slate-900 rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-slate-100 transition-all shadow-lg lg:hover:scale-105 lg:active:scale-95`}
                                             >
                                                 <BookOpen size={14} className="lg:w-4 lg:h-4" />
                                                 {t('resources.view_larger')}
@@ -890,7 +890,7 @@ const Resources = () => {
                                                     href={latestColumn.facebookUrl}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="w-full lg:w-auto py-2.5 md:py-4 lg:py-3 lg:px-6 bg-[#1877F2] text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-[#1877F2]/90 transition-all shadow-lg lg:active:scale-95 col-span-1"
+                                                    className="w-full col-span-1 py-2.5 md:py-4 lg:py-3 lg:px-6 bg-[#1877F2] text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-[#1877F2]/90 transition-all shadow-lg lg:active:scale-95"
                                                 >
                                                     {i18n.language.startsWith('en') ? 'Original Article' : '원문 바로가기'}
                                                 </a>
@@ -898,14 +898,14 @@ const Resources = () => {
                                             <a
                                                 href={dbService.formatDriveDownloadLink(latestColumn.fileUrl)}
                                                 download
-                                                className="col-span-1 w-full lg:w-auto py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20"
+                                                className="col-span-1 w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20"
                                             >
                                                 <Download size={14} className="lg:w-4 lg:h-4" />
                                                 {t('resources.download')}
                                             </a>
                                             <button
                                                 onClick={() => navigate('/')}
-                                                className="col-span-1 lg:w-auto w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/10 lg:bg-white/10 text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/20 transition-all"
+                                                className="col-span-1 w-full py-2.5 md:py-4 lg:py-3 lg:px-6 bg-white/10 lg:bg-white/10 text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/20 transition-all"
                                             >
                                                 <X size={14} className="lg:w-4 lg:h-4" />
                                                 {i18n.language.startsWith('en') ? 'Close' : '닫기'}
@@ -914,8 +914,8 @@ const Resources = () => {
                                     </div>
 
                                     {/* Responsive Viewer (Preview) */}
-                                    <div className="w-full lg:w-[65%] space-y-0 lg:space-y-6">
-                                        <div className="w-full aspect-[4/5] lg:aspect-[1/1] xl:aspect-video lg:h-auto lg:bg-white/5 lg:rounded-[2rem] overflow-hidden lg:border lg:border-white/10 relative lg:shadow-2xl">
+                                    <div className="lg:w-[65%] w-full space-y-6 flex flex-col items-center">
+                                        <div className="w-full aspect-[4/5] lg:aspect-[16/10] bg-white/5 rounded-[2rem] overflow-hidden border border-white/10 relative shadow-2xl">
                                             {latestColumn.fileType === 'video' ? (
                                                 <iframe
                                                     src={(() => {
@@ -925,7 +925,7 @@ const Resources = () => {
                                                         if (url.includes('drive.google.com')) return dbService.formatDriveLink(url);
                                                         return url;
                                                     })()}
-                                                    className="w-full h-full min-h-[500px] border-none opacity-80 hover:opacity-100 transition-opacity"
+                                                    className="w-full h-full border-none opacity-80 hover:opacity-100 transition-opacity"
                                                     title={(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
                                                     allowFullScreen
                                                 ></iframe>
@@ -939,7 +939,7 @@ const Resources = () => {
                                             ) : (
                                                 <iframe
                                                     src={dbService.formatDriveLink(latestColumn.fileUrl)}
-                                                    className="w-full h-full min-h-[600px] lg:min-h-[800px] border-none opacity-80 hover:opacity-100 transition-opacity"
+                                                    className="w-full h-full border-none opacity-80 hover:opacity-100 transition-opacity"
                                                     title={(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
                                                 ></iframe>
                                             )}
