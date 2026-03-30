@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
-import { Download, Calendar, Image as ImageIcon, FileText, Play, X, ChevronRight, ChevronLeft, BookOpen, Quote, Music, Maximize, Bell } from 'lucide-react';
+import { Download, Calendar, Image as ImageIcon, FileText, Play, X, ChevronRight, ChevronLeft, BookOpen, Quote, Music, Maximize, Bell, ExternalLink } from 'lucide-react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import bulletinsInitialData from '../data/bulletins.json';
@@ -885,13 +885,14 @@ const Resources = () => {
                                                     rel="noopener noreferrer"
                                                     className="w-full col-span-1 py-2 md:py-2.5 lg:py-2.5 lg:px-6 bg-[#1877F2] text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-[#1877F2]/90 transition-all shadow-lg lg:active:scale-95"
                                                 >
+                                                    <ExternalLink size={14} className="lg:w-4 lg:h-4" />
                                                     {i18n.language.startsWith('en') ? 'Original Article' : '원문 바로가기'}
                                                 </a>
                                             )}
                                             <a
                                                 href={dbService.formatDriveDownloadLink(latestColumn.fileUrl)}
                                                 download
-                                                className={`${latestColumn.facebookUrl ? 'col-span-2' : 'col-span-2'} w-full py-2 md:py-2.5 lg:py-2.5 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20`}
+                                                className="col-span-2 w-full py-2 md:py-2.5 lg:py-2.5 lg:px-6 bg-white/5 lg:bg-white/10 text-white/60 lg:text-white rounded-xl lg:rounded-xl font-bold text-[11px] lg:text-sm flex items-center justify-center gap-1.5 lg:gap-2 hover:bg-white/10 lg:hover:bg-white/20 transition-all lg:border lg:border-white/20"
                                             >
                                                 <Download size={14} className="lg:w-4 lg:h-4" />
                                                 {t('resources.download')}
