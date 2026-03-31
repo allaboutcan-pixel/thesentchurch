@@ -198,7 +198,7 @@ const resources = {
                 "daily_word_subtitle": "“내가 곧 길이요 진리요 생명이니 나로 말미암지 않고는 아버지께로 올 자가 없느니라” (요한복음 14:6)",
                 "daily_word_archive_desc": "이번 주의 귀한 말씀들을 다시 묵상해보세요.",
                 "gallery_subtitle": "말씀 안에서 함께 걷는 우리의 일상과 예배의 순간들",
-                "gallery_view_title": "은혜의 기록들"
+                "gallery_view_title": "갤러리"
             },
 
             "worship": {
@@ -688,7 +688,7 @@ const resources = {
                 "daily_word_subtitle": "\"I am the way and the truth and the life. No one comes to the Father except through me.\" (John 14:6)",
                 "daily_word_archive_desc": "Meditate again on this week's precious words.",
                 "gallery_subtitle": "Our daily lives and moments of worship, walking together in the Word.",
-                "gallery_view_title": "Records of Grace",
+                "gallery_view_title": "Gallery",
                 "banner_title": "Resources",
                 "banner_subtitle": "Sharing the Word and Grace"
             },
