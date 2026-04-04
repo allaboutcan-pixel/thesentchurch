@@ -1329,7 +1329,9 @@ const Resources = () => {
                             {/* Info Section */}
                             <div className="lg:w-1/3 p-5 md:p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col justify-center gap-3 md:gap-8 shrink-0">
                                 <div>
-                                    <div className="text-accent font-black tracking-widest text-[10px] md:text-xs mb-1 md:mb-4 uppercase">Pastoral Column</div>
+                                    <div className="text-accent font-black tracking-widest text-[10px] md:text-xs mb-1 md:mb-4 uppercase">
+                                        {i18n.language.startsWith('en') ? "Latest Theological Column" : "최신 신학 칼럼"}
+                                    </div>
                                     <h3 className="text-lg md:text-3xl font-black text-white leading-tight mb-1 md:mb-4 line-clamp-2">
                                         {(i18n.language === 'en' && selectedArchiveColumn.titleEn) ? selectedArchiveColumn.titleEn : selectedArchiveColumn.title}
                                     </h3>
