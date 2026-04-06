@@ -1224,8 +1224,8 @@ const Resources = () => {
                                                     if (ytId) return `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&vq=hd1080&modestbranding=1&hd=1&origin=${window.location.origin}`;
                                                     
                                                     if (url && url.includes('google.com')) {
-                                                        const driveId = getDriveId(url);
-                                                        if (driveId) return `https://drive.google.com/file/d/${driveId}/preview?autoplay=1`;
+                                                        const formatted = dbService.formatDriveLink(url);
+                                                        if (formatted && formatted.includes('/preview')) return formatted;
                                                     }
                                                     return url;
                                                 })()}
