@@ -56,8 +56,11 @@ export const getDriveId = (url) => {
     if (!url || typeof url !== 'string') return null;
     const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
         url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
-        url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-    return match ? match[1] : null;
+        url.match(/[?&]id=([a-zA-Z0-9_-]+)/) ||
+        url.match(/id=([a-zA-Z0-9_-]+)/) ||
+        url.match(/\/view\?id=([a-zA-Z0-9_-]+)/) ||
+        url.match(/drive\.google\.com\/thumbnail\?id=([a-zA-Z0-9_-]+)/);
+    return (match && match[1]) ? match[1] : null;
 };
 
 /**

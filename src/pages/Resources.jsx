@@ -118,7 +118,7 @@ const Resources = () => {
     const getPreviewSource = (url) => {
         if (!url) return null;
         const ytId = getYoutubeId(url);
-        if (ytId) return `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+        if (ytId) return `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
 
         if (url.includes('drive.google.com')) {
             const idMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
@@ -495,7 +495,7 @@ const Resources = () => {
                                             ) : (
                                                 <>
                                                     <img
-                                                        src={`https://img.youtube.com/vi/${latestSermon.youtubeId}/hqdefault.jpg`}
+                                                        src={`https://img.youtube.com/vi/${latestSermon.youtubeId}/maxresdefault.jpg`}
                                                         alt={latestSermon.title}
                                                         className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                                                         loading="lazy"
@@ -1068,26 +1068,14 @@ const Resources = () => {
                                         }}
                                     >
                                         <div className="w-full h-full relative">
-                                            {mainImg.type === 'video' && mainImg.url.includes('drive.google.com') ? (
-                                                <div className="w-full h-full relative">
-                                                    <iframe
-                                                        src={dbService.formatDriveLink(mainImg.url)}
-                                                        className="w-full h-full object-contain pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity"
-                                                        title={group.title}
-                                                        tabIndex="-1"
-                                                    />
-                                                    <div className="absolute inset-0 z-10 bg-transparent" />
-                                                </div>
-                                            ) : (
-                                                <div className="w-full h-full overflow-hidden">
-                                                    <img
-                                                        src={thumbnailUrl}
-                                                        alt={(i18n.language === 'en' && group.titleEn) ? group.titleEn : group.title}
-                                                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
-                                                        loading="lazy"
-                                                    />
-                                                </div>
-                                            )}
+                                            <div className="w-full h-full overflow-hidden">
+                                                <img
+                                                    src={thumbnailUrl}
+                                                    alt={(i18n.language === 'en' && group.titleEn) ? group.titleEn : group.title}
+                                                    className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                                                    loading="lazy"
+                                                />
+                                            </div>
 
                                             {/* Count Badge for Albums */}
                                             {group.items.length > 1 && (
@@ -1225,22 +1213,37 @@ const Resources = () => {
                                         return (
                                             <video src={item.url} controls autoPlay className="w-full h-full rounded-xl" />
                                         );
+                                    } else if (item.url && (item.url.includes('drive.google.com') || item.url.includes('googleusercontent.com'))) {
+                                        const driveId = getDriveId(item.url);
+                                        return (
+                                            <div className="w-full h-full bg-black rounded-xl overflow-hidden shadow-2xl relative group/video">
+                                                <video 
+                                                    key={item.id}
+                                                    src={item.url.includes('export=media') ? item.url : dbService.formatDriveVideo(item.url)} 
+                                                    controls 
+                                                    autoPlay={!(item.thumbnailUrl || getPreviewSource(item.url))}
+                                                    className="w-full h-full object-contain"
+                                                    playsInline
+                                                    poster={item.thumbnailUrl || getPreviewSource(item.url)}
+                                                />
+                                            </div>
+                                        );
                                     } else {
                                         return (
                                             <iframe
                                                 src={(() => {
                                                     let url = item.url;
-                                                    if (url && (url.includes('youtube.com') || url.includes('youtu.be'))) {
-                                                        const ytId = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?/]+)/)?.[1];
-                                                        if (ytId) url = `https://www.youtube.com/embed/${ytId}?autoplay=1&vq=hd1080`;
-                                                    } else if (url && url.includes('drive.google.com')) {
-                                                        const driveId = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-                                                        if (driveId) url = `https://drive.google.com/file/d/${driveId[1]}/preview`;
+                                                    const ytId = getYoutubeId(url);
+                                                    if (ytId) return `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&vq=hd1080&modestbranding=1&hd=1&origin=${window.location.origin}`;
+                                                    
+                                                    if (url && url.includes('drive.google.com')) {
+                                                        const driveId = getDriveId(url);
+                                                        if (driveId) return `https://drive.google.com/file/d/${driveId}/preview`;
                                                     }
                                                     return url;
                                                 })()}
                                                 className="w-full h-full border-none rounded-xl"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                                 allowFullScreen
                                                 title={selectedGalleryGroup ? selectedGalleryGroup.title : item.title}
                                             ></iframe>
@@ -1554,9 +1557,9 @@ const Resources = () => {
                         {/* Video Player */}
                         <div className="aspect-video">
                             <iframe
-                                src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&rel=0&vq=hd1080`}
+                                src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&rel=0&vq=hd1080&modestbranding=1&hd=1&origin=${window.location.origin}`}
                                 className="w-full h-full border-none"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                 allowFullScreen
                                 title={selectedVideo.title}
                             ></iframe>

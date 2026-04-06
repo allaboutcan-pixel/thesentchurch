@@ -34,7 +34,7 @@ export const dbService = {
     // Format Google Drive link to direct view (preview mode for files)
     formatDriveLink: (url) => {
         if (!url) return "";
-        if (url.includes('drive.google.com')) {
+        if (url.includes('google.com')) {
             // 1. Extract File ID
             const fileMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
                 url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
@@ -58,7 +58,7 @@ export const dbService = {
     // Format Google Drive link to direct download
     formatDriveDownloadLink: (url) => {
         if (!url) return "";
-        if (url.includes('drive.google.com')) {
+        if (url.includes('google.com')) {
             const fileMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
                 url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
                 url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
@@ -75,7 +75,7 @@ export const dbService = {
         if (!url) return "";
         if (typeof url !== 'string') return url;
 
-        if (url.includes('drive.google.com')) {
+        if (url.includes('google.com')) {
             const fileMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
                 url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
                 url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
@@ -94,7 +94,7 @@ export const dbService = {
         if (!url) return "";
         if (typeof url !== 'string') return url;
 
-        if (url.includes('drive.google.com')) {
+        if (url.includes('google.com')) {
             const fileMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
                 url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
                 url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
@@ -112,7 +112,7 @@ export const dbService = {
         if (!url) return "";
         if (typeof url !== 'string') return url;
 
-        if (url.includes('drive.google.com')) {
+        if (url.includes('google.com')) {
             const fileMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
                 url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
                 url.match(/[?&]id=([a-zA-Z0-9_-]+)/);

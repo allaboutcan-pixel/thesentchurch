@@ -1118,17 +1118,23 @@ const Admin = () => {
                     setBulletins([savedItem, ...bulletins]);
                 }
             } else if (activeTab === 'gallery') {
+                let batchThumbnailUrl = formData.thumbnailUrl || '';
+                if (thumbnailFile) {
+                    batchThumbnailUrl = await Promise.race([dbService.uploadFile(thumbnailFile, 'gallery_thumbnails'), timeout]);
+                }
+
                 const processGalleryItem = async (singleFile, singleUrl, index = 0) => {
                     let finalUrl = singleUrl || '';
                     let detectedType = formData.type;
-
+                    let finalThumbnailUrl = batchThumbnailUrl;
+                    
                     if (singleFile) {
                         finalUrl = await dbService.uploadFile(singleFile, 'gallery');
                         if (singleFile.type.startsWith('video/')) detectedType = 'video';
                         else if (singleFile.type.startsWith('audio/')) detectedType = 'audio';
                         else detectedType = 'image';
                     } else if (finalUrl) {
-                        if (finalUrl.includes('drive.google.com')) {
+                        if (finalUrl.includes('google.com')) {
                             finalUrl = dbService.formatDriveImage(finalUrl);
                         }
                         if (finalUrl.includes('youtube.com') || finalUrl.includes('youtu.be') || finalUrl.match(/\.(mp4|webm|ogg|mov)$/i)) {
@@ -1136,15 +1142,13 @@ const Admin = () => {
                         }
                     }
 
-                    let finalThumbnailUrl = formData.thumbnailUrl || '';
-                    if (thumbnailFile) {
-                        finalThumbnailUrl = await dbService.uploadFile(thumbnailFile, 'gallery_thumbnails');
-                    } else if (finalThumbnailUrl) {
-                        finalThumbnailUrl = dbService.formatDriveImage(finalThumbnailUrl);
+                    if (finalThumbnailUrl && finalThumbnailUrl.includes('google.com') && !finalThumbnailUrl.includes('thumbnail?id=')) {
+                        finalThumbnailUrl = dbService.formatDriveImage(finalThumbnailUrl, 'w1000');
                     }
+                    
                     if (!finalThumbnailUrl && detectedType === 'video' && finalUrl.includes('youtube.com')) {
-                        const vidId = extractYoutubeId(finalUrl);
-                        finalThumbnailUrl = `https://img.youtube.com/vi/${vidId}/hqdefault.jpg`;
+                        const vidId = getYoutubeId(finalUrl);
+                        finalThumbnailUrl = `https://img.youtube.com/vi/${vidId}/maxresdefault.jpg`;
                     }
 
                     return {
@@ -1452,7 +1456,7 @@ const Admin = () => {
                 titleEn: item.titleEn || '',
                 date: item.date,
                 fileUrl: allUrls,
-                thumbnailUrl: item.thumbnailUrl || '',
+                thumbnailUrl: (item.thumbnailUrl && !item.thumbnailUrl.includes('thumbnail?id=')) ? item.thumbnailUrl : '',
                 type: item.type || 'image'
             });
             setFile(null);
@@ -2402,22 +2406,11 @@ const Admin = () => {
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-4">
                                             <div className="space-y-2">
-                                                <label className="text-xs font-bold text-gray-400 uppercase ml-1">미리보기(썸네일) 사진 링크 (URL)</label>
-                                                <input
-                                                    type="url"
-                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
-                                                    placeholder="https://drive.google.com/..."
-                                                    value={formData.thumbnailUrl || ''}
-                                                    onChange={(e) => setFormData({ ...formData, thumbnailUrl: e.target.value })}
-                                                />
-                                            </div>
-
-                                            <div className="space-y-2 opacity-80">
-                                                <label htmlFor="gallery-file-upload" className="text-xs font-bold text-gray-400 uppercase ml-1 cursor-pointer">
-                                                    {formData.type === 'audio' ? '음악 파일 직접 업로드' : '메인 파일 직접 업로드 (사진인 경우 다중선택 가능)'}
+                                                <label htmlFor="gallery-file-upload" className="text-sm font-bold text-gray-500 ml-1 cursor-pointer">
+                                                    {formData.type === 'audio' ? '🎵 음악 원본 파일 업로드' : (formData.type === 'video' ? '🎬 영상 원본 파일 업로드' : '📸 사진 파일 업로드 (다중 선택 가능)')}
                                                 </label>
                                                 <div className="relative group">
                                                     <input
@@ -2429,21 +2422,21 @@ const Admin = () => {
                                                         onChange={(e) => setGalleryFiles(Array.from(e.target.files))}
                                                     />
                                                     <div className={clsx(
-                                                        "w-full border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center transition-all",
+                                                        "w-full border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center transition-all min-h-[160px]",
                                                         galleryFiles.length > 0 ? "border-emerald-200 bg-emerald-50" : "border-gray-200 bg-gray-50 group-hover:border-primary/30"
                                                     )}>
                                                         {galleryFiles.length > 0 ? (
-                                                            <div className="flex flex-col items-center">
-                                                                <Check size={16} className="text-emerald-600 mb-1" />
-                                                                <span className="text-[10px] font-bold text-emerald-700 truncate max-w-[150px]">
+                                                            <div className="flex flex-col items-center text-center">
+                                                                <Check size={24} className="text-emerald-600 mb-2" />
+                                                                <span className="text-sm font-bold text-emerald-700">
                                                                     {galleryFiles.length === 1 ? galleryFiles[0].name : `${galleryFiles.length}개의 파일 선택됨`}
                                                                 </span>
                                                             </div>
                                                         ) : (
-                                                            <div className="flex flex-col items-center gap-1 text-center">
-                                                                <Upload size={20} className="text-gray-400" />
-                                                                <span className="text-[10px] font-bold text-gray-400">
-                                                                    {formData.type === 'audio' ? '음악 파일 선택' : (formData.type === 'video' ? '영상 파일 선택' : '사진 다중 선택')}
+                                                            <div className="flex flex-col items-center gap-2 text-center">
+                                                                <Upload size={28} className="text-gray-400" />
+                                                                <span className="text-xs font-bold text-gray-400">
+                                                                    이곳을 클릭하여 파일 선택
                                                                 </span>
                                                             </div>
                                                         )}
@@ -2452,9 +2445,9 @@ const Admin = () => {
 
                                                 {/* File Preview Area */}
                                                 {galleryFiles.length > 0 && (
-                                                    <div className="mt-6 grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
+                                                    <div className="mt-4 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 bg-gray-50 p-4 rounded-2xl border border-gray-100">
                                                         {galleryFiles.map((file, idx) => (
-                                                            <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-gray-100 group shadow-sm">
+                                                            <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 group shadow-sm bg-white">
                                                                 {file.type.startsWith('image/') ? (
                                                                     <img 
                                                                         src={URL.createObjectURL(file)} 
@@ -2486,33 +2479,75 @@ const Admin = () => {
                                             </div>
                                         </div>
 
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-bold text-accent uppercase ml-1">미리보기(썸네일) 사진 업로드 (추천)</label>
-                                            <div className="relative group">
-                                                <input
-                                                    type="file"
-                                                    accept="image/*"
-                                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                                                    onChange={(e) => setThumbnailFile(e.target.files[0])}
-                                                />
-                                                <div className={clsx(
-                                                    "w-full border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center transition-all bg-accent/5",
-                                                    thumbnailFile ? "border-emerald-200 bg-emerald-50" : "border-accent/20 group-hover:border-accent/40"
-                                                )}>
-                                                    {thumbnailFile ? (
-                                                        <div className="flex flex-col items-center">
-                                                            <Check size={16} className="text-emerald-600 mb-1" />
-                                                            <span className="text-[10px] font-bold text-emerald-700 truncate max-w-[150px]">{thumbnailFile.name}</span>
+                                        {(formData.type === 'video' || formData.type === 'audio') && (
+                                            <div className="space-y-4 bg-primary/5 p-5 rounded-2xl border border-primary/10 relative overflow-hidden">
+                                                <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-bl-full -mr-4 -mt-4 opacity-50 pointer-events-none"></div>
+                                                <h4 className="text-sm font-black text-primary flex items-center gap-2">
+                                                    <ImageIcon size={16} />
+                                                    썸네일(미리보기) 이미지 업로드
+                                                </h4>
+                                                <p className="text-[11px] text-primary/70 leading-tight">
+                                                    영상이나 음악이 갤러리 목록에서 예쁘게 보이려면 썸네일 이미지를 등록해주세요. (필수 권장)
+                                                </p>
+                                                
+                                                <div className="space-y-4 pt-2">
+                                                    <div className="relative group">
+                                                        <input
+                                                            type="file"
+                                                            accept="image/*"
+                                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                                                            onChange={(e) => setThumbnailFile(e.target.files[0])}
+                                                        />
+                                                        <div className={clsx(
+                                                            "w-full border-2 border-dashed rounded-xl p-4 flex items-center justify-center transition-all min-h-[80px]",
+                                                            thumbnailFile ? "border-primary bg-white shadow-sm" : "border-primary/20 bg-white/50 group-hover:border-primary/40"
+                                                        )}>
+                                                            {thumbnailFile ? (
+                                                                <div className="flex items-center gap-3">
+                                                                    <div className="w-10 h-10 rounded overflow-hidden bg-gray-100 flex-shrink-0">
+                                                                        <img src={URL.createObjectURL(thumbnailFile)} className="w-full h-full object-cover" />
+                                                                    </div>
+                                                                    <span className="text-xs font-bold text-primary truncate max-w-[150px]">{thumbnailFile.name}</span>
+                                                                    <button type="button" onClick={(e) => { e.stopPropagation(); setThumbnailFile(null); }} className="p-1 hover:bg-primary/10 text-primary rounded-full z-20 relative">
+                                                                        <X size={12} />
+                                                                    </button>
+                                                                </div>
+                                                            ) : (
+                                                                <div className="flex flex-col items-center gap-1 text-center">
+                                                                    <Upload size={16} className="text-primary/60" />
+                                                                    <span className="text-[10px] font-bold text-primary/60">이미지 파일 첨부</span>
+                                                                </div>
+                                                            )}
                                                         </div>
-                                                    ) : (
-                                                        <div className="flex flex-col items-center gap-1 text-center">
-                                                            <ImageIcon size={20} className="text-accent/60" />
-                                                            <span className="text-[10px] font-bold text-accent/60">고화질 미리보기 사진 선택</span>
-                                                        </div>
-                                                    )}
+                                                    </div>
+
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="h-px bg-primary/10 flex-grow"></div>
+                                                        <span className="text-[9px] font-black text-primary/40 uppercase">또는 링크 사용</span>
+                                                        <div className="h-px bg-primary/10 flex-grow"></div>
+                                                    </div>
+
+                                                    <div className="flex gap-3">
+                                                        <input
+                                                            type="url"
+                                                            className="flex-grow p-3 bg-white border border-primary/20 rounded-xl focus:ring-2 focus:ring-primary/20 outline-none text-xs"
+                                                            placeholder="썸네일 이미지 주소 (https://...)"
+                                                            value={formData.thumbnailUrl || ''}
+                                                            onChange={(e) => setFormData({ ...formData, thumbnailUrl: e.target.value })}
+                                                        />
+                                                        {formData.thumbnailUrl && (
+                                                            <div className="w-10 h-10 rounded overflow-hidden border border-primary/20 bg-white flex-shrink-0">
+                                                                <img 
+                                                                    src={formData.thumbnailUrl.includes('google.com') ? dbService.formatDriveImage(formData.thumbnailUrl, 'w200') : formData.thumbnailUrl} 
+                                                                    className="w-full h-full object-cover" 
+                                                                    onError={(e) => e.target.src = 'https://via.placeholder.com/100?text=Error'}
+                                                                />
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        )}
                                     </div>
                                 </div>
                             )}
