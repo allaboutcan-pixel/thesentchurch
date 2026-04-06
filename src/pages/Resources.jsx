@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import bulletinsInitialData from '../data/bulletins.json';
 import { dbService } from '../services/dbService';
-import { isVideo, getYoutubeId, formatFacebookLink } from '../utils/mediaUtils';
+import { isVideo, getYoutubeId, getDriveId, formatFacebookLink } from '../utils/mediaUtils';
 import { safeSplitDate } from '../utils/dateUtils';
 import CalendarWidget from '../components/CalendarWidget';
 import SEO from '../components/SEO';
@@ -1045,15 +1045,17 @@ const Resources = () => {
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
                             {galleryGroups.map((group, idx) => {
-                                const mainImg = group.items[0];
-                                let thumbnailUrl = mainImg.thumbnailUrl || mainImg.url;
+                                const mainImg = group.items && group.items.length > 0 ? group.items[0] : null;
+                                if (!mainImg) return null;
+
+                                let thumbnailUrl = mainImg.thumbnailUrl || mainImg.url || '';
 
                                 if (!mainImg.thumbnailUrl && mainImg.type === 'video') {
-                                    if (mainImg.url.includes('youtube.com') || mainImg.url.includes('youtu.be')) {
-                                        const ytId = mainImg.url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?/]+)/)?.[1];
-                                        if (ytId) thumbnailUrl = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+                                    if (mainImg.url && (mainImg.url.includes('youtube.com') || mainImg.url.includes('youtu.be'))) {
+                                        const ytId = getYoutubeId(mainImg.url);
+                                        if (ytId) thumbnailUrl = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
                                     }
-                                } else if (!mainImg.thumbnailUrl && mainImg.url.includes('drive.google.com')) {
+                                } else if (!mainImg.thumbnailUrl && mainImg.url && mainImg.url.includes('drive.google.com')) {
                                     const idMatch = mainImg.url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || mainImg.url.match(/\/d\/([a-zA-Z0-9_-]+)/) || mainImg.url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
                                     if (idMatch && idMatch[1]) thumbnailUrl = `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w1000`;
                                 }
