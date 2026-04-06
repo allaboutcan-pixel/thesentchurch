@@ -1215,21 +1215,6 @@ const Resources = () => {
                                         return (
                                             <video src={item.url} controls autoPlay className="w-full h-full rounded-xl" />
                                         );
-                                    } else if (item.url && (item.url.includes('drive.google.com') || item.url.includes('googleusercontent.com'))) {
-                                        const driveId = getDriveId(item.url);
-                                        return (
-                                            <div className="w-full h-full bg-black rounded-xl overflow-hidden shadow-2xl relative group/video">
-                                                <video 
-                                                    key={item.id}
-                                                    src={item.url.includes('export=media') ? item.url : dbService.formatDriveVideo(item.url)} 
-                                                    controls 
-                                                    autoPlay={!(item.thumbnailUrl || getPreviewSource(item.url))}
-                                                    className="w-full h-full object-contain"
-                                                    playsInline
-                                                    poster={item.thumbnailUrl || getPreviewSource(item.url)}
-                                                />
-                                            </div>
-                                        );
                                     } else {
                                         return (
                                             <iframe
@@ -1238,9 +1223,9 @@ const Resources = () => {
                                                     const ytId = getYoutubeId(url);
                                                     if (ytId) return `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&vq=hd1080&modestbranding=1&hd=1&origin=${window.location.origin}`;
                                                     
-                                                    if (url && url.includes('drive.google.com')) {
+                                                    if (url && url.includes('google.com')) {
                                                         const driveId = getDriveId(url);
-                                                        if (driveId) return `https://drive.google.com/file/d/${driveId}/preview`;
+                                                        if (driveId) return `https://drive.google.com/file/d/${driveId}/preview?autoplay=1`;
                                                     }
                                                     return url;
                                                 })()}
