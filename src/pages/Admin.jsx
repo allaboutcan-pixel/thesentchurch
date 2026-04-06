@@ -1134,9 +1134,17 @@ const Admin = () => {
                         else if (singleFile.type.startsWith('audio/')) detectedType = 'audio';
                         else detectedType = 'image';
                     } else if (finalUrl) {
-                        if (finalUrl.includes('google.com')) {
+                        // Better detection for Drive videos
+                        const isDriveVideo = finalUrl.includes('google.com') && 
+                            (finalUrl.match(/\.(mp4|webm|ogg|mov)$/i) || formData.type === 'video');
+                        
+                        if (isDriveVideo) {
+                            detectedType = 'video';
+                        } else if (finalUrl.includes('google.com')) {
+                            // Only format as image if it's actually an image or the type is set to image
                             finalUrl = dbService.formatDriveImage(finalUrl);
                         }
+
                         if (finalUrl.includes('youtube.com') || finalUrl.includes('youtu.be') || finalUrl.match(/\.(mp4|webm|ogg|mov)$/i)) {
                             detectedType = 'video';
                         }
