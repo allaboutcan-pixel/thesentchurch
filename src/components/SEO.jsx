@@ -80,38 +80,38 @@ const SEO = ({
             {
                 "@type": "SiteNavigationElement",
                 "position": 1,
-                "name": t('nav.guide') || 'About',
-                "url": "https://thesentchurch.ca/about"
+                "name": t('nav.home') || (i18n.language === 'ko' ? '홈' : 'Home'),
+                "url": "https://thesentchurch.ca/"
             },
             {
                 "@type": "SiteNavigationElement",
                 "position": 2,
-                "name": t('nav.staff') || '섬기는 사람들',
-                "url": "https://thesentchurch.ca/about#staff"
+                "name": t('nav.guide') || (i18n.language === 'ko' ? '교회안내' : 'About'),
+                "url": "https://thesentchurch.ca/about"
             },
             {
                 "@type": "SiteNavigationElement",
                 "position": 3,
-                "name": t('nav.worship_guide') || '예배 안내',
-                "url": "https://thesentchurch.ca/about#worship"
-            },
-            {
-                "@type": "SiteNavigationElement",
-                "position": 4,
-                "name": t('nav.sunday_sermon') || '주일예배 말씀',
+                "name": t('nav.sermons_word') || (i18n.language === 'ko' ? '설교와 말씀' : 'Sermons'),
                 "url": "https://thesentchurch.ca/sermons"
             },
             {
                 "@type": "SiteNavigationElement",
+                "position": 4,
+                "name": t('nav.education') || (i18n.language === 'ko' ? '교육' : 'Education'),
+                "url": "https://thesentchurch.ca/ministry"
+            },
+            {
+                "@type": "SiteNavigationElement",
                 "position": 5,
-                "name": '주보 보기',
-                "url": "https://thesentchurch.ca/news/bulletin"
+                "name": t('nav.ministry') || (i18n.language === 'ko' ? '사역' : 'Ministry'),
+                "url": "https://thesentchurch.ca/ministry/team"
             },
             {
                 "@type": "SiteNavigationElement",
                 "position": 6,
-                "name": t('nav.prayer') || '중보기도',
-                "url": "https://thesentchurch.ca/ministry/prayer"
+                "name": t('nav.news') || (i18n.language === 'ko' ? '교회소식' : 'News'),
+                "url": "https://thesentchurch.ca/news"
             }
         ]
     };
