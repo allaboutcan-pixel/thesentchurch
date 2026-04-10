@@ -76,7 +76,7 @@ const resources = {
                 "btn_sermons": "주일예배 말씀",
                 "btn_location": "오시는 길",
                 "quick_sermon": "오늘의 설교",
-                "quick_bulletin": "이번 주 주보",
+                "quick_bulletin": "주보 보기",
                 "quick_location": "교회 위치",
                 "media_title": "말씀과 찬양",
                 "quick_menu_title": "안내",
