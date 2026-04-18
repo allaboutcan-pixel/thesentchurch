@@ -732,11 +732,11 @@ const Resources = () => {
                                                 </button>
                                             </div>
                                         )}
-                                        <div className="w-full aspect-[4/5] lg:aspect-[16/10] bg-white rounded-[2rem] overflow-hidden border border-white/10 relative shadow-2xl">
-                                            <div className="w-full h-full overflow-hidden bg-white flex items-center justify-center">
+                                        <div className="w-full h-auto lg:aspect-[16/10] bg-white rounded-[2rem] overflow-hidden border border-white/10 relative shadow-2xl">
+                                            <div className="w-full lg:h-full overflow-hidden bg-white flex items-center justify-center">
                                                 <img
                                                     src={dbService.formatDriveImage(activePage === 1 ? latestBulletin.fileUrl : latestBulletin.fileUrl2, 'w2560')}
-                                                    className="w-full h-full object-contain"
+                                                    className="w-full lg:h-full object-contain"
                                                     alt="Latest Bulletin Image"
                                                 />
                                             </div>
