@@ -1333,7 +1333,7 @@ const Resources = () => {
                         onClick={() => setSelectedArchiveColumn(null)}
                     >
                         <div
-                            className="w-full max-w-5xl bg-slate-900 rounded-3xl lg:rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-white/10 flex flex-col lg:flex-row h-[90vh] lg:h-auto lg:max-h-none"
+                            className="w-full max-w-[1400px] bg-slate-900 rounded-3xl lg:rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-white/10 flex flex-col lg:flex-row h-[90vh] lg:h-[90vh] lg:max-h-none"
                             onClick={(e) => e.stopPropagation()}
                         >
                             {/* Info Section */}
@@ -1436,7 +1436,7 @@ const Resources = () => {
                         onClick={() => setSelectedArchiveBulletin(null)}
                     >
                         <div
-                            className="w-full max-w-5xl bg-slate-900 rounded-3xl lg:rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-white/10 flex flex-col lg:flex-row h-[90vh] lg:h-auto lg:max-h-none"
+                            className="w-full max-w-[1400px] bg-slate-900 rounded-3xl lg:rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-white/10 flex flex-col lg:flex-row h-[90vh] lg:h-[90vh] lg:max-h-none"
                             onClick={(e) => e.stopPropagation()}
                         >
                             {/* Info Section */}
