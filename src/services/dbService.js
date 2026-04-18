@@ -41,7 +41,8 @@ export const dbService = {
                 url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
 
             if (fileMatch && fileMatch[1] && !url.includes('/folders/')) {
-                return `https://drive.google.com/file/d/${fileMatch[1]}/preview`;
+                // Modified to use Google Docs Viewer for better mobile compatibility (avoids cookie access errors)
+                return `https://docs.google.com/viewer?srcid=${fileMatch[1]}&pid=explorer&efh=false&a=v&chrome=false&embedded=true`;
             }
 
             // 2. Folder handling
