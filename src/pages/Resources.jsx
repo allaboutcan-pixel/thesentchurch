@@ -1422,7 +1422,7 @@ const Resources = () => {
                         onClick={() => setSelectedArchiveBulletin(null)}
                     >
                         <div
-                            className="w-full max-w-[1400px] bg-slate-900 rounded-3xl lg:rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-white/10 flex flex-col lg:flex-row h-[90vh] lg:h-[90vh] lg:max-h-none"
+                            className="w-full max-w-[1400px] bg-slate-900 rounded-3xl lg:rounded-[2.5rem] overflow-hidden shadow-2xl relative border border-white/10 flex flex-col lg:flex-row h-auto max-h-[92vh] lg:h-[90vh] lg:max-h-none"
                             onClick={(e) => e.stopPropagation()}
                         >
                             {/* Info Section */}
@@ -1522,10 +1522,10 @@ const Resources = () => {
                                     </>
                                 )}
 
-                                <div className="w-full h-full overflow-hidden bg-white flex items-center justify-center">
+                                <div className="w-full lg:h-full overflow-hidden bg-white flex items-center justify-center">
                                     <img
                                         src={dbService.formatDriveImage(activeArchivePage === 1 ? selectedArchiveBulletin.fileUrl : selectedArchiveBulletin.fileUrl2, 'w2560')}
-                                        className="w-full h-full object-contain"
+                                        className="w-full lg:h-full object-contain"
                                         alt="Bulletin Modal Image"
                                     />
                                 </div>
