@@ -733,13 +733,12 @@ const Resources = () => {
                                             </div>
                                         )}
                                         <div className="w-full aspect-[4/5] lg:aspect-[16/10] bg-white rounded-[2rem] overflow-hidden border border-white/10 relative shadow-2xl">
-                                            <div className="w-full h-full overflow-hidden">
-                                                <iframe
-                                                    src={dbService.formatDriveLink(activePage === 1 ? latestBulletin.fileUrl : latestBulletin.fileUrl2)}
-                                                    className="w-full transition-opacity bulletin-preview-iframe"
-                                                    title="Latest Bulletin Preview"
-                                                    loading="lazy"
-                                                ></iframe>
+                                            <div className="w-full h-full overflow-hidden bg-white flex items-center justify-center">
+                                                <img
+                                                    src={dbService.formatDriveImage(activePage === 1 ? latestBulletin.fileUrl : latestBulletin.fileUrl2, 'w2560')}
+                                                    className="w-full h-full object-contain"
+                                                    alt="Latest Bulletin Image"
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -807,7 +806,6 @@ const Resources = () => {
                                             onClick={() => {
                                                 setSelectedArchiveBulletin(item);
                                                 setActiveArchivePage(1);
-                                                setIsBulletinFullScreen(true);
                                             }}
                                             className="group bg-white border border-slate-100 rounded-lg py-2 px-3 flex items-center justify-between hover:border-primary/30 hover:shadow-sm transition-all cursor-pointer"
                                         >
@@ -921,19 +919,13 @@ const Resources = () => {
                                                     title={(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
                                                     allowFullScreen
                                                 ></iframe>
-                                            ) : latestColumn.fileType === 'image' ? (
+                                            ) : (
                                                 <img
-                                                    src={latestColumn.fileUrl}
-                                                    alt={(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
+                                                    src={dbService.formatDriveImage(latestColumn.fileUrl, 'w2560')}
                                                     className="w-full h-full object-contain opacity-80 hover:opacity-100 transition-opacity"
+                                                    alt={(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
                                                     loading="lazy"
                                                 />
-                                            ) : (
-                                                <iframe
-                                                    src={dbService.formatDriveLink(latestColumn.fileUrl)}
-                                                    className="w-full h-full border-none opacity-80 hover:opacity-100 transition-opacity"
-                                                    title={(i18n.language === 'en' && latestColumn.titleEn) ? latestColumn.titleEn : latestColumn.title}
-                                                ></iframe>
                                             )}
                                         </div>
                                     </div>
@@ -1404,18 +1396,12 @@ const Resources = () => {
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                         allowFullScreen
                                     ></iframe>
-                                ) : selectedArchiveColumn.fileType === 'image' ? (
+                                ) : (
                                     <img
-                                        src={selectedArchiveColumn.fileUrl}
+                                        src={dbService.formatDriveImage(selectedArchiveColumn.fileUrl, 'w2560')}
                                         className="w-full h-full object-contain"
                                         alt={(i18n.language === 'en' && selectedArchiveColumn.titleEn) ? selectedArchiveColumn.titleEn : selectedArchiveColumn.title}
                                     />
-                                ) : (
-                                    <iframe
-                                        src={dbService.formatDriveLink(selectedArchiveColumn.fileUrl)}
-                                        className="w-full h-full border-none"
-                                        title="Column Modal Preview"
-                                    ></iframe>
                                 )}
                             </div>
                             <button
@@ -1454,7 +1440,7 @@ const Resources = () => {
 
                                 <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 md:gap-3 pt-1 md:pt-4">
                                     <button
-                                        onClick={() => setIsBulletinFullScreen(true)}
+                                        onClick={() => window.open(activeArchivePage === 1 ? selectedArchiveBulletin.fileUrl : selectedArchiveBulletin.fileUrl2, '_blank')}
                                         className="col-span-1 w-full py-2 md:py-3 bg-white text-slate-900 rounded-xl md:rounded-2xl font-black text-[11px] md:text-sm flex items-center justify-center gap-1.5 md:gap-3 hover:bg-slate-100 transition-all shadow-lg active:scale-[0.98]"
                                     >
                                         <Maximize size={14} />
@@ -1536,12 +1522,12 @@ const Resources = () => {
                                     </>
                                 )}
 
-                                <div className="w-full h-full overflow-hidden bg-white">
-                                    <iframe
-                                        src={dbService.formatDriveLink(activeArchivePage === 1 ? selectedArchiveBulletin.fileUrl : selectedArchiveBulletin.fileUrl2)}
-                                        className="w-full bulletin-preview-iframe"
-                                        title="Bulletin Modal Preview"
-                                    ></iframe>
+                                <div className="w-full h-full overflow-hidden bg-white flex items-center justify-center">
+                                    <img
+                                        src={dbService.formatDriveImage(activeArchivePage === 1 ? selectedArchiveBulletin.fileUrl : selectedArchiveBulletin.fileUrl2, 'w2560')}
+                                        className="w-full h-full object-contain"
+                                        alt="Bulletin Modal Image"
+                                    />
                                 </div>
                             </div>
                             <button
