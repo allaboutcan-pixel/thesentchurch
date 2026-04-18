@@ -1147,7 +1147,7 @@ const Resources = () => {
                         {selectedGalleryGroup && selectedGalleryGroup.items.length > 1 && (
                             <>
                                 <button
-                                    className="absolute left-4 z-20 w-12 h-12 bg-black/20 hover:bg-black/40 text-white rounded-full flex items-center justify-center transition-all backdrop-blur-sm border border-white/10"
+                                    className="hidden md:flex absolute left-4 z-20 w-12 h-12 bg-black/20 hover:bg-black/40 text-white rounded-full items-center justify-center transition-all backdrop-blur-sm border border-white/10"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         paginate(-1);
@@ -1156,7 +1156,7 @@ const Resources = () => {
                                     <ChevronLeft size={32} />
                                 </button>
                                 <button
-                                    className="absolute right-4 z-20 w-12 h-12 bg-black/20 hover:bg-black/40 text-white rounded-full flex items-center justify-center transition-all backdrop-blur-sm border border-white/10"
+                                    className="hidden md:flex absolute right-4 z-20 w-12 h-12 bg-black/20 hover:bg-black/40 text-white rounded-full items-center justify-center transition-all backdrop-blur-sm border border-white/10"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         paginate(1);
@@ -1164,8 +1164,28 @@ const Resources = () => {
                                 >
                                     <ChevronRight size={32} />
                                 </button>
-                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/50 px-4 py-1.5 rounded-full text-white/80 text-[10px] font-black z-20 border border-white/10">
-                                    {(currentImageIndex + 1).toString().padStart(2, '0')} / {selectedGalleryGroup.items.length.toString().padStart(2, '0')}
+                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20">
+                                    <button
+                                        className="md:hidden w-10 h-10 bg-black/40 text-white rounded-full flex items-center justify-center border border-white/10"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            paginate(-1);
+                                        }}
+                                    >
+                                        <ChevronLeft size={24} />
+                                    </button>
+                                    <div className="bg-black/50 px-4 py-1.5 rounded-full text-white/80 text-[10px] font-black border border-white/10 whitespace-nowrap">
+                                        {(currentImageIndex + 1).toString().padStart(2, '0')} / {selectedGalleryGroup.items.length.toString().padStart(2, '0')}
+                                    </div>
+                                    <button
+                                        className="md:hidden w-10 h-10 bg-black/40 text-white rounded-full flex items-center justify-center border border-white/10"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            paginate(1);
+                                        }}
+                                    >
+                                        <ChevronRight size={24} />
+                                    </button>
                                 </div>
                             </>
                         )}
@@ -1463,8 +1483,8 @@ const Resources = () => {
 
                                 {selectedArchiveBulletin.fileUrl2 && (
                                     <>
-                                        {/* Side Navigation Arrows */}
-                                        <div className="absolute inset-y-0 left-0 flex items-center p-4 z-30">
+                                        {/* Side Navigation Arrows (Desktop) */}
+                                        <div className="hidden md:flex absolute inset-y-0 left-0 items-center p-4 z-30">
                                             <button
                                                 onClick={() => setActiveArchivePage(1)}
                                                 disabled={activeArchivePage === 1}
@@ -1477,7 +1497,7 @@ const Resources = () => {
                                                 <ChevronLeft size={24} />
                                             </button>
                                         </div>
-                                        <div className="absolute inset-y-0 right-0 flex items-center p-4 z-30">
+                                        <div className="hidden md:flex absolute inset-y-0 right-0 items-center p-4 z-30">
                                             <button
                                                 onClick={() => setActiveArchivePage(2)}
                                                 disabled={activeArchivePage === 2}
@@ -1491,9 +1511,27 @@ const Resources = () => {
                                             </button>
                                         </div>
 
-                                        {/* Page Indicator */}
-                                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 px-4 py-2 bg-black/50 backdrop-blur-md border border-white/10 rounded-full text-white/80 text-[10px] font-black tracking-[0.2em] shadow-lg">
-                                            {activeArchivePage.toString().padStart(2, '0')} / 02
+                                        {/* Mobile Navigation and Page Indicator */}
+                                        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-4">
+                                            <button
+                                                className="md:hidden w-10 h-10 bg-black/40 text-white rounded-full flex items-center justify-center border border-white/10"
+                                                onClick={() => setActiveArchivePage(1)}
+                                                disabled={activeArchivePage === 1}
+                                                style={{ opacity: activeArchivePage === 1 ? 0 : 1, visibility: activeArchivePage === 1 ? 'hidden' : 'visible' }}
+                                            >
+                                                <ChevronLeft size={20} />
+                                            </button>
+                                            <div className="px-4 py-2 bg-black/50 backdrop-blur-md border border-white/10 rounded-full text-white/80 text-[10px] font-black tracking-[0.2em] shadow-lg whitespace-nowrap">
+                                                {activeArchivePage.toString().padStart(2, '0')} / 02
+                                            </div>
+                                            <button
+                                                className="md:hidden w-10 h-10 bg-black/40 text-white rounded-full flex items-center justify-center border border-white/10"
+                                                onClick={() => setActiveArchivePage(2)}
+                                                disabled={activeArchivePage === 2}
+                                                style={{ opacity: activeArchivePage === 2 ? 0 : 1, visibility: activeArchivePage === 2 ? 'hidden' : 'visible' }}
+                                            >
+                                                <ChevronRight size={20} />
+                                            </button>
                                         </div>
                                     </>
                                 )}
