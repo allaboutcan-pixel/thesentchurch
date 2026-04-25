@@ -481,6 +481,17 @@ const Admin = () => {
         dailyWordHeight: 'medium', dailyWordOverlayOpacity: 40,
         dailyWordBannerFit: 'cover', dailyWordBannerPosition: 50,
 
+        // Theological Column Banner
+        columnBanner: '', columnTitle: '', columnSubtitle: '',
+        columnTitleEn: '', columnSubtitleEn: '',
+        columnTitleFont: 'font-sans', columnSubtitleFont: 'font-sans',
+        columnTitleColor: '#ffffff', columnSubtitleColor: '#f8fafc',
+        columnTitleItalic: false, columnSubtitleItalic: false,
+        columnTitleWeight: 'font-bold', columnSubtitleWeight: 'font-medium',
+        columnTitleSize: 40, columnSubtitleSize: 18,
+        columnHeight: 'medium', columnOverlayOpacity: 40,
+        columnBannerFit: 'cover', columnBannerPosition: 50,
+
         author: '', fileType: 'pdf',
         facebookUrl: '',
         note: '', eventType: 'default',
@@ -840,6 +851,27 @@ const Admin = () => {
                     dailyWordOverlayOpacity: fbConfig.dailyWordOverlayOpacity || 40,
                     dailyWordBannerFit: fbConfig.dailyWordBannerFit || 'cover',
                     dailyWordBannerPosition: fbConfig.dailyWordBannerPosition || 50,
+
+                    // Column Banner
+                    columnBanner: fbConfig.columnBanner || '',
+                    columnTitle: fbConfig.columnTitle || '',
+                    columnSubtitle: fbConfig.columnSubtitle || '',
+                    columnTitleEn: fbConfig.columnTitleEn || '',
+                    columnSubtitleEn: fbConfig.columnSubtitleEn || '',
+                    columnTitleFont: fbConfig.columnTitleFont || 'font-sans',
+                    columnSubtitleFont: fbConfig.columnSubtitleFont || 'font-sans',
+                    columnTitleColor: fbConfig.columnTitleColor || '#ffffff',
+                    columnSubtitleColor: fbConfig.columnSubtitleColor || '#f8fafc',
+                    columnTitleItalic: fbConfig.columnTitleItalic || false,
+                    columnSubtitleItalic: fbConfig.columnSubtitleItalic || false,
+                    columnTitleWeight: fbConfig.columnTitleWeight || 'font-bold',
+                    columnSubtitleWeight: fbConfig.columnSubtitleWeight || 'font-medium',
+                    columnTitleSize: fbConfig.columnTitleSize || 40,
+                    columnSubtitleSize: fbConfig.columnSubtitleSize || 18,
+                    columnHeight: fbConfig.columnHeight || 'medium',
+                    columnOverlayOpacity: fbConfig.columnOverlayOpacity || 40,
+                    columnBannerFit: fbConfig.columnBannerFit || 'cover',
+                    columnBannerPosition: fbConfig.columnBannerPosition || 50,
                 }));
                 setColumns(fbColumns || []);
                 if (fbConfig.staff) {
@@ -1330,7 +1362,7 @@ const Admin = () => {
                 const bannerKeys = [
                     'heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner',
                     'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage',
-                    'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image', 'dailyWordBanner'
+                    'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image', 'dailyWordBanner', 'columnBanner'
                 ];
 
                 for (const key of bannerKeys) {
@@ -4721,6 +4753,30 @@ const Admin = () => {
                                 >
                                     {isLoading ? '저장 중...' : '설정 저장하기'}
                                 </button>
+                            </div>
+                        </div>
+                    )
+                }
+
+                {/* Hero Banner Manager for Theological Column */}
+                {
+                    activeTab === 'columns' && (
+                        <div className="animate-fade-in-up mb-10">
+                            <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-8">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                        <div className="p-2 bg-primary/10 rounded-xl text-primary"><LayoutDashboard size={20} /></div>
+                                        신학 칼럼 페이지 상단 히어로 (Hero Banner)
+                                    </h3>
+                                    <button
+                                        onClick={handleFormSubmit}
+                                        disabled={isLoading}
+                                        className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-all shadow-lg hover:shadow-primary/20 disabled:opacity-50"
+                                    >
+                                        {isLoading ? <span className="animate-pulse">저장 중...</span> : <><Check size={18} /> 배너 설정 저장</>}
+                                    </button>
+                                </div>
+                                {renderBannerSettings('column', '📚 신학 칼럼 (Theology Column)', 'columnBanner')}
                             </div>
                         </div>
                     )

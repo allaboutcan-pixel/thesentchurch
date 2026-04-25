@@ -73,11 +73,15 @@ const Resources = () => {
     const [direction, setDirection] = useState(0);
 
     const [isDataLoaded, setIsDataLoaded] = useState(false);
-    const prefix = location.pathname.startsWith('/news') ? 'news' : 'resources';
+    const getPrefix = () => {
+        if (activeTab === 'column') return 'column';
+        return location.pathname.startsWith('/news') ? 'news' : 'resources';
+    };
+    const prefix = getPrefix();
 
-    const headerBanner = siteConfig?.[`${prefix}Banner`] || "/images/sermons_banner.jpg";
-    const title = i18n.language.startsWith('en') && siteConfig?.[`${prefix}TitleEn`] ? siteConfig[`${prefix}TitleEn`] : siteConfig?.[`${prefix}Title`];
-    const subtitle = i18n.language.startsWith('en') && siteConfig?.[`${prefix}SubtitleEn`] ? siteConfig[`${prefix}SubtitleEn`] : siteConfig?.[`${prefix}Subtitle`];
+    const headerBanner = siteConfig?.[`${prefix}Banner`] || (prefix === 'column' ? (siteConfig?.resourcesBanner || "/images/sermons_banner.jpg") : "/images/sermons_banner.jpg");
+    const title = i18n.language.startsWith('en') && siteConfig?.[`${prefix}TitleEn`] ? siteConfig[`${prefix}TitleEn`] : (siteConfig?.[`${prefix}Title`] || (prefix === 'column' ? t('nav.column') : t('resources.banner_title')));
+    const subtitle = i18n.language.startsWith('en') && siteConfig?.[`${prefix}SubtitleEn`] ? siteConfig[`${prefix}SubtitleEn`] : (siteConfig?.[`${prefix}Subtitle`] || (prefix === 'column' ? t('resources.latest_column') : t('resources.banner_subtitle')));
     const titleFont = siteConfig?.[`${prefix}TitleFont`] || "font-sans";
     const subtitleFont = siteConfig?.[`${prefix}SubtitleFont`] || "font-sans";
     const titleColor = siteConfig?.[`${prefix}TitleColor`] || "#ffffff";
@@ -91,6 +95,7 @@ const Resources = () => {
     const overlayOpacity = siteConfig?.[`${prefix}OverlayOpacity`] ?? siteConfig?.overlayOpacity ?? 40;
     const height = siteConfig?.[`${prefix}Height`] || siteConfig?.[`${prefix}HeroHeight`] || siteConfig?.heroHeight || "large";
     const bannerFit = siteConfig?.[`${prefix}BannerFit`] || siteConfig?.bannerFit || "cover";
+    const bannerPosition = siteConfig?.[`${prefix}BannerPosition`] || 50;
 
     const variants = {
         enter: (direction) => ({
@@ -362,6 +367,7 @@ const Resources = () => {
                                     "w-full h-full transition-all duration-700",
                                     bannerFit === 'contain' ? "object-contain" : "object-cover"
                                 )}
+                                style={{ objectPosition: `center ${bannerPosition}%` }}
                                 autoPlay
                                 muted
                                 loop
@@ -376,6 +382,7 @@ const Resources = () => {
                                 "w-full h-full transition-all duration-700",
                                 bannerFit === 'contain' ? "object-contain" : "object-cover"
                             )}
+                            style={{ objectPosition: `center ${bannerPosition}%` }}
                             referrerPolicy="no-referrer"
                         />
                     )}
