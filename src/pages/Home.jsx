@@ -18,7 +18,6 @@ const DailyWordPopup = lazy(() => import('../components/DailyWordPopup'));
 const DEFAULT_HERO_IMAGE = ""; // Set to empty to avoid accidental flashes
 
 const Home = () => {
-    // ... items ...
     const [latestSermon, setLatestSermon] = useState(sermonsInitialData[0] || {});
     const [latestDailyWord, setLatestDailyWord] = useState(null);
     const [recentUpdates, setRecentUpdates] = useState([]);
