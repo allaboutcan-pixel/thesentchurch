@@ -188,14 +188,10 @@ const Home = () => {
         <div className="min-h-screen">
             <SEO
                 path="/"
-                structuredData={{
-                    "@context": "https://schema.org",
-                    "@type": "Church",
-                    "name": i18n.language === 'ko' ? "보내심을 받은 생명의소리 교회" : "The Church of the Sent",
-                    "description": i18n.language === 'ko'
-                        ? "밴쿠버 랭리에 위치한 보내심을 받은 생명의소리 교회. 문화적 기독교를 벗고 성서적 기독교로 나아가는 공동체입니다."
-                        : "The Church of the Sent located in Langley, Vancouver. Moving from cultural Christianity to biblical Christianity."
-                }}
+                title={i18n.language === 'ko' ? '홈' : 'Home'}
+                description={i18n.language === 'ko' 
+                    ? '밴쿠버 랭리 "보내심을 받은 생명의소리 교회". 주일예배 안내: 1부 1:00 PM, 2부 2:00 PM. 성서적 기독교를 향해 나아가는 공동체입니다.' 
+                    : 'The Church of the Sent in Langley, Vancouver. Sunday Service: 1:00 PM & 2:00 PM. A biblical Christian community.'}
             />
             <Suspense fallback={null}>
                 <DailyWordPopup word={latestDailyWord} />
