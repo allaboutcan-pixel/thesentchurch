@@ -2,42 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://thesentchurch.ca/</loc>
+    <lastmod>2026-04-26</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://thesentchurch.ca/about</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thesentchurch.ca/ministry</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://thesentchurch.ca/news</loc>
+    <lastmod>2026-04-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://thesentchurch.ca/sermons</loc>
-    <priority>0.8</priority>
+    <lastmod>2026-04-26</lastmod>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://thesentchurch.ca/sermons/daily</loc>
+    <lastmod>2026-04-26</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thesentchurch.ca/news/bulletin</loc>
+    <lastmod>2026-04-26</lastmod>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://thesentchurch.ca/news/calendar</loc>
+    <lastmod>2026-04-26</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thesentchurch.ca/news/gallery</loc>
+    <lastmod>2026-04-26</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://thesentchurch.ca/ministry</loc>
+    <lastmod>2026-04-26</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://thesentchurch.ca/ministry/tee</loc>
-    <priority>0.7</priority>
+    <lastmod>2026-04-26</lastmod>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://thesentchurch.ca/ministry/bible</loc>
-    <priority>0.7</priority>
+    <lastmod>2026-04-26</lastmod>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://thesentchurch.ca/ministry/team</loc>
-    <priority>0.7</priority>
+    <lastmod>2026-04-26</lastmod>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://thesentchurch.ca/ministry/prayer</loc>
-    <priority>0.7</priority>
+    <lastmod>2026-04-26</lastmod>
+    <priority>0.6</priority>
   </url>
 </urlset>
