@@ -149,7 +149,8 @@ const About = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className={clsx(
-                            "font-bold mb-4 drop-shadow-sm",
+                            "mb-4 drop-shadow-sm",
+                            titleWeight || "font-bold",
                             titleFont,
                             titleItalic && "italic"
                         )}

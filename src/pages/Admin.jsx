@@ -4314,7 +4314,8 @@ const Admin = () => {
                             </div>
 
                             <div className="space-y-12">
-                                {renderBannerSettings('hero', '🏠 메인 홈 히어로 (Home Hero)', 'heroImage')}
+                                 {renderBannerSettings('hero', '🏠 메인 홈 히어로 (Home Hero)', 'heroImage')}
+                                {renderBannerSettings('about', '⛪ 교회 소개 (About Church)', 'aboutBanner')}
                                 {renderBannerSettings('news', '📢 교회소식 (News)', 'newsBanner')}
                                 {renderBannerSettings('resources', '⛪ 설교와 말씀 (Sermons)', 'resourcesBanner')}
                                 {renderBannerSettings('ministry', '🎓 교육 (Education)', 'ministryBanner')}
@@ -4389,76 +4390,23 @@ const Admin = () => {
                                     <LayoutDashboard size={20} className="text-primary" /> 페이지 상단 설정
                                 </h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="space-y-2 md:col-span-2">
-                                        <label className="text-sm font-bold text-gray-500 ml-1">상단 배너 이미지</label>
-                                        <BannerManager
-                                            label="교회소개 배너"
-                                            value={siteConfig.aboutBanner}
-                                            fieldName="aboutBanner"
-                                            onChange={(val) => {
-                                                setSiteConfig(prev => ({ ...prev, aboutBanner: val }));
-                                                setFormData(prev => ({ ...prev, aboutBanner: val }));
-                                            }}
-                                            bannerFiles={bannerFiles}
-                                            setBannerFiles={setBannerFiles}
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-500 ml-1">페이지 제목 (비워두면 숨김)</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                            placeholder="기본값: 교회 소개"
-                                            value={siteConfig.aboutTitle ?? ''}
-                                            onChange={(e) => {
-                                                const val = e.target.value;
-                                                setSiteConfig(prev => ({ ...prev, aboutTitle: val }));
-                                                setFormData(prev => ({ ...prev, aboutTitle: val }));
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-500 ml-1">부제목 / 성구 (비워두면 숨김)</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                            placeholder="기본값: 사도행전 16장 31절..."
-                                            value={siteConfig.aboutSubtitle ?? ''}
-                                            onChange={(e) => {
-                                                const val = e.target.value;
-                                                setSiteConfig(prev => ({ ...prev, aboutSubtitle: val }));
-                                                setFormData(prev => ({ ...prev, aboutSubtitle: val }));
-                                            }}
-                                        />
-                                    </div>
-                                    {/* English Titles for Intro */}
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-blue-500 ml-1">English Title</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                            placeholder="Default: About"
-                                            value={siteConfig.aboutTitleEn ?? ''}
-                                            onChange={(e) => {
-                                                const val = e.target.value;
-                                                setSiteConfig(prev => ({ ...prev, aboutTitleEn: val }));
-                                                setFormData(prev => ({ ...prev, aboutTitleEn: val }));
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-bold text-blue-500 ml-1">English Subtitle/Verse</label>
-                                        <input
-                                            type="text"
-                                            className="w-full p-4 bg-blue-50/30 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
-                                            placeholder="Default: Acts 16:31..."
-                                            value={siteConfig.aboutSubtitleEn ?? ''}
-                                            onChange={(e) => {
-                                                const val = e.target.value;
-                                                setSiteConfig(prev => ({ ...prev, aboutSubtitleEn: val }));
-                                                setFormData(prev => ({ ...prev, aboutSubtitleEn: val }));
-                                            }}
-                                        />
+                                    <div className="md:col-span-2">
+                                        <div className="bg-primary/5 p-6 rounded-3xl border border-primary/10">
+                                            <p className="text-sm font-bold text-primary mb-2 flex items-center gap-2">
+                                                <Settings size={18} />
+                                                배너 스타일 설정
+                                            </p>
+                                            <p className="text-xs text-gray-500 mb-4 leading-relaxed">
+                                                교회 소개 페이지의 상단 배너 이미지, 제목, 글자 크기 및 색상은 이제 <b>[사이트 기본 설정]</b> 탭의 <b>'⛪ 교회 소개 (About Church)'</b> 섹션에서 통합 관리됩니다. 모든 디자인 설정을 한 곳에서 편리하게 변경하실 수 있습니다.
+                                            </p>
+                                            <button
+                                                type="button"
+                                                onClick={() => setActiveTab('site')}
+                                                className="px-6 py-2 bg-primary text-white rounded-xl text-xs font-black hover:bg-primary-dark transition-all"
+                                            >
+                                                스타일 설정하러 가기
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

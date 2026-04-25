@@ -396,7 +396,7 @@ const Resources = () => {
                     )}
                         style={{
                             color: titleColor || '#ffffff',
-                            fontSize: titleSize ? (titleSize > 32 ? 'clamp(24px, 8vw, 48px)' : `${titleSize}px`) : undefined
+                            fontSize: titleSize ? `${titleSize}px` : undefined
                         }}
                     >
                         {title || t('resources.banner_title') || ""}
@@ -410,7 +410,7 @@ const Resources = () => {
                     )}
                         style={{
                             color: subtitleColor || '#ffffff',
-                            fontSize: subtitleSize ? (subtitleSize > 20 ? 'clamp(16px, 4vw, 24px)' : `${subtitleSize}px`) : undefined
+                            fontSize: subtitleSize ? `${subtitleSize}px` : undefined
                         }}
                     >
                         {subtitle || t('resources.banner_subtitle') || ""}
