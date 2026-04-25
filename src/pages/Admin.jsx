@@ -470,28 +470,6 @@ const Admin = () => {
         prayerCommonTopicsEn: '', prayerPastorTopicsEn: '', prayerChurchTopicsEn: '',
         prayerChurchTopics2026En: '',
 
-        // Daily Word
-        dailyWordBanner: '', dailyWordTitle: '', dailyWordSubtitle: '',
-        dailyWordTitleEn: '', dailyWordSubtitleEn: '',
-        dailyWordTitleFont: 'font-sans', dailyWordSubtitleFont: 'font-sans',
-        dailyWordTitleColor: '#ffffff', dailyWordSubtitleColor: '#f8fafc',
-        dailyWordTitleItalic: false, dailyWordSubtitleItalic: false,
-        dailyWordTitleWeight: 'font-bold', dailyWordSubtitleWeight: 'font-medium',
-        dailyWordTitleSize: 40, dailyWordSubtitleSize: 18,
-        dailyWordHeight: 'medium', dailyWordOverlayOpacity: 40,
-        dailyWordBannerFit: 'cover', dailyWordBannerPosition: 50,
-
-        // Theological Column Banner
-        columnBanner: '', columnTitle: '', columnSubtitle: '',
-        columnTitleEn: '', columnSubtitleEn: '',
-        columnTitleFont: 'font-sans', columnSubtitleFont: 'font-sans',
-        columnTitleColor: '#ffffff', columnSubtitleColor: '#f8fafc',
-        columnTitleItalic: false, columnSubtitleItalic: false,
-        columnTitleWeight: 'font-bold', columnSubtitleWeight: 'font-medium',
-        columnTitleSize: 40, columnSubtitleSize: 18,
-        columnHeight: 'medium', columnOverlayOpacity: 40,
-        columnBannerFit: 'cover', columnBannerPosition: 50,
-
         author: '', fileType: 'pdf',
         facebookUrl: '',
         note: '', eventType: 'default',
@@ -501,7 +479,7 @@ const Admin = () => {
         emailjsServiceId: '', emailjsTemplateId: '', emailjsPublicKey: '', emailjsReceivers: '',
 
         // English fields for general items
-        titleEn: '', preacherEn: '', contentEn: '', authorEn: '', staffEnglishName: '', staffEnglishRole: '', staffHistoryEn: '',
+        titleEn: '', preacherEn: '', contentEn: '', authorEn: '', staffEnglishRole: '', staffHistoryEn: '',
         heroTitleEn: '', heroSubtitleEn: '',
         aboutTitleEn: '', aboutSubtitleEn: '',
         newsTitleEn: '', newsSubtitleEn: '',
@@ -512,7 +490,6 @@ const Admin = () => {
         resourcesTitleEn: '', resourcesSubtitleEn: '',
         teeTitleEn: '', teeSubtitleEn: '',
         teamTitleEn: '', teamSubtitleEn: '',
-        dailyWordTitleEn: '', dailyWordSubtitleEn: '',
     });
 
     const [pastorFile, setPastorFile] = useState(null);
@@ -831,47 +808,6 @@ const Admin = () => {
                     pastorHistory: Array.isArray(fbConfig.pastor?.history) ? fbConfig.pastor.history.join('\n') : (fbConfig.pastor?.history || ''),
                     pastorHistoryEn: Array.isArray(fbConfig.pastor?.historyEn) ? fbConfig.pastor.historyEn.join('\n') : (fbConfig.pastor?.historyEn || ''),
                     prayerCommonTopicsEn: fbConfig.prayerCommonTopicsEn || '',
-
-                    dailyWordBanner: fbConfig.dailyWordBanner || '',
-                    dailyWordTitle: fbConfig.dailyWordTitle || '',
-                    dailyWordSubtitle: fbConfig.dailyWordSubtitle || '',
-                    dailyWordTitleEn: fbConfig.dailyWordTitleEn || '',
-                    dailyWordSubtitleEn: fbConfig.dailyWordSubtitleEn || '',
-                    dailyWordTitleFont: fbConfig.dailyWordTitleFont || 'font-sans',
-                    dailyWordSubtitleFont: fbConfig.dailyWordSubtitleFont || 'font-sans',
-                    dailyWordTitleColor: fbConfig.dailyWordTitleColor || '#ffffff',
-                    dailyWordSubtitleColor: fbConfig.dailyWordSubtitleColor || '#f8fafc',
-                    dailyWordTitleItalic: fbConfig.dailyWordTitleItalic || false,
-                    dailyWordSubtitleItalic: fbConfig.dailyWordSubtitleItalic || false,
-                    dailyWordTitleWeight: fbConfig.dailyWordTitleWeight || 'font-bold',
-                    dailyWordSubtitleWeight: fbConfig.dailyWordSubtitleWeight || 'font-medium',
-                    dailyWordTitleSize: fbConfig.dailyWordTitleSize || 40,
-                    dailyWordSubtitleSize: fbConfig.dailyWordSubtitleSize || 18,
-                    dailyWordHeight: fbConfig.dailyWordHeight || 'medium',
-                    dailyWordOverlayOpacity: fbConfig.dailyWordOverlayOpacity || 40,
-                    dailyWordBannerFit: fbConfig.dailyWordBannerFit || 'cover',
-                    dailyWordBannerPosition: fbConfig.dailyWordBannerPosition || 50,
-
-                    // Column Banner
-                    columnBanner: fbConfig.columnBanner || '',
-                    columnTitle: fbConfig.columnTitle || '',
-                    columnSubtitle: fbConfig.columnSubtitle || '',
-                    columnTitleEn: fbConfig.columnTitleEn || '',
-                    columnSubtitleEn: fbConfig.columnSubtitleEn || '',
-                    columnTitleFont: fbConfig.columnTitleFont || 'font-sans',
-                    columnSubtitleFont: fbConfig.columnSubtitleFont || 'font-sans',
-                    columnTitleColor: fbConfig.columnTitleColor || '#ffffff',
-                    columnSubtitleColor: fbConfig.columnSubtitleColor || '#f8fafc',
-                    columnTitleItalic: fbConfig.columnTitleItalic || false,
-                    columnSubtitleItalic: fbConfig.columnSubtitleItalic || false,
-                    columnTitleWeight: fbConfig.columnTitleWeight || 'font-bold',
-                    columnSubtitleWeight: fbConfig.columnSubtitleWeight || 'font-medium',
-                    columnTitleSize: fbConfig.columnTitleSize || 40,
-                    columnSubtitleSize: fbConfig.columnSubtitleSize || 18,
-                    columnHeight: fbConfig.columnHeight || 'medium',
-                    columnOverlayOpacity: fbConfig.columnOverlayOpacity || 40,
-                    columnBannerFit: fbConfig.columnBannerFit || 'cover',
-                    columnBannerPosition: fbConfig.columnBannerPosition || 50,
                 }));
                 setColumns(fbColumns || []);
                 if (fbConfig.staff) {
@@ -1362,7 +1298,7 @@ const Admin = () => {
                 const bannerKeys = [
                     'heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner',
                     'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage',
-                    'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image', 'dailyWordBanner', 'columnBanner'
+                    'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image'
                 ];
 
                 for (const key of bannerKeys) {
@@ -4758,30 +4694,6 @@ const Admin = () => {
                     )
                 }
 
-                {/* Hero Banner Manager for Theological Column */}
-                {
-                    activeTab === 'columns' && (
-                        <div className="animate-fade-in-up mb-10">
-                            <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-8">
-                                <div className="flex items-center justify-between">
-                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                                        <div className="p-2 bg-primary/10 rounded-xl text-primary"><LayoutDashboard size={20} /></div>
-                                        신학 칼럼 페이지 상단 히어로 (Hero Banner)
-                                    </h3>
-                                    <button
-                                        onClick={handleFormSubmit}
-                                        disabled={isLoading}
-                                        className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-all shadow-lg hover:shadow-primary/20 disabled:opacity-50"
-                                    >
-                                        {isLoading ? <span className="animate-pulse">저장 중...</span> : <><Check size={18} /> 배너 설정 저장</>}
-                                    </button>
-                                </div>
-                                {renderBannerSettings('column', '📚 신학 칼럼 (Theology Column)', 'columnBanner')}
-                            </div>
-                        </div>
-                    )
-                }
-
                 {/* Dashboard Card */}
                 {
                     (activeTab === 'sermons' || activeTab === 'bulletins' || activeTab === 'gallery' || activeTab === 'columns') && (
@@ -5001,29 +4913,9 @@ const Admin = () => {
 
                 {/* Daily Word List (Custom Grid View) */}
                 {
-                    activeTab === 'dailyWord' && (
-                        <div className="animate-fade-in-up space-y-10">
-                            {/* Hero Banner Manager for Daily Word */}
-                            <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-8">
-                                <div className="flex items-center justify-between">
-                                    <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
-                                        <div className="p-2 bg-primary/10 rounded-xl text-primary"><LayoutDashboard size={20} /></div>
-                                        오늘의 말씀 페이지 상단 히어로 (Hero Banner)
-                                    </h3>
-                                    <button
-                                        onClick={handleFormSubmit}
-                                        disabled={isLoading}
-                                        className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-xl font-bold hover:bg-primary-dark transition-all shadow-lg hover:shadow-primary/20 disabled:opacity-50"
-                                    >
-                                        {isLoading ? <span className="animate-pulse">저장 중...</span> : <><Check size={18} /> 배너 설정 저장</>}
-                                    </button>
-                                </div>
-                                {renderBannerSettings('dailyWord', '📖 오늘의 말씀 (Daily Word)', 'dailyWordBanner')}
-                            </div>
-
-                            {!showAddForm && (
-                                <div className="space-y-6">
-                                    {dailyWords.length > 0 && (
+                    activeTab === 'dailyWord' && !showAddForm && (
+                        <div className="animate-fade-in-up">
+                            {dailyWords.length > 0 && (
                                 <div className="flex justify-between items-center mb-6 px-2">
                                     <h2 className="font-black text-primary text-xl flex items-center gap-2">
                                         <BookOpen size={22} className="text-accent" />
@@ -5124,11 +5016,9 @@ const Admin = () => {
                                     ))
                                 )}
                             </div>
-                        </div>
-                    )}
-                </div>
-            )
-        }
+                        </div >
+                    )
+                }
                 {
                     !isFirebaseConfigured && (
                         <div className="mt-10 p-10 bg-amber-50 rounded-[2.5rem] border border-amber-100 flex flex-col md:flex-row gap-8 items-start relative overflow-hidden">

@@ -17,7 +17,7 @@ const DailyWord = () => {
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
     const [selectedMonth, setSelectedMonth] = useState((new Date().getMonth() + 1).toString());
     const { config: siteConfig, loading: configLoading } = useSiteConfig();
-    const prefix = 'dailyWord'; // Use specific banner for Daily Word
+    const prefix = 'resources'; // Unify with sermons/media page
 
     if (configLoading) {
         return (
@@ -27,7 +27,7 @@ const DailyWord = () => {
         );
     }
 
-    const headerBanner = siteConfig?.[`${prefix}Banner`] || siteConfig?.resourcesBanner || "/images/sermons_banner.jpg";
+    const headerBanner = siteConfig?.[`${prefix}Banner`] || "/images/sermons_banner.jpg";
     const title = i18n.language.startsWith('en') && siteConfig?.[`${prefix}TitleEn`] ? siteConfig[`${prefix}TitleEn`] : (siteConfig?.[`${prefix}Title`] || t('resources.daily_word_title'));
     const subtitle = i18n.language.startsWith('en') && siteConfig?.[`${prefix}SubtitleEn`] ? siteConfig[`${prefix}SubtitleEn`] : (siteConfig?.[`${prefix}Subtitle`] || t('resources.daily_word_subtitle'));
     const titleFont = siteConfig?.[`${prefix}TitleFont`] || "font-sans";
@@ -44,7 +44,6 @@ const DailyWord = () => {
     // eslint-disable-next-line no-unused-vars
     const height = siteConfig?.[`${prefix}Height`] || "medium";
     const bannerFit = siteConfig?.[`${prefix}BannerFit`] || "cover";
-    const bannerPosition = siteConfig?.[`${prefix}BannerPosition`] || 50;
 
     useEffect(() => {
         let isMounted = true;
@@ -128,7 +127,6 @@ const DailyWord = () => {
                             "w-full h-full transition-all duration-700",
                             bannerFit === 'contain' ? "object-contain" : "object-cover"
                         )}
-                        style={{ objectPosition: `center ${bannerPosition}%` }}
                         loading="eager"
                         fetchpriority="high"
                         decoding="async"
@@ -152,7 +150,7 @@ const DailyWord = () => {
                             fontSize: titleSize ? `${titleSize}px` : undefined
                         }}
                     >
-                        {i18n.language.startsWith('en') && siteConfig?.[`${prefix}TitleEn`] ? siteConfig[`${prefix}TitleEn`] : (siteConfig?.[`${prefix}Title`] || t('resources.daily_word_title'))}
+                        {i18n.language.startsWith('en') ? (title || t('resources.daily_word_title')) : t('resources.daily_word_title')}
                     </h1>
                     <div className="w-20 h-1.5 bg-accent mx-auto mb-8 rounded-full animate-fade-in-up delay-75" />
                     <h2 className={clsx(
@@ -166,7 +164,7 @@ const DailyWord = () => {
                             fontSize: subtitleSize ? `${subtitleSize}px` : undefined
                         }}
                     >
-                        {i18n.language.startsWith('en') && siteConfig?.[`${prefix}SubtitleEn`] ? siteConfig[`${prefix}SubtitleEn`] : (siteConfig?.[`${prefix}Subtitle`] || t('resources.daily_word_subtitle'))}
+                        {i18n.language.startsWith('en') ? (subtitle || t('resources.daily_word_subtitle')) : t('resources.daily_word_subtitle')}
                     </h2>
                 </div>
             </section>
