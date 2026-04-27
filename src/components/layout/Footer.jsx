@@ -104,6 +104,26 @@ const Footer = () => {
                                     <span className="sr-only">Instagram</span>
                                     <Instagram size={20} />
                                 </a>
+                                <a
+                                    href={config.social?.daumCafe || churchData.general.social.daumCafe}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#EF3E42] transition-colors text-white"
+                                >
+                                    <span className="sr-only">Daum Cafe</span>
+                                    <svg viewBox="0 0 100 100" className="w-[22px] h-[22px] fill-current">
+                                        <defs>
+                                            <mask id="cafe-mask">
+                                                <rect width="100" height="100" fill="white" />
+                                                <text x="46" y="62" fontSize="38" fontWeight="bold" fill="black" textAnchor="middle" fontFamily="Arial, sans-serif" letterSpacing="-1">cafe</text>
+                                            </mask>
+                                        </defs>
+                                        <g mask="url(#cafe-mask)">
+                                            <circle cx="46" cy="50" r="44" />
+                                            <path d="M 75 42 L 94 42 A 4 4 0 0 1 98 46 L 98 54 A 4 4 0 0 1 94 58 L 75 58 Z" />
+                                        </g>
+                                    </svg>
+                                </a>
                             </div>
                         </div>
                     </div>
