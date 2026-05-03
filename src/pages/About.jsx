@@ -715,17 +715,33 @@ const About = () => {
                                 <div className="space-y-4">
                                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Social Media</p>
                                     <div className="flex gap-4">
-                                        <a href={churchData.general.social.youtube} target="_blank" rel="noopener noreferrer"
+                                        <a href={config?.social?.youtube || churchData.general.social.youtube} target="_blank" rel="noopener noreferrer"
                                             className="p-3 bg-red-50 text-red-600 rounded-2xl hover:bg-red-600 hover:text-white transition-all duration-300 shadow-sm">
                                             <Youtube size={24} />
                                         </a>
-                                        <a href={churchData.general.social.facebook} target="_blank" rel="noopener noreferrer"
+                                        <a href={config?.social?.facebook || churchData.general.social.facebook} target="_blank" rel="noopener noreferrer"
                                             className="p-3 bg-blue-50 text-blue-600 rounded-2xl hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-sm">
                                             <Facebook size={24} />
                                         </a>
-                                        <a href={churchData.general.social.instagram} target="_blank" rel="noopener noreferrer"
+                                        <a href={config?.social?.instagram || churchData.general.social.instagram} target="_blank" rel="noopener noreferrer"
                                             className="p-3 bg-pink-50 text-pink-600 rounded-2xl hover:bg-pink-600 hover:text-white transition-all duration-300 shadow-sm">
                                             <Instagram size={24} />
+                                        </a>
+                                        <a href={config?.social?.daumCafe || churchData.general.social.daumCafe} target="_blank" rel="noopener noreferrer"
+                                            className="p-3 bg-[#EF3E42]/10 text-[#EF3E42] rounded-2xl hover:bg-[#EF3E42] hover:text-white transition-all duration-300 shadow-sm flex items-center justify-center">
+                                            <span className="sr-only">Daum Cafe</span>
+                                            <svg viewBox="0 0 100 100" className="w-6 h-6 fill-current">
+                                                <defs>
+                                                    <mask id="cafe-mask-about">
+                                                        <rect width="100" height="100" fill="white" />
+                                                        <text x="46" y="62" fontSize="38" fontWeight="bold" fill="black" textAnchor="middle" fontFamily="Arial, sans-serif" letterSpacing="-1">cafe</text>
+                                                    </mask>
+                                                </defs>
+                                                <g mask="url(#cafe-mask-about)">
+                                                    <circle cx="46" cy="50" r="44" />
+                                                    <path d="M 75 42 L 94 42 A 4 4 0 0 1 98 46 L 98 54 A 4 4 0 0 1 94 58 L 75 58 Z" />
+                                                </g>
+                                            </svg>
                                         </a>
                                     </div>
                                 </div>
