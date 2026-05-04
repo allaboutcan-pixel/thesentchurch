@@ -26,8 +26,8 @@ export const isVideo = (source) => {
         const isMediaUrl = source.includes('alt=media') || source.includes('firebasestorage.googleapis.com');
         const isVideoFile = videoExtensions.test(source);
 
-        // Only treat Drive links as video if they are explicitly formatted for streaming/download
-        const driveVideo = /drive\.google\.com.*(export=download|export=media|\/preview)/i;
+        // Only treat Drive links as video if they are explicitly formatted for streaming/download or are view/preview links
+        const driveVideo = /drive\.google\.com.*(export=download|export=media|\/preview|\/view)/i;
         // YouTube detection
         const youtubeVideo = new RegExp("(?:youtube\\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?|live|shorts)/|.*[?&]v=)|youtu\\.be/)([^\"&?/\\s]{11})", "i");
 
