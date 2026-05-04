@@ -232,30 +232,35 @@ const Home = () => {
                         // Aggressively mask the top part of Drive videos if they show info bars initially
                         heroImage?.includes('drive.google.com') && "hero-video-mask"
                     )}>
-                        {(heroImage && (isVideo(heroImage) || (typeof heroImage === 'string' && heroImage.includes('drive.google.com') && !heroImage.includes('thumbnail')))) ? (
-                            getYoutubeId(heroImage) ? (
+                        {heroImage && (isVideo(heroImage) || (typeof heroImage === 'string' && heroImage.includes('drive.google.com') && !heroImage.includes('thumbnail'))) ? (
+                            (getYoutubeId(heroImage) || (typeof heroImage === 'string' && heroImage.includes('drive.google.com'))) ? (
                                 <div className="absolute inset-0 w-full h-full">
                                     <iframe
                                         className={clsx(
                                             "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-sans pointer-events-none transition-all",
                                             heroBannerFit === 'contain' ? "w-full h-full object-contain" : "w-[115%] h-[115%] min-w-full min-h-full object-cover"
                                         )}
-                                        src={`https://www.youtube.com/embed/${getYoutubeId(heroImage)}?autoplay=1&mute=1&loop=1&playlist=${getYoutubeId(heroImage)}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&origin=${window.location.origin}`}
+                                        src={(() => {
+                                            const ytId = getYoutubeId(heroImage);
+                                            if (ytId) return `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&loop=1&playlist=${ytId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&origin=${window.location.origin}`;
+                                            
+                                            if (typeof heroImage === 'string' && heroImage.includes('drive.google.com')) {
+                                                return dbService.formatDriveLink(heroImage);
+                                            }
+                                            return "";
+                                        })()}
                                         frameBorder="0"
                                         allow="autoplay; encrypted-media"
                                         title="Background Video"
                                         onLoad={() => {
-                                            // YouTube iframes load event doesn't always mean video started, 
-                                            // but it's the best signal we have without YT API.
-                                            // Added a tiny delay to ensure it's ready to show.
-                                            setTimeout(() => setIsVideoLoaded(true), 500);
+                                            setTimeout(() => setIsVideoLoaded(true), 1000);
                                         }}
                                     ></iframe>
                                 </div>
                             ) : (
                                 <video
                                     key={heroImage}
-                                    src={(typeof heroImage === 'string' && heroImage.includes('drive.google.com')) ? dbService.formatDriveVideo(heroImage) : heroImage}
+                                    src={heroImage}
                                     className={clsx(
                                         "w-full h-full transition-all",
                                         heroBannerFit === 'contain' ? "object-contain" : "object-cover"
