@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
-import { Download, Calendar, Image as ImageIcon, FileText, Play, X, ChevronRight, ChevronLeft, BookOpen, Quote, Music, Maximize, Bell, ExternalLink } from 'lucide-react';
+import { Download, Calendar, Image as ImageIcon, FileText, Play, X, ChevronRight, ChevronLeft, BookOpen, Quote, Music, Maximize, Bell, ExternalLink, Pause, Volume2, VolumeX } from 'lucide-react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import bulletinsInitialData from '../data/bulletins.json';
@@ -1225,7 +1225,7 @@ const Resources = () => {
                                         );
                                     } else if (isVideo(item.url)) {
                                         return (
-                                            <video src={item.url} controls autoPlay className="w-full h-full rounded-xl" />
+                                            <CustomGalleryVideo src={item.url} />
                                         );
                                     } else {
                                         return (
@@ -1684,5 +1684,92 @@ const TabButton = ({ active, onClick, icon, label }) => (
         <span>{label}</span>
     </button>
 );
+
+const CustomGalleryVideo = ({ src }) => {
+    const videoRef = useRef(null);
+    const [isPlaying, setIsPlaying] = useState(true);
+    const [isMuted, setIsMuted] = useState(false);
+    const [showControls, setShowControls] = useState(true);
+
+    useEffect(() => {
+        let timeout;
+        if (isPlaying) {
+            timeout = setTimeout(() => setShowControls(false), 2000);
+        } else {
+            setShowControls(true);
+        }
+        return () => clearTimeout(timeout);
+    }, [isPlaying, showControls]);
+
+    const togglePlay = (e) => {
+        e.stopPropagation();
+        if (videoRef.current) {
+            if (isPlaying) {
+                videoRef.current.pause();
+            } else {
+                videoRef.current.play();
+            }
+            setIsPlaying(!isPlaying);
+        }
+    };
+
+    const toggleMute = (e) => {
+        e.stopPropagation();
+        if (videoRef.current) {
+            videoRef.current.muted = !isMuted;
+            setIsMuted(!isMuted);
+        }
+    };
+
+    return (
+        <div 
+            className="relative w-full h-full rounded-xl overflow-hidden group bg-black"
+            onClick={(e) => {
+                e.stopPropagation();
+                setShowControls(true);
+            }}
+        >
+            <video 
+                ref={videoRef}
+                src={src} 
+                autoPlay 
+                playsInline
+                className="w-full h-full object-contain cursor-pointer" 
+                onClick={togglePlay}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+            />
+            {/* Controls Overlay */}
+            <div 
+                className={clsx(
+                    "absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/80 to-transparent transition-opacity duration-300 flex justify-between items-center z-10",
+                    showControls ? "opacity-100" : "opacity-0 pointer-events-none"
+                )}
+            >
+                <button 
+                    onClick={togglePlay} 
+                    className="w-10 h-10 flex items-center justify-center bg-black/40 hover:bg-black/60 backdrop-blur-md rounded-full text-white border border-white/10 transition-all active:scale-95"
+                >
+                    {isPlaying ? <Pause size={18} /> : <Play size={18} className="ml-1" />}
+                </button>
+                <button 
+                    onClick={toggleMute} 
+                    className="w-10 h-10 flex items-center justify-center bg-black/40 hover:bg-black/60 backdrop-blur-md rounded-full text-white border border-white/10 transition-all active:scale-95"
+                >
+                    {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                </button>
+            </div>
+            
+            {/* Big center play button ONLY when paused */}
+            {!isPlaying && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                    <div className="w-16 h-16 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20 shadow-xl">
+                        <Play size={32} className="ml-1" />
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
 
 export default Resources;
