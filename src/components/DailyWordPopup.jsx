@@ -58,8 +58,6 @@ const DailyWordPopup = ({ word }) => {
                         decoding="async"
                         fetchpriority="high"
                     />
-                    {/* Subtle gradient for text visibility if needed */}
-                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
 
                     {/* Day Badge */}
                     <div className="absolute top-4 left-4 flex items-center gap-2">
@@ -78,42 +76,34 @@ const DailyWordPopup = ({ word }) => {
                     >
                         <X size={18} />
                     </button>
+                </div>
+                
+                {/* Verse Content Section - Separated from image to prevent overlap */}
+                <div className="px-6 py-6 text-center bg-slate-50/50 border-b border-slate-100 flex flex-col gap-3">
+                    {(() => {
+                        const introRegex = /["']?이번\s*주.*?한\s*구절["']?|a\s*verse\s*for\s*today/gi;
+                        
+                        // Clean content and check if it's actually meaningful
+                        const cleanContent = word.content.replace(introRegex, '').trim();
+                        const isJustIntro = cleanContent.length < 2;
 
-                    {/* Verse overlay - Compact */}
-                    {/* Verse overlay - Compact */}
-                    <div className="absolute bottom-1 left-4 right-4 text-white text-center">
-                        {(() => {
-                            // Check if content is just the intro text or "A Verse for Today"
-                            const introRegex = /["']?이번\s*주.*?한\s*구절["']?/i;
-                            const englishIntroRegex = /a\s*verse\s*for\s*today/i;
+                        if (isJustIntro) return null;
 
-                            const isIntro = introRegex.test(word.content) || englishIntroRegex.test(word.content);
-
-                            // If it's the intro text, show it very small. Otherwise show normal size.
-                            return (
-                                <p className={clsx(
-                                    "font-black leading-tight break-keep drop-shadow-lg",
-                                    isIntro ? "text-[10px] md:text-xs opacity-80 mb-1" : "text-lg md:text-xl"
-                                )}>
-                                    "{word.content}"
-                                </p>
-                            );
-                        })()}
-
-                        {word.verse && (
-                            <p className="font-bold text-accent text-[10px] md:text-xs mt-1 drop-shadow-md">
-                                {(() => {
-                                    // Regex to catch "이번 주 ... 한 구절" variations
-                                    const introRegex = /["']?이번\s*주.*?한\s*구절["']?/i;
-                                    const englishIntroRegex = /a\s*verse\s*for\s*today/i;
-
-                                    // Remove intro parts and "A Verse for Today"
-                                    let cleanVerse = word.verse.replace(introRegex, '').replace(englishIntroRegex, '').trim();
-                                    return cleanVerse;
-                                })()}
+                        return (
+                            <p className="text-slate-800 font-bold text-lg md:text-xl leading-relaxed break-keep">
+                                "{cleanContent}"
                             </p>
-                        )}
-                    </div>
+                        );
+                    })()}
+
+                    {word.verse && (
+                        <p className="text-primary font-black text-xs md:text-sm tracking-wide">
+                            {(() => {
+                                const introRegex = /["']?이번\s*주.*?한\s*구절["']?|a\s*verse\s*for\s*today/gi;
+                                return word.verse.replace(introRegex, '').trim();
+                            })()}
+                        </p>
+                    )}
                 </div>
 
                 {/* Minimized Actions Area */}
