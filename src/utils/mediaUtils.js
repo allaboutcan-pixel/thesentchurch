@@ -22,13 +22,18 @@ export const isVideo = (source) => {
         // Ignore drive thumbnail links as they are strictly images
         if (source.includes('drive.google.com/thumbnail')) return false;
 
+        // Firebase Storage or other media URLs that might not have extension but have content-type hinted in query or are clearly media
+        const isMediaUrl = source.includes('alt=media') || source.includes('firebasestorage.googleapis.com');
+        const isVideoFile = videoExtensions.test(source);
+
         // Only treat Drive links as video if they are explicitly formatted for streaming/download
-        const driveVideo = /drive\.google\.com.*(export=download|export=media)/i;
+        const driveVideo = /drive\.google\.com.*(export=download|export=media|\/preview)/i;
         // YouTube detection
         const youtubeVideo = new RegExp("(?:youtube\\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?|live|shorts)/|.*[?&]v=)|youtu\\.be/)([^\"&?/\\s]{11})", "i");
 
-        return videoExtensions.test(source) ||
+        return isVideoFile ||
             videoDataUri.test(source) ||
+            (isMediaUrl && (source.toLowerCase().includes('.mp4') || source.toLowerCase().includes('.mov') || source.toLowerCase().includes('.webm'))) ||
             driveVideo.test(source) ||
             youtubeVideo.test(source);
     }

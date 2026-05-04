@@ -244,7 +244,12 @@ const Home = () => {
                                         frameBorder="0"
                                         allow="autoplay; encrypted-media"
                                         title="Background Video"
-                                        onLoad={() => setIsVideoLoaded(true)}
+                                        onLoad={() => {
+                                            // YouTube iframes load event doesn't always mean video started, 
+                                            // but it's the best signal we have without YT API.
+                                            // Added a tiny delay to ensure it's ready to show.
+                                            setTimeout(() => setIsVideoLoaded(true), 500);
+                                        }}
                                     ></iframe>
                                 </div>
                             ) : (
@@ -261,8 +266,10 @@ const Home = () => {
                                     playsInline
                                     preload="auto"
                                     onLoadedData={() => setIsVideoLoaded(true)}
+                                    onCanPlay={() => setIsVideoLoaded(true)}
+                                    onPlay={() => setIsVideoLoaded(true)}
                                     onError={(e) => {
-                                        console.error("Video load error", e);
+                                        console.warn("Hero video load error", e);
                                         setIsVideoLoaded(false);
                                     }}
                                 />
