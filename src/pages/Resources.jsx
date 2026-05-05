@@ -1223,7 +1223,7 @@ const Resources = () => {
                                                 alt={selectedGalleryGroup ? selectedGalleryGroup.title : item.title}
                                             />
                                         );
-                                    } else if (isVideo(item.url)) {
+                                    } else if (isVideo(item.url) && !getYoutubeId(item.url) && !(item.url && item.url.includes('google.com'))) {
                                         return (
                                             <CustomGalleryVideo src={item.url} />
                                         );

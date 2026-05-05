@@ -225,11 +225,9 @@ const Home = () => {
                         />
                     )}
 
-                    {/* 2. Video Layer (Fades in) */}
+                    {/* 2. Video Layer (Force Visible) */}
                     <div className={clsx(
-                        "absolute inset-0 z-10 transition-opacity duration-1000 pointer-events-none", // Slower fade-in
-                        isVideoLoaded ? "opacity-100" : "opacity-0",
-                        // Aggressively mask the top part of Drive videos if they show info bars initially
+                        "absolute inset-0 z-10 transition-opacity duration-1000 pointer-events-none opacity-100", // Forced opacity-100
                         heroImage?.includes('drive.google.com') && "hero-video-mask"
                     )}>
                         {heroImage && (isVideo(heroImage) || (typeof heroImage === 'string' && heroImage.includes('drive.google.com') && !heroImage.includes('thumbnail'))) ? (
@@ -252,9 +250,7 @@ const Home = () => {
                                         frameBorder="0"
                                         allow="autoplay; encrypted-media"
                                         title="Background Video"
-                                        onLoad={() => {
-                                            setTimeout(() => setIsVideoLoaded(true), 1000);
-                                        }}
+                                        onLoad={() => setIsVideoLoaded(true)}
                                     ></iframe>
                                 </div>
                             ) : (
