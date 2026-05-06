@@ -893,7 +893,7 @@ const Admin = () => {
         setIsLoading(true);
 
         const timeout = new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('TIMEOUT')), 300000)
+            setTimeout(() => reject(new Error('TIMEOUT')), 3600000)
         );
 
         try {
@@ -1045,9 +1045,9 @@ const Admin = () => {
         e.preventDefault();
         setIsLoading(true);
 
-        // Timeout promise (300 seconds for uploads)
+        // Timeout promise (3600 seconds for uploads)
         const timeout = new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('TIMEOUT')), 300000)
+            setTimeout(() => reject(new Error('TIMEOUT')), 3600000)
         );
 
         try {

@@ -128,7 +128,7 @@ export const dbService = {
     // Generic File Upload
     uploadFile: async (file, path) => {
         if (!file) return null;
-        alert(`[업로드 시작] ${file.name} (${(file.size / 1024).toFixed(1)}KB)`);
+        alert(`[업로드 시작] ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB)\n파일 크기에 따라 시간이 걸릴 수 있습니다. 기다려주세요.`);
 
         try {
             const safeName = `file_${Date.now()}`;
@@ -141,27 +141,19 @@ export const dbService = {
             // Use Resumable upload to allow cancellation/monitoring
             const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
-            alert(`[연결 시도] 서버 응답 대기 중 (최대 15초)...`);
-
             return new Promise((resolve, reject) => {
-                const timer = setTimeout(() => {
-                    uploadTask.cancel();
-                    reject(new Error("시간 초과: 30초 동안 응답이 없습니다. 인터넷 연결을 확인하거나 파일 크기를 줄여주세요."));
-                }, 30000);
-
                 uploadTask.on('state_changed',
                     (snapshot) => {
-                        // Upload progress
+                        // You could log progress here if needed
+                        // const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        // console.log('Upload is ' + progress + '% done');
                     },
                     (error) => {
-                        clearTimeout(timer);
                         reject(error);
                     },
                     async () => {
-                        clearTimeout(timer);
                         try {
                             const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-                            alert(`[성공] URL 획득 완료!`);
                             resolve(downloadUrl);
                         } catch (err) {
                             reject(err);
