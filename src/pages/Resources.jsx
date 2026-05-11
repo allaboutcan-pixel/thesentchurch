@@ -1223,29 +1223,13 @@ const Resources = () => {
                                                 alt={selectedGalleryGroup ? selectedGalleryGroup.title : item.title}
                                             />
                                         );
-                                    } else if (isVideo(item.url) && !getYoutubeId(item.url) && !(item.url && item.url.includes('google.com'))) {
+                                    } else if (isVideo(item.url) && !getYoutubeId(item.url) && !(item.url && item.url.includes('drive.google.com'))) {
                                         return (
-                                            <CustomGalleryVideo src={item.url} />
+                                            <CustomGalleryVideo src={item.url} poster={item.thumbnailUrl || (item.url && item.url.includes('drive.google.com') ? getPreviewSource(item.url) : undefined)} />
                                         );
                                     } else {
                                         return (
-                                            <iframe
-                                                src={(() => {
-                                                    let url = item.url;
-                                                    const ytId = getYoutubeId(url);
-                                                    if (ytId) return `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&vq=hd1080&modestbranding=1&hd=1&origin=${window.location.origin}`;
-                                                    
-                                                    if (url && url.includes('google.com')) {
-                                                        const formatted = dbService.formatDriveLink(url);
-                                                        if (formatted && formatted.includes('/preview')) return formatted;
-                                                    }
-                                                    return url;
-                                                })()}
-                                                className="w-full h-full border-none rounded-xl"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                allowFullScreen
-                                                title={selectedGalleryGroup ? selectedGalleryGroup.title : item.title}
-                                            ></iframe>
+                                            <GalleryIframeVideo item={item} getPreviewSource={getPreviewSource} />
                                         );
                                     }
                                 })()}
@@ -1685,9 +1669,58 @@ const TabButton = ({ active, onClick, icon, label }) => (
     </button>
 );
 
-const CustomGalleryVideo = ({ src }) => {
+const GalleryIframeVideo = ({ item, getPreviewSource }) => {
+    const [hasStarted, setHasStarted] = useState(false);
+    
+    useEffect(() => {
+        setHasStarted(false);
+    }, [item.id, item.url]);
+
+    const poster = item.thumbnailUrl || (item.url && item.url.includes('drive.google.com') ? getPreviewSource(item.url)?.replace('w1000', 'w2560') : (getYoutubeId(item.url) ? getPreviewSource(item.url) : undefined));
+
+    if (!hasStarted && poster) {
+        return (
+            <div 
+                className="relative w-full h-full rounded-xl overflow-hidden group bg-black cursor-pointer flex items-center justify-center"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setHasStarted(true);
+                }}
+            >
+                <img src={poster} alt="Video Thumbnail" className="w-full h-full object-contain" />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-all z-10">
+                    <div className="w-16 h-16 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20 shadow-xl transition-transform transform group-hover:scale-110">
+                        <Play size={32} className="ml-1" />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <iframe
+            src={(() => {
+                let url = item.url;
+                const ytId = getYoutubeId(url);
+                if (ytId) return `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&vq=hd1080&modestbranding=1&hd=1&origin=${window.location.origin}`;
+                
+                if (url && url.includes('google.com')) {
+                    const formatted = dbService.formatDriveLink(url);
+                    if (formatted && formatted.includes('/preview')) return formatted;
+                }
+                return url;
+            })()}
+            className="w-full h-full border-none rounded-xl bg-black"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            title={item.title}
+        ></iframe>
+    );
+};
+
+const CustomGalleryVideo = ({ src, poster }) => {
     const videoRef = useRef(null);
-    const [isPlaying, setIsPlaying] = useState(true);
+    const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
     const [showControls, setShowControls] = useState(true);
 
@@ -1732,7 +1765,7 @@ const CustomGalleryVideo = ({ src }) => {
             <video 
                 ref={videoRef}
                 src={src} 
-                autoPlay 
+                poster={poster}
                 playsInline
                 className="w-full h-full object-contain cursor-pointer" 
                 onClick={togglePlay}
