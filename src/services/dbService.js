@@ -128,7 +128,6 @@ export const dbService = {
     // Generic File Upload
     uploadFile: async (file, path) => {
         if (!file) return null;
-        alert(`[업로드 시작] ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB)\n파일 크기에 따라 시간이 걸릴 수 있습니다. 기다려주세요.`);
 
         try {
             const safeName = `file_${Date.now()}`;
@@ -138,22 +137,22 @@ export const dbService = {
             const storageRef = ref(storage, fullPath);
             const metadata = { contentType: file.type };
 
-            // Use Resumable upload to allow cancellation/monitoring
             const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
             return new Promise((resolve, reject) => {
                 uploadTask.on('state_changed',
                     (snapshot) => {
-                        // You could log progress here if needed
-                        // const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        // console.log('Upload is ' + progress + '% done');
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        window.dispatchEvent(new CustomEvent('uploadProgress', { detail: { progress, fileName: file.name } }));
                     },
                     (error) => {
+                        window.dispatchEvent(new CustomEvent('uploadError', { detail: { error: error.message, fileName: file.name } }));
                         reject(error);
                     },
                     async () => {
                         try {
                             const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+                            window.dispatchEvent(new CustomEvent('uploadComplete', { detail: { fileName: file.name } }));
                             resolve(downloadUrl);
                         } catch (err) {
                             reject(err);
@@ -162,7 +161,6 @@ export const dbService = {
                 );
             });
         } catch (e) {
-            alert(`[오류 발생] ${e.message}`);
             console.error("Storage upload error detail:", e);
             throw e;
         }

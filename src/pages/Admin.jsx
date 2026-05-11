@@ -319,6 +319,7 @@ const Admin = () => {
     const [thumbnailFile, setThumbnailFile] = useState(null);
     const [staffFile, setStaffFile] = useState(null);
     const staffFileInputRef = useRef(null);
+    const [uploadProgressData, setUploadProgressData] = useState({ isUploading: false, progress: 0, fileName: '' });
 
     // States for data
     const [sermons, setSermons] = useState([]);
@@ -497,8 +498,26 @@ const Admin = () => {
     useEffect(() => {
         let isMounted = true;
         loadData(isMounted);
+
+        const handleProgress = (e) => {
+            setUploadProgressData({ isUploading: true, progress: e.detail.progress, fileName: e.detail.fileName });
+        };
+        const handleError = () => {
+            setUploadProgressData({ isUploading: false, progress: 0, fileName: '' });
+        };
+        const handleComplete = () => {
+            // Keep it showing briefly or just let isLoading overlay hide it
+        };
+
+        window.addEventListener('uploadProgress', handleProgress);
+        window.addEventListener('uploadError', handleError);
+        window.addEventListener('uploadComplete', handleComplete);
+
         return () => {
             isMounted = false;
+            window.removeEventListener('uploadProgress', handleProgress);
+            window.removeEventListener('uploadError', handleError);
+            window.removeEventListener('uploadComplete', handleComplete);
         };
     }, []);
 
@@ -1375,8 +1394,9 @@ const Admin = () => {
             alert('성공적으로 저장되었습니다!');
         } catch (e) {
             console.error(e);
+            setUploadProgressData({ isUploading: false, progress: 0, fileName: '' });
             if (e.message === 'TIMEOUT') {
-                alert('연결 시간이 초과되었습니다. 파일 크기가 너무 크거나 파이어베이스 설정을 확인해 주세요.');
+                alert('연결 시간이 초과되었습니다. 파일 크기가 너무 크거나 네트워크 상태를 확인해 주세요.');
             } else if (e.code === 'permission-denied') {
                 alert('권한이 거부되었습니다. Firestore 및 Storage 규칙을 확인해 주세요.');
             } else {
@@ -1384,6 +1404,7 @@ const Admin = () => {
             }
         }
         setIsLoading(false);
+        setUploadProgressData({ isUploading: false, progress: 0, fileName: '' });
     };
 
     const handleDelete = async (type, id) => {
@@ -2121,6 +2142,30 @@ const Admin = () => {
                         </div>
                     )}
                 </header>
+
+                {uploadProgressData.isUploading && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                        <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl flex flex-col items-center">
+                            <Upload size={48} className="text-primary mb-4 animate-bounce" />
+                            <h3 className="text-lg font-black text-gray-800 mb-2">파일 업로드 중...</h3>
+                            <p className="text-sm font-bold text-gray-500 mb-6 text-center break-all">{uploadProgressData.fileName}</p>
+                            
+                            <div className="w-full bg-gray-100 rounded-full h-4 overflow-hidden mb-2 relative">
+                                <div 
+                                    className="h-full bg-primary transition-all duration-300 ease-out"
+                                    style={{ width: `${uploadProgressData.progress}%` }}
+                                ></div>
+                            </div>
+                            <div className="text-center w-full flex justify-between text-xs font-black text-gray-400">
+                                <span>{Math.round(uploadProgressData.progress)}%</span>
+                                <span>100%</span>
+                            </div>
+                            <p className="text-[10px] text-red-400 font-bold mt-4 text-center">
+                                * 업로드가 완료될 때까지 창을 닫거나 이동하지 마세요.<br/>파일 크기에 따라 시간이 걸릴 수 있습니다.
+                            </p>
+                        </div>
+                    </div>
+                )}
 
                 {/* Form Section */}
                 {showAddForm && activeTab !== 'site' && activeTab !== 'staff' && activeTab !== 'general' && activeTab !== 'worship' && activeTab !== 'prayer' && activeTab !== 'education_ministry' && activeTab !== 'location' && (
