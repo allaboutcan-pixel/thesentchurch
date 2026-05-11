@@ -1218,7 +1218,7 @@ const Resources = () => {
                                     } else if (item.type === 'image') {
                                         return (
                                             <img
-                                                src={item.url}
+                                                src={item.url && item.url.includes('drive.google.com') && !item.url.includes('thumbnail') ? (getPreviewSource(item.url)?.replace('w1000', 'w2560') || item.url) : item.url}
                                                 className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
                                                 alt={selectedGalleryGroup ? selectedGalleryGroup.title : item.title}
                                             />
@@ -1270,7 +1270,7 @@ const Resources = () => {
                                     )}
                                 >
                                     <img 
-                                        src={item.thumbnailUrl || (item.type === 'video' ? getPreviewSource(item.url) : item.url)} 
+                                        src={item.thumbnailUrl || (item.url && item.url.includes('drive.google.com') ? getPreviewSource(item.url) : item.url)} 
                                         className="w-full h-full object-contain"
                                         alt={`Thumbnail ${idx}`}
                                     />
