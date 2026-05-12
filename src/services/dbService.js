@@ -14,7 +14,8 @@ import {
     onSnapshot
 } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { db, storage } from "../lib/firebase";
+import { signInAnonymously } from "firebase/auth";
+import { db, storage, auth } from "../lib/firebase";
 
 // Collection Names
 const SERMONS = "sermons";
@@ -129,39 +130,77 @@ export const dbService = {
     uploadFile: async (file, path) => {
         if (!file) return null;
 
+        console.log(`[Storage] Starting upload: ${file.name} to ${path} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
+
         try {
+            // Ensure authenticated for storage access if rules require it
+            if (!auth.currentUser) {
+                try {
+                    console.log("[Storage] No user authenticated, attempting anonymous sign-in...");
+                    await signInAnonymously(auth);
+                    console.log("[Storage] Anonymous sign-in successful.");
+                } catch (authErr) {
+                    console.warn("[Storage] Anonymous sign-in failed (possibly not enabled in Firebase Console):", authErr.message);
+                    // Continue anyway, as the rules might be public or the error might be non-blocking
+                }
+            }
+
             const safeName = `file_${Date.now()}`;
-            const extension = file.name.split('.').pop();
+            const extension = file.name.split('.').pop() || 'file';
             const fullPath = `${path}/${safeName}.${extension}`;
 
             const storageRef = ref(storage, fullPath);
-            const metadata = { contentType: file.type };
+            const metadata = { 
+                contentType: file.type || 'application/octet-stream'
+            };
 
             const uploadTask = uploadBytesResumable(storageRef, file, metadata);
 
             return new Promise((resolve, reject) => {
+                let hasStarted = false;
+                
                 uploadTask.on('state_changed',
                     (snapshot) => {
-                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        window.dispatchEvent(new CustomEvent('uploadProgress', { detail: { progress, fileName: file.name } }));
+                        if (!hasStarted && snapshot.bytesTransferred > 0) {
+                            hasStarted = true;
+                            console.log(`[Storage] Data transfer started for ${file.name}`);
+                        }
+                        
+                        const total = snapshot.totalBytes || file.size || 1;
+                        const progress = (snapshot.bytesTransferred / total) * 100;
+                        
+                        if (Math.floor(progress) % 10 === 0) {
+                            console.log(`[Storage] Progress for ${file.name}: ${progress.toFixed(2)}%`);
+                        }
+                        
+                        window.dispatchEvent(new CustomEvent('uploadProgress', { 
+                            detail: { progress, fileName: file.name } 
+                        }));
                     },
                     (error) => {
-                        window.dispatchEvent(new CustomEvent('uploadError', { detail: { error: error.message, fileName: file.name } }));
+                        console.error(`[Storage] Upload error for ${file.name}:`, error);
+                        window.dispatchEvent(new CustomEvent('uploadError', { 
+                            detail: { error: error.message, fileName: file.name } 
+                        }));
                         reject(error);
                     },
                     async () => {
                         try {
                             const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
-                            window.dispatchEvent(new CustomEvent('uploadComplete', { detail: { fileName: file.name } }));
+                            console.log(`[Storage] Upload complete: ${file.name} -> ${downloadUrl}`);
+                            window.dispatchEvent(new CustomEvent('uploadComplete', { 
+                                detail: { url: downloadUrl, fileName: file.name } 
+                            }));
                             resolve(downloadUrl);
                         } catch (err) {
+                            console.error("[Storage] Failed to get download URL:", err);
                             reject(err);
                         }
                     }
                 );
             });
         } catch (e) {
-            console.error("Storage upload error detail:", e);
+            console.error("[Storage] Critical upload error detail:", e);
             throw e;
         }
     },
@@ -465,5 +504,6 @@ export const dbService = {
     },
 
     resetSermons: (data) => dbService.resetCollection(SERMONS, data),
-    resetBulletins: (data) => dbService.resetCollection(BULLETINS, data)
+    resetBulletins: (data) => dbService.resetCollection(BULLETINS, data),
+    resetNotices: (data) => dbService.resetCollection("notices", data)
 };

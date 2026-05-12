@@ -911,8 +911,9 @@ const Admin = () => {
         if (e) e.preventDefault();
         setIsLoading(true);
 
-        const timeout = new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('TIMEOUT')), 3600000)
+        // Fresh timeout helper
+        const createTimeout = (ms = 3600000) => new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('TIMEOUT')), ms)
         );
 
         try {
@@ -924,6 +925,7 @@ const Admin = () => {
             }
 
             if (staffFile) {
+                // No timeout for direct uploads
                 const uploadedUrl = await dbService.uploadFile(staffFile, 'staff_photos');
                 // Only update if upload returned a valid string
                 if (uploadedUrl && typeof uploadedUrl === 'string' && uploadedUrl.length > 10) {
@@ -969,7 +971,7 @@ const Admin = () => {
 
             // alert(`[디버깅 리포트]...`); // Alert removed for production
 
-            await Promise.race([dbService.updateSiteConfig({ ...siteConfig, staff: newStaffList }), timeout]);
+            await Promise.race([dbService.updateSiteConfig({ ...siteConfig, staff: newStaffList }), createTimeout()]);
             setStaffList(newStaffList);
             setSiteConfig(prev => ({ ...prev, staff: newStaffList }));
 
@@ -1064,9 +1066,9 @@ const Admin = () => {
         e.preventDefault();
         setIsLoading(true);
 
-        // Timeout promise (3600 seconds for uploads)
-        const timeout = new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('TIMEOUT')), 3600000)
+        // Fresh timeout helper to prevent shared timeout issues across multiple sequential operations
+        const createTimeout = (ms = 3600000) => new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('TIMEOUT')), ms)
         );
 
         try {
@@ -1086,11 +1088,11 @@ const Admin = () => {
                 };
 
                 if (editingId) {
-                    savedItem = await Promise.race([dbService.updateSermon(editingId, sermonData), timeout]);
+                    savedItem = await Promise.race([dbService.updateSermon(editingId, sermonData), createTimeout()]);
                     setSermons(sermons.map(s => s.id === editingId ? savedItem : s));
                 } else {
                     // For new items, assign orderIndex 0 to bring to top
-                    savedItem = await Promise.race([dbService.addSermon({ ...sermonData, orderIndex: 0 }), timeout]);
+                    savedItem = await Promise.race([dbService.addSermon({ ...sermonData, orderIndex: 0 }), createTimeout()]);
                     setSermons([savedItem, ...sermons]);
                 }
             } else if (activeTab === 'bulletins') {
@@ -1098,13 +1100,15 @@ const Admin = () => {
                 let finalFileUrl2 = formData.fileUrl2;
 
                 if (file) {
-                    finalFileUrl = await Promise.race([dbService.uploadFile(file, 'bulletins'), timeout]);
+                    // No timeout for direct uploads to allow large files
+                    finalFileUrl = await dbService.uploadFile(file, 'bulletins');
                 } else if (finalFileUrl) {
                     finalFileUrl = dbService.formatDriveLink(finalFileUrl);
                 }
 
                 if (file2) {
-                    finalFileUrl2 = await Promise.race([dbService.uploadFile(file2, 'bulletins'), timeout]);
+                    // No timeout for direct uploads
+                    finalFileUrl2 = await dbService.uploadFile(file2, 'bulletins');
                 } else if (finalFileUrl2) {
                     finalFileUrl2 = dbService.formatDriveLink(finalFileUrl2);
                 }
@@ -1118,17 +1122,18 @@ const Admin = () => {
                 };
 
                 if (editingId) {
-                    savedItem = await Promise.race([dbService.updateBulletin(editingId, bulletinData), timeout]);
+                    savedItem = await Promise.race([dbService.updateBulletin(editingId, bulletinData), createTimeout()]);
                     setBulletins(bulletins.map(b => b.id === editingId ? savedItem : b));
                 } else {
                     // For bulletins, we use strict date sorting (newest first).
-                    savedItem = await Promise.race([dbService.addBulletin(bulletinData), timeout]);
+                    savedItem = await Promise.race([dbService.addBulletin(bulletinData), createTimeout()]);
                     setBulletins([savedItem, ...bulletins]);
                 }
             } else if (activeTab === 'gallery') {
                 let batchThumbnailUrl = formData.thumbnailUrl || '';
                 if (thumbnailFile) {
-                    batchThumbnailUrl = await Promise.race([dbService.uploadFile(thumbnailFile, 'gallery_thumbnails'), timeout]);
+                    // No timeout for direct uploads
+                    batchThumbnailUrl = await dbService.uploadFile(thumbnailFile, 'gallery_thumbnails');
                 }
 
                 const processGalleryItem = async (singleFile, singleUrl, index = 0) => {
@@ -1137,6 +1142,7 @@ const Admin = () => {
                     let finalThumbnailUrl = batchThumbnailUrl;
                     
                     if (singleFile) {
+                        // No timeout for direct uploads
                         finalUrl = await dbService.uploadFile(singleFile, 'gallery');
                         if (singleFile.type.startsWith('video/')) detectedType = 'video';
                         else if (singleFile.type.startsWith('audio/')) detectedType = 'audio';
@@ -1197,20 +1203,21 @@ const Admin = () => {
                 const newItems = [];
                 if (galleryFiles.length > 0) {
                     for (let i = 0; i < galleryFiles.length; i++) {
-                        const newItem = await Promise.race([processGalleryItem(galleryFiles[i], '', i), timeout]);
-                        const saved = await Promise.race([dbService.addGalleryItem(newItem), timeout]);
+                        // We use a fresh timeout for each DB operation, but NO timeout for the upload itself
+                        const newItem = await processGalleryItem(galleryFiles[i], '', i);
+                        const saved = await Promise.race([dbService.addGalleryItem(newItem), createTimeout()]);
                         newItems.push(saved);
                     }
                 } else if (formData.fileUrl.trim()) {
                     const urls = formData.fileUrl.split('\n').map(u => u.trim()).filter(u => u !== '');
                     for (let i = 0; i < urls.length; i++) {
-                        const newItem = await Promise.race([processGalleryItem(null, urls[i], i), timeout]);
-                        const saved = await Promise.race([dbService.addGalleryItem(newItem), timeout]);
+                        const newItem = await processGalleryItem(null, urls[i], i);
+                        const saved = await Promise.race([dbService.addGalleryItem(newItem), createTimeout()]);
                         newItems.push(saved);
                     }
                 } else {
-                    const newItem = await Promise.race([processGalleryItem(null, ''), timeout]);
-                    const saved = await Promise.race([dbService.addGalleryItem(newItem), timeout]);
+                    const newItem = await processGalleryItem(null, '');
+                    const saved = await Promise.race([dbService.addGalleryItem(newItem), createTimeout()]);
                     newItems.push(saved);
                 }
                 
@@ -1219,7 +1226,8 @@ const Admin = () => {
             } else if (activeTab === 'columns') {
                 let finalFileUrl = formData.fileUrl;
                 if (file) {
-                    finalFileUrl = await Promise.race([dbService.uploadFile(file, 'columns'), timeout]);
+                    // No timeout for direct uploads
+                    finalFileUrl = await dbService.uploadFile(file, 'columns');
                 } else if (finalFileUrl) {
                     // For columns, if it's an image, use image formatting, else use link formatting
                     if (formData.fileType === 'image' && finalFileUrl.includes('drive.google.com')) {
@@ -1242,11 +1250,11 @@ const Admin = () => {
                 };
 
                 if (editingId) {
-                    savedItem = await Promise.race([dbService.updateColumn(editingId, columnData), timeout]);
+                    savedItem = await Promise.race([dbService.updateColumn(editingId, columnData), createTimeout()]);
                     setColumns(columns.map(c => c.id === editingId ? savedItem : c));
                 } else {
                     // For new items, assign orderIndex 0 to bring to top
-                    savedItem = await Promise.race([dbService.addColumn({ ...columnData, orderIndex: 0 }), timeout]);
+                    savedItem = await Promise.race([dbService.addColumn({ ...columnData, orderIndex: 0 }), createTimeout()]);
                     setColumns([savedItem, ...columns]);
                 }
             } else if (activeTab === 'calendar') {
@@ -1261,17 +1269,18 @@ const Admin = () => {
                 };
 
                 if (editingId) {
-                    savedItem = await Promise.race([dbService.updateCalendarEvent(editingId, eventData), timeout]);
+                    savedItem = await Promise.race([dbService.updateCalendarEvent(editingId, eventData), createTimeout()]);
                     setCalendarEvents(calendarEvents.map(c => c.id === editingId ? { ...eventData, id: editingId } : c).sort((a, b) => new Date(a.startDate) - new Date(b.startDate)));
                 } else {
-                    const newId = await Promise.race([dbService.addCalendarEvent(eventData), timeout]);
+                    const newId = await Promise.race([dbService.addCalendarEvent(eventData), createTimeout()]);
                     savedItem = { id: newId, ...eventData };
                     setCalendarEvents([...calendarEvents, savedItem].sort((a, b) => new Date(a.startDate) - new Date(b.startDate)));
                 }
             } else if (activeTab === 'dailyWord') {
                 let finalImageUrl = formData.fileUrl;
                 if (file) {
-                    finalImageUrl = await Promise.race([dbService.uploadFile(file, 'daily_words'), timeout]);
+                    // No timeout for direct uploads
+                    finalImageUrl = await dbService.uploadFile(file, 'daily_words');
                 } else if (finalImageUrl) {
                     finalImageUrl = dbService.formatDriveImage(finalImageUrl);
                 }
@@ -1286,24 +1295,20 @@ const Admin = () => {
                 };
 
                 if (editingId) {
-                    savedItem = await Promise.race([dbService.updateDailyWord(editingId, dailyWordData), timeout]);
+                    savedItem = await Promise.race([dbService.updateDailyWord(editingId, dailyWordData), createTimeout()]);
                     setDailyWords(dailyWords.map(dw => dw.id === editingId ? savedItem : dw));
                 } else {
-                    savedItem = await Promise.race([dbService.addDailyWord(dailyWordData), timeout]);
+                    savedItem = await Promise.race([dbService.addDailyWord(dailyWordData), createTimeout()]);
                     setDailyWords([savedItem, ...dailyWords]);
                 }
             } else if (activeTab === 'site' || activeTab === 'intro' || activeTab === 'prayer' || activeTab === 'education_ministry' || activeTab === 'location' || activeTab === 'worship') {
                 let currentConfig = { ...siteConfig };
 
                 // Ensure all text fields from formData are merged into currentConfig
-                // This is necessary because many fields only update formData and not siteConfig directly
                 Object.keys(formData).forEach(key => {
-                    // Skip media fields (handled separately below) and fields for other tabs (sermons, bulletins, etc.)
                     if (!['heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage'].includes(key)) {
-                        // Special handling for nested pastor data if needed
                         if (key.startsWith('pastor')) {
                             const pastorKey = key.replace('pastor', '').toLowerCase();
-                            // history and historyEn are already updated directly in onChange handlers to be arrays
                             if (pastorKey !== 'history' && pastorKey !== 'historyen') {
                                 currentConfig.pastor = { ...currentConfig.pastor, [pastorKey]: formData[key] };
                             }
@@ -1324,20 +1329,21 @@ const Admin = () => {
                     const localFile = bannerFiles[key];
                     if (localFile) {
                         try {
-                            const uploadedUrl = await Promise.race([dbService.uploadFile(localFile, 'banners'), timeout]);
+                            // No timeout for direct uploads
+                            const uploadedUrl = await dbService.uploadFile(localFile, 'banners');
                             currentConfig[key] = uploadedUrl;
                         } catch (err) {
                             console.error(`Error uploading banner ${key}:`, err);
                         }
                     } else if (currentConfig[key] && currentConfig[key].includes('drive.google.com')) {
-                        // Always ensure Drive links are formatted correctly
                         currentConfig[key] = dbService.formatDriveImage(currentConfig[key]);
                     }
                 }
 
                 // Handle Pastor Image
                 if (staffFile) {
-                    const uploadedUrl = await Promise.race([dbService.uploadFile(staffFile, 'staff'), timeout]);
+                    // No timeout for direct uploads
+                    const uploadedUrl = await dbService.uploadFile(staffFile, 'staff');
                     currentConfig.pastor = { ...currentConfig.pastor, image: uploadedUrl };
                 }
 
@@ -1349,7 +1355,8 @@ const Admin = () => {
                         const localFile = bannerFiles[fieldName];
                         if (localFile) {
                             try {
-                                const uploadedUrl = await Promise.race([dbService.uploadFile(localFile, 'teams'), timeout]);
+                                // No timeout for direct uploads
+                                const uploadedUrl = await dbService.uploadFile(localFile, 'teams');
                                 updatedTeamItems[i] = { ...updatedTeamItems[i], image: uploadedUrl };
                             } catch (err) {
                                 console.error(`Error uploading team image ${fieldName}:`, err);
@@ -1361,7 +1368,7 @@ const Admin = () => {
                     currentConfig.teamMinistryItems = updatedTeamItems;
                 }
 
-                await Promise.race([dbService.updateSiteConfig(currentConfig), timeout]);
+                await Promise.race([dbService.updateSiteConfig(currentConfig), createTimeout()]);
                 setSiteConfig({ ...currentConfig });
                 setBannerFiles({}); // Clear selected files after successful save
                 setStaffFile(null); // Clear pastor file staffFile after successful save
@@ -2160,9 +2167,30 @@ const Admin = () => {
                                 <span>{Math.round(uploadProgressData.progress)}%</span>
                                 <span>100%</span>
                             </div>
+
+                            {uploadProgressData.progress === 0 && (
+                                <p className="text-[11px] text-amber-500 font-bold mt-4 text-center animate-pulse">
+                                    업로드 대기 중입니다. 잠시만 기다려주세요...<br/>
+                                    (0%에서 멈춘 경우 네트워크 연결을 확인하세요)
+                                </p>
+                            )}
+
                             <p className="text-[10px] text-red-400 font-bold mt-4 text-center">
                                 * 업로드가 완료될 때까지 창을 닫거나 이동하지 마세요.<br/>파일 크기에 따라 시간이 걸릴 수 있습니다.
                             </p>
+
+                            <button 
+                                onClick={() => {
+                                    if (window.confirm('업로드를 취소하시겠습니까?')) {
+                                        setUploadProgressData({ isUploading: false, progress: 0, fileName: '' });
+                                        setIsLoading(false);
+                                        window.location.reload(); // Hard reset to kill any hanging promises
+                                    }
+                                }}
+                                className="mt-6 px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-500 rounded-xl text-xs font-bold transition-all"
+                            >
+                                업로드 취소
+                            </button>
                         </div>
                     </div>
                 )}
