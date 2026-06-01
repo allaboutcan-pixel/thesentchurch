@@ -22,6 +22,7 @@ const SERMONS = "sermons";
 const BULLETINS = "bulletins";
 const COLUMNS = "columns";
 const DAILY_WORD = "daily_word";
+const NOTICES = "notices";
 const SITE_CONFIG = "siteConfig";
 
 const DB_COLLECTIONS = {
@@ -446,6 +447,66 @@ export const dbService = {
             return true;
         } catch (e) {
             console.error("Error updating daily words order: ", e);
+            throw e;
+        }
+    },
+
+    // Notices
+    getNotices: async () => {
+        try {
+            const q = query(collection(db, NOTICES), orderBy("date", "desc"));
+            const querySnapshot = await getDocs(q);
+            return querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+        } catch (e) {
+            console.error("Error getting notices: ", e);
+            return [];
+        }
+    },
+    addNotice: async (data) => {
+        try {
+            const docRef = await addDoc(collection(db, NOTICES), {
+                ...data,
+                createdAt: new Date().toISOString()
+            });
+            return { id: docRef.id, ...data };
+        } catch (e) {
+            console.error("Error adding notice: ", e);
+            throw e;
+        }
+    },
+    updateNotice: async (id, data) => {
+        try {
+            const docRef = doc(db, NOTICES, id);
+            await updateDoc(docRef, data);
+            return { id, ...data };
+        } catch (e) {
+            console.error("Error updating notice: ", e);
+            throw e;
+        }
+    },
+    deleteNotice: async (id) => {
+        try {
+            await deleteDoc(doc(db, NOTICES, id));
+            return true;
+        } catch (e) {
+            console.error("Error deleting notice: ", e);
+            throw e;
+        }
+    },
+    updateNoticesOrder: async (items) => {
+        try {
+            const batch = writeBatch(db);
+            items.forEach(item => {
+                const docRef = doc(db, NOTICES, item.id);
+                batch.update(docRef, { order: item.order });
+            });
+            await batch.commit();
+            return true;
+        } catch (e) {
+            console.error("Error updating notices order: ", e);
             throw e;
         }
     },

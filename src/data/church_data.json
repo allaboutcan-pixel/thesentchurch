@@ -293,6 +293,11 @@
                 {
                     "label": "갤러리",
                     "path": "/news/gallery"
+                },
+                {
+                    "id": "notice",
+                    "label": "공지사항",
+                    "path": "/news/notice"
                 }
             ]
         }

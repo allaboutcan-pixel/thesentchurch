@@ -14,6 +14,7 @@ import clsx from 'clsx';
 
 // Lazy load the popup to reduce initial bundle size
 const DailyWordPopup = lazy(() => import('../components/DailyWordPopup'));
+const NoticePopup = lazy(() => import('../components/NoticePopup'));
 
 const DEFAULT_HERO_IMAGE = ""; // Set to empty to avoid accidental flashes
 
@@ -21,6 +22,7 @@ const Home = () => {
     const [latestSermon, setLatestSermon] = useState(sermonsInitialData[0] || {});
     const [latestDailyWord, setLatestDailyWord] = useState(null);
     const [recentUpdates, setRecentUpdates] = useState([]);
+    const [homeNotices, setHomeNotices] = useState([]);
     const [isVideoLoaded, setIsVideoLoaded] = useState(false);
     const { config, loading: configLoading } = useSiteConfig();
     const { t, i18n } = useTranslation();
@@ -54,7 +56,7 @@ const Home = () => {
         const fetchLiveContent = async () => {
             try {
                 // Fetch in parallel for better performance
-                const [liveSermons, liveDailyWords, liveBulletins, liveColumns, liveGallery] = await Promise.all([
+                const [liveSermons, liveDailyWords, liveBulletins, liveColumns, liveGallery, liveNotices] = await Promise.all([
                     dbService.getSermons().catch(err => {
                         console.warn("Home: Failed to fetch sermons", err);
                         return [];
@@ -65,7 +67,8 @@ const Home = () => {
                     }),
                     dbService.getBulletins().catch(() => []),
                     dbService.getColumns().catch(() => []),
-                    dbService.getGallery().catch(() => [])
+                    dbService.getGallery().catch(() => []),
+                    dbService.fetchItems('notices').catch(() => [])
                 ]);
 
                 if (!isMounted) return;
@@ -107,6 +110,11 @@ const Home = () => {
                     const lastWord = validWords.filter(w => w.date < todayStr).sort((a, b) => new Date(b.date) - new Date(a.date))[0] || validWords[0];
 
                     if (isMounted) setLatestDailyWord(displayWord || lastWord || null);
+                }
+
+                if (Array.isArray(liveNotices) && liveNotices.length > 0) {
+                    const sorted = [...liveNotices].sort((a, b) => new Date(b.date) - new Date(a.date));
+                    if (isMounted) setHomeNotices(sorted);
                 }
 
                 if (isMounted) {
@@ -194,7 +202,8 @@ const Home = () => {
                     : 'The Church of the Sent in Langley, Vancouver. Sunday Service: 1:00 PM & 2:00 PM. A biblical Christian community.'}
             />
             <Suspense fallback={null}>
-                <DailyWordPopup word={latestDailyWord} />
+                {config.showDailyWordPopup !== false && <DailyWordPopup word={latestDailyWord} />}
+                {config.showNoticePopup !== false && homeNotices.find(n => n.showPopup) && <NoticePopup notice={homeNotices.find(n => n.showPopup)} />}
             </Suspense>
             {/* Hero Section (Main Banner) */}
             <section className={clsx(
@@ -416,9 +425,39 @@ const Home = () => {
                                 <CalendarWidget />
                             </div>
                             
-                            <div className="lg:col-span-1 bg-white rounded-[32px] p-5 shadow-2xl shadow-primary/5 border border-gray-50 h-full flex flex-col justify-between">
+                                                        <div className="lg:col-span-1 bg-white rounded-[32px] p-5 shadow-2xl shadow-primary/5 border border-gray-50 h-full flex flex-col justify-between">
+                                {/* Notice Section */}
+                                {homeNotices.length > 0 && (
+                                    <div className="mb-6">
+                                        <h4 className="text-lg font-black text-amber-600 mb-4 flex items-center gap-2 shrink-0 border-b border-amber-50 pb-2">
+                                            <Bell size={18} />
+                                            {i18n.language === 'en' ? 'Notice' : '공지사항'}
+                                        </h4>
+                                        <div className="space-y-2">
+                                            {homeNotices.slice(0, 3).map((notice, idx) => (
+                                                <Link 
+                                                    key={'notice-'+idx} 
+                                                    to="/news/notice"
+                                                    state={{ openItem: JSON.parse(JSON.stringify(notice)) }}
+                                                    className="block p-2.5 rounded-xl border border-amber-100 hover:border-amber-300 hover:bg-amber-50/50 hover:shadow-sm transition-all group"
+                                                >
+                                                    <div className="flex justify-between items-center mb-1.5">
+                                                        <span className="text-[9px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider bg-amber-100 text-amber-700">
+                                                            {i18n.language === 'en' ? 'NOTICE' : '공지'}
+                                                        </span>
+                                                        <span className="text-[10px] font-bold text-gray-400">{notice.date?.substring?.(0,10) || ""}</span>
+                                                    </div>
+                                                    <h5 className="font-bold text-[13px] text-gray-800 group-hover:text-amber-700 transition-colors line-clamp-1">
+                                                        {(i18n.language === 'en' && notice.titleEn) ? notice.titleEn : notice.title}
+                                                    </h5>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
                                 <h4 className="text-lg font-black text-primary mb-4 flex items-center gap-2 shrink-0">
-                                    <Bell size={18} className="text-accent" />
+                                    <span className="text-accent opacity-70">#</span>
                                     {i18n.language === 'en' ? 'Recent Updates' : '최근 업데이트된 내용'}
                                 </h4>
                                 <div className="space-y-2 flex-grow flex flex-col justify-center">
