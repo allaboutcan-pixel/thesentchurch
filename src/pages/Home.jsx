@@ -427,14 +427,14 @@ const Home = () => {
                             
                                                         <div className="lg:col-span-1 bg-white rounded-[32px] p-5 shadow-2xl shadow-primary/5 border border-gray-50 h-full flex flex-col justify-between">
                                 {/* Notice Section */}
-                                {homeNotices.length > 0 && (
-                                    <div className="mb-6">
-                                        <h4 className="text-lg font-black text-amber-600 mb-4 flex items-center gap-2 shrink-0 border-b border-amber-50 pb-2">
-                                            <Bell size={18} />
-                                            {i18n.language === 'en' ? 'Notice' : '공지사항'}
-                                        </h4>
-                                        <div className="space-y-2">
-                                            {homeNotices.slice(0, 3).map((notice, idx) => (
+                                <div className="mb-6">
+                                    <h4 className="text-lg font-black text-amber-600 mb-4 flex items-center gap-2 shrink-0 border-b border-amber-50 pb-2">
+                                        <Bell size={18} />
+                                        {i18n.language === 'en' ? 'Notice' : '공지사항'}
+                                    </h4>
+                                    <div className="space-y-2">
+                                        {homeNotices.length > 0 ? (
+                                            homeNotices.slice(0, 3).map((notice, idx) => (
                                                 <Link 
                                                     key={'notice-'+idx} 
                                                     to="/news/notice"
@@ -451,17 +451,22 @@ const Home = () => {
                                                         {(i18n.language === 'en' && notice.titleEn) ? notice.titleEn : notice.title}
                                                     </h5>
                                                 </Link>
-                                            ))}
-                                        </div>
+                                            ))
+                                        ) : (
+                                            <div className="flex flex-col items-center justify-center py-6 text-gray-400">
+                                                <p className="font-medium text-sm">{i18n.language === 'en' ? 'No notices' : '등록된 공지사항이 없습니다.'}</p>
+                                            </div>
+                                        )}
                                     </div>
-                                )}
+                                </div>
 
-                                <h4 className="text-lg font-black text-primary mb-4 flex items-center gap-2 shrink-0">
-                                    <span className="text-accent opacity-70">#</span>
-                                    {i18n.language === 'en' ? 'Recent Updates' : '최근 업데이트된 내용'}
-                                </h4>
-                                <div className="space-y-2 flex-grow flex flex-col justify-center">
-                                    {recentUpdates.length > 0 ? recentUpdates.map((item, idx) => (
+                                <div className="mt-auto flex flex-col gap-4">
+                                    <h4 className="text-lg font-black text-primary mb-4 flex items-center gap-2 shrink-0">
+                                        <span className="text-accent opacity-70">#</span>
+                                        {i18n.language === 'en' ? 'Recent Updates' : '최근 업데이트된 내용'}
+                                    </h4>
+                                    <div className="space-y-2">
+                                        {recentUpdates.length > 0 ? recentUpdates.map((item, idx) => (
                                         <Link 
                                             key={idx} 
                                             to={
@@ -494,6 +499,7 @@ const Home = () => {
                                             <p className="font-medium text-sm">{i18n.language === 'en' ? 'No recent updates' : '업데이트된 내용이 없습니다.'}</p>
                                         </div>
                                     )}
+                                    </div>
                                 </div>
                             </div>
                         </div>

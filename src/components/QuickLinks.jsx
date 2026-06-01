@@ -32,17 +32,11 @@ const QuickLinks = () => {
             subTitle: t('home.quick_gallery_sub'),
             image: quickGallery,
             link: "/news/gallery"
-        },
-        {
-            title: "공지사항 | Notice",
-            subTitle: "NOTICE",
-            image: quickBulletin,
-            link: "/news/notice"
         }
     ];
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
             {menuItems.map((item, index) => (
                 <Link
                     key={index}
