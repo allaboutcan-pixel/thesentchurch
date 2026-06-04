@@ -43,6 +43,7 @@ const Resources = () => {
     const [selectedArchiveColumn, setSelectedArchiveColumn] = useState(null);
     // eslint-disable-next-line no-unused-vars
     const [notices, setNotices] = useState([]);
+    const [selectedNotice, setSelectedNotice] = useState(null);
 
     // eslint-disable-next-line no-unused-vars
     const [galleryItems, setGalleryItems] = useState([]);
@@ -131,6 +132,7 @@ const Resources = () => {
 
     useEffect(() => {
         setPlayingSermonId(null);
+        setSelectedNotice(null);
     }, [activeTab, selectedSermonYear, selectedSermonMonth]);
 
     // Initialize tab based on pathname
@@ -139,6 +141,7 @@ const Resources = () => {
         else if (location.pathname.includes('column')) setActiveTab('column');
         else if (location.pathname.includes('calendar')) setActiveTab('calendar');
         else if (location.pathname.includes('bulletin')) setActiveTab('bulletin');
+        else if (location.pathname.includes('notice')) setActiveTab('notice');
         else if (location.pathname.includes('sermon') || location.pathname.includes('/sermons')) setActiveTab('sermon');
         else if (location.pathname.includes('news') || location.pathname.includes('/news')) setActiveTab('bulletin');
     }, [location.pathname]);
@@ -148,7 +151,7 @@ const Resources = () => {
         if (!isDataLoaded || !location.state?.openItem || isClearingState.current) return;
 
         const item = location.state.openItem;
-        const itemCategory = item.category || item.type;
+        const itemCategory = item.category || item.type || (location.pathname.includes('notice') ? 'notice' : 'bulletin');
         setActiveTab(itemCategory);
 
         setTimeout(() => {
@@ -158,6 +161,8 @@ const Resources = () => {
                 setSelectedArchiveBulletin(item);
             } else if (itemCategory === 'column') {
                 setSelectedArchiveColumn(item);
+            } else if (itemCategory === 'notice') {
+                setSelectedNotice(item);
             } else if (itemCategory === 'gallery') {
                 const group = galleryGroups.find(g => g.date === item.date && g.title === item.title);
                 if (group) {
@@ -427,7 +432,7 @@ const Resources = () => {
                             <>
                                 <TabButton
                                     active={activeTab === 'sermon'}
-                                    onClick={() => setActiveTab('sermon')}
+                                    onClick={() => { setActiveTab('sermon'); navigate('/sermons'); }}
                                     icon={<Play size={18} />}
                                     label={t('nav.sunday_sermon')}
                                 />
@@ -440,30 +445,34 @@ const Resources = () => {
                                 </Link>
                                 <TabButton
                                     active={activeTab === 'column'}
-                                    onClick={() => setActiveTab('column')}
+                                    onClick={() => { setActiveTab('column'); navigate('/sermons/column'); }}
                                     icon={<BookOpen size={18} />}
                                     label={t('nav.column')}
                                 />
                             </>
                         ) : (
                             <>
-
-
+                                <TabButton
+                                    active={activeTab === 'notice'}
+                                    onClick={() => { setActiveTab('notice'); navigate('/news/notice'); }}
+                                    icon={<Bell size={18} />}
+                                    label={t('nav.notice')}
+                                />
                                 <TabButton
                                     active={activeTab === 'bulletin'}
-                                    onClick={() => setActiveTab('bulletin')}
+                                    onClick={() => { setActiveTab('bulletin'); navigate('/news/bulletin'); }}
                                     icon={<FileText size={18} />}
                                     label={t('nav.bulletin')}
                                 />
                                 <TabButton
                                     active={activeTab === 'calendar'}
-                                    onClick={() => setActiveTab('calendar')}
+                                    onClick={() => { setActiveTab('calendar'); navigate('/news/calendar'); }}
                                     icon={<Calendar size={18} />}
                                     label={t('nav.calendar')}
                                 />
                                 <TabButton
                                     active={activeTab === 'gallery'}
-                                    onClick={() => setActiveTab('gallery')}
+                                    onClick={() => { setActiveTab('gallery'); navigate('/news/gallery'); }}
                                     icon={<ImageIcon size={18} />}
                                     label={t('nav.gallery')}
                                 />
@@ -1112,6 +1121,131 @@ const Resources = () => {
                 {activeTab === 'calendar' && (
                     <div className="animate-fade-in max-w-4xl mx-auto py-32">
                         <CalendarWidget />
+                    </div>
+                )}
+
+                {activeTab === 'notice' && (
+                    <div className="animate-fade-in max-w-4xl mx-auto py-12">
+                        {selectedNotice ? (
+                            /* Detail View */
+                            <div className="bg-white rounded-3xl p-6 md:p-10 shadow-xl border border-gray-100 space-y-6">
+                                <button
+                                    onClick={() => setSelectedNotice(null)}
+                                    className="inline-flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-primary transition-colors"
+                                >
+                                    <ChevronLeft size={16} /> 목록으로 돌아가기
+                                </button>
+                                
+                                <div className="border-b border-gray-100 pb-6 space-y-3">
+                                    <div className="flex flex-wrap items-center gap-3">
+                                        <span className="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                            {i18n.language === 'en' ? 'Notice' : '공지사항'}
+                                        </span>
+                                        <span className="text-slate-400 text-xs font-bold font-sans">
+                                            {selectedNotice.date}
+                                        </span>
+                                    </div>
+                                    <h2 className="text-xl md:text-3xl font-black text-slate-900 leading-tight">
+                                        {i18n.language === 'en' && selectedNotice.titleEn ? selectedNotice.titleEn : selectedNotice.title}
+                                    </h2>
+                                </div>
+
+                                {selectedNotice.image && (
+                                    <div className="relative rounded-2xl overflow-hidden bg-slate-50 border border-gray-100 flex justify-center">
+                                        <img
+                                            src={selectedNotice.image}
+                                            alt={selectedNotice.title}
+                                            className="w-full max-h-[60vh] object-contain"
+                                        />
+                                    </div>
+                                )}
+
+                                <div className="text-slate-600 leading-relaxed whitespace-pre-wrap text-sm md:text-base font-medium font-sans">
+                                    {i18n.language === 'en' && selectedNotice.contentEn ? selectedNotice.contentEn : selectedNotice.content}
+                                </div>
+
+                                {selectedNotice.image && (
+                                    <div className="pt-6 border-t border-gray-100 flex flex-wrap gap-3">
+                                        <a
+                                            href={selectedNotice.image}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all shadow-sm"
+                                        >
+                                            <ExternalLink size={14} /> 파일 크게 보기
+                                        </a>
+                                        <a
+                                            href={dbService.formatDriveDownloadLink(selectedNotice.image)}
+                                            download
+                                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white hover:bg-primary-dark rounded-xl text-xs font-bold transition-all shadow-md shadow-primary/10"
+                                        >
+                                            <Download size={14} /> 파일 다운로드
+                                        </a>
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            /* List View */
+                            <div className="space-y-6">
+                                <div className="border-b-4 border-slate-100 pb-6">
+                                    <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+                                        <Bell size={28} className="text-primary" />
+                                        {i18n.language === 'en' ? 'Announcements' : '공지사항'}
+                                    </h3>
+                                    <p className="text-slate-400 font-medium text-sm mt-1 italic">
+                                        {i18n.language === 'en' ? 'Latest news and notices from The Sent Church' : '교회의 최신 소식과 공지사항을 알려드립니다.'}
+                                    </p>
+                                </div>
+
+                                {notices.length === 0 ? (
+                                    <div className="py-20 flex flex-col items-center justify-center text-slate-300 gap-4 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                                        <div className="bg-slate-50 p-6 rounded-full">
+                                            <Bell size={48} className="opacity-20" />
+                                        </div>
+                                        <p className="font-bold">
+                                            {i18n.language === 'en' ? 'No notices registered.' : '등록된 공지사항이 없습니다.'}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {notices.map((notice, idx) => (
+                                            <div
+                                                key={notice.id || idx}
+                                                onClick={() => setSelectedNotice(notice)}
+                                                className="group bg-white border border-slate-100 rounded-3xl p-5 flex flex-col hover:border-primary/30 hover:shadow-lg transition-all cursor-pointer"
+                                            >
+                                                {notice.image && (
+                                                    <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 mb-4 shrink-0">
+                                                        <img
+                                                            src={notice.image}
+                                                            alt={notice.title}
+                                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                        />
+                                                    </div>
+                                                )}
+                                                <div className="flex-grow flex flex-col gap-2">
+                                                    <div className="flex justify-between items-center text-[10px] font-bold text-slate-400 font-sans">
+                                                        <span className="bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full uppercase tracking-wider font-black">
+                                                            {i18n.language === 'en' ? 'NOTICE' : '공지'}
+                                                        </span>
+                                                        <span>{notice.date}</span>
+                                                    </div>
+                                                    <h4 className="text-base font-black text-slate-800 group-hover:text-primary transition-colors line-clamp-1 leading-snug">
+                                                        {i18n.language === 'en' && notice.titleEn ? notice.titleEn : notice.title}
+                                                    </h4>
+                                                    <p className="text-xs text-slate-400 font-medium font-sans leading-relaxed line-clamp-3 break-keep">
+                                                        {i18n.language === 'en' && notice.contentEn ? notice.contentEn : notice.content}
+                                                    </p>
+                                                    <span className="text-xs font-bold text-primary group-hover:translate-x-1.5 transition-transform duration-300 flex items-center gap-1 mt-auto pt-4 border-t border-slate-50">
+                                                        {i18n.language === 'en' ? 'Read More' : '자세히 보기'} <ChevronRight size={14} />
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

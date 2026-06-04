@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Upload, FileText, Check, X, Play, LayoutDashboard, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, Shield, AlertTriangle, Type, ArrowUp, ArrowDown, Heart, Send, Mail, Globe } from 'lucide-react';
+import { Upload, FileText, Check, X, Play, LayoutDashboard, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, Shield, AlertTriangle, Type, ArrowUp, ArrowDown, Heart, Send, Mail, Globe, Bell } from 'lucide-react';
 import sermonsInitialData from '../data/sermons.json';
 import bulletinsInitialData from '../data/bulletins.json';
+const noticesInitialData = [];
 
 import churchData from '../data/church_data.json';
 import { dbService } from '../services/dbService';
@@ -329,9 +330,12 @@ const Admin = () => {
     const [staffList, setStaffList] = useState([]);
     const [columns, setColumns] = useState([]);
     const [dailyWords, setDailyWords] = useState([]);
+    const [notices, setNotices] = useState([]);
     const [calendarEvents, setCalendarEvents] = useState([]);
     const [bannerFiles, setBannerFiles] = useState({
         heroImage: null,
+        heroImage2: null,
+        heroImage3: null,
         aboutBanner: null,
         newsBanner: null,
         ministryBanner: null,
@@ -355,8 +359,10 @@ const Admin = () => {
         type: 'image',
 
         // Home
-        heroImage: '', heroTitle: '', heroSubtitle: '',
+        heroImage: '', heroImage2: '', heroImage3: '', heroTitle: '', heroSubtitle: '',
         heroTitleEn: '', heroSubtitleEn: '',
+        heroTitle2: '', heroSubtitle2: '', heroTitleEn2: '', heroSubtitleEn2: '',
+        heroTitle3: '', heroSubtitle3: '', heroTitleEn3: '', heroSubtitleEn3: '',
         heroTitleFont: 'font-sans', heroSubtitleFont: 'font-sans',
         heroTitleColor: '#ffffff', heroSubtitleColor: '#f8fafc',
         heroTitleItalic: false, heroSubtitleItalic: false,
@@ -491,6 +497,9 @@ const Admin = () => {
         resourcesTitleEn: '', resourcesSubtitleEn: '',
         teeTitleEn: '', teeSubtitleEn: '',
         teamTitleEn: '', teamSubtitleEn: '',
+        showDailyWordPopup: true,
+        showNoticePopup: true,
+        showPopup: false,
     });
 
     const [pastorFile, setPastorFile] = useState(null);
@@ -530,6 +539,7 @@ const Admin = () => {
             const fbColumns = await dbService.getColumns();
             const fbDailyWords = await dbService.getDailyWords();
             const fbCalendar = await dbService.getCalendarEvents();
+            const fbNotices = await dbService.getNotices();
             // Sort calendar specifically if needed, though dbService does it
             const sortedCalendar = (fbCalendar || []).sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
             const fbConfig = await dbService.getSiteConfig();
@@ -543,6 +553,7 @@ const Admin = () => {
             setBulletins(fbBulletins);
             setGallery(fbGallery);
             setColumns(fbColumns || []);
+            setNotices(fbNotices || []);
 
             // Sort daily words: Order (desc) -> Date (desc)
             const sortedDailyWords = (fbDailyWords || []).sort((a, b) => {
@@ -560,6 +571,8 @@ const Admin = () => {
                 setFormData(prev => ({
                     ...prev,
                     heroImage: fbConfig.heroImage || '',
+                    heroImage2: fbConfig.heroImage2 || '',
+                    heroImage3: fbConfig.heroImage3 || '',
                     heroTitle: fbConfig.heroTitle || '',
                     heroSubtitle: fbConfig.heroSubtitle || '',
                     heroTitleFont: fbConfig.heroTitleFont || fbConfig.titleFont || 'font-sans',
@@ -827,6 +840,8 @@ const Admin = () => {
                     pastorHistory: Array.isArray(fbConfig.pastor?.history) ? fbConfig.pastor.history.join('\n') : (fbConfig.pastor?.history || ''),
                     pastorHistoryEn: Array.isArray(fbConfig.pastor?.historyEn) ? fbConfig.pastor.historyEn.join('\n') : (fbConfig.pastor?.historyEn || ''),
                     prayerCommonTopicsEn: fbConfig.prayerCommonTopicsEn || '',
+                    showDailyWordPopup: fbConfig.showDailyWordPopup !== false,
+                    showNoticePopup: fbConfig.showNoticePopup !== false,
                 }));
                 setColumns(fbColumns || []);
                 if (fbConfig.staff) {
@@ -900,6 +915,42 @@ const Admin = () => {
 
         } catch (error) {
             console.error("Error reordering:", error);
+            alert("순서 변경 중 오류가 발생했습니다.");
+            loadData(); // Revert on error
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleMoveNotice = async (index, direction) => {
+        if (isLoading) return;
+        const newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= notices.length) return;
+
+        setIsLoading(true);
+        try {
+            const newItems = [...notices];
+            // Swap items in the array
+            [newItems[index], newItems[newIndex]] = [newItems[newIndex], newItems[index]];
+
+            // Assign order values to all items based on their new visual position
+            // Higher order = appears first (descending sort)
+            const updates = newItems.map((item, idx) => ({
+                id: item.id,
+                order: newItems.length - idx
+            }));
+
+            // Optimistic update
+            newItems.forEach((item, idx) => {
+                item.order = newItems.length - idx;
+            });
+            setNotices(newItems);
+
+            // Save to DB
+            await dbService.updateNoticesOrder(updates);
+
+        } catch (error) {
+            console.error("Error reordering notices:", error);
             alert("순서 변경 중 오류가 발생했습니다.");
             loadData(); // Revert on error
         } finally {
@@ -1301,12 +1352,37 @@ const Admin = () => {
                     savedItem = await Promise.race([dbService.addDailyWord(dailyWordData), createTimeout()]);
                     setDailyWords([savedItem, ...dailyWords]);
                 }
+            } else if (activeTab === 'notice') {
+                let finalImageUrl = formData.fileUrl;
+                if (file) {
+                    finalImageUrl = await dbService.uploadFile(file, 'notices');
+                } else if (finalImageUrl) {
+                    finalImageUrl = dbService.formatDriveImage(finalImageUrl);
+                }
+
+                const noticeData = {
+                    title: formData.title,
+                    titleEn: formData.titleEn || '',
+                    content: formData.content,
+                    contentEn: formData.contentEn || '',
+                    date: formData.date,
+                    image: finalImageUrl,
+                    showPopup: formData.showPopup || false
+                };
+
+                if (editingId) {
+                    savedItem = await Promise.race([dbService.updateNotice(editingId, noticeData), createTimeout()]);
+                    setNotices(notices.map(n => n.id === editingId ? savedItem : n));
+                } else {
+                    savedItem = await Promise.race([dbService.addNotice(noticeData), createTimeout()]);
+                    setNotices([savedItem, ...notices].sort((a, b) => new Date(b.date) - new Date(a.date)));
+                }
             } else if (activeTab === 'site' || activeTab === 'intro' || activeTab === 'prayer' || activeTab === 'education_ministry' || activeTab === 'location' || activeTab === 'worship') {
                 let currentConfig = { ...siteConfig };
 
                 // Ensure all text fields from formData are merged into currentConfig
                 Object.keys(formData).forEach(key => {
-                    if (!['heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage'].includes(key)) {
+                    if (!['heroImage', 'heroImage2', 'heroImage3', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage'].includes(key)) {
                         if (key.startsWith('pastor')) {
                             const pastorKey = key.replace('pastor', '').toLowerCase();
                             if (pastorKey !== 'history' && pastorKey !== 'historyen') {
@@ -1320,7 +1396,7 @@ const Admin = () => {
 
                 // Handle Banner Image Uploads
                 const bannerKeys = [
-                    'heroImage', 'aboutBanner', 'newsBanner', 'ministryBanner',
+                    'heroImage', 'heroImage2', 'heroImage3', 'aboutBanner', 'newsBanner', 'ministryBanner',
                     'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage',
                     'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image'
                 ];
@@ -1458,6 +1534,9 @@ const Admin = () => {
             } else if (type === 'calendar') {
                 await dbService.deleteCalendarEvent(id);
                 setCalendarEvents(calendarEvents.filter(c => c.id !== id));
+            } else if (type === 'notice') {
+                await dbService.deleteNotice(id);
+                setNotices(notices.filter(n => n.id !== id));
             }
             alert('삭제되었습니다.');
         } catch (e) {
@@ -1526,6 +1605,18 @@ const Admin = () => {
                 facebookUrl: item.facebookUrl || ''
             });
             setFile(null);
+        } else if (type === 'notice') {
+            setFormData({
+                ...formData,
+                title: item.title || '',
+                titleEn: item.titleEn || '',
+                date: item.date || '',
+                content: item.content || '',
+                contentEn: item.contentEn || '',
+                fileUrl: item.image || '',
+                showPopup: item.showPopup || false
+            });
+            setFile(null);
         } else if (type === 'calendar') {
             setFormData({
                 ...formData,
@@ -1573,7 +1664,7 @@ const Admin = () => {
                     {/* Left Side: Media Manager */}
                     <div className="w-full md:w-1/2 space-y-6">
                         <BannerManager
-                            label={label}
+                            label={isHome ? `${label} (1)` : label}
                             value={formData[imageField]}
                             fieldName={imageField}
                             bannerFiles={bannerFiles}
@@ -1583,6 +1674,32 @@ const Admin = () => {
                                 setSiteConfig(prev => ({ ...prev, [imageField]: val }));
                             }}
                         />
+                        {isHome && (
+                            <>
+                                <BannerManager
+                                    label={`${label} (2)`}
+                                    value={formData.heroImage2}
+                                    fieldName="heroImage2"
+                                    bannerFiles={bannerFiles}
+                                    setBannerFiles={setBannerFiles}
+                                    onChange={(val) => {
+                                        setFormData(prev => ({ ...prev, heroImage2: val }));
+                                        setSiteConfig(prev => ({ ...prev, heroImage2: val }));
+                                    }}
+                                />
+                                <BannerManager
+                                    label={`${label} (3)`}
+                                    value={formData.heroImage3}
+                                    fieldName="heroImage3"
+                                    bannerFiles={bannerFiles}
+                                    setBannerFiles={setBannerFiles}
+                                    onChange={(val) => {
+                                        setFormData(prev => ({ ...prev, heroImage3: val }));
+                                        setSiteConfig(prev => ({ ...prev, heroImage3: val }));
+                                    }}
+                                />
+                            </>
+                        )}
                         {pageKey === 'prayer' && (
                             <div className="max-w-2xl">
                                 <BannerManager
@@ -1705,7 +1822,7 @@ const Admin = () => {
 
                         <div className="space-y-4">
                             <div>
-                                <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 mb-1 block">타이틀 (Korean Title)</label>
+                                <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 mb-1 block">타이틀 (Korean Title) {isHome ? '(1)' : ''}</label>
                                 <input
                                     type="text"
                                     className="w-full p-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-lg"
@@ -1756,6 +1873,114 @@ const Admin = () => {
                                     }}
                                 />
                             </div>
+
+                            {isHome && (
+                                <div className="mt-6 pt-6 border-t border-gray-100 space-y-4">
+                                    <h4 className="font-bold text-gray-600">배경 (2) 텍스트</h4>
+                                    <div>
+                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 mb-1 block">타이틀 (Korean Title)</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-lg"
+                                            value={formData.heroTitle2}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, heroTitle2: val }));
+                                                setSiteConfig(prev => ({ ...prev, heroTitle2: val }));
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold text-blue-500 uppercase tracking-wider px-1 mb-1 block">English Title</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-3 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-lg"
+                                            value={formData.heroTitleEn2}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, heroTitleEn2: val }));
+                                                setSiteConfig(prev => ({ ...prev, heroTitleEn2: val }));
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 mb-1 block">서브 타이틀 (Korean Subtitle)</label>
+                                        <textarea
+                                            className="w-full p-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium h-20 resize-none"
+                                            value={formData.heroSubtitle2}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, heroSubtitle2: val }));
+                                                setSiteConfig(prev => ({ ...prev, heroSubtitle2: val }));
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold text-blue-500 uppercase tracking-wider px-1 mb-1 block">English Subtitle</label>
+                                        <textarea
+                                            className="w-full p-3 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium h-20 resize-none"
+                                            value={formData.heroSubtitleEn2}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, heroSubtitleEn2: val }));
+                                                setSiteConfig(prev => ({ ...prev, heroSubtitleEn2: val }));
+                                            }}
+                                        />
+                                    </div>
+
+                                    <h4 className="font-bold text-gray-600 mt-6 border-t border-gray-100 pt-6">배경 (3) 텍스트</h4>
+                                    <div>
+                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 mb-1 block">타이틀 (Korean Title)</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-lg"
+                                            value={formData.heroTitle3}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, heroTitle3: val }));
+                                                setSiteConfig(prev => ({ ...prev, heroTitle3: val }));
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold text-blue-500 uppercase tracking-wider px-1 mb-1 block">English Title</label>
+                                        <input
+                                            type="text"
+                                            className="w-full p-3 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-bold text-lg"
+                                            value={formData.heroTitleEn3}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, heroTitleEn3: val }));
+                                                setSiteConfig(prev => ({ ...prev, heroTitleEn3: val }));
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 mb-1 block">서브 타이틀 (Korean Subtitle)</label>
+                                        <textarea
+                                            className="w-full p-3 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium h-20 resize-none"
+                                            value={formData.heroSubtitle3}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, heroSubtitle3: val }));
+                                                setSiteConfig(prev => ({ ...prev, heroSubtitle3: val }));
+                                            }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-bold text-blue-500 uppercase tracking-wider px-1 mb-1 block">English Subtitle</label>
+                                        <textarea
+                                            className="w-full p-3 bg-blue-50 border border-blue-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-medium h-20 resize-none"
+                                            value={formData.heroSubtitleEn3}
+                                            onChange={(e) => {
+                                                const val = e.target.value;
+                                                setFormData(prev => ({ ...prev, heroSubtitleEn3: val }));
+                                                setSiteConfig(prev => ({ ...prev, heroSubtitleEn3: val }));
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
@@ -2038,6 +2263,12 @@ const Admin = () => {
                         onClick={() => { setActiveTab('dailyWord'); setShowAddForm(false); }}
                     />
                     <SidebarItem
+                        icon={<Bell size={20} />}
+                        label="공지사항 관리"
+                        active={activeTab === 'notice'}
+                        onClick={() => { setActiveTab('notice'); setShowAddForm(false); }}
+                    />
+                    <SidebarItem
                         icon={<FileText size={20} />}
                         label="주보 파일 관리"
                         active={activeTab === 'bulletins'}
@@ -2106,6 +2337,7 @@ const Admin = () => {
                             {activeTab === 'sermons' && '🎥 설교 영상 관리'}
                             {activeTab === 'bulletins' && '📄 주보 파일 관리'}
                             {activeTab === 'dailyWord' && '📜 오늘의 말씀 관리'}
+                            {activeTab === 'notice' && '📢 공지사항 관리'}
                             {activeTab === 'gallery' && '🖼️ 갤러리 관리'}
                             {activeTab === 'columns' && '✍️ 신학 칼럼 관리'}
                             {activeTab === 'site' && '⚙️ 사이트 설정'}
@@ -2132,12 +2364,12 @@ const Admin = () => {
                     {isLoading && <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>}
                     {!showAddForm && activeTab !== 'site' && activeTab !== 'intro' && activeTab !== 'general' && activeTab !== 'worship' && activeTab !== 'prayer' && activeTab !== 'education_ministry' && activeTab !== 'location' && (
                         <div className="flex gap-2">
-                            {(activeTab === 'sermons' || activeTab === 'columns') && (
+                            {(activeTab === 'sermons' || activeTab === 'columns' || activeTab === 'notice') && (
                                 <button
                                     onClick={() => {
-                                        const list = activeTab === 'sermons' ? sermons : columns;
-                                        const setList = activeTab === 'sermons' ? setSermons : setColumns;
-                                        const collectionName = activeTab === 'sermons' ? 'sermons' : 'columns';
+                                        const list = activeTab === 'sermons' ? sermons : activeTab === 'columns' ? columns : notices;
+                                        const setList = activeTab === 'sermons' ? setSermons : activeTab === 'columns' ? setColumns : setNotices;
+                                        const collectionName = activeTab === 'sermons' ? 'sermons' : activeTab === 'columns' ? 'columns' : 'notices';
                                         handleSortByDate(list, setList, collectionName);
                                     }}
                                     className="bg-slate-100 hover:bg-slate-200 text-slate-600 px-6 py-3.5 rounded-2xl font-bold transition-all flex items-center gap-2 active:scale-95"
@@ -2227,7 +2459,8 @@ const Admin = () => {
                                             activeTab === 'columns' ? '새 신학 칼럼 등록' :
                                                 activeTab === 'staff' ? '새 섬기는 분 등록' :
                                                     activeTab === 'calendar' ? '새 일정 등록' :
-                                                        activeTab === 'dailyWord' ? '새 오늘의 말씀 등록' : '정보 수정'}
+                                                        activeTab === 'dailyWord' ? '새 오늘의 말씀 등록' :
+                                                        activeTab === 'notice' ? '새 공지사항 등록' : '정보 수정'}
                             </h2>
                             <button onClick={() => setShowAddForm(false)} className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-50 rounded-full">
                                 <X size={20} />
@@ -2256,7 +2489,7 @@ const Admin = () => {
                                     onChange={(e) => setFormData({ ...formData, titleEn: e.target.value })}
                                 />
                                 <p className="text-[10px] text-gray-400 ml-1 font-medium italic">
-                                    {activeTab === 'dailyWord' ? '* Biblical Verse in English (e.g., Matthew 5:13)' : ''}
+                                    {activeTab === 'dailyWord' ? '* Biblical Verse in English (e.g., Matthew 5:13)' : activeTab === 'notice' ? 'English Title' : ''}
                                 </p>
                             </div>
 
@@ -2745,7 +2978,7 @@ const Admin = () => {
                                 </div>
                             )}
 
-                            {activeTab === 'dailyWord' && (
+                            {(activeTab === 'dailyWord' || activeTab === 'notice') && (
                                 <div className="space-y-6 md:col-span-2">
                                     <div className="space-y-2">
                                         <label className="text-sm font-bold text-gray-500 ml-1">내용 (Korean Content)</label>
@@ -2768,7 +3001,9 @@ const Admin = () => {
                                     </div>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
-                                            <label className="text-sm font-bold text-gray-500 ml-1">배경 이미지 링크 (URL)</label>
+                                            <label className="text-sm font-bold text-gray-500 ml-1">
+                                                {activeTab === 'notice' ? '첨부 이미지/파일 링크 (URL)' : '배경 이미지 링크 (URL)'}
+                                            </label>
                                             <input
                                                 type="url"
                                                 className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
@@ -2778,7 +3013,9 @@ const Admin = () => {
                                             />
                                         </div>
                                         <div className="space-y-2 opacity-80">
-                                            <label className="text-xs font-bold text-gray-400 uppercase ml-1">이미지 직접 업로드</label>
+                                            <label className="text-xs font-bold text-gray-400 uppercase ml-1">
+                                                {activeTab === 'notice' ? '파일 직접 업로드' : '이미지 직접 업로드'}
+                                            </label>
                                             <div className="relative group">
                                                 <input
                                                     type="file"
@@ -2805,6 +3042,20 @@ const Admin = () => {
                                             </div>
                                         </div>
                                     </div>
+                                    {activeTab === 'notice' && (
+                                        <div className="space-y-2 mt-4 p-4 bg-amber-50 rounded-xl border border-amber-100 flex items-center justify-between col-span-2">
+                                            <div>
+                                                <label className="text-sm font-bold text-amber-900 block">📢 이 공지사항을 홈페이지 팝업으로 띄우기</label>
+                                                <p className="text-xs text-amber-700/80">활성화하면 사용자가 홈페이지를 방문할 때 팝업창에 이 공지가 노출됩니다.</p>
+                                            </div>
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.showPopup || false}
+                                                onChange={(e) => setFormData({ ...formData, showPopup: e.target.checked })}
+                                                className="w-6 h-6 rounded text-primary focus:ring-primary/20 accent-primary"
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             )}
 
@@ -4418,6 +4669,45 @@ const Admin = () => {
                                 {renderBannerSettings('team', '👥 팀사역 (Team Ministry)', 'teamBanner')}
                                 {renderBannerSettings('prayer', '🙏 중보기도 (Intercessory Prayer)', 'prayerBanner')}
 
+                                {/* 팝업 설정 (Popup Settings) */}
+                                <div className="bg-white rounded-[2rem] p-8 border border-gray-100 shadow-sm space-y-6">
+                                    <div className="flex items-center gap-3 border-b border-gray-50 pb-4 mb-4">
+                                        <div className="p-3 bg-primary/10 text-primary rounded-2xl">
+                                            <Bell size={24} />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-black text-gray-800">홈페이지 팝업창 노출 설정</h3>
+                                            <p className="text-gray-400 text-xs font-bold">메인 홈페이지 방문 시 띄울 팝업 노출 여부를 선택합니다.</p>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                            <div>
+                                                <span className="font-bold text-gray-700 block text-sm">📜 오늘의 말씀 팝업 활성화</span>
+                                                <span className="text-[10px] text-gray-400">활성화하면 메인 페이지에 오늘의 말씀 팝업창이 나타납니다.</span>
+                                            </div>
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.showDailyWordPopup !== false}
+                                                onChange={(e) => setFormData({ ...formData, showDailyWordPopup: e.target.checked })}
+                                                className="w-6 h-6 rounded text-primary focus:ring-primary/20 accent-primary"
+                                            />
+                                        </div>
+                                        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                                            <div>
+                                                <span className="font-bold text-gray-700 block text-sm">📢 공지사항 팝업 활성화</span>
+                                                <span className="text-[10px] text-gray-400">활성화하면 설정된 공지사항 팝업창이 나타납니다.</span>
+                                            </div>
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.showNoticePopup !== false}
+                                                onChange={(e) => setFormData({ ...formData, showNoticePopup: e.target.checked })}
+                                                className="w-6 h-6 rounded text-primary focus:ring-primary/20 accent-primary"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
 
 
                                 {/* Reset to Defaults Section */}
@@ -4435,6 +4725,7 @@ const Admin = () => {
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                         <ResetButton type="sermons" label="설교 영상" />
                                         <ResetButton type="bulletins" label="주보 파일" />
+                                        <ResetButton type="notices" label="소식/공지" />
                                     </div>
                                 </div>
 
@@ -5058,6 +5349,102 @@ const Admin = () => {
                                 )}
                             </div>
                         </div >
+                    )
+                }
+
+                {/* Notice List View */}
+                {
+                    activeTab === 'notice' && !showAddForm && (
+                        <div className="animate-fade-in space-y-6">
+                            <div className="flex justify-between items-center bg-gray-50 p-6 rounded-[2rem] border border-gray-100">
+                                <div>
+                                    <h3 className="font-black text-gray-800 text-lg">등록된 공지사항 목록</h3>
+                                    <p className="text-gray-400 text-xs font-bold">홈페이지 공지사항 및 팝업창을 관리할 수 있습니다.</p>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                                {notices.length === 0 ? (
+                                    <div className="col-span-full py-20 text-center bg-white rounded-[2rem] border border-gray-100 shadow-sm">
+                                        <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
+                                            <Bell size={40} />
+                                        </div>
+                                        <p className="text-gray-400 font-bold mb-2">등록된 공지사항이 없습니다.</p>
+                                        <p className="text-gray-300 text-sm">새 항목 등록하기 버튼을 눌러 추가해주세요.</p>
+                                    </div>
+                                ) : (
+                                    notices.map((item, idx) => (
+                                        <div key={item.id} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group transition-all hover:shadow-lg flex flex-col relative">
+                                            <div className="aspect-video relative overflow-hidden bg-slate-100">
+                                                <img
+                                                    src={item.image || "https://images.unsplash.com/photo-1544427920-24e832256f72?auto=format&fit=crop&q=80&w=800"}
+                                                    alt="Preview"
+                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                                />
+                                                <div className="absolute top-2 left-2 flex gap-1">
+                                                    <span className="bg-black/60 backdrop-blur-sm text-white px-2 py-0.5 rounded text-[10px] font-bold border border-white/10">
+                                                        {item.date}
+                                                    </span>
+                                                    {item.showPopup && (
+                                                        <span className="bg-amber-500 text-white px-2 py-0.5 rounded text-[10px] font-black shadow-sm">
+                                                            팝업 노출 중
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <div className="absolute top-2 right-2 flex gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleMoveNotice(idx, -1);
+                                                        }}
+                                                        disabled={idx === 0}
+                                                        className="p-1 bg-black/60 backdrop-blur-sm text-white rounded hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30"
+                                                        title="Move Up"
+                                                    >
+                                                        <ArrowUp size={12} />
+                                                    </button>
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            handleMoveNotice(idx, 1);
+                                                        }}
+                                                        disabled={idx === notices.length - 1}
+                                                        className="p-1 bg-black/60 backdrop-blur-sm text-white rounded hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30"
+                                                        title="Move Down"
+                                                    >
+                                                        <ArrowDown size={12} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div className="p-4 flex-grow flex flex-col">
+                                                <h3 className="font-bold text-primary text-sm mb-1 truncate">
+                                                    {item.title}
+                                                </h3>
+                                                {item.titleEn && (
+                                                    <p className="text-[10px] text-blue-500 font-bold truncate mb-2">{item.titleEn}</p>
+                                                )}
+                                                <p className="text-gray-400 text-xs leading-snug break-keep line-clamp-3 mb-4">
+                                                    {item.content}
+                                                </p>
+                                                <div className="mt-auto flex gap-1 pt-3 border-t border-gray-50">
+                                                    <button
+                                                        onClick={() => handleEdit(item, 'notice')}
+                                                        className="flex-grow py-2 bg-gray-50 text-gray-500 rounded-lg text-xs font-bold hover:bg-primary/10 hover:text-primary transition-all"
+                                                    >
+                                                        수정
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete('notice', item.id)}
+                                                        className="p-2 bg-red-50 text-red-400 rounded-lg hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                                                    >
+                                                        <Trash2 size={14} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        </div>
                     )
                 }
                 {

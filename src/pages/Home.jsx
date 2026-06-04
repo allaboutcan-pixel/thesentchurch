@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, Suspense, lazy } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Play, ArrowRight, Youtube, Bell } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -24,19 +25,65 @@ const Home = () => {
     const [recentUpdates, setRecentUpdates] = useState([]);
     const [homeNotices, setHomeNotices] = useState([]);
     const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+    const [currentSlide, setCurrentSlide] = useState(0);
     const { config, loading: configLoading } = useSiteConfig();
     const { t, i18n } = useTranslation();
 
     // Derive hero config directly from config (like About.jsx / Ministry.jsx) so
     // that admin changes are reflected immediately without waiting for a DB refetch.
-    const heroImage = config.heroImage || "";
+    const heroSlides = useMemo(() => {
+        const slides = [];
+        if (config.heroImage) slides.push({
+            image: config.heroImage,
+            title: config.heroTitle || "",
+            titleEn: config.heroTitleEn || "",
+            subtitle: config.heroSubtitle || "",
+            subtitleEn: config.heroSubtitleEn || ""
+        });
+        if (config.heroImage2) slides.push({
+            image: config.heroImage2,
+            title: config.heroTitle2 || "",
+            titleEn: config.heroTitleEn2 || "",
+            subtitle: config.heroSubtitle2 || "",
+            subtitleEn: config.heroSubtitleEn2 || ""
+        });
+        if (config.heroImage3) slides.push({
+            image: config.heroImage3,
+            title: config.heroTitle3 || "",
+            titleEn: config.heroTitleEn3 || "",
+            subtitle: config.heroSubtitle3 || "",
+            subtitleEn: config.heroSubtitleEn3 || ""
+        });
+        if (slides.length === 0) {
+            slides.push({
+                image: "",
+                title: config.heroTitle || "",
+                titleEn: config.heroTitleEn || "",
+                subtitle: config.heroSubtitle || "",
+                subtitleEn: config.heroSubtitleEn || ""
+            });
+        }
+        return slides;
+    }, [config]);
+
+    useEffect(() => {
+        if (heroSlides.length > 1) {
+            const timer = setInterval(() => {
+                setCurrentSlide(prev => (prev + 1) % heroSlides.length);
+            }, 5000); // 5 seconds
+            return () => clearInterval(timer);
+        }
+    }, [heroSlides]);
+
+    const currentSlideData = heroSlides[currentSlide] || heroSlides[0];
+    const heroImage = currentSlideData.image;
     const youtubeUrl = (() => {
         if (!config.youtubeUrl || typeof config.youtubeUrl !== 'string') return "https://www.youtube.com/@churchofthesent7763";
         if (config.youtubeUrl.startsWith('http')) return config.youtubeUrl;
         return `https://${config.youtubeUrl}`;
     })();
-    const heroTitle = i18n.language === 'en' && config.heroTitleEn ? config.heroTitleEn : (config.heroTitle || "");
-    const heroSubtitle = i18n.language === 'en' && config.heroSubtitleEn ? config.heroSubtitleEn : (config.heroSubtitle || "");
+    const heroTitle = i18n.language === 'en' && currentSlideData.titleEn ? currentSlideData.titleEn : (currentSlideData.title || "");
+    const heroSubtitle = i18n.language === 'en' && currentSlideData.subtitleEn ? currentSlideData.subtitleEn : (currentSlideData.subtitle || "");
     const heroTitleSize = config.heroTitleSize || 64;
     const heroSubtitleSize = config.heroSubtitleSize || 24;
     const heroTitleColor = config.heroTitleColor || "#FFFFFF";
@@ -213,10 +260,18 @@ const Home = () => {
                         heroHeight === 'medium' ? "h-[50vh] md:h-[75vh]" :
                             "h-[40vh] md:h-[50vh]"
             )}>
-                <div className={clsx(
-                    "absolute inset-0 z-0",
-                    (typeof heroImage === 'string' && heroImage.includes('drive.google.com')) && "hero-video-mask"
-                )}>
+                <AnimatePresence mode="sync">
+                    <motion.div
+                        key={currentSlide}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1.5 }}
+                        className={clsx(
+                            "absolute inset-0 z-0",
+                            (typeof heroImage === 'string' && heroImage.includes('drive.google.com')) && "hero-video-mask"
+                        )}
+                    >
                     {/* 1. Poster Layer (Visible until video loads) */}
                     {posterUrl && ( // Removed DEFAULT_HERO_IMAGE fallback here
                         <img
@@ -292,15 +347,23 @@ const Home = () => {
                         className="absolute inset-0 bg-black/40 z-20 pointer-events-none"
                         style={{ backgroundColor: `rgba(0,0,0, ${heroOverlayOpacity / 100})` }}
                     />
-                </div>
+                    </motion.div>
+                </AnimatePresence>
 
                 {/* Hero Content */}
                 <div className="relative z-30 container mx-auto px-4 text-center">
                     {!configLoading && (
-                        <>
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={currentSlide}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.5 }}
+                            >
                             <h2
                                 className={clsx(
-                                    "mb-12 tracking-wide opacity-90 animate-fade-in-up",
+                                    "mb-12 tracking-wide opacity-90",
                                     heroSubtitleItalic && "italic",
                                     heroSubtitleWeight || "font-medium",
                                     heroSubtitleFont || "font-sans"
@@ -314,7 +377,7 @@ const Home = () => {
                             </h2>
                             <h1
                                 className={clsx(
-                                    "mb-8 leading-tight animate-fade-in-up delay-100",
+                                    "mb-8 leading-tight",
                                     heroTitleItalic && "italic",
                                     heroTitleWeight || "font-bold",
                                     heroTitleFont || "font-sans"
@@ -326,7 +389,8 @@ const Home = () => {
                             >
                                 {heroTitle || (i18n.language === 'en' ? 'A Community of Faith and Love' : t('home.hero_title'))}
                             </h1>
-                        </>
+                            </motion.div>
+                        </AnimatePresence>
                     )}
                 </div>
             </section>

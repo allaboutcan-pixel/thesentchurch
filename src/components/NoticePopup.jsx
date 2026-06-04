@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const NoticePopup = ({ notice }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         // Only show if the notice exists and has showPopup true
@@ -71,16 +71,16 @@ const NoticePopup = ({ notice }) => {
                 {/* Content Section */}
                 <div className="px-6 py-6 flex flex-col gap-3">
                     <h4 className="text-slate-800 font-bold text-xl leading-snug">
-                        {notice.title}
+                        {i18n.language === 'en' && notice.titleEn ? notice.titleEn : notice.title}
                     </h4>
                     {notice.date && (
                         <p className="text-slate-400 text-sm font-medium">
                             {notice.date}
                         </p>
                     )}
-                    {notice.content && (
+                    {(i18n.language === 'en' && notice.contentEn ? notice.contentEn : notice.content) && (
                         <p className="text-slate-600 mt-2 whitespace-pre-wrap text-sm md:text-base leading-relaxed max-h-[30vh] overflow-y-auto">
-                            {notice.content}
+                            {i18n.language === 'en' && notice.contentEn ? notice.contentEn : notice.content}
                         </p>
                     )}
                 </div>
