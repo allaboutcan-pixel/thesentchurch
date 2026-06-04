@@ -368,7 +368,7 @@ const Admin = () => {
         heroTitleItalic: false, heroSubtitleItalic: false,
         heroTitleSize: 64, heroSubtitleSize: 24,
         heroHeight: 'full', heroOverlayOpacity: 50,
-        heroBannerFit: 'cover',
+        heroBannerFit: 'cover', heroBannerFit2: 'cover', heroBannerFit3: 'cover',
 
         // About
         aboutBanner: '', aboutTitle: '', aboutSubtitle: '',
@@ -588,6 +588,8 @@ const Admin = () => {
                     heroHeight: fbConfig.heroHeight || 'full',
                     heroOverlayOpacity: fbConfig.heroOverlayOpacity || fbConfig.overlayOpacity || 50,
                     heroBannerFit: fbConfig.heroBannerFit || 'cover',
+                    heroBannerFit2: fbConfig.heroBannerFit2 || 'cover',
+                    heroBannerFit3: fbConfig.heroBannerFit3 || 'cover',
                     heroBannerPosition: fbConfig.heroBannerPosition || 50,
 
                     aboutBanner: fbConfig.aboutBanner || '',
@@ -1927,6 +1929,32 @@ const Admin = () => {
                                             }}
                                         />
                                     </div>
+                                    <div className="pt-2">
+                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 mb-1 block">배경 (2) 표시 방법 (Display Mode)</label>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {[
+                                                { id: 'cover', label: '꽉 채우기 (Cover)' },
+                                                { id: 'contain', label: '전체 보기 (Full)' }
+                                            ].map((fit) => (
+                                                <button
+                                                    key={fit.id}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setFormData(prev => ({ ...prev, heroBannerFit2: fit.id }));
+                                                        setSiteConfig(prev => ({ ...prev, heroBannerFit2: fit.id }));
+                                                    }}
+                                                    className={clsx(
+                                                        "py-2 rounded-xl text-xs font-black transition-all border-2",
+                                                        formData.heroBannerFit2 === fit.id
+                                                            ? "bg-primary text-white border-primary shadow-lg"
+                                                            : "bg-white text-gray-400 border-gray-100 hover:border-primary/30"
+                                                    )}
+                                                >
+                                                    {fit.label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
 
                                     <h4 className="font-bold text-gray-600 mt-6 border-t border-gray-100 pt-6">배경 (3) 텍스트</h4>
                                     <div>
@@ -1978,6 +2006,32 @@ const Admin = () => {
                                                 setSiteConfig(prev => ({ ...prev, heroSubtitleEn3: val }));
                                             }}
                                         />
+                                    </div>
+                                    <div className="pt-2">
+                                        <label className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1 mb-1 block">배경 (3) 표시 방법 (Display Mode)</label>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {[
+                                                { id: 'cover', label: '꽉 채우기 (Cover)' },
+                                                { id: 'contain', label: '전체 보기 (Full)' }
+                                            ].map((fit) => (
+                                                <button
+                                                    key={fit.id}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setFormData(prev => ({ ...prev, heroBannerFit3: fit.id }));
+                                                        setSiteConfig(prev => ({ ...prev, heroBannerFit3: fit.id }));
+                                                    }}
+                                                    className={clsx(
+                                                        "py-2 rounded-xl text-xs font-black transition-all border-2",
+                                                        formData.heroBannerFit3 === fit.id
+                                                            ? "bg-primary text-white border-primary shadow-lg"
+                                                            : "bg-white text-gray-400 border-gray-100 hover:border-primary/30"
+                                                    )}
+                                                >
+                                                    {fit.label}
+                                                </button>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             )}

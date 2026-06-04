@@ -453,12 +453,6 @@ const Resources = () => {
                         ) : (
                             <>
                                 <TabButton
-                                    active={activeTab === 'notice'}
-                                    onClick={() => { setActiveTab('notice'); navigate('/news/notice'); }}
-                                    icon={<Bell size={18} />}
-                                    label={t('nav.notice')}
-                                />
-                                <TabButton
                                     active={activeTab === 'bulletin'}
                                     onClick={() => { setActiveTab('bulletin'); navigate('/news/bulletin'); }}
                                     icon={<FileText size={18} />}
@@ -475,6 +469,12 @@ const Resources = () => {
                                     onClick={() => { setActiveTab('gallery'); navigate('/news/gallery'); }}
                                     icon={<ImageIcon size={18} />}
                                     label={t('nav.gallery')}
+                                />
+                                <TabButton
+                                    active={activeTab === 'notice'}
+                                    onClick={() => { setActiveTab('notice'); navigate('/news/notice'); }}
+                                    icon={<Bell size={18} />}
+                                    label={t('nav.notice')}
                                 />
                             </>
                         )}

@@ -38,21 +38,24 @@ const Home = () => {
             title: config.heroTitle || "",
             titleEn: config.heroTitleEn || "",
             subtitle: config.heroSubtitle || "",
-            subtitleEn: config.heroSubtitleEn || ""
+            subtitleEn: config.heroSubtitleEn || "",
+            bannerFit: config.heroBannerFit || 'cover'
         });
         if (config.heroImage2) slides.push({
             image: config.heroImage2,
             title: config.heroTitle2 || "",
             titleEn: config.heroTitleEn2 || "",
             subtitle: config.heroSubtitle2 || "",
-            subtitleEn: config.heroSubtitleEn2 || ""
+            subtitleEn: config.heroSubtitleEn2 || "",
+            bannerFit: config.heroBannerFit2 || 'cover'
         });
         if (config.heroImage3) slides.push({
             image: config.heroImage3,
             title: config.heroTitle3 || "",
             titleEn: config.heroTitleEn3 || "",
             subtitle: config.heroSubtitle3 || "",
-            subtitleEn: config.heroSubtitleEn3 || ""
+            subtitleEn: config.heroSubtitleEn3 || "",
+            bannerFit: config.heroBannerFit3 || 'cover'
         });
         if (slides.length === 0) {
             slides.push({
@@ -60,7 +63,8 @@ const Home = () => {
                 title: config.heroTitle || "",
                 titleEn: config.heroTitleEn || "",
                 subtitle: config.heroSubtitle || "",
-                subtitleEn: config.heroSubtitleEn || ""
+                subtitleEn: config.heroSubtitleEn || "",
+                bannerFit: config.heroBannerFit || 'cover'
             });
         }
         return slides;
@@ -70,7 +74,7 @@ const Home = () => {
         if (heroSlides.length > 1) {
             const timer = setInterval(() => {
                 setCurrentSlide(prev => (prev + 1) % heroSlides.length);
-            }, 5000); // 5 seconds
+            }, 3000); // 3 seconds
             return () => clearInterval(timer);
         }
     }, [heroSlides]);
@@ -96,7 +100,7 @@ const Home = () => {
     const heroSubtitleFont = config.heroSubtitleFont || config.subtitleFont || "font-sans";
     const heroOverlayOpacity = config.heroOverlayOpacity !== undefined ? config.heroOverlayOpacity : (config.overlayOpacity !== undefined ? config.overlayOpacity : 50);
     const heroHeight = config.heroHeight || "full";
-    const heroBannerFit = config.heroBannerFit || "cover";
+    const heroBannerFit = currentSlideData.bannerFit || config.heroBannerFit || "cover";
 
     useEffect(() => {
         let isMounted = true;
