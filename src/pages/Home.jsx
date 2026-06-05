@@ -35,6 +35,7 @@ const Home = () => {
         const slides = [];
         if (config.heroImage) slides.push({
             image: config.heroImage,
+            imageMobile: config.heroImageMobile || '',
             title: config.heroTitle || "",
             titleEn: config.heroTitleEn || "",
             subtitle: config.heroSubtitle || "",
@@ -43,6 +44,7 @@ const Home = () => {
         });
         if (config.heroImage2) slides.push({
             image: config.heroImage2,
+            imageMobile: config.heroImage2Mobile || '',
             title: config.heroTitle2 || "",
             titleEn: config.heroTitleEn2 || "",
             subtitle: config.heroSubtitle2 || "",
@@ -51,6 +53,7 @@ const Home = () => {
         });
         if (config.heroImage3) slides.push({
             image: config.heroImage3,
+            imageMobile: config.heroImage3Mobile || '',
             title: config.heroTitle3 || "",
             titleEn: config.heroTitleEn3 || "",
             subtitle: config.heroSubtitle3 || "",
@@ -60,6 +63,7 @@ const Home = () => {
         if (slides.length === 0) {
             slides.push({
                 image: "",
+                imageMobile: "",
                 title: config.heroTitle || "",
                 titleEn: config.heroTitleEn || "",
                 subtitle: config.heroSubtitle || "",
@@ -81,6 +85,7 @@ const Home = () => {
 
     const currentSlideData = heroSlides[currentSlide] || heroSlides[0];
     const heroImage = currentSlideData.image;
+    const heroImageMobile = currentSlideData.imageMobile || '';
     const youtubeUrl = (() => {
         if (!config.youtubeUrl || typeof config.youtubeUrl !== 'string') return "https://www.youtube.com/@churchofthesent7763";
         if (config.youtubeUrl.startsWith('http')) return config.youtubeUrl;
@@ -277,20 +282,29 @@ const Home = () => {
                         )}
                     >
                     {/* 1. Poster Layer (Visible until video loads) */}
-                    {posterUrl && ( // Removed DEFAULT_HERO_IMAGE fallback here
-                        <img
-                            src={posterUrl}
-                            alt="Background"
-                            className={clsx(
-                                "absolute inset-0 w-full h-full z-0 transition-opacity duration-1000", // Slower fade for smoother switch
-                                heroBannerFit === 'contain' ? "object-contain" : "object-cover",
-                                isVideoLoaded ? "opacity-0" : "opacity-100"
+                    {posterUrl && (
+                        <picture>
+                            {/* Mobile image: show on screens up to 767px wide */}
+                            {heroImageMobile && (
+                                <source
+                                    media="(max-width: 767px)"
+                                    srcSet={heroImageMobile}
+                                />
                             )}
-                            referrerPolicy="no-referrer"
-                            loading="eager"
-                            fetchpriority="high"
-                            decoding="async"
-                        />
+                            <img
+                                src={posterUrl}
+                                alt="Background"
+                                className={clsx(
+                                    "absolute inset-0 w-full h-full z-0 transition-opacity duration-1000",
+                                    heroBannerFit === 'contain' ? "object-contain" : "object-cover",
+                                    isVideoLoaded ? "opacity-0" : "opacity-100"
+                                )}
+                                referrerPolicy="no-referrer"
+                                loading="eager"
+                                fetchpriority="high"
+                                decoding="async"
+                            />
+                        </picture>
                     )}
 
                     {/* 2. Video Layer (Force Visible) */}

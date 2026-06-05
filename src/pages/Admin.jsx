@@ -334,8 +334,11 @@ const Admin = () => {
     const [calendarEvents, setCalendarEvents] = useState([]);
     const [bannerFiles, setBannerFiles] = useState({
         heroImage: null,
+        heroImageMobile: null,
         heroImage2: null,
+        heroImage2Mobile: null,
         heroImage3: null,
+        heroImage3Mobile: null,
         aboutBanner: null,
         newsBanner: null,
         ministryBanner: null,
@@ -359,7 +362,7 @@ const Admin = () => {
         type: 'image',
 
         // Home
-        heroImage: '', heroImage2: '', heroImage3: '', heroTitle: '', heroSubtitle: '',
+        heroImage: '', heroImageMobile: '', heroImage2: '', heroImage2Mobile: '', heroImage3: '', heroImage3Mobile: '', heroTitle: '', heroSubtitle: '',
         heroTitleEn: '', heroSubtitleEn: '',
         heroTitle2: '', heroSubtitle2: '', heroTitleEn2: '', heroSubtitleEn2: '',
         heroTitle3: '', heroSubtitle3: '', heroTitleEn3: '', heroSubtitleEn3: '',
@@ -571,8 +574,11 @@ const Admin = () => {
                 setFormData(prev => ({
                     ...prev,
                     heroImage: fbConfig.heroImage || '',
+                    heroImageMobile: fbConfig.heroImageMobile || '',
                     heroImage2: fbConfig.heroImage2 || '',
+                    heroImage2Mobile: fbConfig.heroImage2Mobile || '',
                     heroImage3: fbConfig.heroImage3 || '',
+                    heroImage3Mobile: fbConfig.heroImage3Mobile || '',
                     heroTitle: fbConfig.heroTitle || '',
                     heroSubtitle: fbConfig.heroSubtitle || '',
                     heroTitleEn: fbConfig.heroTitleEn || '',
@@ -1394,7 +1400,7 @@ const Admin = () => {
 
                 // Ensure all text fields from formData are merged into currentConfig
                 Object.keys(formData).forEach(key => {
-                    if (!['heroImage', 'heroImage2', 'heroImage3', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage'].includes(key)) {
+                    if (!['heroImage', 'heroImageMobile', 'heroImage2', 'heroImage2Mobile', 'heroImage3', 'heroImage3Mobile', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage'].includes(key)) {
                         if (key.startsWith('pastor')) {
                             const pastorKey = key.replace('pastor', '').toLowerCase();
                             if (pastorKey !== 'history' && pastorKey !== 'historyen') {
@@ -1408,7 +1414,8 @@ const Admin = () => {
 
                 // Handle Banner Image Uploads
                 const bannerKeys = [
-                    'heroImage', 'heroImage2', 'heroImage3', 'aboutBanner', 'newsBanner', 'ministryBanner',
+                    'heroImage', 'heroImageMobile', 'heroImage2', 'heroImage2Mobile', 'heroImage3', 'heroImage3Mobile',
+                    'aboutBanner', 'newsBanner', 'ministryBanner',
                     'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage',
                     'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image'
                 ];
@@ -1688,6 +1695,30 @@ const Admin = () => {
                         />
                         {isHome && (
                             <>
+                                {/* Mobile Image for Banner 1 */}
+                                <div className="bg-violet-50 border border-violet-100 rounded-[2rem] p-4">
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <span className="text-lg">📱</span>
+                                        <span className="text-xs font-black text-violet-600 uppercase tracking-wider">배너 (1) 모바일 전용 이미지 (선택사항)</span>
+                                    </div>
+                                    <p className="text-[10px] text-violet-500 font-bold mb-3 leading-relaxed">
+                                        세로형(9:16) 이미지를 업로드하면 모바일에서 자동으로 이 이미지가 표시됩니다.<br/>
+                                        입력하지 않으면 위 PC 이미지가 모바일에서도 사용됩니다.
+                                    </p>
+                                    <BannerManager
+                                        label="배너 (1) 모바일"
+                                        value={formData.heroImageMobile}
+                                        fieldName="heroImageMobile"
+                                        bannerFiles={bannerFiles}
+                                        setBannerFiles={setBannerFiles}
+                                        aspectRatio="aspect-[9/16] max-w-[200px]"
+                                        onChange={(val) => {
+                                            setFormData(prev => ({ ...prev, heroImageMobile: val }));
+                                            setSiteConfig(prev => ({ ...prev, heroImageMobile: val }));
+                                        }}
+                                    />
+                                </div>
+
                                 <BannerManager
                                     label={`${label} (2)`}
                                     value={formData.heroImage2}
@@ -1699,6 +1730,29 @@ const Admin = () => {
                                         setSiteConfig(prev => ({ ...prev, heroImage2: val }));
                                     }}
                                 />
+                                {/* Mobile Image for Banner 2 */}
+                                <div className="bg-violet-50 border border-violet-100 rounded-[2rem] p-4">
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <span className="text-lg">📱</span>
+                                        <span className="text-xs font-black text-violet-600 uppercase tracking-wider">배너 (2) 모바일 전용 이미지 (선택사항)</span>
+                                    </div>
+                                    <p className="text-[10px] text-violet-500 font-bold mb-3 leading-relaxed">
+                                        세로형(9:16) 이미지를 업로드하면 모바일에서 자동으로 이 이미지가 표시됩니다.
+                                    </p>
+                                    <BannerManager
+                                        label="배너 (2) 모바일"
+                                        value={formData.heroImage2Mobile}
+                                        fieldName="heroImage2Mobile"
+                                        bannerFiles={bannerFiles}
+                                        setBannerFiles={setBannerFiles}
+                                        aspectRatio="aspect-[9/16] max-w-[200px]"
+                                        onChange={(val) => {
+                                            setFormData(prev => ({ ...prev, heroImage2Mobile: val }));
+                                            setSiteConfig(prev => ({ ...prev, heroImage2Mobile: val }));
+                                        }}
+                                    />
+                                </div>
+
                                 <BannerManager
                                     label={`${label} (3)`}
                                     value={formData.heroImage3}
@@ -1710,6 +1764,28 @@ const Admin = () => {
                                         setSiteConfig(prev => ({ ...prev, heroImage3: val }));
                                     }}
                                 />
+                                {/* Mobile Image for Banner 3 */}
+                                <div className="bg-violet-50 border border-violet-100 rounded-[2rem] p-4">
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <span className="text-lg">📱</span>
+                                        <span className="text-xs font-black text-violet-600 uppercase tracking-wider">배너 (3) 모바일 전용 이미지 (선택사항)</span>
+                                    </div>
+                                    <p className="text-[10px] text-violet-500 font-bold mb-3 leading-relaxed">
+                                        세로형(9:16) 이미지를 업로드하면 모바일에서 자동으로 이 이미지가 표시됩니다.
+                                    </p>
+                                    <BannerManager
+                                        label="배너 (3) 모바일"
+                                        value={formData.heroImage3Mobile}
+                                        fieldName="heroImage3Mobile"
+                                        bannerFiles={bannerFiles}
+                                        setBannerFiles={setBannerFiles}
+                                        aspectRatio="aspect-[9/16] max-w-[200px]"
+                                        onChange={(val) => {
+                                            setFormData(prev => ({ ...prev, heroImage3Mobile: val }));
+                                            setSiteConfig(prev => ({ ...prev, heroImage3Mobile: val }));
+                                        }}
+                                    />
+                                </div>
                             </>
                         )}
                         {pageKey === 'prayer' && (
