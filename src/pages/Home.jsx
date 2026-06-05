@@ -78,7 +78,7 @@ const Home = () => {
         if (heroSlides.length > 1) {
             const timer = setInterval(() => {
                 setCurrentSlide(prev => (prev + 1) % heroSlides.length);
-            }, 3000); // 3 seconds
+            }, 4000); // 4 seconds
             return () => clearInterval(timer);
         }
     }, [heroSlides]);
