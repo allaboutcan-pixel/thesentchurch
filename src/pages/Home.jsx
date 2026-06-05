@@ -384,6 +384,13 @@ const Home = () => {
                 </AnimatePresence>
 
                 {/* Hero Content */}
+                {/* Responsive font size override for mobile */}
+                <style>{`
+                    @media (max-width: 767px) {
+                        .hero-title   { font-size: ${Math.max(24, Math.round((heroTitleSize || 64) * 0.58))}px !important; }
+                        .hero-subtitle { font-size: ${Math.max(14, Math.round((heroSubtitleSize || 24) * 0.65))}px !important; }
+                    }
+                `}</style>
                 <div className="relative z-30 container mx-auto px-4 text-center">
                     {!configLoading && (
                         <AnimatePresence mode="wait">
@@ -396,7 +403,7 @@ const Home = () => {
                             >
                             <h2
                                 className={clsx(
-                                    "mb-12 tracking-wide opacity-90",
+                                    "hero-subtitle mb-12 tracking-wide opacity-90",
                                     heroSubtitleItalic && "italic",
                                     heroSubtitleWeight || "font-medium",
                                     heroSubtitleFont || "font-sans"
@@ -410,7 +417,7 @@ const Home = () => {
                             </h2>
                             <h1
                                 className={clsx(
-                                    "mb-8 leading-tight",
+                                    "hero-title mb-8 leading-tight",
                                     heroTitleItalic && "italic",
                                     heroTitleWeight || "font-bold",
                                     heroTitleFont || "font-sans"
