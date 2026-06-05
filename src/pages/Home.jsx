@@ -283,7 +283,7 @@ const Home = () => {
                     >
                     {/* 1. Poster Layer (Visible until video loads) */}
                     {posterUrl && (
-                        <picture>
+                        <picture className="absolute inset-0 w-full h-full z-0">
                             {/* Mobile image: show on screens up to 767px wide */}
                             {heroImageMobile && (
                                 <source
@@ -305,6 +305,21 @@ const Home = () => {
                                 decoding="async"
                             />
                         </picture>
+                    )}
+                    {/* Mobile fallback: if no posterUrl but heroImageMobile exists, show it directly */}
+                    {!posterUrl && heroImageMobile && (
+                        <img
+                            src={heroImageMobile}
+                            alt="Background"
+                            className={clsx(
+                                "absolute inset-0 w-full h-full z-0 md:hidden",
+                                heroBannerFit === 'contain' ? "object-contain" : "object-cover"
+                            )}
+                            referrerPolicy="no-referrer"
+                            loading="eager"
+                            fetchpriority="high"
+                            decoding="async"
+                        />
                     )}
 
                     {/* 2. Video Layer (Force Visible) */}
