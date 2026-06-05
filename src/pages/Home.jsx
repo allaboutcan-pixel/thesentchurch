@@ -387,8 +387,8 @@ const Home = () => {
                 {/* Responsive font size override for mobile */}
                 <style>{`
                     @media (max-width: 767px) {
-                        .hero-title   { font-size: ${Math.max(24, Math.round((heroTitleSize || 64) * 0.58))}px !important; }
-                        .hero-subtitle { font-size: ${Math.max(14, Math.round((heroSubtitleSize || 24) * 0.65))}px !important; }
+                        .hero-title   { font-size: ${Math.max(20, Math.round((heroTitleSize || 64) * 0.45))}px !important; }
+                        .hero-subtitle { font-size: ${Math.max(13, Math.round((heroSubtitleSize || 24) * 0.52))}px !important; }
                     }
                 `}</style>
                 <div className="relative z-30 container mx-auto px-4 text-center">
