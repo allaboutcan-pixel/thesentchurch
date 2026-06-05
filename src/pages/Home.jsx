@@ -406,7 +406,7 @@ const Home = () => {
                                     fontSize: heroSubtitleSize ? `${heroSubtitleSize}px` : undefined
                                 }}
                             >
-                                {heroSubtitle || (i18n.language === 'en' ? 'Welcome to The Sent Church' : t('home.hero_subtitle'))}
+                                {heroSubtitle}
                             </h2>
                             <h1
                                 className={clsx(
@@ -420,7 +420,7 @@ const Home = () => {
                                     fontSize: heroTitleSize ? `${heroTitleSize}px` : undefined
                                 }}
                             >
-                                {heroTitle || (i18n.language === 'en' ? 'A Community of Faith and Love' : t('home.hero_title'))}
+                                {heroTitle}
                             </h1>
                             </motion.div>
                         </AnimatePresence>
