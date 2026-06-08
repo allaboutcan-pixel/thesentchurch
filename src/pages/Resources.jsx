@@ -1204,7 +1204,7 @@ const Resources = () => {
                                 <div className="border-b-4 border-slate-100 pb-6">
                                     <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
                                         <Bell size={28} className="text-primary" />
-                                        {i18n.language === 'en' ? 'Announcements' : '공지사항'}
+                                        {i18n.language === 'en' ? 'Notice' : '공지사항'}
                                     </h3>
                                     <p className="text-slate-400 font-medium text-sm mt-1 italic">
                                         {i18n.language === 'en' ? 'Latest news and notices from The Sent Church' : '교회의 최신 소식과 공지사항을 알려드립니다.'}

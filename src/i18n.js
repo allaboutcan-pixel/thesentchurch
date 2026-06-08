@@ -459,7 +459,7 @@ const resources = {
                 "calendar": "Church Calendar",
                 "bulletin": "Bulletin",
                 "gallery": "Gallery",
-                "notice": "Announcements",
+                "notice": "Notice",
                 "sermons_word": "Sermons",
                 "sunday_sermon": "Sunday",
                 "daily_word": "Daily Word",
