@@ -92,7 +92,7 @@ const NoticePopup = ({ notice }) => {
                                 className="w-full py-3 bg-primary text-white font-bold rounded-xl shadow-md hover:bg-primary/90 transition-all text-center flex items-center justify-center gap-2"
                             >
                                 <ExternalLink size={18} />
-                                캠프신청서 작성
+                                {i18n.language === 'en' ? 'Apply Now' : '캠프신청서 작성'}
                             </a>
                         </div>
                     )}

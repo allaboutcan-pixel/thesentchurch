@@ -1173,7 +1173,7 @@ const Resources = () => {
                                             className="px-8 py-3.5 bg-primary text-white font-bold rounded-2xl shadow-lg hover:scale-105 transition-all text-center flex items-center justify-center gap-2"
                                         >
                                             <ExternalLink size={20} />
-                                            캠프신청서 작성
+                                            {i18n.language === 'en' ? 'Apply Now' : '캠프신청서 작성'}
                                         </a>
                                     </div>
                                 )}
