@@ -1164,6 +1164,20 @@ const Resources = () => {
                                     {i18n.language === 'en' && selectedNotice.contentEn ? selectedNotice.contentEn : selectedNotice.content}
                                 </div>
 
+                                {selectedNotice.title && selectedNotice.title.includes('2026 TSC Summer Camp') && (
+                                    <div className="pt-4 flex justify-center">
+                                        <a
+                                            href="https://docs.google.com/forms/d/e/1FAIpQLSc5e2gQrsiv-msBaV2bUigOMBnkDBzhlyMoC6Tt5wlwEXJn2w/viewform?usp=publish-editor"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="px-8 py-3.5 bg-primary text-white font-bold rounded-2xl shadow-lg hover:scale-105 transition-all text-center flex items-center justify-center gap-2"
+                                        >
+                                            <ExternalLink size={20} />
+                                            캠프신청서 작성
+                                        </a>
+                                    </div>
+                                )}
+
                                 {selectedNotice.image && (
                                     <div className="pt-6 border-t border-gray-100 flex flex-wrap gap-3">
                                         <a

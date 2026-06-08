@@ -83,6 +83,19 @@ const NoticePopup = ({ notice }) => {
                             {i18n.language === 'en' && notice.contentEn ? notice.contentEn : notice.content}
                         </p>
                     )}
+                    {notice.title && notice.title.includes('2026 TSC Summer Camp') && (
+                        <div className="mt-4 flex justify-center">
+                            <a
+                                href="https://docs.google.com/forms/d/e/1FAIpQLSc5e2gQrsiv-msBaV2bUigOMBnkDBzhlyMoC6Tt5wlwEXJn2w/viewform?usp=publish-editor"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-full py-3 bg-primary text-white font-bold rounded-xl shadow-md hover:bg-primary/90 transition-all text-center flex items-center justify-center gap-2"
+                            >
+                                <ExternalLink size={18} />
+                                캠프신청서 작성
+                            </a>
+                        </div>
+                    )}
                 </div>
 
                 {/* Footer Actions */}
