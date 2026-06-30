@@ -1583,8 +1583,13 @@ const Admin = () => {
                         } catch (err) {
                             console.error(`Error uploading banner ${key}:`, err);
                         }
-                    } else if (currentConfig[key] && currentConfig[key].includes('drive.google.com')) {
-                        currentConfig[key] = dbService.formatDriveImage(currentConfig[key]);
+                    } else {
+                        if (formData[key] !== undefined) {
+                            currentConfig[key] = formData[key];
+                        }
+                        if (currentConfig[key] && currentConfig[key].includes('drive.google.com')) {
+                            currentConfig[key] = dbService.formatDriveImage(currentConfig[key]);
+                        }
                     }
                 }
 
