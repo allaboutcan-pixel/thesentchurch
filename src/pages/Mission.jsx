@@ -60,8 +60,16 @@ const defaultContentData = {
 
 const Mission = () => {
     const { i18n } = useTranslation();
-    const { config } = useSiteConfigValue();
+    const { config, loading } = useSiteConfigValue();
     const isEn = i18n.language === 'en' || i18n.language.startsWith('en-');
+    
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-slate-50">
+                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            </div>
+        );
+    }
     
     const getText = (obj) => isEn && obj.en ? obj.en : obj.ko;
 
