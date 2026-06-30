@@ -24,7 +24,7 @@ const defaultContentData = {
             ko: "1942년, 위클리프 성경번역선교회는 한 질문에서 시작되었습니다.\n\n\"당신의 하나님이 전능하시다면 왜 우리말로 말씀하지 않으시나요?\"\n\n과테말라에서 선교하던 카메룬 타운센드는 이 질문을 통해 하나님의 말씀은 모든 사람이 자신의 '마음의 언어(Heart Language)' 로 들어야 한다는 비전을 품게 되었습니다.\n\n그 이후 위클리프 성경번역선교회는 세계 수천 개 언어의 성경 번역을 위해 헌신해 왔으며, 지금도 수많은 번역가와 선교사들이 복음을 전하고 있습니다.\n\n복음은 번역되는 것이 아니라, 사람들의 마음에 전해지는 것입니다.",
             en: "In 1942, Wycliffe Bible Translators began with one question:\n\n\"If your God is all-powerful, why doesn't He speak in our language?\"\n\nCameron Townsend, who was serving as a missionary in Guatemala, came to realize through this question that everyone must hear God's word in their own 'heart language.' Since then, Wycliffe has dedicated itself to translating the Bible into thousands of languages, and today many translators and missionaries continue to spread the Gospel. The Gospel is not just translated; it is delivered to people's hearts."
         },
-        image: "https://images.unsplash.com/photo-1504052434569-70ad58c6544f?auto=format&fit=crop&q=80&w=1200"
+        image: "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&q=80&w=1200"
     },
     sec3: {
         title: { ko: "인구 600명의 작은 종족, 하나님의 큰 계획", en: "A Small Tribe of 600 People, God's Big Plan" },
