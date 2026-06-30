@@ -1535,9 +1535,12 @@ const Admin = () => {
             } else if (activeTab === 'notice') {
                 let finalImages = [];
                 
-                // Process pasted URLs (support comma-separated URLs)
+                // Process pasted URLs (support newline-separated or comma-separated URLs)
                 if (formData.fileUrl) {
-                    const urls = formData.fileUrl.split(',').map(u => u.trim()).filter(Boolean);
+                    const urls = formData.fileUrl
+                        .split(/[\n,]+/)
+                        .map(u => u.trim())
+                        .filter(u => u.startsWith('http'));
                     finalImages = urls.map(u => dbService.formatDriveImage(u));
                 }
 
@@ -3327,15 +3330,29 @@ const Admin = () => {
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
                                             <label className="text-sm font-bold text-gray-500 ml-1">
-                                                {activeTab === 'notice' ? '첨부 이미지/파일 링크 (URL)' : '배경 이미지 링크 (URL)'}
+                                                {activeTab === 'notice' ? '첨부 이미지 링크 (줄마다 1개씩 최대 6개)' : '배경 이미지 링크 (URL)'}
                                             </label>
-                                            <input
-                                                type="url"
-                                                className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
-                                                placeholder="https://..."
-                                                value={formData.fileUrl}
-                                                onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
-                                            />
+                                            {activeTab === 'notice' ? (
+                                                <>
+                                                    <textarea
+                                                        className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans text-xs h-36 resize-none"
+                                                        placeholder={"구글 드라이브 링크를 줄마다 하나씩 붙여넣으세요 (최대 6개):\nhttps://drive.google.com/file/d/.../view\nhttps://drive.google.com/file/d/.../view\nhttps://drive.google.com/file/d/.../view"}
+                                                        value={formData.fileUrl}
+                                                        onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
+                                                    />
+                                                    <p className="text-[10px] text-amber-600 font-semibold ml-1">
+                                                        💡 구글 드라이브 공유 링크를 줄마다 하나씩 입력하세요. 입력한 순서대로 슬라이드에 표시됩니다.
+                                                    </p>
+                                                </>
+                                            ) : (
+                                                <input
+                                                    type="url"
+                                                    className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none font-sans"
+                                                    placeholder="https://..."
+                                                    value={formData.fileUrl}
+                                                    onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
+                                                />
+                                            )}
                                         </div>
                                         <div className="space-y-2 opacity-80">
                                             <label className="text-xs font-bold text-gray-400 uppercase ml-1">
