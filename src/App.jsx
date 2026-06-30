@@ -41,6 +41,7 @@ const Prayer = lazyWithRetry(() => import('./pages/Prayer'));
 const Admin = lazyWithRetry(() => import('./pages/Admin'));
 const DailyWord = lazyWithRetry(() => import('./pages/DailyWord'));
 const ComingSoon = lazyWithRetry(() => import('./pages/ComingSoon'));
+const Mission = lazyWithRetry(() => import('./pages/Mission'));
 
 // Loading Fallback Component
 const PageLoader = () => (
@@ -67,7 +68,7 @@ function App() {
                 <Route path="ministry" element={<Ministry />} />
                 <Route path="ministry/tee" element={<TEE />} />
                 <Route path="ministry/bible" element={<BibleStudy />} />
-                <Route path="ministry/mission" element={<ComingSoon type="mission" />} />
+                <Route path="ministry/mission" element={<Mission />} />
                 <Route path="ministry/team" element={<TeamMinistry />} />
                 <Route path="ministry/prayer" element={<Prayer />} />
                 <Route path="ministry/*" element={<Ministry />} />

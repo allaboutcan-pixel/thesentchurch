@@ -1150,46 +1150,59 @@ const Resources = () => {
                                     </h2>
                                 </div>
 
-                                {selectedNotice.image && (
+                                {/* Multi-Image Support */}
+                                {(selectedNotice.images && selectedNotice.images.length > 0) ? (
+                                    <div className="pt-6 border-t border-gray-100 flex flex-col gap-4">
+                                        <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2">
+                                            {selectedNotice.images.map((imgUrl, idx) => (
+                                                <div key={idx} className="flex-shrink-0 snap-center w-full max-w-2xl relative bg-slate-50 rounded-xl overflow-hidden shadow-sm">
+                                                    <img
+                                                        src={imgUrl}
+                                                        alt={`${selectedNotice.title} - ${idx + 1}`}
+                                                        className="w-full h-auto object-contain max-h-[60vh]"
+                                                        referrerPolicy="no-referrer"
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ) : selectedNotice.image && (
                                     <div className="relative rounded-2xl overflow-hidden bg-slate-50 border border-gray-100 flex justify-center">
                                         <img
                                             src={selectedNotice.image}
                                             alt={selectedNotice.title}
-                                            className="w-full max-h-[60vh] object-contain"
+                                            className="w-full h-auto max-h-[60vh] object-contain rounded-xl shadow-sm"
+                                            referrerPolicy="no-referrer"
                                         />
                                     </div>
                                 )}
-
-                                <div className="text-slate-600 leading-relaxed whitespace-pre-wrap text-sm md:text-base font-medium font-sans">
-                                    {i18n.language === 'en' && selectedNotice.contentEn ? selectedNotice.contentEn : selectedNotice.content}
-                                </div>
-
-                                {selectedNotice.title && selectedNotice.title.includes('2026 TSC Summer Camp') && (
-                                    <div className="pt-4 flex justify-center">
+                                
+                                {(selectedNotice.image || (selectedNotice.images && selectedNotice.images.length > 0)) && (
+                                    <div className="pt-4 flex flex-wrap gap-3">
+                                        {selectedNotice.images && selectedNotice.images.length > 0 ? (
+                                            selectedNotice.images.map((imgUrl, idx) => (
+                                                <a
+                                                    key={idx}
+                                                    href={imgUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all shadow-sm"
+                                                >
+                                                    <ExternalLink size={14} /> 파일 크게 보기 ({idx + 1})
+                                                </a>
+                                            ))
+                                        ) : (
+                                            <a
+                                                href={selectedNotice.image}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all shadow-sm"
+                                            >
+                                                <ExternalLink size={14} /> 파일 크게 보기
+                                            </a>
+                                        )}
                                         <a
-                                            href="https://docs.google.com/forms/d/e/1FAIpQLSc5e2gQrsiv-msBaV2bUigOMBnkDBzhlyMoC6Tt5wlwEXJn2w/viewform?usp=publish-editor"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="px-8 py-3.5 bg-primary text-white font-bold rounded-2xl shadow-lg hover:scale-105 transition-all text-center flex items-center justify-center gap-2"
-                                        >
-                                            <ExternalLink size={20} />
-                                            {i18n.language === 'en' ? 'Apply Now' : '캠프신청서 작성'}
-                                        </a>
-                                    </div>
-                                )}
-
-                                {selectedNotice.image && (
-                                    <div className="pt-6 border-t border-gray-100 flex flex-wrap gap-3">
-                                        <a
-                                            href={selectedNotice.image}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all shadow-sm"
-                                        >
-                                            <ExternalLink size={14} /> 파일 크게 보기
-                                        </a>
-                                        <a
-                                            href={dbService.formatDriveDownloadLink(selectedNotice.image)}
+                                            href={dbService.formatDriveDownloadLink(selectedNotice.image || (selectedNotice.images && selectedNotice.images[0]))}
                                             download
                                             className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white hover:bg-primary-dark rounded-xl text-xs font-bold transition-all shadow-md shadow-primary/10"
                                         >
@@ -1228,13 +1241,18 @@ const Resources = () => {
                                                 onClick={() => setSelectedNotice(notice)}
                                                 className="group bg-white border border-slate-100 rounded-3xl p-5 flex flex-col hover:border-primary/30 hover:shadow-lg transition-all cursor-pointer"
                                             >
-                                                {notice.image && (
-                                                    <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 mb-4 shrink-0">
+                                                {(notice.images && notice.images.length > 0 ? notice.images[0] : notice.image) && (
+                                                    <div className="aspect-video w-full rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 mb-4 shrink-0 relative">
                                                         <img
-                                                            src={notice.image}
+                                                            src={notice.images && notice.images.length > 0 ? notice.images[0] : notice.image}
                                                             alt={notice.title}
                                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                         />
+                                                        {notice.images && notice.images.length > 1 && (
+                                                            <div className="absolute top-2 right-2 px-2 py-1 bg-black/50 backdrop-blur-sm rounded-lg text-white text-[10px] font-black">
+                                                                +{notice.images.length} 장
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 )}
                                                 <div className="flex-grow flex flex-col gap-2">

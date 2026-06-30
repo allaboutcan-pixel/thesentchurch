@@ -56,45 +56,49 @@ const NoticePopup = ({ notice }) => {
                     </button>
                 </div>
                 
-                {/* Image Section */}
-                {notice.image && (
-                    <div className="relative w-full bg-slate-50 border-b border-slate-100">
+                {/* Multi-Image Support */}
+                {(notice.images && notice.images.length > 0) ? (
+                    <div className="w-full relative bg-slate-100 flex overflow-x-auto snap-x snap-mandatory">
+                        {notice.images.map((imgUrl, idx) => (
+                            <img
+                                key={idx}
+                                src={imgUrl}
+                                alt={`${notice.title} - ${idx + 1}`}
+                                className="w-full flex-shrink-0 snap-center object-contain max-h-[60vh]"
+                                referrerPolicy="no-referrer"
+                            />
+                        ))}
+                    </div>
+                ) : notice.image ? (
+                    <div className="w-full relative bg-slate-100">
                         <img
                             src={notice.image}
                             alt={notice.title}
-                            className="w-full h-auto max-h-[40vh] object-contain"
-                            loading="eager"
+                            className="w-full h-auto object-contain max-h-[60vh]"
+                            referrerPolicy="no-referrer"
                         />
                     </div>
-                )}
-                
-                {/* Content Section */}
-                <div className="px-6 py-6 flex flex-col gap-3">
-                    <h4 className="text-slate-800 font-bold text-xl leading-snug">
-                        {i18n.language === 'en' && notice.titleEn ? notice.titleEn : notice.title}
-                    </h4>
+                ) : null}
+
+                <div className="p-4 md:p-6 bg-white">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="px-2 py-0.5 bg-accent/10 text-accent rounded-md text-[10px] font-black uppercase tracking-wider">
+                            Notice
+                        </span>
+                        <span className="text-xs font-medium text-slate-400">{notice.date}</span>
+                    </div>
                     {notice.date && (
                         <p className="text-slate-400 text-sm font-medium">
                             {notice.date}
                         </p>
                     )}
+                    <h4 className="text-slate-800 font-bold text-xl leading-snug">
+                        {i18n.language === 'en' && notice.titleEn ? notice.titleEn : notice.title}
+                    </h4>
                     {(i18n.language === 'en' && notice.contentEn ? notice.contentEn : notice.content) && (
                         <p className="text-slate-600 mt-2 whitespace-pre-wrap text-sm md:text-base leading-relaxed max-h-[30vh] overflow-y-auto">
                             {i18n.language === 'en' && notice.contentEn ? notice.contentEn : notice.content}
                         </p>
-                    )}
-                    {notice.title && notice.title.includes('2026 TSC Summer Camp') && (
-                        <div className="mt-4 flex justify-center">
-                            <a
-                                href="https://docs.google.com/forms/d/e/1FAIpQLSc5e2gQrsiv-msBaV2bUigOMBnkDBzhlyMoC6Tt5wlwEXJn2w/viewform?usp=publish-editor"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-full py-3 bg-primary text-white font-bold rounded-xl shadow-md hover:bg-primary/90 transition-all text-center flex items-center justify-center gap-2"
-                            >
-                                <ExternalLink size={18} />
-                                {i18n.language === 'en' ? 'Apply Now' : '캠프신청서 작성'}
-                            </a>
-                        </div>
                     )}
                 </div>
 
