@@ -1277,9 +1277,9 @@ const Resources = () => {
                     {/* Content Slideshow */}
                     <div 
                         className={clsx(
-                            "relative w-full max-w-6xl flex items-center justify-center h-full",
+                            "relative w-full max-w-6xl flex items-center justify-center flex-1 min-h-0",
                             (selectedGalleryGroup?.items[currentImageIndex]?.type === 'audio' || selectedVideo?.type === 'audio') ? "aspect-auto p-12 bg-white rounded-2xl" : 
-                            (selectedGalleryGroup?.items[currentImageIndex]?.type === 'image' || selectedVideo?.type === 'image') ? "aspect-auto min-h-[40vh] max-h-[85vh]" : "aspect-video"
+                            (selectedGalleryGroup?.items[currentImageIndex]?.type === 'image' || selectedVideo?.type === 'image') ? "aspect-auto min-h-[40vh]" : "aspect-video"
                         )}
                         onClick={e => e.stopPropagation()}
                     >
@@ -1367,7 +1367,7 @@ const Resources = () => {
                                         return (
                                             <img
                                                 src={item.url && item.url.includes('drive.google.com') && !item.url.includes('thumbnail') ? (getPreviewSource(item.url)?.replace('w1000', 'w2560') || item.url) : item.url}
-                                                className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
+                                                className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
                                                 alt={selectedGalleryGroup ? selectedGalleryGroup.title : item.title}
                                             />
                                         );
