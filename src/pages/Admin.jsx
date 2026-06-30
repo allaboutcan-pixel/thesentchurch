@@ -558,6 +558,10 @@ const Admin = () => {
         missionSec5Title: '', missionSec5TitleEn: '',
         missionSec5Content: '', missionSec5ContentEn: '',
         missionSec5Image: '',
+
+        missionVideoUrl: '',
+        missionVideoTitle: '', missionVideoTitleEn: '',
+        missionVideoDesc: '', missionVideoDescEn: '',
     });
 
     const [pastorFile, setPastorFile] = useState(null);
@@ -1012,6 +1016,12 @@ const Admin = () => {
                     missionSec5Content: fbConfig.missionSec5Content || "성경 번역은 단순히 책을 만드는 일이 아닙니다.\n\n현지 어린이들을 위한 교육과 사랑의 나눔, 교회를 세우는 사역, 그리고 번역자들의 삶을 함께 돌보는 일까지 복음은 사람들의 삶 속에서 이어지고 있습니다.\n\n카니누와 아이들에게는 배움의 기회가 되고,\n가정에는 소망이 되며,\n지역교회에는 믿음의 기초가 됩니다.\n\n우리는 앞으로도 하나님의 사랑이 카니누와 공동체에 더욱 깊이 전해지도록 함께 기도하며 동역하겠습니다.",
                     missionSec5ContentEn: fbConfig.missionSec5ContentEn || "Bible translation is not simply making a book. From education and sharing of love for local children to building churches and caring for the lives of translators together, the Gospel continues in people's lives. It becomes an opportunity for learning for Kaninuwa children, hope for families, and a foundation of faith for local churches. We will continue to pray and partner together so that God's love is delivered more deeply to the Kaninuwa community.",
                     missionSec5Image: fbConfig.missionSec5Image || "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c",
+
+                    missionVideoUrl: fbConfig.missionVideoUrl || "https://drive.google.com/file/d/1ARNc6I9ccAIsRKUA3CWjbkOvIAcLG27b/view?usp=sharing",
+                    missionVideoTitle: fbConfig.missionVideoTitle || "선교지에서 온 소식",
+                    missionVideoTitleEn: fbConfig.missionVideoTitleEn || "News from the Mission Field",
+                    missionVideoDesc: fbConfig.missionVideoDesc || "지난 크리스마스에 파푸아뉴기니 카니누와 선교지에서 선교사님이 직접 전해오신 생생한 선교지 소식입니다.",
+                    missionVideoDescEn: fbConfig.missionVideoDescEn || "A video message sent by our missionary from the Kaninuwa mission field in Papua New Guinea during Christmas.",
                 }));
                 setColumns(fbColumns || []);
                 if (fbConfig.staff) {
@@ -6024,6 +6034,38 @@ const Admin = () => {
                                         <div>
                                             <label className="block text-xs font-bold text-gray-500 mb-1">설명 내용 (English)</label>
                                             <textarea rows={6} value={formData.missionSec5ContentEn} onChange={e => setFormData(p => ({...p, missionSec5ContentEn: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Missionary Video Message Section */}
+                            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+                                <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                    <div className="p-2 bg-blue-50 rounded-xl text-blue-600"><Video size={20} /></div>
+                                    선교지 영상 편지 관리
+                                </h3>
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-xs font-bold text-gray-500 mb-1">동영상 링크 (YouTube 또는 Google Drive 공유 링크)</label>
+                                        <input type="text" value={formData.missionVideoUrl} onChange={e => setFormData(p => ({...p, missionVideoUrl: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" placeholder="https://drive.google.com/file/d/.../view?usp=sharing" />
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">영상 편지 제목 (한국어)</label>
+                                            <input type="text" value={formData.missionVideoTitle} onChange={e => setFormData(p => ({...p, missionVideoTitle: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">영상 편지 제목 (English)</label>
+                                            <input type="text" value={formData.missionVideoTitleEn} onChange={e => setFormData(p => ({...p, missionVideoTitleEn: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">설명 내용 (한국어)</label>
+                                            <textarea rows={3} value={formData.missionVideoDesc} onChange={e => setFormData(p => ({...p, missionVideoDesc: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">설명 내용 (English)</label>
+                                            <textarea rows={3} value={formData.missionVideoDescEn} onChange={e => setFormData(p => ({...p, missionVideoDescEn: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
                                         </div>
                                     </div>
                                 </div>

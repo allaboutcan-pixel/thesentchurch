@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import { Globe2, BookOpen, Heart, Users, CheckCircle2 } from 'lucide-react';
 import { useSiteConfigValue } from '../context/SiteConfigContext';
-import { isVideo, getYoutubeId } from '../utils/mediaUtils';
+import { isVideo, getYoutubeId, getDriveId } from '../utils/mediaUtils';
 import { dbService } from '../services/dbService';
 
 // ----------------------------------------------------
@@ -97,6 +97,19 @@ const Mission = () => {
         return url;
     };
 
+    const getVideoEmbedUrl = (url) => {
+        if (!url) return "";
+        const youtubeId = getYoutubeId(url);
+        if (youtubeId) {
+            return `https://www.youtube.com/embed/${youtubeId}`;
+        }
+        const driveId = getDriveId(url);
+        if (driveId) {
+            return `https://drive.google.com/file/d/${driveId}/preview`;
+        }
+        return url;
+    };
+
     // Dynamic config mapping with default fallbacks
     const content = {
         hero: {
@@ -174,6 +187,17 @@ const Mission = () => {
                 en: config?.missionSec5ContentEn || defaultContentData.sec5.content.en
             },
             image: ensureWorkingImage(config?.missionSec5Image, defaultContentData.sec5.image)
+        },
+        video: {
+            url: config?.missionVideoUrl || "https://drive.google.com/file/d/1ARNc6I9ccAIsRKUA3CWjbkOvIAcLG27b/view?usp=sharing",
+            title: {
+                ko: config?.missionVideoTitle || "선교지에서 온 소식",
+                en: config?.missionVideoTitleEn || "News from the Mission Field"
+            },
+            desc: {
+                ko: config?.missionVideoDesc || "지난 크리스마스에 파푸아뉴기니 카니누와 선교지에서 선교사님이 직접 전해오신 생생한 선교지 소식입니다.",
+                en: config?.missionVideoDescEn || "A video message sent by our missionary from the Kaninuwa mission field in Papua New Guinea during Christmas."
+            }
         },
         prayer: {
             title: { ko: "기도해 주세요.", en: "Please Pray with Us" },
@@ -483,6 +507,42 @@ const Mission = () => {
                         </p>
                     </motion.div>
                 </section>
+
+                {/* Missionary Video Message Section */}
+                <motion.section 
+                    className="bg-slate-50 rounded-[2.5rem] p-6 md:p-12 border border-slate-100 shadow-sm max-w-5xl mx-auto space-y-8 md:space-y-12"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <div className="text-center space-y-4 max-w-2xl mx-auto">
+                        <span className="text-primary font-bold text-sm tracking-wider uppercase">Video Message</span>
+                        <h2 className="text-3xl md:text-4xl font-black text-slate-800 leading-snug break-keep">
+                            {getText(content.video.title)}
+                        </h2>
+                        <div className="h-1 w-20 bg-primary rounded-full mx-auto" />
+                        <p className="text-slate-600 leading-[1.8] break-keep text-base font-medium whitespace-pre-line">
+                            {getText(content.video.desc)}
+                        </p>
+                    </div>
+
+                    <div className="aspect-video w-full rounded-[2rem] overflow-hidden shadow-2xl bg-black border border-slate-100">
+                        {getVideoEmbedUrl(content.video.url) ? (
+                            <iframe
+                                src={getVideoEmbedUrl(content.video.url)}
+                                className="w-full h-full border-0"
+                                allow="autoplay; encrypted-media; picture-in-picture"
+                                allowFullScreen
+                                title={getText(content.video.title)}
+                            ></iframe>
+                        ) : (
+                            <div className="w-full h-full flex items-center justify-center text-slate-400">
+                                Video is not available
+                            </div>
+                        )}
+                    </div>
+                </motion.section>
 
             </div>
 
