@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Upload, FileText, Check, X, Play, LayoutDashboard, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, Shield, AlertTriangle, Type, ArrowUp, ArrowDown, Heart, Send, Mail, Globe, Bell } from 'lucide-react';
+import { Upload, FileText, Check, X, Play, LayoutDashboard, Plus, Trash2, ExternalLink, Image as ImageIcon, Settings, Users, BookOpen, Quote, Calendar, MapPin, Clock, Video, Shield, AlertTriangle, Type, ArrowUp, ArrowDown, Heart, Send, Mail, Globe, Bell, CheckCircle2, Map } from 'lucide-react';
 import sermonsInitialData from '../data/sermons.json';
 import bulletinsInitialData from '../data/bulletins.json';
 const noticesInitialData = [];
@@ -503,6 +503,61 @@ const Admin = () => {
         showDailyWordPopup: true,
         showNoticePopup: true,
         showPopup: false,
+
+        // Mission fields (Preserving original design contents)
+        missionHeroTitle: '', missionHeroTitleEn: '',
+        missionHeroMissionaries: '', missionHeroMissionariesEn: '',
+        missionHeroOrg: '', missionHeroOrgEn: '',
+
+        missionJourneyStep1Country: '', missionJourneyStep1CountryEn: '',
+        missionJourneyStep1Desc: '', missionJourneyStep1DescEn: '',
+        missionJourneyStep2Country: '', missionJourneyStep2CountryEn: '',
+        missionJourneyStep2Desc: '', missionJourneyStep2DescEn: '',
+        missionJourneyStep3Country: '', missionJourneyStep3CountryEn: '',
+        missionJourneyStep3Desc: '', missionJourneyStep3DescEn: '',
+
+        missionMilestone1Date: '',
+        missionMilestone1Title: '', missionMilestone1TitleEn: '',
+        missionMilestone1Desc: '', missionMilestone1DescEn: '',
+        missionMilestone1Theme: '', missionMilestone1ThemeEn: '',
+        missionMilestone2Date: '',
+        missionMilestone2Title: '', missionMilestone2TitleEn: '',
+        missionMilestone2Desc: '', missionMilestone2DescEn: '',
+        missionMilestone2Theme: '', missionMilestone2ThemeEn: '',
+
+        missionFruitsSubtitle: '', missionFruitsSubtitleEn: '',
+        missionFruit1Title: '', missionFruit1TitleEn: '',
+        missionFruit1Desc: '', missionFruit1DescEn: '',
+        missionFruit2Title: '', missionFruit2TitleEn: '',
+        missionFruit2Desc: '', missionFruit2DescEn: '',
+        missionFruit3Title: '', missionFruit3TitleEn: '',
+        missionFruit3Desc: '', missionFruit3DescEn: '',
+
+        missionPrayer1: '', missionPrayer1En: '',
+        missionPrayer2: '', missionPrayer2En: '',
+        missionPrayer3: '', missionPrayer3En: '',
+        missionPrayer4: '', missionPrayer4En: '',
+
+        // Redesigned Mission Sections
+        missionSec2Title: '', missionSec2TitleEn: '',
+        missionSec2Content: '', missionSec2ContentEn: '',
+        missionSec2Image: '',
+
+        missionSec3Title: '', missionSec3TitleEn: '',
+        missionSec3Content: '', missionSec3ContentEn: '',
+        missionSec3Image: '',
+        missionSec3Activity1: '', missionSec3Activity1En: '',
+        missionSec3Activity2: '', missionSec3Activity2En: '',
+        missionSec3Activity3: '', missionSec3Activity3En: '',
+        missionSec3Activity4: '', missionSec3Activity4En: '',
+
+        missionSec4Title: '', missionSec4TitleEn: '',
+        missionSec4Content: '', missionSec4ContentEn: '',
+        missionSec4Image: '',
+
+        missionSec5Title: '', missionSec5TitleEn: '',
+        missionSec5Content: '', missionSec5ContentEn: '',
+        missionSec5Image: '',
     });
 
     const [pastorFile, setPastorFile] = useState(null);
@@ -860,6 +915,103 @@ const Admin = () => {
                     prayerCommonTopicsEn: fbConfig.prayerCommonTopicsEn || '',
                     showDailyWordPopup: fbConfig.showDailyWordPopup !== false,
                     showNoticePopup: fbConfig.showNoticePopup !== false,
+
+                    // Mission Content mapping with original design fallbacks
+                    missionHeroTitle: fbConfig.missionHeroTitle || "파푸아뉴기니 카니누와 종족 성경번역",
+                    missionHeroTitleEn: fbConfig.missionHeroTitleEn || "Bible Translation for Kaninuwa Tribe, Papua New Guinea",
+                    missionHeroMissionaries: fbConfig.missionHeroMissionaries || "박요섭, 조선향 선교사",
+                    missionHeroMissionariesEn: fbConfig.missionHeroMissionariesEn || "Missionaries Yosep Park, Seonhyang Cho",
+                    missionHeroOrg: fbConfig.missionHeroOrg || "Wycliffe",
+                    missionHeroOrgEn: fbConfig.missionHeroOrgEn || "Wycliffe",
+
+                    missionJourneyStep1Country: fbConfig.missionJourneyStep1Country || "대한민국 (South Korea)",
+                    missionJourneyStep1CountryEn: fbConfig.missionJourneyStep1CountryEn || "South Korea",
+                    missionJourneyStep1Desc: fbConfig.missionJourneyStep1Desc || "부르심과 파송",
+                    missionJourneyStep1DescEn: fbConfig.missionJourneyStep1DescEn || "Calling and Sending",
+                    missionJourneyStep2Country: fbConfig.missionJourneyStep2Country || "캐나다 (Canada)",
+                    missionJourneyStep2CountryEn: fbConfig.missionJourneyStep2CountryEn || "Canada",
+                    missionJourneyStep2Desc: fbConfig.missionJourneyStep2Desc || "훈련과 준비",
+                    missionJourneyStep2DescEn: fbConfig.missionJourneyStep2DescEn || "Training and Preparation",
+                    missionJourneyStep3Country: fbConfig.missionJourneyStep3Country || "파푸아뉴기니 (Papua New Guinea)",
+                    missionJourneyStep3CountryEn: fbConfig.missionJourneyStep3CountryEn || "Papua New Guinea",
+                    missionJourneyStep3Desc: fbConfig.missionJourneyStep3Desc || "카니누와 종족 마을 (840 부족 중 하나)",
+                    missionJourneyStep3DescEn: fbConfig.missionJourneyStep3DescEn || "Kaninuwa Tribe (One of 840 tribes)",
+
+                    missionMilestone1Date: fbConfig.missionMilestone1Date || "2016. 11. 18",
+                    missionMilestone1Title: fbConfig.missionMilestone1Title || "카니누와어 미니성경 봉헌",
+                    missionMilestone1TitleEn: fbConfig.missionMilestone1TitleEn || "Kaninuwa Mini Bible Dedication",
+                    missionMilestone1Desc: fbConfig.missionMilestone1Desc || "마가복음, 사도행전, 요나서, 창세기와 출애굽기 일부",
+                    missionMilestone1DescEn: fbConfig.missionMilestone1DescEn || "Gospel of Mark, Acts, Jonah, parts of Genesis and Exodus",
+                    missionMilestone1Theme: fbConfig.missionMilestone1Theme || "Serving the LORD through sacrifice for his word.",
+                    missionMilestone1ThemeEn: fbConfig.missionMilestone1ThemeEn || "Serving the LORD through sacrifice for his word.",
+
+                    missionMilestone2Date: fbConfig.missionMilestone2Date || "2025. 04. 02",
+                    missionMilestone2Title: fbConfig.missionMilestone2Title || "카니누와어 구약파노라마 성경 봉헌",
+                    missionMilestone2TitleEn: fbConfig.missionMilestone2TitleEn || "Kaninuwa Old Testament Panorama Bible Dedication",
+                    missionMilestone2Desc: fbConfig.missionMilestone2Desc || "하나님의 구원 역사가 담긴 구약의 파노라마가 그들의 언어로 전달되었습니다.",
+                    missionMilestone2DescEn: fbConfig.missionMilestone2DescEn || "The panorama of the Old Testament containing God's history of salvation was delivered in their language.",
+                    missionMilestone2Theme: fbConfig.missionMilestone2Theme || "빛과 소망의 말씀",
+                    missionMilestone2ThemeEn: fbConfig.missionMilestone2ThemeEn || "Word of Light and Hope",
+
+                    missionFruitsSubtitle: fbConfig.missionFruitsSubtitle || "자문 점검을 받을 때마다 긴장되지만, 마태복음, 마가복음, 누가복음, 요한복음, 사도행전... 카나누와어로 차례 번역하고 수정했습니다.",
+                    missionFruitsSubtitleEn: fbConfig.missionFruitsSubtitleEn || "We are nervous every time we get consultant checks, but Matthew, Mark, Luke, John, Acts... were sequentially translated and revised into Kaninuwa.",
+
+                    missionFruit1Title: fbConfig.missionFruit1Title || "01 번역 사역의 열매 - 말씀을 전하는 기쁨",
+                    missionFruit1TitleEn: fbConfig.missionFruit1TitleEn || "01 Fruit of translation - Joy of sharing the Word",
+                    missionFruit1Desc: fbConfig.missionFruit1Desc || "카니누와 번역이 마무리 단계에 이르렀습니다. 하루 종일 영어로 답한 원고를 타이핑하는 필로미나, 저녁마다 남아 수정 작업을 한 레비와 사이몬, 더위 속에서 요리하느라 수고한 루디, 그리고 저희 부부까지 - 모두가 하나 되어 하나님의 은혜와 능력을 경험했습니다. 앞으로도 번역, 수정, 점검의 모든 과정에 기도로 응원해 주시고, 하나님의 때에 기쁨으로 함께 맛볼 수 있기를 바랍니다.",
+                    missionFruit1DescEn: fbConfig.missionFruit1DescEn || "Kaninuwa translation has reached its final stages. Philomena typing the manuscript all day in English, Levi and Simon staying every evening to revise, Rudy cooking in the heat, and our couple - everyone became one and experienced God's grace and power. Please support us with prayers for the translation, revision, and checking process, hoping to joyfully taste it together in God's timing.",
+
+                    missionFruit2Title: fbConfig.missionFruit2Title || "02 카나누와 말씀이 74%까지!",
+                    missionFruit2TitleEn: fbConfig.missionFruit2TitleEn || "02 Kaninuwa Word up to 74%!",
+                    missionFruit2Desc: fbConfig.missionFruit2Desc || "지금까지 카나누와 신약성경의 74%를 점검받았습니다. 앞으로도 번역, 수정, 점검 등 모든 과정에 기도로 응원해 주시고, 하나님의 때에 말씀을 온전히 전할 수 있기를 바랍니다.",
+                    missionFruit2DescEn: fbConfig.missionFruit2DescEn || "So far, 74% of the Kaninuwa New Testament has been checked. Please support us with prayers for all processes including translation, revision, and checking, hoping to fully deliver the Word in God's timing.",
+
+                    missionFruit3Title: fbConfig.missionFruit3Title || "03 아이들의 선물, 그리고 사랑의 손길",
+                    missionFruit3TitleEn: fbConfig.missionFruit3TitleEn || "03 Gifts for children, and hands of love",
+                    missionFruit3Desc: fbConfig.missionFruit3Desc || "카니누와 아이들에게 줄 책가방 선물을 받았습니다! 멈추지 않고 보내주신 사랑의 손길 덕분에 많은 아이에게 기쁨이 전해졌습니다. 아이들이 예수님의 사랑을 경험하고 서로 사랑하며 건강하고 지혜롭게 자라도록 기도해 주세요.",
+                    missionFruit3DescEn: fbConfig.missionFruit3DescEn || "We received school bags as gifts for the Kaninuwa children! Thanks to the unceasing hands of love sent to us, joy was delivered to many children. Please pray that the children experience Jesus' love, love one another, and grow healthy and wise.",
+
+                    missionPrayer1: fbConfig.missionPrayer1 || "파푸아뉴기니 비자 발급이 순조롭게 진행되어 8월에는 세 명의 번역자들과 직접 만나 사역할 수 있도록",
+                    missionPrayer1En: fbConfig.missionPrayer1En || "That the Papua New Guinea visa issuance proceeds smoothly so that we can directly meet and minister with the three translators in August.",
+                    missionPrayer2: fbConfig.missionPrayer2 || "카니누와 종족 마을에서 6월 28일부터 7월 3일까지 청소년과 청년을 위한 지방회 연합 부흥회가 있습니다. 이곳에서 선포되는 말씀을 통해 회개의 역사가 있도록, 참가한 자들의 삶에 변화가 있도록",
+                    missionPrayer2En: fbConfig.missionPrayer2En || "There is a joint district revival for youth and young adults in the Kaninuwa tribe village from June 28 to July 3. That through the proclaimed Word there will be a history of repentance, and changes in the lives of the attendees.",
+                    missionPrayer3: fbConfig.missionPrayer3 || "마을에서 요한복음, 요한1,2,3서와 계시록의 최종통독을 하는데 은혜 가운데 진행되도록",
+                    missionPrayer3En: fbConfig.missionPrayer3En || "That the final reading of the Gospel of John, 1,2,3 John, and Revelation in the village proceeds smoothly in grace.",
+                    missionPrayer4: fbConfig.missionPrayer4 || "번역자인 잭 형제가 알로타우로 나와 병원에서 진찰받으려고 하는데 복통의 원인을 정확히 알고 치료받을 수 있도록",
+                    missionPrayer4En: fbConfig.missionPrayer4En || "That brother Jack, a translator, who is coming to Alotau to be examined at the hospital, will find the exact cause of his stomach pain and receive proper treatment.",
+
+                    // Redesigned Mission Sections mapping
+                    missionSec2Title: fbConfig.missionSec2Title || "모든 사람이 자신의 언어로 하나님을 만나도록",
+                    missionSec2TitleEn: fbConfig.missionSec2TitleEn || "So Everyone Can Meet God in Their Own Language",
+                    missionSec2Content: fbConfig.missionSec2Content || "1942년, 위클리프 성경번역선교회는 한 질문에서 시작되었습니다.\n\n\"당신의 하나님이 전능하시다면 왜 우리말로 말씀하지 않으시나요?\"\n\n과테말라에서 선교하던 카메룬 타운센드는 이 질문을 통해 하나님의 말씀은 모든 사람이 자신의 '마음의 언어(Heart Language)' 로 들어야 한다는 비전을 품게 되었습니다.\n\n그 이후 위클리프 성경번역선교회는 세계 수천 개 언어의 성경 번역을 위해 헌신해 왔으며, 지금도 수많은 번역가와 선교사들이 복음을 전하고 있습니다.\n\n복음은 번역되는 것이 아니라, 사람들의 마음에 전해지는 것입니다.",
+                    missionSec2ContentEn: fbConfig.missionSec2ContentEn || "In 1942, Wycliffe Bible Translators began with one question:\n\n\"If your God is all-powerful, why doesn't He speak in our language?\"\n\nCameron Townsend, who was serving as a missionary in Guatemala, came to realize through this question that everyone must hear God's word in their own 'heart language.' Since then, Wycliffe has dedicated itself to translating the Bible into thousands of languages, and today many translators and missionaries continue to spread the Gospel. The Gospel is not just translated; it is delivered to people's hearts.",
+                    missionSec2Image: fbConfig.missionSec2Image || "https://images.unsplash.com/photo-1504052434569-70ad58c6544f",
+
+                    missionSec3Title: fbConfig.missionSec3Title || "인구 600명의 작은 종족, 하나님의 큰 계획",
+                    missionSec3TitleEn: fbConfig.missionSec3TitleEn || "A Small Tribe of 600 People, God's Big Plan",
+                    missionSec3Content: fbConfig.missionSec3Content || "카니누와(Kaninuwa)는 파푸아뉴기니 굿이너프섬 북부에 살아가는 약 600명의 소수민족입니다.\n\n1960년대 처음 복음을 접했지만 아직도 자신들의 언어로 된 성경이 없어 여러 언어를 섞어 예배를 드리고 있습니다.\n\n성경이 자신의 언어로 없기 때문에 하나님의 말씀을 깊이 이해하기 어려운 현실 가운데 있습니다.\n\n우리 교회는 카니누와 성경 번역 사역을 통해 그들이 자신의 언어로 하나님의 말씀을 읽고, 복음을 더욱 분명하게 이해하도록 함께 동역하고 있습니다.",
+                    missionSec3ContentEn: fbConfig.missionSec3ContentEn || "Kaninuwa is a small ethnic group of about 600 people living in the northern part of Goodenough Island, Papua New Guinea. Although they first heard the Gospel in the 1960s, they still do not have a Bible in their own language, so they worship using a mixture of languages. Without the Bible in their own language, it is difficult to deeply understand God's word. Our church is working together with them through the Kaninuwa Bible translation ministry so that they can read God's word in their own language and understand the Gospel more clearly.",
+                    missionSec3Image: fbConfig.missionSec3Image || "https://images.unsplash.com/photo-1542810634-71277d95dcbb",
+                    missionSec3Activity1: fbConfig.missionSec3Activity1 || "카니누와어 성경 번역",
+                    missionSec3Activity1En: fbConfig.missionSec3Activity1En || "Kaninuwa Bible Translation",
+                    missionSec3Activity2: fbConfig.missionSec3Activity2 || "번역 검수 및 수정",
+                    missionSec3Activity2En: fbConfig.missionSec3Activity2En || "Translation Checking & Editing",
+                    missionSec3Activity3: fbConfig.missionSec3Activity3 || "현지 교회 협력",
+                    missionSec3Activity3En: fbConfig.missionSec3Activity3En || "Local Church Cooperation",
+                    missionSec3Activity4: fbConfig.missionSec3Activity4 || "성경 교육 지원",
+                    missionSec3Activity4En: fbConfig.missionSec3Activity4En || "Bible Education Support",
+
+                    missionSec4Title: fbConfig.missionSec4Title || "함께 만들어 가는 하나님의 말씀",
+                    missionSec4TitleEn: fbConfig.missionSec4TitleEn || "The Word of God Created Together",
+                    missionSec4Content: fbConfig.missionSec4Content || "성경 번역은 한 사람의 작업이 아닙니다.\n\n원어 연구와 번역, 검수, 신학적 검토, 현지 언어 확인, 반복되는 수정 과정을 거쳐 한 절 한 절이 완성됩니다.\n\n현지 번역가와 언어학자, 교회 지도자 그리고 전 세계의 기도와 후원이 함께할 때 하나님의 말씀이 새로운 언어로 태어납니다.\n\n우리 교회도 이 귀한 사역에 함께 동참하며 카니누와어 성경 번역을 지속적으로 후원하고 있습니다.",
+                    missionSec4ContentEn: fbConfig.missionSec4ContentEn || "Bible translation is not a one-person job. Each verse is completed through original language study, translation, checking, theological review, local language confirmation, and repeated revision processes. When local translators, linguists, church leaders, and prayers and support from around the world come together, God's word is born in a new language. Our church is also participating in this precious ministry and continuously sponsoring the Kaninuwa Bible translation.",
+                    missionSec4Image: fbConfig.missionSec4Image || "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846",
+
+                    missionSec5Title: fbConfig.missionSec5Title || "복음은 사람을 살리고 공동체를 세웁니다.",
+                    missionSec5TitleEn: fbConfig.missionSec5TitleEn || "The Gospel Saves People and Builds Communities",
+                    missionSec5Content: fbConfig.missionSec5Content || "성경 번역은 단순히 책을 만드는 일이 아닙니다.\n\n현지 어린이들을 위한 교육과 사랑의 나눔, 교회를 세우는 사역, 그리고 번역자들의 삶을 함께 돌보는 일까지 복음은 사람들의 삶 속에서 이어지고 있습니다.\n\n카니누와 아이들에게는 배움의 기회가 되고,\n가정에는 소망이 되며,\n지역교회에는 믿음의 기초가 됩니다.\n\n우리는 앞으로도 하나님의 사랑이 카니누와 공동체에 더욱 깊이 전해지도록 함께 기도하며 동역하겠습니다.",
+                    missionSec5ContentEn: fbConfig.missionSec5ContentEn || "Bible translation is not simply making a book. From education and sharing of love for local children to building churches and caring for the lives of translators together, the Gospel continues in people's lives. It becomes an opportunity for learning for Kaninuwa children, hope for families, and a foundation of faith for local churches. We will continue to pray and partner together so that God's love is delivered more deeply to the Kaninuwa community.",
+                    missionSec5Image: fbConfig.missionSec5Image || "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c",
                 }));
                 setColumns(fbColumns || []);
                 if (fbConfig.staff) {
@@ -1395,12 +1547,12 @@ const Admin = () => {
                     savedItem = await Promise.race([dbService.addNotice(noticeData), createTimeout()]);
                     setNotices([savedItem, ...notices].sort((a, b) => new Date(b.date) - new Date(a.date)));
                 }
-            } else if (activeTab === 'site' || activeTab === 'intro' || activeTab === 'prayer' || activeTab === 'education_ministry' || activeTab === 'location' || activeTab === 'worship') {
+            } else if (activeTab === 'site' || activeTab === 'intro' || activeTab === 'prayer' || activeTab === 'education_ministry' || activeTab === 'location' || activeTab === 'worship' || activeTab === 'mission') {
                 let currentConfig = { ...siteConfig };
 
                 // Ensure all text fields from formData are merged into currentConfig
                 Object.keys(formData).forEach(key => {
-                    if (!['heroImage', 'heroImageMobile', 'heroImage2', 'heroImage2Mobile', 'heroImage3', 'heroImage3Mobile', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage'].includes(key)) {
+                    if (!['heroImage', 'heroImageMobile', 'heroImage2', 'heroImage2Mobile', 'heroImage3', 'heroImage3Mobile', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage', 'missionSec2Image', 'missionSec3Image', 'missionSec4Image', 'missionSec5Image'].includes(key)) {
                         if (key.startsWith('pastor')) {
                             const pastorKey = key.replace('pastor', '').toLowerCase();
                             if (pastorKey !== 'history' && pastorKey !== 'historyen') {
@@ -1417,7 +1569,8 @@ const Admin = () => {
                     'heroImage', 'heroImageMobile', 'heroImage2', 'heroImage2Mobile', 'heroImage3', 'heroImage3Mobile',
                     'aboutBanner', 'newsBanner', 'ministryBanner',
                     'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage',
-                    'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image'
+                    'bibleStep1Image', 'bibleStep2Image', 'bibleStep3Image', 'bibleStep4Image',
+                    'missionSec2Image', 'missionSec3Image', 'missionSec4Image', 'missionSec5Image'
                 ];
 
                 for (const key of bannerKeys) {
@@ -2433,6 +2586,12 @@ const Admin = () => {
                         onClick={() => { setActiveTab('education_ministry'); setShowAddForm(false); }}
                     />
                     <SidebarItem
+                        icon={<Globe size={20} />}
+                        label="선교와 전도 관리"
+                        active={activeTab === 'mission'}
+                        onClick={() => { setActiveTab('mission'); setShowAddForm(false); }}
+                    />
+                    <SidebarItem
                         icon={<Calendar size={20} />}
                         label="교회일정 관리"
                         active={activeTab === 'calendar'}
@@ -2486,6 +2645,7 @@ const Admin = () => {
                             {activeTab === 'calendar' && '📅 교회일정 관리'}
                             {activeTab === 'location' && '📍 오시는길 관리'}
                             {activeTab === 'education_ministry' && '🎓 교육 및 사역 관리'}
+                            {activeTab === 'mission' && '🌏 선교와 전도 관리'}
                         </h1>
                         <p className="flex items-center gap-2 text-sm mt-2 font-medium">
                             {isFirebaseConfigured ? (
@@ -2502,7 +2662,7 @@ const Admin = () => {
                         </p>
                     </div>
                     {isLoading && <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>}
-                    {!showAddForm && activeTab !== 'site' && activeTab !== 'intro' && activeTab !== 'general' && activeTab !== 'worship' && activeTab !== 'prayer' && activeTab !== 'education_ministry' && activeTab !== 'location' && (
+                    {!showAddForm && activeTab !== 'site' && activeTab !== 'intro' && activeTab !== 'general' && activeTab !== 'worship' && activeTab !== 'prayer' && activeTab !== 'education_ministry' && activeTab !== 'location' && activeTab !== 'mission' && (
                         <div className="flex gap-2">
                             {(activeTab === 'sermons' || activeTab === 'columns' || activeTab === 'notice') && (
                                 <button
@@ -4806,6 +4966,45 @@ const Admin = () => {
                                 {renderBannerSettings('tee', '📖 TEE 교육 (TEE)', 'teeBanner')}
                                 {renderBannerSettings('bible', '📖 성경 공부 (Bible Study)', 'bibleBanner')}
                                 {renderBannerSettings('mission', '🌏 선교사역 (Mission)', 'missionBanner')}
+
+                                {/* 선교와 전도 히어로 문구 설정 */}
+                                <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-6">
+                                    <div className="flex items-center gap-3 border-b border-gray-50 pb-4">
+                                        <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
+                                            <Type size={24} />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-bold text-gray-800">선교와 전도 히어로 문구 설정</h3>
+                                            <p className="text-gray-400 text-xs font-bold">선교와 전도 페이지의 상단 히어로 영역에 들어가는 텍스트를 설정합니다.</p>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label className="block text-sm font-bold text-gray-700 mb-2">메인 제목 (한국어)</label>
+                                            <input type="text" value={formData.missionHeroTitle} onChange={e => setFormData(p => ({...p, missionHeroTitle: e.target.value}))} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-bold text-gray-700 mb-2">메인 제목 (English)</label>
+                                            <input type="text" value={formData.missionHeroTitleEn} onChange={e => setFormData(p => ({...p, missionHeroTitleEn: e.target.value}))} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-bold text-gray-700 mb-2">선교사 명칭 (한국어)</label>
+                                            <input type="text" value={formData.missionHeroMissionaries} onChange={e => setFormData(p => ({...p, missionHeroMissionaries: e.target.value}))} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-bold text-gray-700 mb-2">선교사 명칭 (English)</label>
+                                            <input type="text" value={formData.missionHeroMissionariesEn} onChange={e => setFormData(p => ({...p, missionHeroMissionariesEn: e.target.value}))} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-bold text-gray-700 mb-2">선교 단체 (한국어)</label>
+                                            <input type="text" value={formData.missionHeroOrg} onChange={e => setFormData(p => ({...p, missionHeroOrg: e.target.value}))} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-bold text-gray-700 mb-2">선교 단체 (English)</label>
+                                            <input type="text" value={formData.missionHeroOrgEn} onChange={e => setFormData(p => ({...p, missionHeroOrgEn: e.target.value}))} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+                                        </div>
+                                    </div>
+                                </div>
                                 {renderBannerSettings('team', '👥 팀사역 (Team Ministry)', 'teamBanner')}
                                 {renderBannerSettings('prayer', '🙏 중보기도 (Intercessory Prayer)', 'prayerBanner')}
 
@@ -5678,6 +5877,213 @@ const Admin = () => {
                                 </div>
                             )}
                         </div>
+                    )
+                }
+
+                {/* Mission & Evangelism Management Section */}
+                {
+                    activeTab === 'mission' && (
+                        <section className="space-y-12 animate-fade-in">
+                            <div className="flex items-center justify-between mb-8">
+                                <div>
+                                    <h2 className="text-3xl font-black text-primary">선교와 전도 관리</h2>
+                                    <p className="text-gray-500 mt-2 font-medium">선교와 전도(성경번역 선교) 페이지의 모든 텍스트 내용을 통합 관리합니다.</p>
+                                </div>
+                                <button
+                                    onClick={handleFormSubmit}
+                                    disabled={isLoading}
+                                    className="flex items-center gap-2 px-8 py-4 bg-primary text-white rounded-2xl font-bold hover:bg-primary-dark transition-all shadow-lg hover:shadow-primary/20 disabled:opacity-50"
+                                >
+                                    {isLoading ? <span className="animate-pulse">저장 중...</span> : <><Check size={20} /> 설정 저장하기</>}
+                                </button>
+                            </div>
+
+
+
+                            {/* Section 2: 하나님의 말씀은 모든 민족에게 */}
+                            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+                                <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                    <div className="p-2 bg-blue-50 rounded-xl text-blue-600"><BookOpen size={20} /></div>
+                                    Section 2: 하나님의 말씀은 모든 민족에게
+                                </h3>
+                                <div className="space-y-4">
+                                    <BannerManager
+                                        label="섹션 이미지 업로드"
+                                        value={formData.missionSec2Image}
+                                        fieldName="missionSec2Image"
+                                        bannerFiles={bannerFiles}
+                                        setBannerFiles={setBannerFiles}
+                                        onChange={(val) => setFormData(prev => ({ ...prev, missionSec2Image: val }))}
+                                    />
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">소제목 (한국어)</label>
+                                            <input type="text" value={formData.missionSec2Title} onChange={e => setFormData(p => ({...p, missionSec2Title: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">소제목 (English)</label>
+                                            <input type="text" value={formData.missionSec2TitleEn} onChange={e => setFormData(p => ({...p, missionSec2TitleEn: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">설명 내용 (한국어)</label>
+                                            <textarea rows={6} value={formData.missionSec2Content} onChange={e => setFormData(p => ({...p, missionSec2Content: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">설명 내용 (English)</label>
+                                            <textarea rows={6} value={formData.missionSec2ContentEn} onChange={e => setFormData(p => ({...p, missionSec2ContentEn: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Section 3: 카니누와를 향한 하나님의 사랑 */}
+                            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+                                <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                    <div className="p-2 bg-indigo-50 rounded-xl text-indigo-600"><Heart size={20} /></div>
+                                    Section 3: 카니누와를 향한 하나님의 사랑
+                                </h3>
+                                <div className="space-y-4">
+                                    <BannerManager
+                                        label="섹션 이미지 업로드"
+                                        value={formData.missionSec3Image}
+                                        fieldName="missionSec3Image"
+                                        bannerFiles={bannerFiles}
+                                        setBannerFiles={setBannerFiles}
+                                        onChange={(val) => setFormData(prev => ({ ...prev, missionSec3Image: val }))}
+                                    />
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">소제목 (한국어)</label>
+                                            <input type="text" value={formData.missionSec3Title} onChange={e => setFormData(p => ({...p, missionSec3Title: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">소제목 (English)</label>
+                                            <input type="text" value={formData.missionSec3TitleEn} onChange={e => setFormData(p => ({...p, missionSec3TitleEn: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">설명 내용 (한국어)</label>
+                                            <textarea rows={6} value={formData.missionSec3Content} onChange={e => setFormData(p => ({...p, missionSec3Content: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">설명 내용 (English)</label>
+                                            <textarea rows={6} value={formData.missionSec3ContentEn} onChange={e => setFormData(p => ({...p, missionSec3ContentEn: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                    </div>
+
+                                    {/* 현재 사역 리스트 (4개) */}
+                                    <div className="p-5 bg-gray-50 rounded-2xl space-y-4">
+                                        <h4 className="font-bold text-gray-700 text-sm">현재 사역 리스트 (4가지 항목)</h4>
+                                        {[1, 2, 3, 4].map(num => (
+                                            <div key={num} className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-gray-200/50 pb-3 last:border-b-0 last:pb-0">
+                                                <div>
+                                                    <label className="block text-xs font-bold text-gray-400 mb-1">사역 {num} (한국어)</label>
+                                                    <input type="text" value={formData[`missionSec3Activity${num}`]} onChange={e => setFormData(p => ({...p, [`missionSec3Activity${num}`]: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-bold text-gray-400 mb-1">사역 {num} (English)</label>
+                                                    <input type="text" value={formData[`missionSec3Activity${num}En`]} onChange={e => setFormData(p => ({...p, [`missionSec3Activity${num}En`]: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Section 4: 성경번역은 한 사람의 헌신으로 완성되지 않습니다. */}
+                            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+                                <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                    <div className="p-2 bg-amber-50 rounded-xl text-amber-600"><Users size={20} /></div>
+                                    Section 4: 성경번역은 한 사람의 헌신으로 완성되지 않습니다.
+                                </h3>
+                                <div className="space-y-4">
+                                    <BannerManager
+                                        label="섹션 이미지 업로드"
+                                        value={formData.missionSec4Image}
+                                        fieldName="missionSec4Image"
+                                        bannerFiles={bannerFiles}
+                                        setBannerFiles={setBannerFiles}
+                                        onChange={(val) => setFormData(prev => ({ ...prev, missionSec4Image: val }))}
+                                    />
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">소제목 (한국어)</label>
+                                            <input type="text" value={formData.missionSec4Title} onChange={e => setFormData(p => ({...p, missionSec4Title: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">소제목 (English)</label>
+                                            <input type="text" value={formData.missionSec4TitleEn} onChange={e => setFormData(p => ({...p, missionSec4TitleEn: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">설명 내용 (한국어)</label>
+                                            <textarea rows={6} value={formData.missionSec4Content} onChange={e => setFormData(p => ({...p, missionSec4Content: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">설명 내용 (English)</label>
+                                            <textarea rows={6} value={formData.missionSec4ContentEn} onChange={e => setFormData(p => ({...p, missionSec4ContentEn: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Section 5: 말씀을 넘어 삶으로 */}
+                            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+                                <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                    <div className="p-2 bg-emerald-50 rounded-xl text-emerald-600"><CheckCircle2 size={20} /></div>
+                                    Section 5: 말씀을 넘어 삶으로
+                                </h3>
+                                <div className="space-y-4">
+                                    <BannerManager
+                                        label="섹션 이미지 업로드"
+                                        value={formData.missionSec5Image}
+                                        fieldName="missionSec5Image"
+                                        bannerFiles={bannerFiles}
+                                        setBannerFiles={setBannerFiles}
+                                        onChange={(val) => setFormData(prev => ({ ...prev, missionSec5Image: val }))}
+                                    />
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">소제목 (한국어)</label>
+                                            <input type="text" value={formData.missionSec5Title} onChange={e => setFormData(p => ({...p, missionSec5Title: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">소제목 (English)</label>
+                                            <input type="text" value={formData.missionSec5TitleEn} onChange={e => setFormData(p => ({...p, missionSec5TitleEn: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">설명 내용 (한국어)</label>
+                                            <textarea rows={6} value={formData.missionSec5Content} onChange={e => setFormData(p => ({...p, missionSec5Content: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-gray-500 mb-1">설명 내용 (English)</label>
+                                            <textarea rows={6} value={formData.missionSec5ContentEn} onChange={e => setFormData(p => ({...p, missionSec5ContentEn: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Prayer Requests Section */}
+                            <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+                                <h3 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                                    <div className="p-2 bg-red-50 rounded-xl text-red-600"><Heart size={20} /></div>
+                                    기도 제목 (4개)
+                                </h3>
+                                {[1, 2, 3, 4].map(num => (
+                                    <div key={num} className="p-5 bg-gray-50 rounded-2xl space-y-4">
+                                        <h4 className="font-bold text-gray-700 text-sm">기도 제목 {num}</h4>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-gray-500 mb-1">기도 제목 (한국어)</label>
+                                                <textarea rows={2} value={formData[`missionPrayer${num}`]} onChange={e => setFormData(p => ({...p, [`missionPrayer${num}`]: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-gray-500 mb-1">기도 제목 (English)</label>
+                                                <textarea rows={2} value={formData[`missionPrayer${num}En`]} onChange={e => setFormData(p => ({...p, [`missionPrayer${num}En`]: e.target.value}))} className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary/20 bg-white" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
                     )
                 }
 
