@@ -71,6 +71,17 @@ const Mission = () => {
     const overlayOpacity = config?.missionOverlayOpacity !== undefined ? Number(config.missionOverlayOpacity) : 50;
     const bannerFit = config?.missionBannerFit || 'cover';
 
+    const titleFont = config?.missionTitleFont || "font-sans";
+    const subtitleFont = config?.missionSubtitleFont || "font-sans";
+    const titleColor = config?.missionTitleColor || "#ffffff";
+    const subtitleColor = config?.missionSubtitleColor || "#ffffff";
+    const titleItalic = config?.missionTitleItalic !== undefined ? config.missionTitleItalic : false;
+    const subtitleItalic = config?.missionSubtitleItalic !== undefined ? config.missionSubtitleItalic : false;
+    const titleWeight = config?.missionTitleWeight || "font-bold";
+    const subtitleWeight = config?.missionSubtitleWeight || "font-medium";
+    const titleSize = config?.missionTitleSize || 48;
+    const subtitleSize = config?.missionSubtitleSize || 24;
+
     // Dynamic config mapping with default fallbacks
     const content = {
         hero: {
@@ -235,24 +246,46 @@ const Mission = () => {
                     <div className="absolute inset-0 z-[1] pointer-events-none" style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity / 100})` }} />
                 </div>
                 
-                <div className="container mx-auto px-4 text-center relative z-10 pt-20">
-                    <motion.div
+                <div className="relative z-10 text-center px-4">
+                    <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
+                        className={clsx(
+                            "mb-4 drop-shadow-sm",
+                            titleWeight || "font-bold",
+                            titleFont,
+                            titleItalic && "italic"
+                        )}
+                        style={{
+                            color: titleColor,
+                            fontSize: titleSize ? `${titleSize}px` : undefined
+                        }}
                     >
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white/90 text-sm font-bold tracking-widest uppercase mb-6 shadow-xl">
-                            <Globe2 size={16} />
-                            {getText(content.hero.org)}
-                        </div>
-                        <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-white mb-6 leading-tight break-keep shadow-sm max-w-5xl mx-auto">
-                            {getText(content.hero.title)}
-                        </h1>
-                        <div className="h-1.5 w-24 bg-accent mx-auto mb-8 rounded-full shadow-lg" />
-                        <p className="text-lg md:text-xl text-white/80 max-w-3xl mx-auto leading-relaxed break-keep font-medium">
-                            {getText(content.hero.subtitle)}
-                        </p>
-                    </motion.div>
+                        {getText(content.hero.title)}
+                    </motion.h1>
+                    <motion.div
+                        initial={{ opacity: 0, width: 0 }}
+                        animate={{ opacity: 1, width: "5rem" }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        className="h-1.5 bg-accent mx-auto mb-8 rounded-full"
+                    />
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className={clsx(
+                            "drop-shadow-md max-w-2xl mx-auto",
+                            subtitleWeight,
+                            subtitleFont,
+                            subtitleItalic && "italic"
+                        )}
+                        style={{
+                            color: subtitleColor,
+                            fontSize: subtitleSize ? `${subtitleSize}px` : undefined
+                        }}
+                    >
+                        {getText(content.hero.subtitle)}
+                    </motion.p>
                 </div>
             </div>
 
