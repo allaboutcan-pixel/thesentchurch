@@ -24,7 +24,7 @@ const defaultContentData = {
             ko: "1942년, 위클리프 성경번역선교회는 한 질문에서 시작되었습니다.\n\n\"당신의 하나님이 전능하시다면 왜 우리말로 말씀하지 않으시나요?\"\n\n과테말라에서 선교하던 카메룬 타운센드는 이 질문을 통해 하나님의 말씀은 모든 사람이 자신의 '마음의 언어(Heart Language)' 로 들어야 한다는 비전을 품게 되었습니다.\n\n그 이후 위클리프 성경번역선교회는 세계 수천 개 언어의 성경 번역을 위해 헌신해 왔으며, 지금도 수많은 번역가와 선교사들이 복음을 전하고 있습니다.\n\n복음은 번역되는 것이 아니라, 사람들의 마음에 전해지는 것입니다.",
             en: "In 1942, Wycliffe Bible Translators began with one question:\n\n\"If your God is all-powerful, why doesn't He speak in our language?\"\n\nCameron Townsend, who was serving as a missionary in Guatemala, came to realize through this question that everyone must hear God's word in their own 'heart language.' Since then, Wycliffe has dedicated itself to translating the Bible into thousands of languages, and today many translators and missionaries continue to spread the Gospel. The Gospel is not just translated; it is delivered to people's hearts."
         },
-        image: "https://images.unsplash.com/photo-1504052434569-70ad58c6544f"
+        image: "https://images.unsplash.com/photo-1504052434569-70ad58c6544f?auto=format&fit=crop&q=80&w=1200"
     },
     sec3: {
         title: { ko: "인구 600명의 작은 종족, 하나님의 큰 계획", en: "A Small Tribe of 600 People, God's Big Plan" },
@@ -32,7 +32,7 @@ const defaultContentData = {
             ko: "카니누와(Kaninuwa)는 파푸아뉴기니 굿이너프섬 북부에 살아가는 약 600명의 소수민족입니다.\n\n1960년대 처음 복음을 접했지만 아직도 자신들의 언어로 된 성경이 없어 여러 언어를 섞어 예배를 드리고 있습니다.\n\n성경이 자신의 언어로 없기 때문에 하나님의 말씀을 깊이 이해하기 어려운 현실 가운데 있습니다.\n\n우리 교회는 카니누와 성경 번역 사역을 통해 그들이 자신의 언어로 하나님의 말씀을 읽고, 복음을 더욱 분명하게 이해하도록 함께 동역하고 있습니다.",
             en: "Kaninuwa is a small ethnic group of about 600 people living in the northern part of Goodenough Island, Papua New Guinea. Although they first heard the Gospel in the 1960s, they still do not have a Bible in their own language, so they worship using a mixture of languages. Without the Bible in their own language, it is difficult to deeply understand God's word. Our church is working together with them through the Kaninuwa Bible translation ministry so that they can read God's word in their own language and understand the Gospel more clearly."
         },
-        image: "https://images.unsplash.com/photo-1542810634-71277d95dcbb",
+        image: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&q=80&w=1200",
         activities: [
             { ko: "카니누와어 성경 번역", en: "Kaninuwa Bible Translation" },
             { ko: "번역 검수 및 수정", en: "Translation Checking & Editing" },
@@ -46,7 +46,7 @@ const defaultContentData = {
             ko: "성경 번역은 한 사람의 작업이 아닙니다.\n\n원어 연구와 번역, 검수, 신학적 검토, 현지 언어 확인, 반복되는 수정 과정을 거쳐 한 절 한 절이 완성됩니다.\n\n현지 번역가와 언어학자, 교회 지도자 그리고 전 세계의 기도와 후원이 함께할 때 하나님의 말씀이 새로운 언어로 태어납니다.\n\n우리 교회도 이 귀한 사역에 함께 동참하며 카니누와어 성경 번역을 지속적으로 후원하고 있습니다.",
             en: "Bible translation is not a one-person job. Each verse is completed through original language study, translation, checking, theological review, local language confirmation, and repeated revision processes. When local translators, linguists, church leaders, and prayers and support from around the world come together, God's word is born in a new language. Our church is also participating in this precious ministry and continuously sponsoring the Kaninuwa Bible translation."
         },
-        image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846"
+        image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=1200"
     },
     sec5: {
         title: { ko: "복음은 사람을 살리고 공동체를 세웁니다.", en: "The Gospel Saves People and Builds Communities" },
@@ -54,7 +54,7 @@ const defaultContentData = {
             ko: "성경 번역은 단순히 책을 만드는 일이 아닙니다.\n\n현지 어린이들을 위한 교육과 사랑의 나눔, 교회를 세우는 사역, 그리고 번역자들의 삶을 함께 돌보는 일까지 복음은 사람들의 삶 속에서 이어지고 있습니다.\n\n카니누와 아이들에게는 배움의 기회가 되고,\n가정에는 소망이 되며,\n지역교회에는 믿음의 기초가 됩니다.\n\n우리는 앞으로도 하나님의 사랑이 카니누와 공동체에 더욱 깊이 전해지도록 함께 기도하며 동역하겠습니다.",
             en: "Bible translation is not simply making a book. From education and sharing of love for local children to building churches and caring for the lives of translators together, the Gospel continues in people's lives. It becomes an opportunity for learning for Kaninuwa children, hope for families, and a foundation of faith for local churches. We will continue to pray and partner together so that God's love is delivered more deeply to the Kaninuwa community."
         },
-        image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c"
+        image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=1200"
     }
 };
 
@@ -81,6 +81,13 @@ const Mission = () => {
     const subtitleWeight = config?.missionSubtitleWeight || "font-medium";
     const titleSize = config?.missionTitleSize || 48;
     const subtitleSize = config?.missionSubtitleSize || 24;
+    const ensureWorkingImage = (url, fallback) => {
+        if (!url) return fallback;
+        if (typeof url === 'string' && url.includes('images.unsplash.com') && !url.includes('?')) {
+            return `${url}?auto=format&fit=crop&q=80&w=1200`;
+        }
+        return url;
+    };
 
     // Dynamic config mapping with default fallbacks
     const content = {
@@ -107,7 +114,7 @@ const Mission = () => {
                 ko: config?.missionSec2Content || defaultContentData.sec2.content.ko,
                 en: config?.missionSec2ContentEn || defaultContentData.sec2.content.en
             },
-            image: config?.missionSec2Image || defaultContentData.sec2.image
+            image: ensureWorkingImage(config?.missionSec2Image, defaultContentData.sec2.image)
         },
         sec3: {
             title: {
@@ -118,7 +125,7 @@ const Mission = () => {
                 ko: config?.missionSec3Content || defaultContentData.sec3.content.ko,
                 en: config?.missionSec3ContentEn || defaultContentData.sec3.content.en
             },
-            image: config?.missionSec3Image || defaultContentData.sec3.image,
+            image: ensureWorkingImage(config?.missionSec3Image, defaultContentData.sec3.image),
             activities: [
                 {
                     ko: config?.missionSec3Activity1 || defaultContentData.sec3.activities[0].ko,
@@ -147,7 +154,7 @@ const Mission = () => {
                 ko: config?.missionSec4Content || defaultContentData.sec4.content.ko,
                 en: config?.missionSec4ContentEn || defaultContentData.sec4.content.en
             },
-            image: config?.missionSec4Image || defaultContentData.sec4.image
+            image: ensureWorkingImage(config?.missionSec4Image, defaultContentData.sec4.image)
         },
         sec5: {
             title: {
@@ -158,7 +165,7 @@ const Mission = () => {
                 ko: config?.missionSec5Content || defaultContentData.sec5.content.ko,
                 en: config?.missionSec5ContentEn || defaultContentData.sec5.content.en
             },
-            image: config?.missionSec5Image || defaultContentData.sec5.image
+            image: ensureWorkingImage(config?.missionSec5Image, defaultContentData.sec5.image)
         },
         prayer: {
             title: { ko: "기도해 주세요.", en: "Please Pray with Us" },
