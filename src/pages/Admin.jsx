@@ -4967,44 +4967,7 @@ const Admin = () => {
                                 {renderBannerSettings('bible', '📖 성경 공부 (Bible Study)', 'bibleBanner')}
                                 {renderBannerSettings('mission', '🌏 선교사역 (Mission)', 'missionBanner')}
 
-                                {/* 선교와 전도 히어로 문구 설정 */}
-                                <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm space-y-6">
-                                    <div className="flex items-center gap-3 border-b border-gray-50 pb-4">
-                                        <div className="p-3 bg-blue-50 rounded-2xl text-blue-600">
-                                            <Type size={24} />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-xl font-bold text-gray-800">선교와 전도 히어로 문구 설정</h3>
-                                            <p className="text-gray-400 text-xs font-bold">선교와 전도 페이지의 상단 히어로 영역에 들어가는 텍스트를 설정합니다.</p>
-                                        </div>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div>
-                                            <label className="block text-sm font-bold text-gray-700 mb-2">메인 제목 (한국어)</label>
-                                            <input type="text" value={formData.missionHeroTitle} onChange={e => setFormData(p => ({...p, missionHeroTitle: e.target.value}))} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary" />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-bold text-gray-700 mb-2">메인 제목 (English)</label>
-                                            <input type="text" value={formData.missionHeroTitleEn} onChange={e => setFormData(p => ({...p, missionHeroTitleEn: e.target.value}))} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary" />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-bold text-gray-700 mb-2">선교사 명칭 (한국어)</label>
-                                            <input type="text" value={formData.missionHeroMissionaries} onChange={e => setFormData(p => ({...p, missionHeroMissionaries: e.target.value}))} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary" />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-bold text-gray-700 mb-2">선교사 명칭 (English)</label>
-                                            <input type="text" value={formData.missionHeroMissionariesEn} onChange={e => setFormData(p => ({...p, missionHeroMissionariesEn: e.target.value}))} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary" />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-bold text-gray-700 mb-2">선교 단체 (한국어)</label>
-                                            <input type="text" value={formData.missionHeroOrg} onChange={e => setFormData(p => ({...p, missionHeroOrg: e.target.value}))} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary" />
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-bold text-gray-700 mb-2">선교 단체 (English)</label>
-                                            <input type="text" value={formData.missionHeroOrgEn} onChange={e => setFormData(p => ({...p, missionHeroOrgEn: e.target.value}))} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary" />
-                                        </div>
-                                    </div>
-                                </div>
+
                                 {renderBannerSettings('team', '👥 팀사역 (Team Ministry)', 'teamBanner')}
                                 {renderBannerSettings('prayer', '🙏 중보기도 (Intercessory Prayer)', 'prayerBanner')}
 

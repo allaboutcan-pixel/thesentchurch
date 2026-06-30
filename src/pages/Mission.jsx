@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import { Globe2, BookOpen, Heart, Users, CheckCircle2 } from 'lucide-react';
 import { useSiteConfigValue } from '../context/SiteConfigContext';
+import { isVideo, getYoutubeId } from '../utils/mediaUtils';
+import { dbService } from '../services/dbService';
 
 // ----------------------------------------------------
 // TRANSLATION DEFAULT DATA
@@ -66,22 +68,23 @@ const Mission = () => {
     // Header properties inherited from configuration
     const headerBanner = config?.missionBanner || "https://images.unsplash.com/photo-1526976668912-1a811878dd37?auto=format&fit=crop&q=80&w=2000";
     const height = config?.missionHeight || "medium";
-    const overlayOpacity = config?.missionOverlayOpacity !== undefined ? config.missionOverlayOpacity : 50;
+    const overlayOpacity = config?.missionOverlayOpacity !== undefined ? Number(config.missionOverlayOpacity) : 50;
+    const bannerFit = config?.missionBannerFit || 'cover';
 
     // Dynamic config mapping with default fallbacks
     const content = {
         hero: {
             title: {
-                ko: config?.missionHeroTitle || defaultContentData.hero.title.ko,
-                en: config?.missionHeroTitleEn || defaultContentData.hero.title.en
+                ko: config?.missionTitle || defaultContentData.hero.title.ko,
+                en: config?.missionTitleEn || defaultContentData.hero.title.en
             },
             subtitle: {
-                ko: config?.missionHeroSubtitle || defaultContentData.hero.subtitle.ko,
-                en: config?.missionHeroSubtitleEn || defaultContentData.hero.subtitle.en
+                ko: config?.missionSubtitle || defaultContentData.hero.subtitle.ko,
+                en: config?.missionSubtitleEn || defaultContentData.hero.subtitle.en
             },
             org: {
-                ko: config?.missionHeroOrg || defaultContentData.hero.org.ko,
-                en: config?.missionHeroOrgEn || defaultContentData.hero.org.en
+                ko: "선교와 전도",
+                en: "Mission & Evangelism"
             }
         },
         sec2: {
@@ -189,14 +192,47 @@ const Mission = () => {
                         height === 'medium' ? "h-[50vh] md:h-[75vh]" :
                             "h-[40vh] md:h-[50vh]"
             )}>
-                <div className="absolute inset-0 z-0 pointer-events-none">
-                    <img
-                        src={headerBanner}
-                        alt="Mission Banner"
-                        className="w-full h-full object-cover transition-all duration-700"
-                    />
-                    <div className="absolute inset-0 bg-[#0c1a2c]/60 mix-blend-multiply" />
-                    <div className="absolute inset-0 z-[1]" style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity / 100})` }} />
+                <div className="absolute inset-0 z-0">
+                    {isVideo(headerBanner) ? (
+                        getYoutubeId(headerBanner) ? (
+                            <div className="absolute inset-0 w-full h-full">
+                                <iframe
+                                    className={clsx(
+                                        "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-all duration-700 opacity-80",
+                                        bannerFit === 'contain' ? "w-full h-full object-contain" : "w-[115%] h-[115%] min-w-full min-h-full object-cover"
+                                    )}
+                                    src={`https://www.youtube.com/embed/${getYoutubeId(headerBanner)}?autoplay=1&mute=1&loop=1&playlist=${getYoutubeId(headerBanner)}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&enablejsapi=1&origin=${window.location.origin}`}
+                                    frameBorder="0"
+                                    allow="autoplay; encrypted-media"
+                                    title="Background Video"
+                                ></iframe>
+                            </div>
+                        ) : (
+                            <video
+                                key={headerBanner}
+                                src={headerBanner.includes('drive.google.com') ? dbService.formatDriveVideo(headerBanner) : headerBanner}
+                                className={clsx(
+                                    "w-full h-full transform scale-105 transition-all duration-700",
+                                    bannerFit === 'contain' ? "object-contain" : "object-cover"
+                                )}
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                            />
+                        )
+                    ) : (
+                        <img
+                            src={headerBanner}
+                            alt="Mission Banner"
+                            className={clsx(
+                                "w-full h-full transform scale-105 transition-all duration-700",
+                                bannerFit === 'contain' ? "object-contain" : "object-cover"
+                            )}
+                        />
+                    )}
+                    <div className="absolute inset-0 bg-[#0c1a2c]/60 mix-blend-multiply pointer-events-none" />
+                    <div className="absolute inset-0 z-[1] pointer-events-none" style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity / 100})` }} />
                 </div>
                 
                 <div className="container mx-auto px-4 text-center relative z-10 pt-20">
