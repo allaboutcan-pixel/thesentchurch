@@ -1533,11 +1533,19 @@ const Admin = () => {
                     setDailyWords([savedItem, ...dailyWords]);
                 }
             } else if (activeTab === 'notice') {
-                let finalImageUrl = formData.fileUrl;
-                if (file) {
-                    finalImageUrl = await dbService.uploadFile(file, 'notices');
-                } else if (finalImageUrl) {
-                    finalImageUrl = dbService.formatDriveImage(finalImageUrl);
+                let finalImages = [];
+                
+                // Process pasted URLs (support comma-separated URLs)
+                if (formData.fileUrl) {
+                    const urls = formData.fileUrl.split(',').map(u => u.trim()).filter(Boolean);
+                    finalImages = urls.map(u => dbService.formatDriveImage(u));
+                }
+
+                // Process direct file uploads (multiple images support)
+                if (galleryFiles && galleryFiles.length > 0) {
+                    const uploadPromises = galleryFiles.map(f => dbService.uploadFile(f, 'notices'));
+                    const uploadedUrls = await Promise.all(uploadPromises);
+                    finalImages = [...finalImages, ...uploadedUrls];
                 }
 
                 const noticeData = {
@@ -1546,7 +1554,8 @@ const Admin = () => {
                     content: formData.content,
                     contentEn: formData.contentEn || '',
                     date: formData.date,
-                    image: finalImageUrl,
+                    image: finalImages[0] || '', // Single URL fallback
+                    images: finalImages, // Multiple URLs array
                     showPopup: formData.showPopup || false
                 };
 
@@ -1800,10 +1809,11 @@ const Admin = () => {
                 date: item.date || '',
                 content: item.content || '',
                 contentEn: item.contentEn || '',
-                fileUrl: item.image || '',
+                fileUrl: item.images && item.images.length > 0 ? item.images.join(', ') : (item.image || ''),
                 showPopup: item.showPopup || false
             });
             setFile(null);
+            setGalleryFiles([]);
         } else if (type === 'calendar') {
             setFormData({
                 ...formData,
@@ -3334,23 +3344,36 @@ const Admin = () => {
                                             <div className="relative group">
                                                 <input
                                                     type="file"
+                                                    multiple={activeTab === 'notice'}
                                                     accept="image/*"
                                                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                                                    onChange={(e) => setFile(e.target.files[0])}
+                                                    onChange={(e) => {
+                                                        if (activeTab === 'notice') {
+                                                            setGalleryFiles(Array.from(e.target.files));
+                                                        } else {
+                                                            setFile(e.target.files[0]);
+                                                        }
+                                                    }}
                                                 />
                                                 <div className={clsx(
                                                     "w-full border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center transition-all",
-                                                    file ? "border-emerald-200 bg-emerald-50" : "border-gray-200 bg-gray-50 group-hover:border-primary/30"
+                                                    (activeTab === 'notice' ? galleryFiles.length > 0 : file) ? "border-emerald-200 bg-emerald-50" : "border-gray-200 bg-gray-50 group-hover:border-primary/30"
                                                 )}>
-                                                    {file ? (
+                                                    {(activeTab === 'notice' ? galleryFiles.length > 0 : file) ? (
                                                         <div className="flex items-center gap-2">
                                                             <Check size={16} className="text-emerald-600" />
-                                                            <span className="text-[10px] font-bold text-emerald-700 truncate max-w-[200px]">{file.name}</span>
+                                                            <span className="text-[10px] font-bold text-emerald-700 truncate max-w-[200px]">
+                                                                {activeTab === 'notice' 
+                                                                    ? (galleryFiles.length === 1 ? galleryFiles[0].name : `${galleryFiles.length}개의 이미지 선택됨`)
+                                                                    : file.name}
+                                                            </span>
                                                         </div>
                                                     ) : (
                                                         <div className="flex flex-col items-center gap-1">
                                                             <Upload size={20} className="text-gray-400" />
-                                                            <span className="text-[10px] font-bold text-gray-400">사진 선택</span>
+                                                            <span className="text-[10px] font-bold text-gray-400">
+                                                                {activeTab === 'notice' ? '사진 선택 (다중 선택 가능)' : '사진 선택'}
+                                                            </span>
                                                         </div>
                                                     )}
                                                 </div>

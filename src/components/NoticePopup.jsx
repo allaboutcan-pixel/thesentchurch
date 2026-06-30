@@ -1,13 +1,21 @@
 import { useState, useEffect } from 'react';
-import { X, ExternalLink } from 'lucide-react';
+import { X, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 const NoticePopup = ({ notice }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [currentSlide, setCurrentSlide] = useState(0);
     const { t, i18n } = useTranslation();
 
+    const images = notice?.images && notice.images.length > 0 
+        ? notice.images 
+        : (notice?.image ? [notice.image] : []);
+
     useEffect(() => {
+        // Reset slide index when notice changes
+        setCurrentSlide(0);
+
         // Only show if the notice exists and has showPopup true
         if (!notice || !notice.showPopup) return;
 
@@ -56,29 +64,57 @@ const NoticePopup = ({ notice }) => {
                     </button>
                 </div>
                 
-                {/* Multi-Image Support */}
-                {(notice.images && notice.images.length > 0) ? (
-                    <div className="w-full relative bg-slate-100 flex overflow-x-auto snap-x snap-mandatory">
-                        {notice.images.map((imgUrl, idx) => (
-                            <img
-                                key={idx}
-                                src={imgUrl}
-                                alt={`${notice.title} - ${idx + 1}`}
-                                className="w-full flex-shrink-0 snap-center object-contain max-h-[60vh]"
-                                referrerPolicy="no-referrer"
-                            />
-                        ))}
+                {/* Multi-Image Slider/Carousel */}
+                {images.length > 0 && (
+                    <div className="w-full relative bg-slate-100 overflow-hidden aspect-video max-h-[60vh]">
+                        <div 
+                            className="flex h-full w-full transition-transform duration-500 ease-in-out"
+                            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                        >
+                            {images.map((imgUrl, idx) => (
+                                <div key={idx} className="w-full h-full flex-shrink-0 flex items-center justify-center bg-slate-100">
+                                    <img
+                                        src={imgUrl}
+                                        alt={`${notice.title} - ${idx + 1}`}
+                                        className="w-full h-full object-contain"
+                                        referrerPolicy="no-referrer"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Navigation Arrows */}
+                        {images.length > 1 && (
+                            <>
+                                <button
+                                    onClick={() => setCurrentSlide(prev => (prev === 0 ? images.length - 1 : prev - 1))}
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/35 hover:bg-black/50 text-white p-1.5 rounded-full transition-colors backdrop-blur-sm z-20"
+                                >
+                                    <ChevronLeft size={20} />
+                                </button>
+                                <button
+                                    onClick={() => setCurrentSlide(prev => (prev === images.length - 1 ? 0 : prev + 1))}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/35 hover:bg-black/50 text-white p-1.5 rounded-full transition-colors backdrop-blur-sm z-20"
+                                >
+                                    <ChevronRight size={20} />
+                                </button>
+
+                                {/* Slide Indicators (Dots) */}
+                                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
+                                    {images.map((_, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setCurrentSlide(idx)}
+                                            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                                currentSlide === idx ? "bg-white w-4" : "bg-white/50"
+                                            }`}
+                                        />
+                                    ))}
+                                </div>
+                            </>
+                        )}
                     </div>
-                ) : notice.image ? (
-                    <div className="w-full relative bg-slate-100">
-                        <img
-                            src={notice.image}
-                            alt={notice.title}
-                            className="w-full h-auto object-contain max-h-[60vh]"
-                            referrerPolicy="no-referrer"
-                        />
-                    </div>
-                ) : null}
+                )}
 
                 <div className="p-4 md:p-6 bg-white">
                     <div className="flex items-center gap-2 mb-2">

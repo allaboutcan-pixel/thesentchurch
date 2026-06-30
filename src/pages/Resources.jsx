@@ -44,6 +44,11 @@ const Resources = () => {
     // eslint-disable-next-line no-unused-vars
     const [notices, setNotices] = useState([]);
     const [selectedNotice, setSelectedNotice] = useState(null);
+    const [noticeSlide, setNoticeSlide] = useState(0);
+
+    useEffect(() => {
+        setNoticeSlide(0);
+    }, [selectedNotice]);
 
     // eslint-disable-next-line no-unused-vars
     const [galleryItems, setGalleryItems] = useState([]);
@@ -1150,30 +1155,70 @@ const Resources = () => {
                                     </h2>
                                 </div>
 
-                                {/* Multi-Image Support */}
-                                {(selectedNotice.images && selectedNotice.images.length > 0) ? (
-                                    <div className="pt-6 border-t border-gray-100 flex flex-col gap-4">
-                                        <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2">
-                                            {selectedNotice.images.map((imgUrl, idx) => (
-                                                <div key={idx} className="flex-shrink-0 snap-center w-full max-w-2xl relative bg-slate-50 rounded-xl overflow-hidden shadow-sm">
-                                                    <img
-                                                        src={imgUrl}
-                                                        alt={`${selectedNotice.title} - ${idx + 1}`}
-                                                        className="w-full h-auto object-contain max-h-[60vh]"
-                                                        referrerPolicy="no-referrer"
-                                                    />
-                                                </div>
-                                            ))}
+                                {/* Multi-Image Slider/Carousel & Content Description */}
+                                {(() => {
+                                    const detailImages = selectedNotice.images && selectedNotice.images.length > 0 
+                                        ? selectedNotice.images 
+                                        : (selectedNotice.image ? [selectedNotice.image] : []);
+
+                                    return detailImages.length > 0 ? (
+                                        <div className="w-full relative bg-slate-50 overflow-hidden aspect-video rounded-2xl border border-slate-100 shadow-sm max-h-[60vh]">
+                                            <div 
+                                                className="flex h-full w-full transition-transform duration-500 ease-in-out"
+                                                style={{ transform: `translateX(-${noticeSlide * 100}%)` }}
+                                            >
+                                                {detailImages.map((imgUrl, idx) => (
+                                                    <div key={idx} className="w-full h-full flex-shrink-0 flex items-center justify-center bg-slate-50">
+                                                        <img
+                                                            src={imgUrl}
+                                                            alt={`${selectedNotice.title} - ${idx + 1}`}
+                                                            className="w-full h-full object-contain"
+                                                            referrerPolicy="no-referrer"
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            {/* Navigation Arrows */}
+                                            {detailImages.length > 1 && (
+                                                <>
+                                                    <button
+                                                        onClick={() => setNoticeSlide(prev => (prev === 0 ? detailImages.length - 1 : prev - 1))}
+                                                        className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/35 hover:bg-black/50 text-white p-2 rounded-full transition-colors backdrop-blur-sm z-20"
+                                                    >
+                                                        <ChevronLeft size={24} />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setNoticeSlide(prev => (prev === detailImages.length - 1 ? 0 : prev + 1))}
+                                                        className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/35 hover:bg-black/50 text-white p-2 rounded-full transition-colors backdrop-blur-sm z-20"
+                                                    >
+                                                        <ChevronRight size={24} />
+                                                    </button>
+
+                                                    {/* Slide Indicators (Dots) */}
+                                                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                                                        {detailImages.map((_, idx) => (
+                                                            <button
+                                                                key={idx}
+                                                                onClick={() => setNoticeSlide(idx)}
+                                                                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                                                                    noticeSlide === idx ? "bg-white w-6" : "bg-white/50"
+                                                                }`}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                </>
+                                            )}
                                         </div>
-                                    </div>
-                                ) : selectedNotice.image && (
-                                    <div className="relative rounded-2xl overflow-hidden bg-slate-50 border border-gray-100 flex justify-center">
-                                        <img
-                                            src={selectedNotice.image}
-                                            alt={selectedNotice.title}
-                                            className="w-full h-auto max-h-[60vh] object-contain rounded-xl shadow-sm"
-                                            referrerPolicy="no-referrer"
-                                        />
+                                    ) : null;
+                                })()}
+
+                                {/* Notice Content Description */}
+                                {(i18n.language === 'en' && selectedNotice.contentEn ? selectedNotice.contentEn : selectedNotice.content) && (
+                                    <div className="pt-6 border-t border-gray-100">
+                                        <p className="text-slate-700 leading-relaxed whitespace-pre-wrap text-base font-medium break-keep">
+                                            {i18n.language === 'en' && selectedNotice.contentEn ? selectedNotice.contentEn : selectedNotice.content}
+                                        </p>
                                     </div>
                                 )}
                                 
