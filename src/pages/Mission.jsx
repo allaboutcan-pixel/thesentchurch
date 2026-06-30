@@ -333,11 +333,11 @@ const Mission = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
                     >
-                        <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-slate-100 bg-white">
+                        <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-100 bg-white">
                             <img 
                                 src={content.sec2.image} 
                                 alt={getText(content.sec2.title)} 
-                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
+                                className="w-full h-auto hover:scale-105 transition-transform duration-700" 
                             />
                         </div>
                     </motion.div>
@@ -352,11 +352,11 @@ const Mission = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
                     >
-                        <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-slate-100 bg-white">
+                        <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-100 bg-white">
                             <img 
                                 src={content.sec3.image} 
                                 alt={getText(content.sec3.title)} 
-                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
+                                className="w-full h-auto hover:scale-105 transition-transform duration-700" 
                             />
                         </div>
                     </motion.div>
@@ -427,11 +427,11 @@ const Mission = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
                     >
-                        <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-slate-100 bg-white">
+                        <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-100 bg-white">
                             <img 
                                 src={content.sec4.image} 
                                 alt={getText(content.sec4.title)} 
-                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
+                                className="w-full h-auto hover:scale-105 transition-transform duration-700" 
                             />
                         </div>
                     </motion.div>
@@ -446,11 +446,11 @@ const Mission = () => {
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
                     >
-                        <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl border border-slate-100 bg-white">
+                        <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-100 bg-white">
                             <img 
                                 src={content.sec5.image} 
                                 alt={getText(content.sec5.title)} 
-                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" 
+                                className="w-full h-auto hover:scale-105 transition-transform duration-700" 
                             />
                         </div>
                     </motion.div>
