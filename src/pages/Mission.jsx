@@ -572,6 +572,16 @@ const Mission = () => {
                             </div>
                         ))}
                     </div>
+
+                    <div className="mt-16 text-center">
+                        <a 
+                            href="mailto:thesentnamgyu@gmail.com"
+                            className="inline-flex items-center gap-3 px-8 py-4 bg-accent hover:bg-accent/80 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-accent/20 text-base md:text-lg group"
+                        >
+                            <span>{isEn ? "Sponsor Foreign Missionary Inquiry" : "해외선교사 후원 문의"}</span>
+                            <span className="group-hover:translate-x-1 transition-transform">✉️</span>
+                        </a>
+                    </div>
                 </div>
             </section>
         </div>
