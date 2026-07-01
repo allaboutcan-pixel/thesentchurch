@@ -349,7 +349,7 @@ const Mission = () => {
                             <span className="w-10 h-10 rounded-full border-2 border-primary/20 flex items-center justify-center text-primary font-black text-sm">01</span>
                             <span className="text-primary font-bold text-sm tracking-wider uppercase">Mission History</span>
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-black text-slate-800 leading-snug break-keep">
+                        <h2 className="text-2xl md:text-3xl font-black text-slate-800 leading-snug break-keep">
                             {getText(content.sec2.title)}
                         </h2>
                         <div className="h-1 w-20 bg-primary rounded-full" />
@@ -404,7 +404,7 @@ const Mission = () => {
                             <span className="w-10 h-10 rounded-full border-2 border-primary/20 flex items-center justify-center text-primary font-black text-sm">02</span>
                             <span className="text-primary font-bold text-sm tracking-wider uppercase">Kaninuwa Project</span>
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-black text-slate-800 leading-snug break-keep">
+                        <h2 className="text-2xl md:text-3xl font-black text-slate-800 leading-snug break-keep">
                             {getText(content.sec3.title)}
                         </h2>
                         <div className="h-1 w-20 bg-primary rounded-full" />
@@ -443,7 +443,7 @@ const Mission = () => {
                             <span className="w-10 h-10 rounded-full border-2 border-primary/20 flex items-center justify-center text-primary font-black text-sm">03</span>
                             <span className="text-primary font-bold text-sm tracking-wider uppercase">Partnership</span>
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-black text-slate-800 leading-snug break-keep">
+                        <h2 className="text-2xl md:text-3xl font-black text-slate-800 leading-snug break-keep">
                             {getText(content.sec4.title)}
                         </h2>
                         <div className="h-1 w-20 bg-primary rounded-full" />
@@ -498,7 +498,7 @@ const Mission = () => {
                             <span className="w-10 h-10 rounded-full border-2 border-primary/20 flex items-center justify-center text-primary font-black text-sm">04</span>
                             <span className="text-primary font-bold text-sm tracking-wider uppercase">Transformation</span>
                         </div>
-                        <h2 className="text-3xl md:text-4xl font-black text-slate-800 leading-snug break-keep">
+                        <h2 className="text-2xl md:text-3xl font-black text-slate-800 leading-snug break-keep">
                             {getText(content.sec5.title)}
                         </h2>
                         <div className="h-1 w-20 bg-primary rounded-full" />
@@ -518,7 +518,7 @@ const Mission = () => {
                 >
                     <div className="text-center space-y-4 max-w-2xl mx-auto">
                         <span className="text-primary font-bold text-sm tracking-wider uppercase">Video Message</span>
-                        <h2 className="text-3xl md:text-4xl font-black text-slate-800 leading-snug break-keep">
+                        <h2 className="text-2xl md:text-3xl font-black text-slate-800 leading-snug break-keep">
                             {getText(content.video.title)}
                         </h2>
                         <div className="h-1 w-20 bg-primary rounded-full mx-auto" />
