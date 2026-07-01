@@ -196,7 +196,7 @@ const Mission = () => {
             },
             desc: {
                 ko: config?.missionVideoDesc || "지난 크리스마스에 파푸아뉴기니 카니누와 선교지에서 선교사님이 직접 전해오신 생생한 선교지 소식입니다.",
-                en: config?.missionVideoDescEn || "A video message sent by our missionary from the Kaninuwa mission field in Papua New Guinea during Christmas."
+                en: config?.missionVideoDescEn || "A video update from our missionaries serving in the Kaninuwa mission field in Papua New Guinea, shared with us last Christmas."
             }
         },
         prayer: {

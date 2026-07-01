@@ -1021,7 +1021,7 @@ const Admin = () => {
                     missionVideoTitle: fbConfig.missionVideoTitle || "선교지에서 온 소식",
                     missionVideoTitleEn: fbConfig.missionVideoTitleEn || "News from the Mission Field",
                     missionVideoDesc: fbConfig.missionVideoDesc || "지난 크리스마스에 파푸아뉴기니 카니누와 선교지에서 선교사님이 직접 전해오신 생생한 선교지 소식입니다.",
-                    missionVideoDescEn: fbConfig.missionVideoDescEn || "A video message sent by our missionary from the Kaninuwa mission field in Papua New Guinea during Christmas.",
+                    missionVideoDescEn: fbConfig.missionVideoDescEn || "A video update from our missionaries serving in the Kaninuwa mission field in Papua New Guinea, shared with us last Christmas.",
                 }));
                 setColumns(fbColumns || []);
                 if (fbConfig.staff) {
