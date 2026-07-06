@@ -77,6 +77,9 @@ const Resources = () => {
     const [selectedGalleryGroup, setSelectedGalleryGroup] = useState(null);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [direction, setDirection] = useState(0);
+    const [galleryArchiveData, setGalleryArchiveData] = useState({});
+    const [selectedGalleryYear, setSelectedGalleryYear] = useState(new Date().getFullYear().toString());
+    const [selectedGalleryMonth, setSelectedGalleryMonth] = useState((new Date().getMonth() + 1).toString());
 
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const prefix = location.pathname.startsWith('/news') ? 'news' : 'resources';
@@ -255,7 +258,24 @@ const Resources = () => {
                         groupsMap.get(groupKey).items.push(item);
                     });
                     
-                    setGalleryGroups(Array.from(groupsMap.values()));
+                    const groupsArray = Array.from(groupsMap.values());
+                    setGalleryGroups(groupsArray);
+
+                    // Group gallery groups by year and month for archive
+                    const grouped = {};
+                    groupsArray.forEach(group => {
+                        const [year, month] = safeSplitDate(group.date);
+                        if (!grouped[year]) grouped[year] = {};
+                        if (!grouped[year][month]) grouped[year][month] = [];
+                        grouped[year][month].push(group);
+                    });
+                    setGalleryArchiveData(grouped);
+
+                    if (groupsArray[0]) {
+                        const [ly, lm] = safeSplitDate(groupsArray[0].date);
+                        setSelectedGalleryYear(ly);
+                        setSelectedGalleryMonth(lm);
+                    }
                 }
 
                 // Process Sermons
@@ -1042,83 +1062,211 @@ const Resources = () => {
 
                 {activeTab === 'gallery' && (
                     <div className="space-y-24 pb-48 pt-32 animate-fade-in">
-                        <div className="border-b-4 border-slate-100 pb-6 space-y-4">
-                            <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
-                                <FileText size={28} className="text-primary shrink-0" />
-                                {t('resources.gallery_view_title')}
-                            </h3>
-                            <p className="text-slate-400 font-medium text-sm mt-1 italic">{t('resources.gallery_subtitle')}</p>
-                        </div>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
-                            {galleryGroups.map((group, idx) => {
-                                const mainImg = group.items && group.items.length > 0 ? group.items[0] : null;
-                                if (!mainImg) return null;
+                        {/* 1. 최신 갤러리 (최대 20개) */}
+                        <div className="space-y-8">
+                            <div className="border-b-4 border-slate-100 pb-6 space-y-4">
+                                <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+                                    <ImageIcon size={28} className="text-primary shrink-0" />
+                                    {t('resources.gallery_view_title')}
+                                </h3>
+                                <p className="text-slate-400 font-medium text-sm mt-1 italic">{t('resources.gallery_subtitle')}</p>
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+                                {galleryGroups.slice(0, 20).map((group, idx) => {
+                                    const mainImg = group.items && group.items.length > 0 ? group.items[0] : null;
+                                    if (!mainImg) return null;
 
-                                let thumbnailUrl = mainImg.thumbnailUrl || mainImg.url || '';
+                                    let thumbnailUrl = mainImg.thumbnailUrl || mainImg.url || '';
 
-                                if (!mainImg.thumbnailUrl && mainImg.type === 'video') {
-                                    if (mainImg.url && (mainImg.url.includes('youtube.com') || mainImg.url.includes('youtu.be'))) {
-                                        const ytId = getYoutubeId(mainImg.url);
-                                        if (ytId) thumbnailUrl = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+                                    if (!mainImg.thumbnailUrl && mainImg.type === 'video') {
+                                        if (mainImg.url && (mainImg.url.includes('youtube.com') || mainImg.url.includes('youtu.be'))) {
+                                            const ytId = getYoutubeId(mainImg.url);
+                                            if (ytId) thumbnailUrl = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+                                        }
+                                    } else if (!mainImg.thumbnailUrl && mainImg.url && mainImg.url.includes('drive.google.com')) {
+                                        const idMatch = mainImg.url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || mainImg.url.match(/\/d\/([a-zA-Z0-9_-]+)/) || mainImg.url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+                                        if (idMatch && idMatch[1]) thumbnailUrl = `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w1000`;
                                     }
-                                } else if (!mainImg.thumbnailUrl && mainImg.url && mainImg.url.includes('drive.google.com')) {
-                                    const idMatch = mainImg.url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || mainImg.url.match(/\/d\/([a-zA-Z0-9_-]+)/) || mainImg.url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-                                    if (idMatch && idMatch[1]) thumbnailUrl = `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w1000`;
-                                }
 
-                                return (
-                                    <div
-                                        key={idx}
-                                        className="relative aspect-video rounded-xl overflow-hidden cursor-pointer bg-slate-50 shadow-sm hover:shadow-xl transition-all border border-gray-100 group"
-                                        onClick={() => {
-                                            setSelectedGalleryGroup(group);
-                                            setCurrentImageIndex(0);
-                                        }}
-                                    >
-                                        <div className="w-full h-full relative">
-                                            <div className="w-full h-full overflow-hidden">
-                                                <img
-                                                    src={thumbnailUrl}
-                                                    alt={(i18n.language === 'en' && group.titleEn) ? group.titleEn : group.title}
-                                                    className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
-                                                    loading="lazy"
-                                                />
-                                            </div>
-
-                                            {/* Count Badge for Albums */}
-                                            {group.items.length > 1 && (
-                                                <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg text-[10px] font-black text-white border border-white/20 z-20 flex items-center gap-1.5 shadow-lg">
-                                                    <ImageIcon size={10} />
-                                                    {group.items.length}
+                                    return (
+                                        <div
+                                            key={idx}
+                                            className="relative aspect-video rounded-xl overflow-hidden cursor-pointer bg-slate-50 shadow-sm hover:shadow-xl transition-all border border-gray-100 group"
+                                            onClick={() => {
+                                                setSelectedGalleryGroup(group);
+                                                setCurrentImageIndex(0);
+                                            }}
+                                        >
+                                            <div className="w-full h-full relative">
+                                                <div className="w-full h-full overflow-hidden">
+                                                    <img
+                                                        src={thumbnailUrl}
+                                                        alt={(i18n.language === 'en' && group.titleEn) ? group.titleEn : group.title}
+                                                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                                                        loading="lazy"
+                                                    />
                                                 </div>
-                                            )}
 
-                                            {/* Video Indicator */}
-                                            {group.items.some(i => i.type === 'video') && (
-                                                <div className="absolute inset-0 flex items-center justify-center bg-black/5 group-hover:bg-black/20 transition-colors">
-                                                    <div className="w-10 h-10 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/50 group-hover:scale-110 transition-transform shadow-lg">
-                                                        <Play size={16} fill="currentColor" />
+                                                {/* Count Badge for Albums */}
+                                                {group.items.length > 1 && (
+                                                    <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg text-[10px] font-black text-white border border-white/20 z-20 flex items-center gap-1.5 shadow-lg">
+                                                        <ImageIcon size={10} />
+                                                        {group.items.length}
                                                     </div>
-                                                </div>
-                                            )}
+                                                )}
 
-                                            {/* Title Overlay */}
-                                            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <p className="text-white text-[11px] font-bold truncate">
-                                                    {(i18n.language === 'en' && group.titleEn) ? group.titleEn : group.title}
-                                                </p>
-                                                <p className="text-white/60 text-[9px] mt-0.5">{group.date}</p>
+                                                {/* Video Indicator */}
+                                                {group.items.some(i => i.type === 'video') && (
+                                                    <div className="absolute inset-0 flex items-center justify-center bg-black/5 group-hover:bg-black/20 transition-colors">
+                                                        <div className="w-10 h-10 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/50 group-hover:scale-110 transition-transform shadow-lg">
+                                                            <Play size={16} fill="currentColor" />
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Title Overlay */}
+                                                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <p className="text-white text-[11px] font-bold truncate">
+                                                        {(i18n.language === 'en' && group.titleEn) ? group.titleEn : group.title}
+                                                    </p>
+                                                    <p className="text-white/60 text-[9px] mt-0.5">{group.date}</p>
+                                                </div>
                                             </div>
                                         </div>
+                                    );
+                                })}
+                                {galleryGroups.length === 0 && (
+                                    <div className="col-span-full py-20 text-center text-gray-400 font-medium font-sans">
+                                        아직 등록된 사진이나 영상이 없습니다.
                                     </div>
-                                );
-                            })}
-                            {galleryGroups.length === 0 && (
-                                <div className="col-span-full py-20 text-center text-gray-400 font-medium font-sans">
-                                    아직 등록된 사진이나 영상이 없습니다.
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
+
+                        {/* 2. 지난 갤러리 아카이브 (연도/월별 필터) */}
+                        {galleryGroups.length > 0 && (
+                            <div className="space-y-8 animate-fade-in">
+                                <div className="border-b-4 border-slate-100 pb-6 space-y-4">
+                                    <h3 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+                                        <Calendar size={28} className="text-primary shrink-0" />
+                                        {t('past_gallery')}
+                                    </h3>
+                                    <p className="text-slate-400 font-medium text-sm mt-1 italic">{t('past_gallery_desc')}</p>
+                                </div>
+
+                                <div className="flex flex-wrap gap-2">
+                                    {Object.keys(galleryArchiveData).sort((a, b) => b - a).map(year => (
+                                        <button
+                                            key={year}
+                                            onClick={() => setSelectedGalleryYear(year)}
+                                            className={clsx(
+                                                "px-4 py-1.5 rounded-full font-black text-[10px] transition-all",
+                                                selectedGalleryYear === year
+                                                    ? "bg-primary text-white shadow-md shadow-primary/20"
+                                                    : "bg-slate-100 text-slate-400 hover:bg-slate-200"
+                                            )}
+                                        >
+                                            {year}{i18n.language.startsWith('ko') ? '년' : ''}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                <div className="flex flex-col lg:flex-row gap-8 min-h-[400px]">
+                                    {/* Month Sidebar */}
+                                    <div className="lg:w-40 flex flex-row lg:flex-col gap-1.5 overflow-x-auto pb-4 lg:pb-0 lg:border-r border-slate-100 pr-0 lg:pr-4">
+                                        {galleryArchiveData[selectedGalleryYear] && Object.keys(galleryArchiveData[selectedGalleryYear]).sort((a, b) => b - a).map(month => (
+                                            <button
+                                                key={month}
+                                                onClick={() => setSelectedGalleryMonth(month)}
+                                                className={clsx(
+                                                    "w-auto lg:w-full px-4 py-2 rounded-lg flex items-center justify-between transition-all group shrink-0",
+                                                    selectedGalleryMonth === month
+                                                        ? "bg-slate-900 text-white shadow-lg"
+                                                        : "bg-white text-slate-500 hover:bg-slate-50 border border-slate-100"
+                                                )}
+                                            >
+                                                <span className="font-bold">{month}{i18n.language.startsWith('ko') ? '월' : ''}</span>
+                                                <ChevronRight size={16} className={clsx("transition-transform", selectedGalleryMonth === month ? "opacity-100" : "opacity-0 group-hover:opacity-40")} />
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    {/* Selected Month's Gallery Grid View */}
+                                    <div className="flex-grow">
+                                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+                                            {galleryArchiveData[selectedGalleryYear]?.[selectedGalleryMonth]?.map((group, idx) => {
+                                                const mainImg = group.items && group.items.length > 0 ? group.items[0] : null;
+                                                if (!mainImg) return null;
+
+                                                let thumbnailUrl = mainImg.thumbnailUrl || mainImg.url || '';
+
+                                                if (!mainImg.thumbnailUrl && mainImg.type === 'video') {
+                                                    if (mainImg.url && (mainImg.url.includes('youtube.com') || mainImg.url.includes('youtu.be'))) {
+                                                        const ytId = getYoutubeId(mainImg.url);
+                                                        if (ytId) thumbnailUrl = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+                                                    }
+                                                } else if (!mainImg.thumbnailUrl && mainImg.url && mainImg.url.includes('drive.google.com')) {
+                                                    const idMatch = mainImg.url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || mainImg.url.match(/\/d\/([a-zA-Z0-9_-]+)/) || mainImg.url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+                                                    if (idMatch && idMatch[1]) thumbnailUrl = `https://drive.google.com/thumbnail?id=${idMatch[1]}&sz=w1000`;
+                                                }
+
+                                                return (
+                                                    <div
+                                                        key={idx}
+                                                        className="relative aspect-video rounded-xl overflow-hidden cursor-pointer bg-slate-50 shadow-sm hover:shadow-xl transition-all border border-gray-100 group"
+                                                        onClick={() => {
+                                                            setSelectedGalleryGroup(group);
+                                                            setCurrentImageIndex(0);
+                                                        }}
+                                                    >
+                                                        <div className="w-full h-full relative">
+                                                            <div className="w-full h-full overflow-hidden">
+                                                                <img
+                                                                    src={thumbnailUrl}
+                                                                    alt={(i18n.language === 'en' && group.titleEn) ? group.titleEn : group.title}
+                                                                    className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                                                                    loading="lazy"
+                                                                />
+                                                            </div>
+
+                                                            {/* Count Badge for Albums */}
+                                                            {group.items.length > 1 && (
+                                                                <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg text-[10px] font-black text-white border border-white/20 z-20 flex items-center gap-1.5 shadow-lg">
+                                                                    <ImageIcon size={10} />
+                                                                    {group.items.length}
+                                                                </div>
+                                                            )}
+
+                                                            {/* Video Indicator */}
+                                                            {group.items.some(i => i.type === 'video') && (
+                                                                <div className="absolute inset-0 flex items-center justify-center bg-black/5 group-hover:bg-black/20 transition-colors">
+                                                                    <div className="w-10 h-10 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/50 group-hover:scale-110 transition-transform shadow-lg">
+                                                                        <Play size={16} fill="currentColor" />
+                                                                    </div>
+                                                                </div>
+                                                            )}
+
+                                                            {/* Title Overlay */}
+                                                            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                                <p className="text-white text-[11px] font-bold truncate">
+                                                                    {(i18n.language === 'en' && group.titleEn) ? group.titleEn : group.title}
+                                                                </p>
+                                                                <p className="text-white/60 text-[9px] mt-0.5">{group.date}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                            {(!galleryArchiveData[selectedGalleryYear] || !galleryArchiveData[selectedGalleryYear][selectedGalleryMonth] || galleryArchiveData[selectedGalleryYear][selectedGalleryMonth].length === 0) && (
+                                                <div className="col-span-full py-20 text-center text-gray-400 font-medium font-sans">
+                                                    선택하신 날짜의 사진이나 영상이 없습니다.
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
 

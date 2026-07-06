@@ -295,7 +295,7 @@ export const dbService = {
     // Specific Fetchers for convenience
     getSermons: () => dbService.fetchItems(SERMONS),
     getBulletins: () => dbService.fetchItems(BULLETINS),
-    getGallery: () => dbService.fetchItems(DB_COLLECTIONS.GALLERY),
+    getGallery: (limitCount = 1000) => dbService.fetchItems(DB_COLLECTIONS.GALLERY, limitCount),
     getColumns: () => dbService.fetchItems(COLUMNS),
 
     addSermon: (data) => dbService.addItem(SERMONS, data),
