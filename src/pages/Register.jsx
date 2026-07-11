@@ -64,21 +64,31 @@ export default function Register() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-slate-50 px-4 py-12">
-            <div className="w-full max-w-md bg-white rounded-[2.5rem] p-8 md:p-10 border border-gray-100 shadow-xl space-y-8 relative overflow-hidden">
-                {/* Back button */}
-                <Link to="/login" className="inline-flex items-center gap-2 text-xs font-bold text-gray-400 hover:text-primary transition-colors">
-                    <ArrowLeft size={14} />
-                    로그인 페이지로 가기
-                </Link>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 px-4 py-12">
+            {/* Header: Logo & Church Name */}
+            <div className="flex items-center justify-center mb-8 max-w-md w-full">
+                <img 
+                    src="/images/church_logo.jpg" 
+                    alt="Logo" 
+                    className="w-12 h-12 md:w-14 h-14 object-cover mr-4 rounded-full border border-slate-100" 
+                    onError={(e) => {
+                        e.target.style.display = 'none';
+                    }}
+                />
+                <div className="text-left leading-tight">
+                    <h1 className="text-[17px] md:text-xl font-black text-slate-800 tracking-tight">보내심을 받은 생명의소리 교회</h1>
+                    <p className="text-xs md:text-sm font-bold text-slate-400 font-serif tracking-wide mt-0.5">The Church of the Sent</p>
+                </div>
+            </div>
 
-                <div className="text-center space-y-2">
-                    <h1 className="text-3xl font-black text-gray-800">교회 멤버십 가입 신청</h1>
-                    <p className="text-sm font-medium text-gray-400">교회 식구이시면 회원 가입을 신청하실 수 있습니다.</p>
+            {/* Register Container Box */}
+            <div className="w-full max-w-md bg-white border border-slate-200 shadow-sm p-8 md:p-10 space-y-8 rounded-sm">
+                <div className="text-left">
+                    <h2 className="text-lg font-bold text-slate-800 tracking-tight">Member Register</h2>
                 </div>
 
                 {success ? (
-                    <div className="p-6 bg-emerald-50 border border-emerald-100 rounded-3xl text-center space-y-4">
+                    <div className="p-6 bg-emerald-50 border border-emerald-100 rounded-lg text-center space-y-4">
                         <span className="text-4xl block">🎉</span>
                         <h3 className="font-bold text-emerald-950 text-base">가입 신청 완료!</h3>
                         <p className="text-xs text-emerald-800/80 leading-relaxed font-medium">
@@ -87,122 +97,109 @@ export default function Register() {
                             <br />
                             잠시 후 로그인 페이지로 이동합니다...
                         </p>
-                        <div className="w-8 h-8 border-3 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mx-auto mt-2" />
+                        <div className="w-8 h-8 border-2 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mx-auto mt-2" />
                     </div>
                 ) : (
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-5 text-left">
                         {error && (
-                            <div className="p-4 bg-red-50 text-red-600 rounded-2xl text-xs font-bold border border-red-100">
+                            <div className="p-4 bg-red-50 text-red-600 rounded-lg text-xs font-bold border border-red-100">
                                 ⚠️ {error}
                             </div>
                         )}
 
-                        {/* 이름 */}
-                        <div className="space-y-1">
-                            <label className="text-xs font-bold text-gray-500 ml-1">이름 *</label>
-                            <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                                    <User size={16} />
-                                </span>
-                                <input
-                                    type="text"
-                                    placeholder="홍길동"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    className="w-full pl-11 pr-4 py-3 bg-gray-50 rounded-2xl border border-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium"
-                                />
-                            </div>
+                        {/* Name Input */}
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                NAME
+                                <span className="text-red-600 font-bold ml-1">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="이름을 입력해 주십시오"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="w-full px-4 py-3 border border-slate-200 rounded-md text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:border-[#4c51bf] font-medium transition-all"
+                            />
                         </div>
 
-                        {/* 이메일 */}
-                        <div className="space-y-1">
-                            <label className="text-xs font-bold text-gray-500 ml-1">이메일 주소 *</label>
-                            <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                                    <Mail size={16} />
-                                </span>
-                                <input
-                                    type="email"
-                                    placeholder="your-email@example.com"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-11 pr-4 py-3 bg-gray-50 rounded-2xl border border-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium"
-                                />
-                            </div>
+                        {/* Email Input */}
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                EMAIL ADDRESS
+                                <span className="text-red-600 font-bold ml-1">*</span>
+                            </label>
+                            <input
+                                type="email"
+                                placeholder="이메일을 입력해 주십시오"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full px-4 py-3 border border-slate-200 rounded-md text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:border-[#4c51bf] font-medium transition-all"
+                            />
                         </div>
 
-                        {/* 연락처 */}
-                        <div className="space-y-1">
-                            <label className="text-xs font-bold text-gray-500 ml-1">연락처 (관리자 확인용)</label>
-                            <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                                    <Phone size={16} />
-                                </span>
-                                <input
-                                    type="tel"
-                                    placeholder="010-1234-5678"
-                                    value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
-                                    className="w-full pl-11 pr-4 py-3 bg-gray-50 rounded-2xl border border-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium"
-                                />
-                            </div>
+                        {/* Phone Input */}
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                PHONE NUMBER
+                            </label>
+                            <input
+                                type="tel"
+                                placeholder="연락처를 입력해 주십시오"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                className="w-full px-4 py-3 border border-slate-200 rounded-md text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:border-[#4c51bf] font-medium transition-all"
+                            />
                         </div>
 
-                        {/* 비밀번호 */}
-                        <div className="space-y-1">
-                            <label className="text-xs font-bold text-gray-500 ml-1">비밀번호 *</label>
-                            <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                                    <Lock size={16} />
-                                </span>
-                                <input
-                                    type="password"
-                                    placeholder="최소 6자 이상"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-11 pr-4 py-3 bg-gray-50 rounded-2xl border border-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium"
-                                />
-                            </div>
+                        {/* Password Input */}
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                PASSWORD
+                                <span className="text-red-600 font-bold ml-1">*</span>
+                            </label>
+                            <input
+                                type="password"
+                                placeholder="비밀번호를 입력해 주십시오 (6자 이상)"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full px-4 py-3 border border-slate-200 rounded-md text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:border-[#4c51bf] font-medium transition-all"
+                            />
                         </div>
 
-                        {/* 비밀번호 확인 */}
-                        <div className="space-y-1">
-                            <label className="text-xs font-bold text-gray-500 ml-1">비밀번호 확인 *</label>
-                            <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                                    <Lock size={16} />
-                                </span>
-                                <input
-                                    type="password"
-                                    placeholder="비밀번호 재입력"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    className="w-full pl-11 pr-4 py-3 bg-gray-50 rounded-2xl border border-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium"
-                                />
-                            </div>
+                        {/* Confirm Password Input */}
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                CONFIRM PASSWORD
+                                <span className="text-red-600 font-bold ml-1">*</span>
+                            </label>
+                            <input
+                                type="password"
+                                placeholder="비밀번호를 다시 입력해 주십시오"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                className="w-full px-4 py-3 border border-slate-200 rounded-md text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:border-[#4c51bf] font-medium transition-all"
+                            />
                         </div>
 
+                        {/* Register Button */}
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full py-4 mt-2 bg-primary text-white rounded-2xl font-black text-base hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 disabled:opacity-50 flex items-center justify-center gap-2 hover:scale-[1.01]"
+                            className="w-full py-3.5 mt-2 bg-[#4c51bf] hover:bg-[#434190] text-white rounded-md font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 hover:scale-[1.01]"
                         >
                             {isLoading ? (
-                                <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                             ) : (
-                                <>
-                                    가입 신청하기
-                                    <UserPlus size={18} />
-                                </>
+                                "Register"
                             )}
                         </button>
                     </form>
                 )}
 
-                <div className="border-t border-gray-100 pt-6 text-center">
-                    <span className="text-xs text-gray-400 font-medium">이미 가입하셨나요? </span>
-                    <Link to="/login" className="text-xs font-black text-primary hover:underline ml-1">
-                        로그인하러 가기
+                {/* Bottom Link */}
+                <div className="pt-2 text-center text-xs font-bold text-slate-500">
+                    <Link to="/login" className="hover:text-[#4c51bf] transition-colors">
+                        Back to Login
                     </Link>
                 </div>
             </div>

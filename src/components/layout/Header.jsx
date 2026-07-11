@@ -150,7 +150,7 @@ const Header = () => {
                                         : "bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-sm"
                                 )}
                             >
-                                로그인
+                                Member
                             </Link>
                         )}
                     </div>
@@ -286,7 +286,7 @@ const Header = () => {
                                 onClick={() => setIsOpen(false)}
                                 className="w-full flex items-center justify-center py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold transition-all text-xs"
                             >
-                                로그인 / 회원가입 신청
+                                Member
                             </Link>
                         )}
                         <button

@@ -66,113 +66,134 @@ export default function Login() {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-slate-50 px-4 py-12">
-            <div className="w-full max-w-md bg-white rounded-[2.5rem] p-8 md:p-10 border border-gray-100 shadow-xl space-y-8 relative overflow-hidden">
-                {/* Back button */}
-                <Link to="/" className="inline-flex items-center gap-2 text-xs font-bold text-gray-400 hover:text-primary transition-colors">
-                    <ArrowLeft size={14} />
-                    홈으로 돌아가기
-                </Link>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 px-4 py-12">
+            {/* Header: Logo & Church Name */}
+            <div className="flex items-center justify-center mb-8 max-w-md w-full">
+                <img 
+                    src="/images/church_logo.jpg" 
+                    alt="Logo" 
+                    className="w-12 h-12 md:w-14 h-14 object-cover mr-4 rounded-full border border-slate-100" 
+                    onError={(e) => {
+                        // Fallback in case logo doesn't load
+                        e.target.style.display = 'none';
+                    }}
+                />
+                <div className="text-left leading-tight">
+                    <h1 className="text-[17px] md:text-xl font-black text-slate-800 tracking-tight">보내심을 받은 생명의소리 교회</h1>
+                    <p className="text-xs md:text-sm font-bold text-slate-400 font-serif tracking-wide mt-0.5">The Church of the Sent</p>
+                </div>
+            </div>
 
-                <div className="text-center space-y-2">
-                    <h1 className="text-3xl font-black text-gray-800">교회 멤버십 로그인</h1>
-                    <p className="text-sm font-medium text-gray-400">교인 전용 서비스를 이용하시려면 로그인해주세요.</p>
+            {/* Login Container Box */}
+            <div className="w-full max-w-md bg-white border border-slate-200 shadow-sm p-8 md:p-10 space-y-8 rounded-sm">
+                <div className="text-left">
+                    <h2 className="text-lg font-bold text-slate-800 tracking-tight">Member Login</h2>
                 </div>
 
                 {/* If user is logged in but pending admin approval */}
                 {currentUser && currentUser.status === 'pending' ? (
-                    <div className="p-5 bg-amber-50 border border-amber-100 rounded-3xl text-center space-y-3">
+                    <div className="p-5 bg-amber-50 border border-amber-100 rounded-lg text-center space-y-3">
                         <span className="text-3xl block">⏳</span>
                         <h3 className="font-bold text-amber-900 text-sm">가입 승인 대기 중</h3>
                         <p className="text-xs text-amber-800/80 leading-relaxed font-medium">
                             {currentUser.name} 님의 가입 신청이 정상 접수되었습니다.<br />
-                            관리자가 회원 가입을 **승인**한 후에 전체 서비스를 이용하실 수 있습니다. 조금만 기다려주세요!
+                            보안과 질서 유지를 위해 관리자가 회원 가입을 **승인**한 후에 서비스 이용이 가능합니다. 조금만 기다려주세요!
                         </p>
                         <button 
                             type="button" 
                             onClick={() => window.location.reload()} 
-                            className="mt-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition-all"
+                            className="mt-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition-all"
                         >
                             승인 상태 확인하기
                         </button>
                     </div>
                 ) : (
-                    <form onSubmit={handleSubmit} className="space-y-5">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         {error && (
-                            <div className="p-4 bg-red-50 text-red-600 rounded-2xl text-xs font-bold border border-red-100">
+                            <div className="p-4 bg-red-50 text-red-600 rounded-lg text-xs font-bold border border-red-100 text-left">
                                 ⚠️ {error}
                             </div>
                         )}
                         {resetSent && (
-                            <div className="p-4 bg-emerald-50 text-emerald-600 rounded-2xl text-xs font-bold border border-emerald-100">
+                            <div className="p-4 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold border border-emerald-100 text-left">
                                 📧 비밀번호 재설정 메일이 전송되었습니다. 이메일을 확인해주세요.
                             </div>
                         )}
 
-                        <div className="space-y-1.5">
-                            <label className="text-xs font-bold text-gray-500 ml-1">이메일 주소</label>
-                            <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                                    <Mail size={16} />
-                                </span>
-                                <input
-                                    type="email"
-                                    placeholder="your-email@example.com"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 rounded-2xl border border-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium"
-                                />
+                        {/* Email Input */}
+                        <div className="space-y-1.5 text-left">
+                            <div className="flex items-center justify-between">
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                    EMAIL ADDRESS
+                                    <span className="text-red-600 font-bold ml-1">*</span>
+                                </label>
                             </div>
+                            <input
+                                type="email"
+                                placeholder="이메일을 입력해 주십시오"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="w-full px-4 py-3 border border-slate-200 rounded-md text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:border-[#4c51bf] font-medium transition-all"
+                            />
                         </div>
 
-                        <div className="space-y-1.5">
-                            <div className="flex items-center justify-between ml-1">
-                                <label className="text-xs font-bold text-gray-500">비밀번호</label>
-                                <button
-                                    type="button"
-                                    onClick={handlePasswordReset}
-                                    className="text-[10px] font-bold text-primary hover:underline"
-                                    disabled={isLoading}
-                                >
-                                    비밀번호 분실?
-                                </button>
+                        {/* Password Input */}
+                        <div className="space-y-1.5 text-left">
+                            <div className="flex items-center justify-between">
+                                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                    PASSWORD
+                                    <span className="text-red-600 font-bold ml-1">*</span>
+                                </label>
                             </div>
-                            <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                                    <Lock size={16} />
-                                </span>
-                                <input
-                                    type="password"
-                                    placeholder="••••••••"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-11 pr-4 py-3.5 bg-gray-50 rounded-2xl border border-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium"
-                                />
-                            </div>
+                            <input
+                                type="password"
+                                placeholder="비밀번호를 입력해 주십시오"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full px-4 py-3 border border-slate-200 rounded-md text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:border-[#4c51bf] font-medium transition-all"
+                            />
                         </div>
 
+                        {/* Remember Me */}
+                        <div className="flex items-center text-left">
+                            <input
+                                id="remember-me"
+                                type="checkbox"
+                                className="w-4 h-4 rounded text-[#4c51bf] focus:ring-[#4c51bf]/20 accent-[#4c51bf] border-slate-300 cursor-pointer"
+                            />
+                            <label htmlFor="remember-me" className="ml-2 text-xs font-bold text-slate-500 cursor-pointer select-none">
+                                Remember Me
+                            </label>
+                        </div>
+
+                        {/* Login Button */}
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full py-4 bg-primary text-white rounded-2xl font-black text-base hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 disabled:opacity-50 flex items-center justify-center gap-2 hover:scale-[1.01]"
+                            className="w-full py-3.5 bg-[#4c51bf] hover:bg-[#434190] text-white rounded-md font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 hover:scale-[1.01]"
                         >
                             {isLoading ? (
-                                <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin" />
+                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                             ) : (
-                                <>
-                                    로그인하기
-                                    <LogIn size={18} />
-                                </>
+                                "Login"
                             )}
                         </button>
                     </form>
                 )}
 
-                <div className="border-t border-gray-100 pt-6 text-center">
-                    <span className="text-xs text-gray-400 font-medium">아직 회원이 아니신가요? </span>
-                    <Link to="/register" className="text-xs font-black text-primary hover:underline ml-1">
-                        회원가입 신청하기
+                {/* Bottom Links */}
+                <div className="pt-2 flex items-center justify-between text-xs font-bold text-slate-500">
+                    <Link to="/register" className="hover:text-[#4c51bf] transition-colors">
+                        New Register
                     </Link>
+                    <button
+                        type="button"
+                        onClick={handlePasswordReset}
+                        className="hover:text-[#4c51bf] transition-colors"
+                        disabled={isLoading}
+                    >
+                        I forgot my password
+                    </button>
                 </div>
             </div>
         </div>
