@@ -438,6 +438,14 @@ const Prayer = () => {
                                                     </ol>
                                                 )}
                                             </div>
+                                        ) : section.id === 'common' ? (
+                                            <div className="space-y-6 text-stone-600 font-medium text-base lg:text-lg leading-[2.8]">
+                                                {section.topics.map((topic, idx) => (
+                                                    <p key={idx} className="break-keep">
+                                                        {topic}
+                                                    </p>
+                                                ))}
+                                            </div>
                                         ) : (
                                             <ol className={clsx(
                                                 "space-y-4 text-stone-600 font-medium text-base lg:text-lg leading-[2.8] pl-5",
