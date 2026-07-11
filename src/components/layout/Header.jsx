@@ -5,10 +5,12 @@ import { useTranslation } from 'react-i18next';
 import churchData from '../../data/church_data.json';
 import { useSiteConfig } from '../../hooks/useSiteConfig';
 import clsx from 'clsx';
+import { useAuth } from '../../context/AuthContext';
 
 import ContactModal from '../ContactModal';
 
 const Header = () => {
+    const { currentUser, logout } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [isContactOpen, setIsContactOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
@@ -119,6 +121,40 @@ const Header = () => {
 
                 {/* Language Switcher & Mobile Menu Button */}
                 <div className="flex items-center gap-1 md:gap-4">
+                    {/* 멤버십 로그인 / 로그아웃 버튼 (Desktop) */}
+                    <div className="hidden md:flex items-center gap-2.5">
+                        {currentUser ? (
+                            <div className="flex items-center gap-2">
+                                <span className={clsx("text-xs font-black shrink-0", isScrolled ? "text-gray-600" : "text-white/90")}>
+                                    {currentUser.name} 님
+                                </span>
+                                <button
+                                    onClick={logout}
+                                    className={clsx(
+                                        "px-3 py-1.5 rounded-full font-bold text-[10px] transition-all border shrink-0",
+                                        isScrolled
+                                            ? "bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200"
+                                            : "bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-sm"
+                                    )}
+                                >
+                                    로그아웃
+                                </button>
+                            </div>
+                        ) : (
+                            <Link
+                                to="/login"
+                                className={clsx(
+                                    "px-3.5 py-1.5 rounded-full font-bold text-xs transition-all shrink-0 border",
+                                    isScrolled
+                                        ? "bg-primary text-white border-primary hover:bg-primary-dark shadow-sm"
+                                        : "bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-sm"
+                                )}
+                            >
+                                로그인
+                            </Link>
+                        )}
+                    </div>
+
                     {/* Language Switcher */}
                     <button
                         onClick={() => i18n.changeLanguage(i18n.language === 'ko' ? 'en' : 'ko')}
@@ -230,7 +266,29 @@ const Header = () => {
                     </div>
 
                     {/* Mobile Contact Button */}
-                    <div className="px-6 py-8 border-t border-gray-100 bg-gray-50/50">
+                    <div className="px-6 py-8 border-t border-gray-100 bg-gray-50/50 space-y-3">
+                        {currentUser ? (
+                            <div className="flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-100">
+                                <span className="text-xs font-bold text-gray-700">{currentUser.name} 님 로그인됨</span>
+                                <button
+                                    onClick={() => {
+                                        logout();
+                                        setIsOpen(false);
+                                    }}
+                                    className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all"
+                                >
+                                    로그아웃
+                                </button>
+                            </div>
+                        ) : (
+                            <Link
+                                to="/login"
+                                onClick={() => setIsOpen(false)}
+                                className="w-full flex items-center justify-center py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl font-bold transition-all text-xs"
+                            >
+                                로그인 / 회원가입 신청
+                            </Link>
+                        )}
                         <button
                             onClick={() => {
                                 setIsContactOpen(true);

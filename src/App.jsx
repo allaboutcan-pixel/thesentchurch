@@ -5,6 +5,8 @@ import ScrollToTop from './components/ScrollToTop';
 import ErrorBoundary from './components/ErrorBoundary';
 
 import { SiteConfigProvider } from './context/SiteConfigContext';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Custom lazy loading function that forces a reload if a chunk fails to load
 const lazyWithRetry = (componentImport) =>
@@ -42,6 +44,8 @@ const Admin = lazyWithRetry(() => import('./pages/Admin'));
 const DailyWord = lazyWithRetry(() => import('./pages/DailyWord'));
 const ComingSoon = lazyWithRetry(() => import('./pages/ComingSoon'));
 const Mission = lazyWithRetry(() => import('./pages/Mission'));
+const Login = lazyWithRetry(() => import('./pages/Login'));
+const Register = lazyWithRetry(() => import('./pages/Register'));
 
 // Loading Fallback Component
 const PageLoader = () => (
@@ -54,36 +58,46 @@ function App() {
   return (
     <>
       <SiteConfigProvider>
-        <ScrollToTop />
-        <ErrorBoundary>
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Home />} />
+        <AuthProvider>
+          <ScrollToTop />
+          <ErrorBoundary>
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Home />} />
 
-                {/* About Routes */}
-                <Route path="about" element={<About />} />
-                <Route path="about/*" element={<About />} />
+                  {/* About Routes */}
+                  <Route path="about" element={<About />} />
+                  <Route path="about/*" element={<About />} />
 
-                <Route path="ministry" element={<Ministry />} />
-                <Route path="ministry/tee" element={<TEE />} />
-                <Route path="ministry/bible" element={<BibleStudy />} />
-                <Route path="ministry/mission" element={<Mission />} />
-                <Route path="ministry/team" element={<TeamMinistry />} />
-                <Route path="ministry/prayer" element={<Prayer />} />
-                <Route path="ministry/*" element={<Ministry />} />
+                  {/* Ministry Routes */}
+                  <Route path="ministry" element={<Ministry />} />
+                  <Route path="ministry/tee" element={<TEE />} />
+                  <Route path="ministry/bible" element={<BibleStudy />} />
+                  <Route path="ministry/mission" element={<Mission />} /> {/* Public */}
+                  <Route path="ministry/team" element={<TeamMinistry />} />
+                  <Route path="ministry/prayer" element={<Prayer />} />
+                  <Route path="ministry/*" element={<Ministry />} />
 
-                <Route path="news" element={<Resources />} />
-                <Route path="news/*" element={<Resources />} />
+                  {/* News & Sermons */}
+                  <Route path="news" element={<Resources />} />
+                  <Route path="news/*" element={<Resources />} />
 
-                <Route path="sermons" element={<Resources />} />
-                <Route path="sermons/daily" element={<DailyWord />} />
-                <Route path="sermons/*" element={<Resources />} />
-              </Route>
-              <Route path="/admin" element={<Admin />} />
-            </Routes>
-          </Suspense>
-        </ErrorBoundary>
+                  <Route path="sermons" element={<Resources />} />
+                  <Route path="sermons/daily" element={<DailyWord />} />
+                  <Route path="sermons/*" element={<Resources />} />
+                </Route>
+                
+                {/* Auth Routes */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                
+                {/* Admin Route */}
+                <Route path="/admin" element={<Admin />} />
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
+        </AuthProvider>
       </SiteConfigProvider>
     </>
   );

@@ -332,6 +332,8 @@ const Admin = () => {
     const [dailyWords, setDailyWords] = useState([]);
     const [notices, setNotices] = useState([]);
     const [calendarEvents, setCalendarEvents] = useState([]);
+    const [usersList, setUsersList] = useState([]);
+    const [selectedPaths, setSelectedPaths] = useState([]);
     const [bannerFiles, setBannerFiles] = useState({
         heroImage: null,
         heroImageMobile: null,
@@ -630,6 +632,7 @@ const Admin = () => {
             setCalendarEvents(sortedCalendar);
             if (fbConfig) {
                 setSiteConfig(fbConfig);
+                setSelectedPaths(fbConfig.protectedPaths || []);
                 setFormData(prev => ({
                     ...prev,
                     heroImage: fbConfig.heroImage || '',
@@ -1047,6 +1050,45 @@ const Admin = () => {
             if (isMounted) setCalendarEvents([]);
         }
         if (isMounted) setIsLoading(false);
+    };
+
+    // Subscribe to users only when user manager tab is open
+    useEffect(() => {
+        let unsubscribe = null;
+        if (activeTab === 'users') {
+            unsubscribe = dbService.subscribeToUsers((list) => {
+                setUsersList(list);
+            });
+        }
+        return () => {
+            if (unsubscribe) unsubscribe();
+        };
+    }, [activeTab]);
+
+    const handleTogglePath = (path) => {
+        setSelectedPaths(prev => {
+            if (prev.includes(path)) {
+                return prev.filter(p => p !== path);
+            } else {
+                return [...prev, path];
+            }
+        });
+    };
+
+    const handleSaveProtectedPaths = async () => {
+        setIsLoading(true);
+        try {
+            await dbService.updateSiteConfig({
+                ...siteConfig,
+                protectedPaths: selectedPaths
+            });
+            alert('멤버십 전용 메뉴 설정이 저장되었습니다!');
+        } catch (err) {
+            console.error(err);
+            alert('설정 저장 중 오류가 발생했습니다: ' + err.message);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleLogin = (e) => {
@@ -2643,6 +2685,12 @@ const Admin = () => {
                         active={activeTab === 'gallery'}
                         onClick={() => { setActiveTab('gallery'); setShowAddForm(false); }}
                     />
+                    <SidebarItem
+                        icon={<Shield size={20} />}
+                        label="회원 승인 관리"
+                        active={activeTab === 'users'}
+                        onClick={() => { setActiveTab('users'); setShowAddForm(false); }}
+                    />
 
                 </nav>
 
@@ -2674,6 +2722,7 @@ const Admin = () => {
                             {activeTab === 'location' && '📍 오시는길 관리'}
                             {activeTab === 'education_ministry' && '🎓 교육 및 사역 관리'}
                             {activeTab === 'mission' && '🌏 선교와 전도 관리'}
+                            {activeTab === 'users' && '🔐 회원 가입 승인 관리'}
                         </h1>
                         <p className="flex items-center gap-2 text-sm mt-2 font-medium">
                             {isFirebaseConfigured ? (
@@ -6193,6 +6242,182 @@ const Admin = () => {
                                         )}
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    )
+                }
+
+                {/* 회원 승인 관리 (User Management) */}
+                {
+                    activeTab === 'users' && (
+                        <div className="space-y-10 animate-fade-in-up">
+                            {/* 멤버십 전용 메뉴 설정 (Membership Access Settings) */}
+                            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+                                <div className="p-8 border-b border-gray-50 flex justify-between items-center bg-white flex-wrap gap-4">
+                                    <h2 className="font-black text-primary text-xl flex items-center gap-3">
+                                        <Settings size={22} className="text-accent" />
+                                        멤버십 전용 메뉴 설정 (권한 제어)
+                                    </h2>
+                                    <button
+                                        onClick={handleSaveProtectedPaths}
+                                        className="px-6 py-2.5 bg-primary text-white rounded-xl text-xs font-black hover:bg-primary-dark transition-all shadow-md active:scale-95 hover:scale-102"
+                                    >
+                                        메뉴 설정 저장하기 💾
+                                    </button>
+                                </div>
+
+                                <div className="p-8 space-y-6">
+                                    <p className="text-sm text-gray-500 font-medium">
+                                        체크된 메뉴는 **로그인하여 관리자 승인을 받은 정회원만** 접근할 수 있습니다.
+                                        체크가 해제된 메뉴는 비회원을 포함한 모든 방문자에게 전체 공개됩니다.
+                                    </p>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {[
+                                            { label: '🎥 주일예배 말씀 전체', path: '/sermons', category: '설교와 말씀' },
+                                            { label: '📜 오늘의 말씀', path: '/sermons/daily', category: '설교와 말씀' },
+                                            { label: '✍️ 신학 칼럼', path: '/sermons/column', category: '설교와 말씀' },
+                                            { label: '🎓 교육/사역 전체', path: '/ministry', category: '교육 & 사역' },
+                                            { label: '📖 TEE 교육', path: '/ministry/tee', category: '교육 & 사역' },
+                                            { label: '📖 Bible Study', path: '/ministry/bible', category: '교육 & 사역' },
+                                            { label: '👥 팀사역', path: '/ministry/team', category: '교육 & 사역' },
+                                            { label: '🙏 중보기도', path: '/ministry/prayer', category: '교육 & 사역' },
+                                            { label: '🌏 선교와 전도', path: '/ministry/mission', category: '교육 & 사역' },
+                                            { label: '📄 주보 전체', path: '/news/bulletin', category: '교회 소식' },
+                                            { label: '📅 교회 일정', path: '/news/calendar', category: '교회 소식' },
+                                            { label: '🖼️ 갤러리', path: '/news/gallery', category: '교회 소식' },
+                                            { label: '📢 공지사항', path: '/news/notice', category: '교회 소식' }
+                                        ].map((item) => (
+                                            <label
+                                                key={item.path}
+                                                className={clsx(
+                                                    "flex items-center justify-between p-5 rounded-2xl border cursor-pointer transition-all hover:bg-gray-50/50 hover:border-gray-200",
+                                                    selectedPaths.includes(item.path)
+                                                        ? "bg-primary/5 border-primary/20 text-primary-dark"
+                                                        : "bg-white border-gray-100 text-gray-700"
+                                                )}
+                                            >
+                                                <div className="flex flex-col text-left">
+                                                    <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{item.category}</span>
+                                                    <span className="text-sm font-black mt-0.5">{item.label}</span>
+                                                </div>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedPaths.includes(item.path)}
+                                                    onChange={() => handleTogglePath(item.path)}
+                                                    className="w-5 h-5 rounded text-primary focus:ring-primary/20 accent-primary cursor-pointer shrink-0"
+                                                />
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* 회원 가입 신청 데이터베이스 */}
+                            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+                                <div className="p-8 border-b border-gray-50 flex justify-between items-center bg-white">
+                                    <h2 className="font-black text-primary text-xl flex items-center gap-3">
+                                        <Shield size={22} className="text-accent" />
+                                        회원 가입 신청 데이터베이스
+                                        <span className="text-sm font-bold text-gray-300 ml-2">
+                                            총 {usersList.length}명
+                                        </span>
+                                    </h2>
+                                </div>
+
+                                <div className="overflow-x-auto">
+                                    <table className="w-full">
+                                        <thead>
+                                            <tr className="text-left bg-gray-50/50 text-[11px] uppercase tracking-[0.2em] text-gray-400 font-black">
+                                                <th className="px-8 py-6 border-b border-gray-50">이름</th>
+                                                <th className="px-8 py-6 border-b border-gray-50">이메일</th>
+                                                <th className="px-8 py-6 border-b border-gray-50">연락처</th>
+                                                <th className="px-8 py-6 border-b border-gray-50">가입일</th>
+                                                <th className="px-8 py-6 border-b border-gray-50 text-center">승인 상태</th>
+                                                <th className="px-8 py-6 border-b border-gray-50 text-right">작업</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-50">
+                                            {usersList.length === 0 ? (
+                                                <tr>
+                                                    <td colSpan="6" className="px-8 py-20 text-center text-gray-400 font-medium">
+                                                        가입한 회원이 아직 없습니다.
+                                                    </td>
+                                                </tr>
+                                            ) : (
+                                                usersList.map((user) => (
+                                                    <tr key={user.id} className="hover:bg-gray-50/50 transition-all">
+                                                        <td className="px-8 py-5 text-sm font-black text-slate-800">{user.name}</td>
+                                                        <td className="px-8 py-5 text-sm text-gray-500">{user.email}</td>
+                                                        <td className="px-8 py-5 text-sm text-gray-500 font-mono">{user.phone || '-'}</td>
+                                                        <td className="px-8 py-5 text-xs text-gray-400 font-mono">
+                                                            {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : '-'}
+                                                        </td>
+                                                        <td className="px-8 py-5 text-center">
+                                                            <span className={clsx(
+                                                                "text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider inline-block",
+                                                                user.status === 'approved' 
+                                                                    ? "bg-emerald-50 text-emerald-600 border border-emerald-100" 
+                                                                    : "bg-amber-50 text-amber-600 border border-amber-100 animate-pulse"
+                                                            )}>
+                                                                {user.status === 'approved' ? '승인 완료' : '대기 중'}
+                                                            </span>
+                                                        </td>
+                                                        <td className="px-8 py-5 text-right whitespace-nowrap space-x-2">
+                                                            {user.status === 'pending' ? (
+                                                                <>
+                                                                    <button
+                                                                        onClick={async () => {
+                                                                            if (window.confirm(`${user.name} 님의 회원 가입을 승인하시겠습니까?`)) {
+                                                                                await dbService.updateItem('users', user.id, { status: 'approved' });
+                                                                            }
+                                                                        }}
+                                                                        className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold transition-all shadow-sm"
+                                                                    >
+                                                                        승인
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={async () => {
+                                                                            if (window.confirm(`정말 ${user.name} 님의 가입 신청을 거절하고 삭제하시겠습니까?`)) {
+                                                                                await dbService.deleteItem('users', user.id);
+                                                                            }
+                                                                        }}
+                                                                        className="px-3 py-1.5 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-lg text-xs font-bold transition-all"
+                                                                    >
+                                                                        거절
+                                                                    </button>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <button
+                                                                        onClick={async () => {
+                                                                            if (window.confirm(`${user.name} 님의 승인을 취소하고 대기 상태로 변경하시겠습니까?`)) {
+                                                                                await dbService.updateItem('users', user.id, { status: 'pending' });
+                                                                            }
+                                                                        }}
+                                                                        className="px-3 py-1.5 bg-amber-50 text-amber-600 hover:bg-amber-100 rounded-lg text-xs font-bold transition-all"
+                                                                    >
+                                                                        승인 취소
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={async () => {
+                                                                            if (window.confirm(`정말 ${user.name} 회원을 강제 탈퇴(삭제) 처리하시겠습니까?`)) {
+                                                                                await dbService.deleteItem('users', user.id);
+                                                                            }
+                                                                        }}
+                                                                        className="px-3 py-1.5 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white rounded-lg text-xs font-bold transition-all"
+                                                                    >
+                                                                        삭제
+                                                                    </button>
+                                                                </>
+                                                            )}
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     )

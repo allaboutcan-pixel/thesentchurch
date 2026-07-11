@@ -533,6 +533,25 @@ export const dbService = {
         }
     },
 
+    // Real-time subscription for Registered/Pending Users
+    subscribeToUsers: (callback) => {
+        const usersCollection = collection(db, "users");
+        // We order users by name or createdAt
+        const q = query(usersCollection, orderBy("createdAt", "desc"));
+        try {
+            const unsubscribe = onSnapshot(q, (snapshot) => {
+                const list = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                callback(list);
+            }, (error) => {
+                console.error("Error subscribing to users list:", error);
+            });
+            return unsubscribe;
+        } catch (e) {
+            console.error("Error setting up users subscription:", e);
+            return () => { };
+        }
+    },
+
     // Reset Flow: Delete all and replace with initial data
     resetCollection: async (collectionName, initialData) => {
         try {
