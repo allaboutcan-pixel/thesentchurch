@@ -66,15 +66,16 @@ const Ministry = () => {
 
     const formatDetail = (text) => {
         if (!text) return null;
+        const normalizedText = text.replace(/\r\n/g, '\n');
         return (
             <div className="mt-8 pt-6 border-t border-gray-100 text-gray-700 space-y-6 animate-fade-in text-base md:text-lg leading-relaxed">
-                {text.split('\n\n').map((paragraph, i) => (
+                {normalizedText.split('\n\n').map((paragraph, i) => (
                     <div key={i}>
                         {paragraph.split('\n').map((line, j) => {
                             const isHeader = /^\s*(\[?(?:대상|사역\s*표어|사역\s*비전|Target|Motto|Vision|Our\s*Theme|Theme)\]?)/i.test(line);
                             return (
                                 <div key={j} className={clsx(isHeader && j > 0 && "mt-8", "block")}>
-                                    {line.split(/(\*\*.*?\*\*|\[?(?:대상|사역\s*표어|사역\s*비전|Target|Motto|Vision|Our\s*Theme|Theme)\]?)/i).map((part, k) => {
+                                    {line.trim() === '' ? '\u00A0' : line.split(/(\*\*.*?\*\*|\[?(?:대상|사역\s*표어|사역\s*비전|Target|Motto|Vision|Our\s*Theme|Theme)\]?)/i).map((part, k) => {
                                         if (part.startsWith('**') && part.endsWith('**')) {
                                             return <strong key={k}>{part.slice(2, -2)}</strong>;
                                         }
