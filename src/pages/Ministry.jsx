@@ -55,7 +55,7 @@ const Ministry = () => {
         return items;
     };
 
-    const currentItems = config.ministryItems || churchData.ministries;
+    const currentItems = (config.ministryItems && config.ministryItems.length > 0) ? config.ministryItems : churchData.ministries;
     const ministryList = getFilteredItems(currentItems.map(m => ({
         ...m,
         name: isEn ? (m.nameEn || m.name) : m.name,
@@ -334,10 +334,10 @@ const Ministry = () => {
                             return dbVal || t(i18nKey);
                         };
 
-                        const displayName = getTranslation(ministry.name, ministry.nameEn, `ministry.${ministry.id}_name`);
-                        const displayTarget = getTranslation(ministry.target, ministry.targetEn, `ministry.${ministry.id}_target`);
-                        const displayDesc = getTranslation(ministry.description, ministry.descriptionEn, `ministry.${ministry.id}_desc`);
-                        const displayDetail = getTranslation(ministry.detail, ministry.detailEn, `ministry.${ministry.id}_detail`);
+                        const displayName = getTranslation(ministry.name, ministry.nameEn, `${ministry.id}_name`);
+                        const displayTarget = getTranslation(ministry.target, ministry.targetEn, `${ministry.id}_target`);
+                        const displayDesc = getTranslation(ministry.description, ministry.descriptionEn, `${ministry.id}_desc`);
+                        const displayDetail = getTranslation(ministry.detail, ministry.detailEn, `${ministry.id}_detail`);
 
                         // Check if this section should have the brown background
                         // IDs: 'team_ministry', 'mission_evangelism', 'prayer', 'tsc', 'tsy'
