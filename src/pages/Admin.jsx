@@ -1696,6 +1696,21 @@ const Admin = () => {
 
                 await Promise.race([dbService.updateSiteConfig(currentConfig), createTimeout()]);
                 setSiteConfig({ ...currentConfig });
+                
+                // Update formData with the final currentConfig to prevent uploaded URLs from being reset on subsequent saves
+                setFormData(prev => ({
+                    ...prev,
+                    ...currentConfig,
+                    pastorName: currentConfig.pastor?.name || '',
+                    pastorNameEn: currentConfig.pastor?.nameEn || '',
+                    pastorRole: currentConfig.pastor?.role || '',
+                    pastorRoleEn: currentConfig.pastor?.roleEn || '',
+                    pastorGreeting: currentConfig.pastor?.greeting || '',
+                    pastorGreetingEn: currentConfig.pastor?.greetingEn || '',
+                    pastorHistory: Array.isArray(currentConfig.pastor?.history) ? currentConfig.pastor.history.join('\n') : (currentConfig.pastor?.history || ''),
+                    pastorHistoryEn: Array.isArray(currentConfig.pastor?.historyEn) ? currentConfig.pastor.historyEn.join('\n') : (currentConfig.pastor?.historyEn || ''),
+                }));
+
                 setBannerFiles({}); // Clear selected files after successful save
                 setStaffFile(null); // Clear pastor file staffFile after successful save
                 alert('✅ 모든 설정이 저장되었습니다!');
