@@ -1606,12 +1606,12 @@ const Admin = () => {
                         return;
                     }
                     if (!['heroImage', 'heroImageMobile', 'heroImage2', 'heroImage2Mobile', 'heroImage3', 'heroImage3Mobile', 'aboutBanner', 'newsBanner', 'ministryBanner', 'resourcesBanner', 'missionBanner', 'prayerBanner', 'teeBanner', 'teamBanner', 'prayerIntroImage', 'prayerRequestImage', 'missionSec2Image', 'missionSec3Image', 'missionSec4Image', 'missionSec5Image'].includes(key)) {
-                        if (key.startsWith('pastor')) {
+                        if (key.startsWith('pastor') && key !== 'pastor') {
                             const pastorKey = key.replace('pastor', '').toLowerCase();
                             if (pastorKey !== 'history' && pastorKey !== 'historyen') {
                                 currentConfig.pastor = { ...currentConfig.pastor, [pastorKey]: formData[key] };
                             }
-                        } else {
+                        } else if (key !== 'pastor') {
                             currentConfig[key] = formData[key];
                         }
                     }
