@@ -1601,6 +1601,10 @@ const Admin = () => {
 
                 // Ensure all text fields from formData are merged into currentConfig
                 Object.keys(formData).forEach(key => {
+                    // Do not merge complex objects or lists that are managed in siteConfig directly
+                    if (['services', 'specialServices', 'otherMeetings', 'location', 'social', 'staff'].includes(key)) {
+                        return;
+                    }
                     // Do not merge lists unless saving their specific tab to prevent accidental data loss
                     if (['ministryItems', 'teamMinistryItems'].includes(key) && activeTab !== 'education_ministry') {
                         return;
