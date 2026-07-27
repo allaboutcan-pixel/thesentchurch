@@ -272,10 +272,10 @@ const Home = () => {
                 <AnimatePresence mode="sync">
                     <motion.div
                         key={currentSlide}
-                        initial={{ x: "100%", opacity: 0.9 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        exit={{ x: "-100%", opacity: 0.9 }}
-                        transition={{ type: "tween", ease: "easeInOut", duration: 1.2 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1.5 }}
                         className={clsx(
                             "absolute inset-0 z-0",
                             (typeof heroImage === 'string' && heroImage.includes('drive.google.com')) && "hero-video-mask"
