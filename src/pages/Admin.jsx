@@ -963,14 +963,14 @@ const Admin = () => {
                     missionFruit3Desc: fbConfig.missionFruit3Desc || "카니누와 아이들에게 줄 책가방 선물을 받았습니다! 멈추지 않고 보내주신 사랑의 손길 덕분에 많은 아이에게 기쁨이 전해졌습니다. 아이들이 예수님의 사랑을 경험하고 서로 사랑하며 건강하고 지혜롭게 자라도록 기도해 주세요.",
                     missionFruit3DescEn: fbConfig.missionFruit3DescEn || "We received school bags as gifts for the Kaninuwa children! Thanks to the unceasing hands of love sent to us, joy was delivered to many children. Please pray that the children experience Jesus' love, love one another, and grow healthy and wise.",
 
-                    missionPrayer1: fbConfig.missionPrayer1 || "파푸아뉴기니 비자 발급이 순조롭게 진행되어 8월에는 세 명의 번역자들과 직접 만나 사역할 수 있도록",
-                    missionPrayer1En: fbConfig.missionPrayer1En || "That the Papua New Guinea visa issuance proceeds smoothly so that we can directly meet and minister with the three translators in August.",
-                    missionPrayer2: fbConfig.missionPrayer2 || "카니누와 종족 마을에서 6월 28일부터 7월 3일까지 청소년과 청년을 위한 지방회 연합 부흥회가 있습니다. 이곳에서 선포되는 말씀을 통해 회개의 역사가 있도록, 참가한 자들의 삶에 변화가 있도록",
-                    missionPrayer2En: fbConfig.missionPrayer2En || "There is a joint district revival for youth and young adults in the Kaninuwa tribe village from June 28 to July 3. That through the proclaimed Word there will be a history of repentance, and changes in the lives of the attendees.",
-                    missionPrayer3: fbConfig.missionPrayer3 || "마을에서 요한복음, 요한1,2,3서와 계시록의 최종통독을 하는데 은혜 가운데 진행되도록",
-                    missionPrayer3En: fbConfig.missionPrayer3En || "That the final reading of the Gospel of John, 1,2,3 John, and Revelation in the village proceeds smoothly in grace.",
-                    missionPrayer4: fbConfig.missionPrayer4 || "번역자인 잭 형제가 알로타우로 나와 병원에서 진찰받으려고 하는데 복통의 원인을 정확히 알고 치료받을 수 있도록",
-                    missionPrayer4En: fbConfig.missionPrayer4En || "That brother Jack, a translator, who is coming to Alotau to be examined at the hospital, will find the exact cause of his stomach pain and receive proper treatment.",
+                    missionPrayer1: fbConfig.missionPrayer1 !== undefined ? fbConfig.missionPrayer1 : "파푸아뉴기니 비자 발급이 순조롭게 진행되어 8월에는 세 명의 번역자들과 직접 만나 사역할 수 있도록",
+                    missionPrayer1En: fbConfig.missionPrayer1En !== undefined ? fbConfig.missionPrayer1En : "That the Papua New Guinea visa issuance proceeds smoothly so that we can directly meet and minister with the three translators in August.",
+                    missionPrayer2: fbConfig.missionPrayer2 !== undefined ? fbConfig.missionPrayer2 : "카니누와 종족 마을에서 6월 28일부터 7월 3일까지 청소년과 청년을 위한 지방회 연합 부흥회가 있습니다. 이곳에서 선포되는 말씀을 통해 회개의 역사가 있도록, 참가한 자들의 삶에 변화가 있도록",
+                    missionPrayer2En: fbConfig.missionPrayer2En !== undefined ? fbConfig.missionPrayer2En : "There is a joint district revival for youth and young adults in the Kaninuwa tribe village from June 28 to July 3. That through the proclaimed Word there will be a history of repentance, and changes in the lives of the attendees.",
+                    missionPrayer3: fbConfig.missionPrayer3 !== undefined ? fbConfig.missionPrayer3 : "마을에서 요한복음, 요한1,2,3서와 계시록의 최종통독을 하는데 은혜 가운데 진행되도록",
+                    missionPrayer3En: fbConfig.missionPrayer3En !== undefined ? fbConfig.missionPrayer3En : "That the final reading of the Gospel of John, 1,2,3 John, and Revelation in the village proceeds smoothly in grace.",
+                    missionPrayer4: fbConfig.missionPrayer4 !== undefined ? fbConfig.missionPrayer4 : "번역자인 잭 형제가 알로타우로 나와 병원에서 진찰받으려고 하는데 복통의 원인을 정확히 알고 치료받을 수 있도록",
+                    missionPrayer4En: fbConfig.missionPrayer4En !== undefined ? fbConfig.missionPrayer4En : "That brother Jack, a translator, who is coming to Alotau to be examined at the hospital, will find the exact cause of his stomach pain and receive proper treatment.",
 
                     // Redesigned Mission Sections mapping
                     missionSec2Title: fbConfig.missionSec2Title || "모든 사람이 자신의 언어로 하나님을 만나도록",
