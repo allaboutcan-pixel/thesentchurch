@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, Suspense, lazy } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Play, ArrowRight, Youtube, Bell } from 'lucide-react';
+import { Play, ArrowRight, Youtube, Bell, FileText, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import churchData from '../data/church_data.json';
 import sermonsInitialData from '../data/sermons.json';
@@ -485,21 +485,57 @@ const Home = () => {
                                     {(i18n.language === 'en' && latestSermon.titleEn) ? latestSermon.titleEn : (latestSermon.title || t('home.latest_word'))}
                                 </h3>
                             </div>
-                            <a
-                                href={youtubeUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex flex-col items-center gap-1.5 text-primary/60 hover:text-red-600 transition-all group px-4 py-3 rounded-2xl hover:bg-red-50"
-                            >
-                                <div className="flex items-center gap-2 text-sm md:text-base font-black">
-                                    <Youtube size={20} fill="currentColor" />
-                                    <span>YouTube</span>
-                                </div>
-                                <div className="flex items-center gap-1 text-[11px] md:text-xs font-bold opacity-70 group-hover:opacity-100">
-                                    <span>{t('home.go_to')}</span>
-                                    <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                                </div>
-                            </a>
+                            <div className="flex items-center justify-center md:justify-end gap-2 flex-wrap">
+                                <a
+                                    href={youtubeUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex flex-col items-center gap-1.5 text-primary/60 hover:text-red-600 transition-all group px-4 py-3 rounded-2xl hover:bg-red-50"
+                                >
+                                    <div className="flex items-center gap-2 text-sm md:text-base font-black">
+                                        <Youtube size={20} fill="currentColor" />
+                                        <span>YouTube</span>
+                                    </div>
+                                    <div className="flex items-center gap-1 text-[11px] md:text-xs font-bold opacity-70 group-hover:opacity-100">
+                                        <span>{t('home.go_to')}</span>
+                                        <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                                    </div>
+                                </a>
+
+                                {latestSermon?.link ? (
+                                    <a
+                                        href={dbService.formatDriveLink(latestSermon.link)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex flex-col items-center gap-1.5 text-primary/60 hover:text-primary transition-all group px-4 py-3 rounded-2xl hover:bg-primary/5"
+                                        title="설교원문 바로가기"
+                                    >
+                                        <div className="flex items-center gap-2 text-sm md:text-base font-black">
+                                            <FileText size={20} className="text-primary" />
+                                            <span>{i18n.language === 'en' ? 'Sermon Manuscript' : '설교원문바로가기'}</span>
+                                        </div>
+                                        <div className="flex items-center gap-1 text-[11px] md:text-xs font-bold opacity-70 group-hover:opacity-100">
+                                            <span>{i18n.language === 'en' ? 'View' : '바로가기'}</span>
+                                            <ExternalLink size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                                        </div>
+                                    </a>
+                                ) : (
+                                    <button
+                                        onClick={() => alert(i18n.language === 'en' ? 'No sermon manuscript link registered yet.' : '등록된 설교원문 링크가 없습니다.')}
+                                        className="flex flex-col items-center gap-1.5 text-gray-400 hover:text-gray-600 transition-all group px-4 py-3 rounded-2xl hover:bg-gray-50 cursor-pointer"
+                                        title="설교원문 바로가기"
+                                    >
+                                        <div className="flex items-center gap-2 text-sm md:text-base font-black">
+                                            <FileText size={20} className="text-gray-400" />
+                                            <span>{i18n.language === 'en' ? 'Sermon Manuscript' : '설교원문바로가기'}</span>
+                                        </div>
+                                        <div className="flex items-center gap-1 text-[11px] md:text-xs font-bold opacity-70 group-hover:opacity-100">
+                                            <span>{i18n.language === 'en' ? 'View' : '바로가기'}</span>
+                                            <ExternalLink size={12} className="group-hover:translate-x-0.5 transition-transform" />
+                                        </div>
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

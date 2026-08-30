@@ -1838,8 +1838,10 @@ const Admin = () => {
             setFormData({
                 ...formData,
                 title: item.title,
+                titleEn: item.titleEn || '',
                 date: item.date,
                 preacher: item.preacher || '',
+                preacherEn: item.preacherEn || '',
                 youtubeId: item.youtubeId || '',
                 link: item.link || ''
             });
@@ -2968,7 +2970,7 @@ const Admin = () => {
                                         />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-sm font-bold text-gray-500 ml-1">참고 자료/파일 링크 (URL - 선택사항)</label>
+                                        <label className="text-sm font-bold text-gray-500 ml-1">설교원문보기 링크 (URL - 선택사항)</label>
                                         <input
                                             type="url"
                                             className="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-primary/10 outline-none"
@@ -2976,6 +2978,7 @@ const Admin = () => {
                                             value={formData.link || ''}
                                             onChange={(e) => setFormData({ ...formData, link: e.target.value })}
                                         />
+                                        <p className="text-[10px] text-gray-400 ml-1 font-medium">* 설교 원문 텍스트 또는 문서(구글 드라이브, PDF 등)의 링크 주소를 입력해주세요.</p>
                                     </div>
                                 </>
                             )}

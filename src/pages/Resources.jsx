@@ -550,11 +550,36 @@ const Resources = () => {
                                             <h2 className="text-sm md:text-xl font-black text-white mb-2 leading-tight truncate">
                                                 {((i18n.language === 'en' && latestSermon.titleEn) ? latestSermon.titleEn : (latestSermon.title || "")) || ""}
                                             </h2>
-                                            <div className="flex items-center gap-2 text-white/60">
-                                                <div className="w-6 h-6 bg-white/5 rounded-full flex items-center justify-center">
-                                                    <Play size={10} className="text-accent" />
+                                            <div className="flex items-center justify-between gap-2 text-white/60">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-6 h-6 bg-white/5 rounded-full flex items-center justify-center">
+                                                        <Play size={10} className="text-accent" />
+                                                    </div>
+                                                    <span className="font-bold text-sm">{(i18n.language === 'en' && latestSermon.preacherEn) ? latestSermon.preacherEn : (latestSermon.preacher || (i18n.language.startsWith('en') ? 'Pastor Namgyu Lee' : '이남규 목사'))}</span>
                                                 </div>
-                                                <span className="font-bold text-sm">{(i18n.language === 'en' && latestSermon.preacherEn) ? latestSermon.preacherEn : (latestSermon.preacher || (i18n.language.startsWith('en') ? 'Pastor Namgyu Lee' : '이남규 목사'))}</span>
+                                                {latestSermon?.link ? (
+                                                    <a
+                                                        href={dbService.formatDriveLink(latestSermon.link)}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="flex items-center gap-1.5 px-3 py-1.5 bg-primary hover:bg-primary/90 text-white rounded-xl text-xs font-bold transition-all shadow-md shrink-0"
+                                                        title="설교원문 바로가기"
+                                                    >
+                                                        <FileText size={14} />
+                                                        <span>{i18n.language === 'en' ? 'Manuscript' : '설교원문바로가기'}</span>
+                                                        <ExternalLink size={12} />
+                                                    </a>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => alert(i18n.language === 'en' ? 'No sermon manuscript link registered yet.' : '등록된 설교원문 링크가 없습니다.')}
+                                                        className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white/60 hover:text-white rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer"
+                                                        title="설교원문 바로가기"
+                                                    >
+                                                        <FileText size={14} />
+                                                        <span>{i18n.language === 'en' ? 'Manuscript' : '설교원문바로가기'}</span>
+                                                        <ExternalLink size={12} />
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -681,6 +706,19 @@ const Resources = () => {
                                                 </div>
                                             </div>
                                             <div className="flex items-center gap-2 shrink-0 ml-2">
+                                                {item.link && (
+                                                    <a
+                                                        href={dbService.formatDriveLink(item.link)}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        onClick={(e) => e.stopPropagation()}
+                                                        className="p-1 text-slate-400 hover:text-primary transition-colors flex items-center gap-1 text-[11px] font-bold"
+                                                        title="설교원문 바로가기"
+                                                    >
+                                                        <FileText size={12} />
+                                                        <span className="hidden sm:inline">원문</span>
+                                                    </a>
+                                                )}
                                                 <Play size={10} className="text-slate-300 group-hover:text-primary transition-colors" fill="currentColor" />
                                             </div>
                                         </div>
@@ -1921,9 +1959,34 @@ const Resources = () => {
 
                         {/* Legend Detail */}
                         <div className="p-8 md:p-10">
-                            <div className="flex items-center gap-3 mb-4">
-                                <span className="px-3 py-1 bg-primary/20 text-primary text-[11px] font-black rounded-lg uppercase tracking-widest">{selectedVideo.date}</span>
-                                <span className="text-white/40 text-sm font-black uppercase tracking-widest">Sunday Sermon</span>
+                            <div className="flex items-center justify-between gap-4 mb-4 flex-wrap">
+                                <div className="flex items-center gap-3">
+                                    <span className="px-3 py-1 bg-primary/20 text-primary text-[11px] font-black rounded-lg uppercase tracking-widest">{selectedVideo.date}</span>
+                                    <span className="text-white/40 text-sm font-black uppercase tracking-widest">Sunday Sermon</span>
+                                </div>
+                                {selectedVideo?.link ? (
+                                    <a
+                                        href={dbService.formatDriveLink(selectedVideo.link)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-1.5 px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-xl text-xs font-black transition-all shadow-md"
+                                        title="설교원문 바로가기"
+                                    >
+                                        <FileText size={16} />
+                                        <span>{i18n.language === 'en' ? 'Sermon Manuscript' : '설교원문바로가기'}</span>
+                                        <ExternalLink size={14} />
+                                    </a>
+                                ) : (
+                                    <button
+                                        onClick={() => alert(i18n.language === 'en' ? 'No sermon manuscript link registered yet.' : '등록된 설교원문 링크가 없습니다.')}
+                                        className="flex items-center gap-1.5 px-4 py-2 bg-white/10 hover:bg-white/20 text-white/60 hover:text-white rounded-xl text-xs font-black transition-all cursor-pointer"
+                                        title="설교원문 바로가기"
+                                    >
+                                        <FileText size={16} />
+                                        <span>{i18n.language === 'en' ? 'Sermon Manuscript' : '설교원문바로가기'}</span>
+                                        <ExternalLink size={14} />
+                                    </button>
+                                )}
                             </div>
                             <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">
                                 {(i18n.language === 'en' && selectedVideo.titleEn) ? selectedVideo.titleEn : selectedVideo.title}
