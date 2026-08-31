@@ -21,7 +21,6 @@ import { db, storage, auth } from "../lib/firebase";
 const SERMONS = "sermons";
 const BULLETINS = "bulletins";
 const COLUMNS = "columns";
-const DAILY_WORD = "daily_word";
 const NOTICES = "notices";
 const SITE_CONFIG = "siteConfig";
 
@@ -387,66 +386,6 @@ export const dbService = {
             return true;
         } catch (e) {
             console.error("Error updating site config:", e);
-            throw e;
-        }
-    },
-
-    // Daily Word
-    getDailyWords: async () => {
-        try {
-            const q = query(collection(db, DAILY_WORD), orderBy("date", "desc"));
-            const querySnapshot = await getDocs(q);
-            return querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
-        } catch (e) {
-            console.error("Error getting daily words: ", e);
-            return [];
-        }
-    },
-    addDailyWord: async (data) => {
-        try {
-            const docRef = await addDoc(collection(db, DAILY_WORD), {
-                ...data,
-                createdAt: new Date().toISOString()
-            });
-            return { id: docRef.id, ...data };
-        } catch (e) {
-            console.error("Error adding daily word: ", e);
-            throw e;
-        }
-    },
-    updateDailyWord: async (id, data) => {
-        try {
-            const docRef = doc(db, DAILY_WORD, id);
-            await updateDoc(docRef, data);
-            return { id, ...data };
-        } catch (e) {
-            console.error("Error updating daily word: ", e);
-            throw e;
-        }
-    },
-    deleteDailyWord: async (id) => {
-        try {
-            await deleteDoc(doc(db, DAILY_WORD, id));
-            return true;
-        } catch (e) {
-            console.error("Error deleting daily word: ", e);
-            throw e;
-        }
-    },
-    updateDailyWordsOrder: async (items) => {
-        try {
-            const batch = writeBatch(db);
-            items.forEach(item => {
-                const docRef = doc(db, DAILY_WORD, item.id);
-                batch.update(docRef, { order: item.order });
-            });
-            await batch.commit();
-            return true;
-        } catch (e) {
-            console.error("Error updating daily words order: ", e);
             throw e;
         }
     },

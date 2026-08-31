@@ -329,7 +329,6 @@ const Admin = () => {
     const [siteConfig, setSiteConfig] = useState({});
     const [staffList, setStaffList] = useState([]);
     const [columns, setColumns] = useState([]);
-    const [dailyWords, setDailyWords] = useState([]);
     const [notices, setNotices] = useState([]);
     const [calendarEvents, setCalendarEvents] = useState([]);
     const [usersList, setUsersList] = useState([]);
@@ -493,7 +492,6 @@ const Admin = () => {
         // English fields for general items
         titleEn: '', preacherEn: '', contentEn: '', authorEn: '', staffEnglishRole: '', staffHistoryEn: '',
         missionTitleEn: '', missionSubtitleEn: '',
-        showDailyWordPopup: true,
         showNoticePopup: true,
         showPopup: false,
 
@@ -592,7 +590,6 @@ const Admin = () => {
             const fbBulletins = await dbService.getBulletins();
             const fbGallery = await dbService.getGallery();
             const fbColumns = await dbService.getColumns();
-            const fbDailyWords = await dbService.getDailyWords();
             const fbCalendar = await dbService.getCalendarEvents();
             const fbNotices = await dbService.getNotices();
             // Sort calendar specifically if needed, though dbService does it
@@ -609,17 +606,6 @@ const Admin = () => {
             setGallery(fbGallery);
             setColumns(fbColumns || []);
             setNotices(fbNotices || []);
-
-            // Sort daily words: Order (desc) -> Date (desc)
-            const sortedDailyWords = (fbDailyWords || []).sort((a, b) => {
-                const orderA = a.order ?? -1;
-                const orderB = b.order ?? -1;
-                if (orderA !== -1 && orderB !== -1) return orderB - orderA;
-                if (orderA !== -1) return -1;
-                if (orderB !== -1) return 1;
-                return new Date(b.date) - new Date(a.date); // DESCENDING (Fri -> Mon)
-            });
-            setDailyWords(sortedDailyWords);
             setCalendarEvents(sortedCalendar);
             if (fbConfig) {
                 setSiteConfig(fbConfig);
@@ -905,7 +891,6 @@ const Admin = () => {
                     pastorHistory: Array.isArray(fbConfig.pastor?.history) ? fbConfig.pastor.history.join('\n') : (fbConfig.pastor?.history || ''),
                     pastorHistoryEn: Array.isArray(fbConfig.pastor?.historyEn) ? fbConfig.pastor.historyEn.join('\n') : (fbConfig.pastor?.historyEn || ''),
                     prayerCommonTopicsEn: fbConfig.prayerCommonTopicsEn || '',
-                    showDailyWordPopup: fbConfig.showDailyWordPopup !== false,
                     showNoticePopup: fbConfig.showNoticePopup !== false,
 
                     // Mission Content mapping with original design fallbacks
@@ -1031,7 +1016,6 @@ const Admin = () => {
             if (isMounted) setBulletins(bulletinsInitialData);
             if (isMounted) setGallery([]);
             if (isMounted) setColumns([]);
-            if (isMounted) setDailyWords([]);
             if (isMounted) setCalendarEvents([]);
         }
         if (isMounted) setIsLoading(false);
@@ -1092,42 +1076,6 @@ const Admin = () => {
         return match ? match[1] : url;
     };
 
-
-    const handleMoveDailyWord = async (index, direction) => {
-        if (isLoading) return;
-        const newIndex = index + direction;
-        if (newIndex < 0 || newIndex >= dailyWords.length) return;
-
-        setIsLoading(true);
-        try {
-            const newItems = [...dailyWords];
-            // Swap items in the array
-            [newItems[index], newItems[newIndex]] = [newItems[newIndex], newItems[index]];
-
-            // Assign order values to all items based on their new visual position
-            // Higher order = appears first (descending sort)
-            const updates = newItems.map((item, idx) => ({
-                id: item.id,
-                order: newItems.length - idx
-            }));
-
-            // Optimistic update
-            newItems.forEach((item, idx) => {
-                item.order = newItems.length - idx;
-            });
-            setDailyWords(newItems);
-
-            // Save to DB
-            await dbService.updateDailyWordsOrder(updates);
-
-        } catch (error) {
-            console.error("Error reordering:", error);
-            alert("순서 변경 중 오류가 발생했습니다.");
-            loadData(); // Revert on error
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     const handleMoveNotice = async (index, direction) => {
         if (isLoading) return;
@@ -1533,31 +1481,6 @@ const Admin = () => {
                     const newId = await Promise.race([dbService.addCalendarEvent(eventData), createTimeout()]);
                     savedItem = { id: newId, ...eventData };
                     setCalendarEvents([...calendarEvents, savedItem].sort((a, b) => new Date(a.startDate) - new Date(b.startDate)));
-                }
-            } else if (activeTab === 'dailyWord') {
-                let finalImageUrl = formData.fileUrl;
-                if (file) {
-                    // No timeout for direct uploads
-                    finalImageUrl = await dbService.uploadFile(file, 'daily_words');
-                } else if (finalImageUrl) {
-                    finalImageUrl = dbService.formatDriveImage(finalImageUrl);
-                }
-
-                const dailyWordData = {
-                    content: formData.content,
-                    contentEn: formData.contentEn || '',
-                    verse: formData.verse || formData.title, // Use title field for verse if verse not specified, or vice versa
-                    verseEn: formData.titleEn || '',
-                    date: formData.date,
-                    image: finalImageUrl
-                };
-
-                if (editingId) {
-                    savedItem = await Promise.race([dbService.updateDailyWord(editingId, dailyWordData), createTimeout()]);
-                    setDailyWords(dailyWords.map(dw => dw.id === editingId ? savedItem : dw));
-                } else {
-                    savedItem = await Promise.race([dbService.addDailyWord(dailyWordData), createTimeout()]);
-                    setDailyWords([savedItem, ...dailyWords]);
                 }
             } else if (activeTab === 'notice') {
                 let finalImages = [];
@@ -2630,12 +2553,6 @@ const Admin = () => {
                         onClick={() => { setActiveTab('columns'); setShowAddForm(false); }}
                     />
                     <SidebarItem
-                        icon={<Quote size={20} />}
-                        label="오늘의 말씀 관리"
-                        active={activeTab === 'dailyWord'}
-                        onClick={() => { setActiveTab('dailyWord'); setShowAddForm(false); }}
-                    />
-                    <SidebarItem
                         icon={<Bell size={20} />}
                         label="공지사항 관리"
                         active={activeTab === 'notice'}
@@ -2721,7 +2638,6 @@ const Admin = () => {
                         <h1 className="text-3xl font-black text-primary">
                             {activeTab === 'sermons' && '🎥 설교 영상 관리'}
                             {activeTab === 'bulletins' && '📄 주보 파일 관리'}
-                            {activeTab === 'dailyWord' && '📜 오늘의 말씀 관리'}
                             {activeTab === 'notice' && '📢 공지사항 관리'}
                             {activeTab === 'gallery' && '🖼️ 갤러리 관리'}
                             {activeTab === 'columns' && '✍️ 신학 칼럼 관리'}
@@ -2844,7 +2760,6 @@ const Admin = () => {
                                             activeTab === 'columns' ? '새 신학 칼럼 등록' :
                                                 activeTab === 'staff' ? '새 섬기는 분 등록' :
                                                     activeTab === 'calendar' ? '새 일정 등록' :
-                                                        activeTab === 'dailyWord' ? '새 오늘의 말씀 등록' :
                                                         activeTab === 'notice' ? '새 공지사항 등록' : '정보 수정'}
                             </h2>
                             <button onClick={() => setShowAddForm(false)} className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-50 rounded-full">
@@ -2874,7 +2789,7 @@ const Admin = () => {
                                     onChange={(e) => setFormData({ ...formData, titleEn: e.target.value })}
                                 />
                                 <p className="text-[10px] text-gray-400 ml-1 font-medium italic">
-                                    {activeTab === 'dailyWord' ? '* Biblical Verse in English (e.g., Matthew 5:13)' : activeTab === 'notice' ? 'English Title' : ''}
+                                    {activeTab === 'notice' ? 'English Title' : ''}
                                 </p>
                             </div>
 
@@ -3364,7 +3279,7 @@ const Admin = () => {
                                 </div>
                             )}
 
-                            {(activeTab === 'dailyWord' || activeTab === 'notice') && (
+                            {activeTab === 'notice' && (
                                 <div className="space-y-6 md:col-span-2">
                                     <div className="space-y-2">
                                         <label className="text-sm font-bold text-gray-500 ml-1">내용 (Korean Content)</label>
@@ -5097,19 +5012,7 @@ const Admin = () => {
                                             <p className="text-gray-400 text-xs font-bold">메인 홈페이지 방문 시 띄울 팝업 노출 여부를 선택합니다.</p>
                                         </div>
                                     </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
-                                            <div>
-                                                <span className="font-bold text-gray-700 block text-sm">📜 오늘의 말씀 팝업 활성화</span>
-                                                <span className="text-[10px] text-gray-400">활성화하면 메인 페이지에 오늘의 말씀 팝업창이 나타납니다.</span>
-                                            </div>
-                                            <input
-                                                type="checkbox"
-                                                checked={formData.showDailyWordPopup !== false}
-                                                onChange={(e) => setFormData({ ...formData, showDailyWordPopup: e.target.checked })}
-                                                className="w-6 h-6 rounded text-primary focus:ring-primary/20 accent-primary"
-                                            />
-                                        </div>
+                                    <div className="grid grid-cols-1 gap-6">
                                         <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
                                             <div>
                                                 <span className="font-bold text-gray-700 block text-sm">📢 공지사항 팝업 활성화</span>
@@ -5650,122 +5553,12 @@ const Admin = () => {
                             {/* Empty State */}
                             {(activeTab === 'sermons' ? sermons :
                                 activeTab === 'bulletins' ? bulletins :
-                                    activeTab === 'columns' ? columns :
-                                        activeTab === 'dailyWord' ? dailyWords : gallery).length === 0 && activeTab !== 'dailyWord' && (
+                                    activeTab === 'columns' ? columns : gallery).length === 0 && (
                                     <div className="p-20 text-center text-gray-400 font-medium">
                                         데이터가 없습니다. 상단 '새 항목 등록하기'를 눌러 추가해 주세요.
                                     </div>
                                 )}
                         </div>
-                    )
-                }
-
-                {/* Daily Word List (Custom Grid View) */}
-                {
-                    activeTab === 'dailyWord' && !showAddForm && (
-                        <div className="animate-fade-in-up">
-                            {dailyWords.length > 0 && (
-                                <div className="flex justify-between items-center mb-6 px-2">
-                                    <h2 className="font-black text-primary text-xl flex items-center gap-2">
-                                        <BookOpen size={22} className="text-accent" />
-                                        DAILY WORD DATABASE
-                                        <span className="text-sm font-bold text-gray-300 ml-2">{dailyWords.length} Items</span>
-                                    </h2>
-                                    <span className="text-xs text-slate-400 font-bold bg-slate-100 px-3 py-1 rounded-full animate-pulse">
-                                        * 순서 변경 시 즉시 자동 저장됩니다 (모바일 앱 연동)
-                                    </span>
-                                </div>
-                            )}
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4">
-                                {dailyWords.length === 0 ? (
-                                    <div className="col-span-full py-20 text-center bg-white rounded-[2rem] border border-gray-100 shadow-sm">
-                                        <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
-                                            <BookOpen size={40} />
-                                        </div>
-                                        <p className="text-gray-400 font-bold mb-2">등록된 오늘의 말씀이 없습니다.</p>
-                                        <p className="text-gray-300 text-sm">새 항목 등록하기 버튼을 눌러 추가해주세요.</p>
-                                    </div>
-                                ) : (
-                                    dailyWords.map((word, idx) => (
-                                        <div key={word.id} className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 group transition-all hover:shadow-lg flex flex-col relative">
-                                            <div className="aspect-video relative overflow-hidden bg-slate-100">
-                                                <img
-                                                    src={word.image || "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?auto=format&fit=crop&q=80&w=800"}
-                                                    alt="Preview"
-                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                                                />
-                                                <div className="absolute top-2 left-2 flex gap-1">
-                                                    <span className="bg-black/60 backdrop-blur-sm text-white px-2 py-0.5 rounded text-[10px] font-bold border border-white/10">
-                                                        {word.date}
-                                                    </span>
-                                                </div>
-                                                <div className="absolute top-2 right-2 flex gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                                                    <button
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleMoveDailyWord(idx, -1);
-                                                        }}
-                                                        disabled={idx === 0}
-                                                        className="p-1 bg-black/60 backdrop-blur-sm text-white rounded hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30"
-                                                        title="Move Up"
-                                                    >
-                                                        <ArrowUp size={12} />
-                                                    </button>
-                                                    <button
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            handleMoveDailyWord(idx, 1);
-                                                        }}
-                                                        disabled={idx === dailyWords.length - 1}
-                                                        className="p-1 bg-black/60 backdrop-blur-sm text-white rounded hover:bg-white hover:text-black transition-all border border-white/20 disabled:opacity-30"
-                                                        title="Move Down"
-                                                    >
-                                                        <ArrowDown size={12} />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div className="p-2.5 flex-grow flex flex-col">
-                                                <h3 className="font-bold text-primary text-[11px] mb-0.5 truncate">
-                                                    {word.verse || word.title}
-                                                </h3>
-                                                <p className="text-gray-400 text-[10px] leading-tight break-keep line-clamp-2 mb-2">
-                                                    "{word.content}"
-                                                </p>
-                                                <div className="mt-auto flex gap-1 pt-1.5 border-t border-gray-50">
-                                                    <button
-                                                        onClick={() => {
-                                                            setEditingId(word.id);
-                                                            setFormData({
-                                                                ...formData,
-                                                                title: word.verse || word.title || '',
-                                                                content: word.content || '',
-                                                                date: word.date || '',
-                                                                fileUrl: word.image || ''
-                                                            });
-                                                            setShowAddForm(true);
-                                                        }}
-                                                        className="flex-grow py-1.5 bg-gray-50 text-gray-500 rounded-lg text-[10px] font-bold hover:bg-primary/10 hover:text-primary transition-all"
-                                                    >
-                                                        수정
-                                                    </button>
-                                                    <button
-                                                        onClick={async () => {
-                                                            if (window.confirm('정말 삭제하시겠습니까?')) {
-                                                                await dbService.deleteDailyWord(word.id);
-                                                                setDailyWords(dailyWords.filter(dw => dw.id !== word.id));
-                                                            }
-                                                        }}
-                                                        className="p-1.5 bg-red-50 text-red-400 rounded-lg hover:bg-red-500 hover:text-white transition-all shadow-sm"
-                                                    >
-                                                        <Trash2 size={12} />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))
-                                )}
-                            </div>
-                        </div >
                     )
                 }
 
@@ -6286,7 +6079,6 @@ const Admin = () => {
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                         {[
                                             { label: '🎥 주일예배 말씀 전체', path: '/sermons', category: '설교와 말씀' },
-                                            { label: '📜 오늘의 말씀', path: '/sermons/daily', category: '설교와 말씀' },
                                             { label: '✍️ 신학 칼럼', path: '/sermons/column', category: '설교와 말씀' },
                                             { label: '🎓 교육/사역 전체', path: '/ministry', category: '교육 & 사역' },
                                             { label: '📖 TEE 교육', path: '/ministry/tee', category: '교육 & 사역' },

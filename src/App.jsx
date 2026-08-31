@@ -41,7 +41,6 @@ const BibleStudy = lazyWithRetry(() => import('./pages/BibleStudy'));
 const TeamMinistry = lazyWithRetry(() => import('./pages/TeamMinistry'));
 const Prayer = lazyWithRetry(() => import('./pages/Prayer'));
 const Admin = lazyWithRetry(() => import('./pages/Admin'));
-const DailyWord = lazyWithRetry(() => import('./pages/DailyWord'));
 const ComingSoon = lazyWithRetry(() => import('./pages/ComingSoon'));
 const Mission = lazyWithRetry(() => import('./pages/Mission'));
 const Login = lazyWithRetry(() => import('./pages/Login'));
@@ -84,7 +83,6 @@ function App() {
                   <Route path="news/*" element={<Resources />} />
 
                   <Route path="sermons" element={<Resources />} />
-                  <Route path="sermons/daily" element={<DailyWord />} />
                   <Route path="sermons/*" element={<Resources />} />
                 </Route>
                 

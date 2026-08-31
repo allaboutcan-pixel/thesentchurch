@@ -14,14 +14,12 @@ import SEO from '../components/SEO';
 import clsx from 'clsx';
 
 // Lazy load the popup to reduce initial bundle size
-const DailyWordPopup = lazy(() => import('../components/DailyWordPopup'));
 const NoticePopup = lazy(() => import('../components/NoticePopup'));
 
 const DEFAULT_HERO_IMAGE = ""; // Set to empty to avoid accidental flashes
 
 const Home = () => {
     const [latestSermon, setLatestSermon] = useState(sermonsInitialData[0] || {});
-    const [latestDailyWord, setLatestDailyWord] = useState(null);
     const [recentUpdates, setRecentUpdates] = useState([]);
     const [homeNotices, setHomeNotices] = useState([]);
     const [isVideoLoaded, setIsVideoLoaded] = useState(false);
@@ -112,13 +110,9 @@ const Home = () => {
         const fetchLiveContent = async () => {
             try {
                 // Fetch in parallel for better performance
-                const [liveSermons, liveDailyWords, liveBulletins, liveColumns, liveGallery, liveNotices] = await Promise.all([
+                const [liveSermons, liveBulletins, liveColumns, liveGallery, liveNotices] = await Promise.all([
                     dbService.getSermons().catch(err => {
                         console.warn("Home: Failed to fetch sermons", err);
-                        return [];
-                    }),
-                    dbService.fetchItems('daily_word', 7).catch(err => {
-                        console.warn("Home: Failed to fetch daily_word", err);
                         return [];
                     }),
                     dbService.getBulletins().catch(() => []),
@@ -141,33 +135,6 @@ const Home = () => {
                     if (isMounted) setLatestSermon(cleanedSermons[0] || {});
                 }
 
-                if (Array.isArray(liveDailyWords) && liveDailyWords.length > 0) {
-                    // Use local date to match user's device time (fixes UTC/KST issues)
-                    const d = new Date();
-                    const year = d.getFullYear();
-                    const month = String(d.getMonth() + 1).padStart(2, '0');
-                    const day = String(d.getDate()).padStart(2, '0');
-                    const todayStr = `${year}-${month}-${day}`;
-                    // Find word exactly for today to support scheduling
-                    const todayWord = liveDailyWords.find(w => w && w.date === todayStr);
-
-                    // User Request: If it's Sunday (0) and no word for today, look for tomorrow (Monday)
-                    let displayWord = todayWord;
-                    if (!displayWord && d.getDay() === 0) {
-                        const tomorrow = new Date(d);
-                        tomorrow.setDate(d.getDate() + 1);
-                        const tomStr = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, '0')}-${String(tomorrow.getDate()).padStart(2, '0')}`;
-                        displayWord = liveDailyWords.find(w => w && w.date === tomStr);
-                    }
-
-                    // If no word for today or tomorrow (e.g. general fallback), find the last available past word
-                    // Important fallback: Always show something if data exists (sorted[0] is the most recent)
-                    const validWords = liveDailyWords.filter(w => w && w.date);
-                    const lastWord = validWords.filter(w => w.date < todayStr).sort((a, b) => new Date(b.date) - new Date(a.date))[0] || validWords[0];
-
-                    if (isMounted) setLatestDailyWord(displayWord || lastWord || null);
-                }
-
                 if (Array.isArray(liveNotices) && liveNotices.length > 0) {
                     const sorted = [...liveNotices].sort((a, b) => new Date(b.date) - new Date(a.date));
                     if (isMounted) setHomeNotices(sorted);
@@ -176,7 +143,6 @@ const Home = () => {
                 if (isMounted) {
                     const allUpdates = [
                         ...(Array.isArray(liveSermons) ? liveSermons : [])
-                            .filter(item => item.category !== '오늘의말씀' && item.category !== '오늘의 말씀')
                             .map(item => ({ ...item, category: 'sermon', typeLabel: i18n.language === 'en' ? 'Sermon' : '설교' })),
                         ...(Array.isArray(liveBulletins) ? liveBulletins : []).map(item => ({ ...item, category: 'bulletin', typeLabel: i18n.language === 'en' ? 'Bulletin' : '주보' })),
                         ...(Array.isArray(liveColumns) ? liveColumns : []).map(item => ({ ...item, category: 'column', typeLabel: i18n.language === 'en' ? 'Column' : '신학 칼럼' })),
@@ -258,7 +224,6 @@ const Home = () => {
                     : 'The Church of the Sent in Langley, Vancouver. Sunday Service: 1:00 PM & 2:00 PM. A biblical Christian community.'}
             />
             <Suspense fallback={null}>
-                {config.showDailyWordPopup !== false && <DailyWordPopup word={latestDailyWord} />}
                 {config.showNoticePopup !== false && homeNotices.find(n => n.showPopup) && <NoticePopup notice={homeNotices.find(n => n.showPopup)} />}
             </Suspense>
             {/* Hero Section (Main Banner) */}
